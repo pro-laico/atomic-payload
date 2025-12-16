@@ -1,0 +1,21 @@
+.shortcut-pill {
+  text-transform: capitalize;
+  font-weight: 500;
+}
+
+/* cycle through five rich dark colors for white text contrast */
+.color-cycle:nth-child(5n) {
+  background: rgb(22, 101, 52); /* Deep green */
+}
+.color-cycle:nth-child(5n + 1) {
+  background: rgb(30, 64, 175); /* Deep blue */
+}
+.color-cycle:nth-child(5n + 2) {
+  background: rgb(22, 101, 52); /* Deep green */
+}
+.color-cycle:nth-child(5n + 3) {
+  background: rgb(88, 28, 135); /* Deep purple */
+}
+.color-cycle:nth-child(5n + 4) {
+  background: rgb(153, 27, 27); /* Deep red */
+}

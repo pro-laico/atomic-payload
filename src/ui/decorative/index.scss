@@ -1,0 +1,46 @@
+.colored-end {
+  width: calc(100% + 40px);
+  height: 15px;
+  border-radius: 0 0 3px 3px;
+  margin-left: -20px;
+  margin-right: -20px;
+  margin-bottom: -20px;
+
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    color-mix(in srgb, #fff 65%, transparent) 100%
+  );
+
+  &--tag {
+    background: linear-gradient(
+      to bottom,
+      transparent 0%,
+      color-mix(in srgb, #2ecc71 65%, transparent) 100%
+    );
+  }
+
+  &--form {
+    background: linear-gradient(
+      to bottom,
+      transparent 0%,
+      color-mix(in srgb, #e67e22 65%, transparent) 100%
+    );
+  }
+
+  &--input {
+    background: linear-gradient(
+      to bottom,
+      transparent 0%,
+      color-mix(in srgb, #3498db 65%, transparent) 100%
+    );
+  }
+
+  &--button {
+    background: linear-gradient(
+      to bottom,
+      transparent 0%,
+      color-mix(in srgb, #f1c40f 65%, transparent) 100%
+    );
+  }
+}
