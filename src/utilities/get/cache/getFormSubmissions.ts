@@ -1,5 +1,4 @@
 'use server'
-//TODO: Test form.title
 import 'server-only' //DO NOT REMOVE
 import { getPayload } from 'payload'
 import { GCFunction } from '@/ts/types'

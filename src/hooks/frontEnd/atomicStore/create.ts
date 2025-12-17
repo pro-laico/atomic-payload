@@ -2,8 +2,8 @@ import { createStore } from 'zustand'
 import { baseSlice } from './slices/base'
 import { persist } from 'zustand/middleware'
 import { dynamicSlice } from './slices/dynamic'
-import type { AtomicStore, AtomicStoreInitialState } from '@/ts/types'
 import { consentSlice, STORAGE_KEYS } from './slices/consent'
+import type { AtomicStore, AtomicStoreInitialState } from '@/ts/types'
 
 const safeStorageOperation = <T>(operation: () => T, fallback: T): T => {
   try {

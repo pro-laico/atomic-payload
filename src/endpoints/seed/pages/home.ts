@@ -139,8 +139,9 @@ export const homePage: Omit<Page, 'createdAt' | 'updatedAt' | 'publishedAt' | 'i
                       type: 'button',
                       tagType: 'div',
                       buttonType: 'link',
+                      newTab: true,
                       linkType: 'externalLink',
-                      externalLink: 'github.com',
+                      externalLink: 'github.com/pro-laico/atomic-payload',
                       triggerClassName: 'trigger trigger-style-outline trigger-size-icon',
                       screenReaderText: 'Github',
 
@@ -193,8 +194,9 @@ export const homePage: Omit<Page, 'createdAt' | 'updatedAt' | 'publishedAt' | 'i
                       type: 'button',
                       tagType: 'div',
                       buttonType: 'link',
+                      newTab: true,
                       linkType: 'externalLink',
-                      externalLink: 'www.atomicpayload.com',
+                      externalLink: 'www.atomicpayload.com/getting-started',
                       triggerClassName: 'trigger trigger-style-base trigger-size-base',
 
                       triggerChildren: [
@@ -468,6 +470,7 @@ export const homePage: Omit<Page, 'createdAt' | 'updatedAt' | 'publishedAt' | 'i
               tagType: 'div',
               buttonType: 'link',
               linkType: 'externalLink',
+              newTab: true,
               externalLink: 'www.atomicpayload.com',
               triggerClassName: 'group h-full rounded-lg border border-border bg-card p-6 transition-all hover:border-primary hover:shadow-lg',
 
@@ -591,6 +594,7 @@ export const homePage: Omit<Page, 'createdAt' | 'updatedAt' | 'publishedAt' | 'i
               buttonType: 'link',
               linkType: 'externalLink',
               externalLink: 'www.atomicpayload.com',
+              newTab: true,
               triggerClassName: 'group h-full rounded-lg border border-border bg-card p-6 transition-all hover:border-primary hover:shadow-lg',
 
               triggerChildren: [

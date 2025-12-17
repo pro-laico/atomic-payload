@@ -61,14 +61,13 @@ export default buildConfig({
         { label: 'Desktop', name: 'desktop', width: 1440, height: 900 },
       ],
     },
-    //TODO: Update
     meta: {
       titleSuffix: ' - Atomic Payload',
-      description: 'Everything you need to build a custom website, without code.',
+      description: 'A Website Builder Where All You Need To Know Is Tailwind.',
       icons: [{ type: 'image/svg+xml', rel: 'icon', url: '/adminFavicon.svg' }],
       openGraph: {
         title: 'Atomic Payload',
-        description: 'Everything you need to build a custom website, without code.',
+        description: 'A Website Builder Where All You Need To Know Is Tailwind.',
         images: [{ height: 630, width: 1200, url: '/ogImage.webp' }],
       },
     },

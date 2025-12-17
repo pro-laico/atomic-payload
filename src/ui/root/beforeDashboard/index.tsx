@@ -27,7 +27,7 @@ const BeforeDashboard: React.FC = () => {
         </li>
         <li>
           {'Return To ReadMe Setup Steps: '}
-          <a href="/" target="_blank">
+          <a href="https://github.com/pro-laico/atomic-payload" target="_blank">
             Link
           </a>
         </li>
