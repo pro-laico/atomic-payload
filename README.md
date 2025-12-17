@@ -81,8 +81,6 @@ Follow the steps below to get started in just a few minutes.
    ```
    - Copy all environment variables above and including LIVE_SITE_URL to the Vercel project settings.
    - In The Vercel .env variables edit NEXT_PUBLIC_SERVER_URL to the LIVE_SITE_URL
-
-6. **Build**
    - Trigger a deploy and wait for the build to complete.
    - You should see a single warning; which is expected.
 
@@ -104,18 +102,21 @@ Trigger a rebuild of your deployment using a vercel webhook. Mainly used when up
 ### Mux Setup
 Upload and serve video all through the payload admin dashboard.
 
-1. Go to **Mux** and create an account.
-   - Create a new environment using the same project name.
-   - Set it to **Production** and configure access controls.
+1. Account Setup
+   - Create a Mux Account
+   - Create a new environment
+   - Set it to **Production** and configure access controls
 
-2. In Mux, go to (`Settings → Access Tokens`).
+2. Setup Mux Token
+   - In Mux, go to (`Settings → Access Tokens`).
    - Create a new token.
    - Select **Payload Admin** and enable all permissions.
    - Copy the **Token ID** to `MUX_TOKEN_ID`.
    - Copy the **Secret Key** to `MUX_TOKEN_SECRET`.
 
-3. In Mux, go to **Webhooks** and add:
-   - Add `https://<project-name>.vercel.app/api/mux/webhook` with your live sites url.
+3. Setup Mux Webhook
+   - In Mux, go to (`Settings → Webhooks`):
+   - Add a webhook for your live site with the route `/api/mux/webhook`. e.g: `<live-site-url>/api/mux/webhook`
    - Copy the generated secret to `MUX_WEBHOOK_SIGNING_SECRET`
 
     #### Example:
