@@ -82,7 +82,6 @@ Follow the steps below to get started in just a few minutes.
    - Copy all environment variables above and including LIVE_SITE_URL to the Vercel project settings.
    - In The Vercel .env variables edit NEXT_PUBLIC_SERVER_URL to the LIVE_SITE_URL
    - Trigger a deploy and wait for the build to complete.
-   - You should see a single warning; which is expected.
 
 You now have a working version of Atomic Payload. It is recommended to go to the main admin dashboard on the site and seed to database with some data. Just keep in mind this will override existing data, and therefore you should comment out the beforeDashboard custom component from `src/payload.config.ts` once seeded.
 

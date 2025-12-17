@@ -2,7 +2,7 @@ import { SiteMetaDatum } from '@/ts/types'
 
 export const siteMetaData: Omit<SiteMetaDatum, 'createdAt' | 'updatedAt' | 'id'> = {
   siteName: 'Atomic Payload',
-  fallbackSiteDescription: 'The open source website builder, where all you need to know is tailwind.',
+  fallbackSiteDescription: 'The Website Builder Where All You Need To Know Is Tailwind.',
   fallbackOGImage: null,
   fallbackLightFavicon: null,
   fallbackDarkFavicon: null,

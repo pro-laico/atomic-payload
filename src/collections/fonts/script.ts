@@ -74,7 +74,7 @@ function generateFontDefinitions(extensions: FontExtensions): void {
   const available = configs.filter((c) => c.extension)
 
   const declarations = available
-    .map((c) => `const ${c.name} = localFont({ src: '/fonts/${c.type}.${c.extension}', variable: '${c.variable}' })`)
+    .map((c) => `const ${c.name} = localFont({ src: '../../public/fonts/${c.type}.${c.extension}', variable: '${c.variable}' })`)
     .join('\n')
 
   const exports = available.map((c) => c.name).join(', ')
