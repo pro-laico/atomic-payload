@@ -2069,23 +2069,23 @@ export interface DesignSet {
         /**
          * The length of the animation in seconds.
          */
-        duration: string;
+        duration?: string | null;
         /**
          * Interpolation functions like linear/ease-in-out.
          */
-        timingFns: string;
+        timingFns?: string | null;
         /**
          * Special properties like transform-origin and backface-visibility.
          */
-        properties: string;
+        properties?: string | null;
         /**
          * The times the animation should play, either infinite or a number.
          */
-        counts: string;
+        counts?: string | null;
         /**
          * The ease of the animation.
          */
-        ease: string;
+        ease?: string | null;
         id?: string | null;
       }[]
     | null;

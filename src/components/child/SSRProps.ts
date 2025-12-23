@@ -155,10 +155,7 @@ export async function SSRProps<T extends ChildBlocks[number]>(block: T): Promise
                   const popPositioner: Record<string, unknown> = {}
 
                   //Root Props
-                  if (delay) pop.p.delay = delay
                   if (hasArrow) pop.p.hasArrow = hasArrow
-                  if (closeDelay) pop.p.closeDelay = closeDelay
-                  if (openOnHover) pop.p.openOnHover = openOnHover
                   if (defaultOpen) pop.p.defaultOpen = defaultOpen
 
                   switch (modal) {
@@ -175,6 +172,11 @@ export async function SSRProps<T extends ChildBlocks[number]>(block: T): Promise
                       pop.p.modal = false
                       break
                   }
+
+                  //Trigger Props
+                  if (delay) t.p.delay = delay
+                  if (closeDelay) t.p.closeDelay = closeDelay
+                  if (openOnHover) t.p.openOnHover = openOnHover
 
                   //Positioner Props
                   if (side) popPositioner.side = side
