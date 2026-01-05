@@ -1,0 +1,86 @@
+{
+  "npm.packageManager": "pnpm",
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": "explicit"
+    }
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": "explicit"
+    }
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": "explicit"
+    }
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  },
+  "editor.formatOnSaveMode": "file",
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "[javascript][typescript][typescriptreact]": {
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": "explicit"
+    }
+  },
+  "tailwindCSS.includeLanguages": {
+    "typescript": "javascript",
+    "typescriptreact": "javascript"
+  },
+  "tailwindCSS.experimental.classRegex": [
+    ["className\\s*=\\s*[\"'`]([^\"'`]*)[\"'`]", "([^\"'`]*)"],
+    ["className\\s*=\\s*\\{([^}]*)\\}", "([^}]*)"],
+    ["class\\s*=\\s*[\"'`]([^\"'`]*)[\"'`]", "([^\"'`]*)"],
+    ["class\\s*=\\s*\\{([^}]*)\\}", "([^}]*)"]
+  ],
+  "tailwindCSS.suggestions": true,
+  "todo-tree.general.tags": ["TODO:", "KNOWN ISSUE:", "Pre Commit Check:", "BUG:"],
+  "todo-tree.highlights.defaultHighlight": {
+    "icon": "checklist",
+    "iconColour": "#82aaff",
+    "foreground": "#82aaff",
+    "background": "#002b3d",
+    "type": "text",
+    "opacity": 50
+  },
+  "todo-tree.highlights.customHighlight": {
+    "KNOWN ISSUE:": {
+      "icon": "calendar",
+      "iconColour": "#ffc94d",
+      "foreground": "#ffc94d",
+      "background": "#3b2a00",
+      "type": "text",
+      "opacity": 50
+    },
+    "Pre Commit Check:": {
+      "icon": "check",
+      "iconColour": "#ff7733",
+      "foreground": "#ff7733",
+      "background": "#331400",
+      "type": "text",
+      "opacity": 50
+    },
+    "BUG:": {
+      "icon": "bug",
+      "iconColour": "#ff4d6d",
+      "foreground": "#ff4d6d",
+      "background": "#3b000d",
+      "type": "text",
+      "opacity": 50
+    }
+  }
+}

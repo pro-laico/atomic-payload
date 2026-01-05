@@ -1,0 +1,62 @@
+.atomic-row-pill {
+    border-radius: 3px;
+    display:inline-flex;
+    font-weight:500;
+    align-items: center;
+    flex-shrink: 0;
+    padding: 0 10px 0 10px;
+    text-transform: capitalize;
+    color: var(--theme-elevation-900);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 150px;
+}
+
+.nocap {
+    text-transform: none !important;
+}
+
+.pill-default {
+    background: var(--theme-elevation-0);
+}
+
+.pill-name {
+    background: var(--theme-base-0);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+
+.pill-tag {
+    background: color-mix(
+        in oklch,
+        var(--atomic-distinct-1),
+        black 25%
+    );
+}
+
+.pill-form {
+    background: color-mix(
+        in oklch,
+        var(--atomic-distinct-2),
+        black 8%
+    );
+}
+
+.pill-input {
+    background: color-mix(
+        in oklch,
+        var(--atomic-distinct-3),
+        black 8%
+    );
+}
+
+.pill-button {
+    background: color-mix(
+        in oklch,
+        var(--atomic-distinct-4),
+        black 16%
+    );
+}
+
