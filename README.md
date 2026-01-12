@@ -49,7 +49,7 @@ Actions create interactivity and reactivity for your application for all atomic 
 ![actions](https://github.com/user-attachments/assets/109a6f47-3f35-4a3d-af7f-f340bfdfb23d)
 
 > [!NOTE]
-> Actions utilize a block structure so you can extend them by adding a new SVR block.
+> Actions utilize a block structure so you can extend them by adding a new action block.
 
 ## Custom Forms With SVR
 All of the above functionality meshes with the additional Sanitation, Validation and Rate Limiting for forms and their inputs. Allowing you to build fully customizable forms.
