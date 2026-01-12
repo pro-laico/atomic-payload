@@ -346,6 +346,44 @@ export type TokenStringArray =
  */
 export type SOSA = string | string[];
 /**
+ * Select the tag the nested styles will apply to.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TypographySupportedTags".
+ */
+export type TypographySupportedTags =
+  | (
+      | 'headings'
+      | 'h1'
+      | 'h2'
+      | 'h3'
+      | 'h4'
+      | 'h5'
+      | 'h6'
+      | 'th'
+      | 'p'
+      | 'a'
+      | 'blockquote'
+      | 'figure'
+      | 'figcaption'
+      | 'strong'
+      | 'em'
+      | 'kbd'
+      | 'code'
+      | 'pre'
+      | 'ol'
+      | 'ul'
+      | 'li'
+      | 'table'
+      | 'thead'
+      | 'tr'
+      | 'td'
+      | 'img'
+      | 'video'
+      | 'hr'
+    )
+  | null;
+/**
  * Supported timezones in IANA format.
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -2101,6 +2139,126 @@ export interface DesignSet {
   textShadow?: TokenStringArray;
   preflightStorage?: string | null;
   tokenStorage?: TokenStorage;
+  body?: {
+    light?: string | null;
+    dark?: string | null;
+  };
+  headings?: {
+    light?: string | null;
+    dark?: string | null;
+  };
+  lead?: {
+    light?: string | null;
+    dark?: string | null;
+  };
+  links?: {
+    light?: string | null;
+    dark?: string | null;
+  };
+  bold?: {
+    light?: string | null;
+    dark?: string | null;
+  };
+  counters?: {
+    light?: string | null;
+    dark?: string | null;
+  };
+  bullets?: {
+    light?: string | null;
+    dark?: string | null;
+  };
+  hr?: {
+    light?: string | null;
+    dark?: string | null;
+  };
+  quotes?: {
+    light?: string | null;
+    dark?: string | null;
+  };
+  'quote-borders'?: {
+    light?: string | null;
+    dark?: string | null;
+  };
+  captions?: {
+    light?: string | null;
+    dark?: string | null;
+  };
+  kbd?: {
+    light?: string | null;
+    dark?: string | null;
+  };
+  'kbd-shadows'?: {
+    light?: string | null;
+    dark?: string | null;
+  };
+  code?: {
+    light?: string | null;
+    dark?: string | null;
+  };
+  'pre-code'?: {
+    light?: string | null;
+    dark?: string | null;
+  };
+  'pre-bg'?: {
+    light?: string | null;
+    dark?: string | null;
+  };
+  'th-borders'?: {
+    light?: string | null;
+    dark?: string | null;
+  };
+  'td-borders'?: {
+    light?: string | null;
+    dark?: string | null;
+  };
+  /**
+   * This size applies to small screens and above
+   */
+  sm?:
+    | {
+        tag?: TypographySupportedTags;
+        values?:
+          | {
+              cssSelector?: string | null;
+              value?: string | null;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * This size applies to base screens and above.
+   */
+  base?:
+    | {
+        tag?: TypographySupportedTags;
+        values?:
+          | {
+              cssSelector?: string | null;
+              value?: string | null;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * This size applies to large screens and above.
+   */
+  lg?:
+    | {
+        tag?: TypographySupportedTags;
+        values?:
+          | {
+              cssSelector?: string | null;
+              value?: string | null;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
   'apf-classes'?: boolean | null;
   'apf-active'?: boolean | null;
   updatedAt: string;
@@ -3018,6 +3176,153 @@ export interface DesignSetSelect<T extends boolean = true> {
       };
   preflightStorage?: T;
   tokenStorage?: T;
+  body?:
+    | T
+    | {
+        light?: T;
+        dark?: T;
+      };
+  headings?:
+    | T
+    | {
+        light?: T;
+        dark?: T;
+      };
+  lead?:
+    | T
+    | {
+        light?: T;
+        dark?: T;
+      };
+  links?:
+    | T
+    | {
+        light?: T;
+        dark?: T;
+      };
+  bold?:
+    | T
+    | {
+        light?: T;
+        dark?: T;
+      };
+  counters?:
+    | T
+    | {
+        light?: T;
+        dark?: T;
+      };
+  bullets?:
+    | T
+    | {
+        light?: T;
+        dark?: T;
+      };
+  hr?:
+    | T
+    | {
+        light?: T;
+        dark?: T;
+      };
+  quotes?:
+    | T
+    | {
+        light?: T;
+        dark?: T;
+      };
+  'quote-borders'?:
+    | T
+    | {
+        light?: T;
+        dark?: T;
+      };
+  captions?:
+    | T
+    | {
+        light?: T;
+        dark?: T;
+      };
+  kbd?:
+    | T
+    | {
+        light?: T;
+        dark?: T;
+      };
+  'kbd-shadows'?:
+    | T
+    | {
+        light?: T;
+        dark?: T;
+      };
+  code?:
+    | T
+    | {
+        light?: T;
+        dark?: T;
+      };
+  'pre-code'?:
+    | T
+    | {
+        light?: T;
+        dark?: T;
+      };
+  'pre-bg'?:
+    | T
+    | {
+        light?: T;
+        dark?: T;
+      };
+  'th-borders'?:
+    | T
+    | {
+        light?: T;
+        dark?: T;
+      };
+  'td-borders'?:
+    | T
+    | {
+        light?: T;
+        dark?: T;
+      };
+  sm?:
+    | T
+    | {
+        tag?: T;
+        values?:
+          | T
+          | {
+              cssSelector?: T;
+              value?: T;
+              id?: T;
+            };
+        id?: T;
+      };
+  base?:
+    | T
+    | {
+        tag?: T;
+        values?:
+          | T
+          | {
+              cssSelector?: T;
+              value?: T;
+              id?: T;
+            };
+        id?: T;
+      };
+  lg?:
+    | T
+    | {
+        tag?: T;
+        values?:
+          | T
+          | {
+              cssSelector?: T;
+              value?: T;
+              id?: T;
+            };
+        id?: T;
+      };
   'apf-classes'?: T;
   'apf-active'?: T;
   updatedAt?: T;
