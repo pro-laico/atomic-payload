@@ -12,7 +12,11 @@ This separation makes it easy to enforce best practices and achieve great perfor
 
 
 > [!IMPORTANT]
-> Our [Discord](https://discord.gg/54cEtwCVTk) is the best place to get quick answers to questions. We are also looking for contributors!
+> Our [Discord](https://discord.gg/54cEtwCVTk) is the best place to get quick answers to questions.
+> 
+> For documentation check out [Atomic Payload](https://atomicpayload.com).
+> 
+> We are also looking for contributors!
 
 # Features
 ## Tailwind Styles
@@ -141,7 +145,12 @@ You now have a working version of Atomic Payload. It is recommended to go to the
 
 
 > [!IMPORTANT]
-> Our [Discord](https://discord.gg/54cEtwCVTk) is the best place to get quick answers to questions. We are also looking for contributors!
+> Our [Discord](https://discord.gg/54cEtwCVTk) is the best place to get quick answers to questions.
+> 
+> For documentation check out [Atomic Payload](https://atomicpayload.com).
+> 
+> We are also looking for contributors!
+
 
 # Additional Setup
 
