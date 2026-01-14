@@ -34,7 +34,15 @@ export const cssProcessor: cssProcessorType = async ({ slug, context, draft, req
   const uno = await createGenerator({
     shortcuts,
     preflights: [{ getCSS: () => `${ds?.preflightStorage || ''}` }],
-    presets: [presetWind4(), presetAttributify(), presetTypography()],
+    presets: [
+      presetWind4(),
+      presetAttributify(),
+      presetTypography({
+        colorScheme: {},
+        cssExtend: {},
+        sizeScheme: {},
+      }),
+    ],
     extendTheme: (theme: PresetWind4Theme) => deepMerge(theme, deepMerge(ds?.tokenStorage, defaultClasses)),
   })
 

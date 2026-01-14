@@ -42,12 +42,7 @@ const processProperty = z.function({ input: [z.ap.get('TokenStringArray', TokenS
 
 function generateUnoFonts(fonts: DesignSet['font'] | undefined): RSS {
   if (!fonts) return {}
-  return {
-    mono: `var(--font-setMono)`,
-    sans: `var(--font-setSans)`,
-    serif: `var(--font-setSerif)`,
-    display: `var(--font-setDisplay)`,
-  }
+  return { mono: `var(--font-setMono)`, sans: `var(--font-setSans)`, serif: `var(--font-setSerif)`, display: `var(--font-setDisplay)` }
 }
 
 function generateUnoAnimation(input: DesignSet['animation'] | undefined): UnoThemeAnimation {
