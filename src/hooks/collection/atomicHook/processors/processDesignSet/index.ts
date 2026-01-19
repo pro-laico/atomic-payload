@@ -42,12 +42,7 @@ const processProperty = z.function({ input: [z.ap.get('TokenStringArray', TokenS
 
 function generateUnoFonts(fonts: DesignSet['font'] | undefined): RSS {
   if (!fonts) return {}
-  return {
-    mono: `var(--font-setMono)`,
-    sans: `var(--font-setSans)`,
-    serif: `var(--font-setSerif)`,
-    display: `var(--font-setDisplay)`,
-  }
+  return { mono: `var(--font-setMono)`, sans: `var(--font-setSans)`, serif: `var(--font-setSerif)`, display: `var(--font-setDisplay)` }
 }
 
 function generateUnoAnimation(input: DesignSet['animation'] | undefined): UnoThemeAnimation {
@@ -89,8 +84,34 @@ const processColors = z.function({ input: [z.ap.get('DesignSetColors', designSet
 
 function processAria(input: DesignSet['aria'] | undefined): RSS {
   if (!input) return {}
+
   return input.reduce<RSS>((acc, item) => {
     if (item.value) acc[item.value] = `${item.value}="${item.value}"`
+    return acc
+  }, {})
+}
+
+function processProseColor(input: DesignSet['proseColors'] | undefined): Record<string, [string, string]> {
+  if (!input) return {}
+
+  return Object.entries(input).reduce<Record<string, [string, string]>>((acc, [name, item]) => {
+    acc[name] = [item.light, item.dark]
+    return acc
+  }, {})
+}
+
+function processProseTagStyles(input: NonNullable<DesignSet['proseStyles']>['default'] | undefined): Record<string, Record<string, string>> {
+  if (!input) return {}
+
+  return input.reduce<Record<string, Record<string, string>>>((acc, { tag, psuedoClass, values }) => {
+    if (!values || !tag) return acc
+
+    const fullTag = psuedoClass ? `${tag}${psuedoClass}` : tag
+
+    acc[fullTag] ??= {}
+
+    for (const { cssSelector, value } of values) acc[fullTag][cssSelector] = value
+
     return acc
   }, {})
 }
@@ -138,8 +159,12 @@ const processDesignSet = (ds: DesignSet): void => {
   }
 
   const preflightStorage = generatePreflights({ ds })
-  if ('fonts' in ds) delete ds.fonts
-  if ('animations' in ds) delete ds.animations
+  ds.proseColorStorage = processProseColor(ds.proseColors)
+
+  ds.proseDefaultStorage = processProseTagStyles(ds?.proseStyles?.default)
+  ds.prosesmStorage = processProseTagStyles(ds?.proseStyles?.sm)
+  ds.proseBaseStorage = processProseTagStyles(ds?.proseStyles?.base)
+  ds.proselgStorage = processProseTagStyles(ds?.proseStyles?.lg)
 
   ds.tokenStorage = tokenStorage
   ds.preflightStorage = preflightStorage

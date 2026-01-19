@@ -7,7 +7,7 @@ import { iconSet } from './iconSet'
 import { designSet } from './designSet'
 import { backendForm } from './backendForm'
 import { shortcutSet } from './shortcutSet'
-import { homePage, notFoundPage, testingPage } from './pages'
+import { homePage, notFoundPage, testingPage, prosePage } from './pages'
 import { checkIcon, closeIcon, cookieIcon, githubIcon, logoIcon, menuIcon, themeIcon } from './icons'
 
 const collections: CollectionSlug[] = ['footer', 'header', 'iconSet', 'designSet', 'forms', 'shortcutSet', 'pages', 'icon']
@@ -59,6 +59,8 @@ export const seed = async ({ payload, req }: { payload: Payload; req: PayloadReq
   payload.logger.info(`Seeding pages...`)
   //Used as the default testing page for collections.
   const page = await payload.create({ collection: 'pages', ...args, data: testingPage })
+  //Prose Showcase Page
+  const prose = await payload.create({ collection: 'pages', ...args, data: prosePage })
   //Used In Header for links
   const home = await payload.create({ collection: 'pages', ...args, data: homePage })
   //Other Pages
@@ -77,7 +79,7 @@ export const seed = async ({ payload, req }: { payload: Payload; req: PayloadReq
   await payload.create({ collection: 'footer', ...args, data: footer({ page }) })
 
   payload.logger.info(`Seeding Header...`)
-  await payload.create({ collection: 'header', ...args, context: { isSeed: false }, data: header({ testing: page, home }) })
+  await payload.create({ collection: 'header', ...args, context: { isSeed: false }, data: header({ testing: page, home, prose }) })
 
   payload.logger.info('Seeded database successfully!')
 }

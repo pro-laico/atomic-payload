@@ -31,17 +31,19 @@ export const tokenStorage = z.ap.add(
   { id: 'TokenStorage' },
 )
 
+export const ColorRecordSchema = z.ap.add(z.record(z.string(), z.tuple([z.string(), z.string()])), { id: 'ProseColorStorage' })
+
 export const StorageTab = () => {
   const storageField: Tab = {
     label: 'Storage',
     fields: [
       { name: 'preflightStorage', type: 'code', admin: { language: 'css', readOnly: true } },
-      {
-        name: 'tokenStorage',
-        type: 'json',
-        admin: { readOnly: true },
-        typescriptSchema: [() => ({ $ref: `#/definitions/TokenStorage` })],
-      },
+      { name: 'tokenStorage', type: 'json', admin: { readOnly: true }, typescriptSchema: [() => ({ $ref: `#/definitions/TokenStorage` })] },
+      { name: 'proseDefaultStorage', type: 'json', admin: { readOnly: true }, typescriptSchema: [() => ({ $ref: `#/definitions/RSRSS` })] },
+      { name: 'prosesmStorage', type: 'json', admin: { readOnly: true }, typescriptSchema: [() => ({ $ref: `#/definitions/RSRSS` })] },
+      { name: 'proseBaseStorage', type: 'json', admin: { readOnly: true }, typescriptSchema: [() => ({ $ref: `#/definitions/RSRSS` })] },
+      { name: 'proselgStorage', type: 'json', admin: { readOnly: true }, typescriptSchema: [() => ({ $ref: `#/definitions/RSRSS` })] },
+      { name: 'proseColorStorage', type: 'json', admin: { readOnly: true }, typescriptSchema: [() => ({ $ref: `#/definitions/ProseColorStorage` })] },
     ],
   }
 
