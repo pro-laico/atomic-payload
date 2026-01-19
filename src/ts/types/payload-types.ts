@@ -824,7 +824,7 @@ export interface AtomicChild {
   numberDefault?: number | null;
   checkboxDefault?: boolean | null;
   radioDefault?: boolean | null;
-  radioValue: string;
+  radioValue?: string | null;
   /**
    * Add atomic classes or shortcuts to the portal backdrop div here.
    */

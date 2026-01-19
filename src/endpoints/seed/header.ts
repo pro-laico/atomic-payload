@@ -1,9 +1,9 @@
 import { Header, Page } from '@/ts/types'
 import { toPageRelationship } from '@/utilities/seedNestedRelationship'
 
-type HeaderArgs = { testing: Page; home: Page }
+type HeaderArgs = { testing: Page; home: Page; prose: Page }
 
-export const header: (args: HeaderArgs) => Omit<Header, 'createdAt' | 'updatedAt' | 'id'> = ({ testing, home }) => {
+export const header: (args: HeaderArgs) => Omit<Header, 'createdAt' | 'updatedAt' | 'id'> = ({ testing, home, prose }) => {
   return {
     active: true,
     devMode: false,
@@ -200,6 +200,82 @@ export const header: (args: HeaderArgs) => Omit<Header, 'createdAt' | 'updatedAt
                                 },
                                 id: '6928b772ae41f527d2ef0b86',
                                 blockName: 'Testing',
+
+                                children: [],
+
+                                contentActions: {
+                                  actionBlocks: [],
+                                },
+
+                                formRateLimitBlocks: [],
+
+                                formSanitationBlocks: [],
+
+                                formValidationBlocks: [],
+
+                                inputSanitationBlocks: [],
+
+                                inputValidationBlocks: [],
+
+                                backdropChildren: [],
+
+                                ds: {},
+
+                                pops: {},
+
+                                triggerStaticDataAttributes: [],
+
+                                staticDataAttributes: [],
+                              },
+                              {
+                                blockType: 'AtomicChild',
+                                type: 'button',
+                                tagType: 'div',
+                                buttonType: 'link',
+                                linkType: 'internalLink',
+
+                                internalLink: toPageRelationship(prose),
+                                triggerClassName: 'text-2xl font-medium',
+
+                                triggerChildren: [
+                                  {
+                                    blockType: 'SimpleTextChild',
+                                    tagType: 'span',
+                                    text: 'Prose',
+                                    id: '6928b772ae41f527d2ef0b87',
+
+                                    contentActions: {
+                                      actionBlocks: [],
+                                    },
+
+                                    staticDataAttributes: [],
+                                  },
+                                ],
+
+                                triggerActions: {
+                                  actionBlocks: [
+                                    {
+                                      blockType: 'ActSetPortalOpen',
+                                      portal: 'menu',
+                                      id: '6931e6fa7deeea1f1c1366eb',
+                                    },
+                                  ],
+
+                                  actions: ['ActSetPortalOpen'],
+
+                                  runners: [
+                                    {
+                                      type: 'RunSetBool',
+                                      key: 'menu',
+                                      initialValue: false,
+                                      persisted: false,
+                                    },
+                                  ],
+
+                                  attributers: [],
+                                },
+                                id: '6928b772ae41f527d2ef0b86',
+                                blockName: 'Prose',
 
                                 children: [],
 
@@ -652,6 +728,64 @@ export const header: (args: HeaderArgs) => Omit<Header, 'createdAt' | 'updatedAt
                     ],
                     id: '69287facdf37686e6978aeb4',
                     blockName: 'Testing',
+
+                    children: [],
+
+                    triggerActions: {
+                      actionBlocks: [],
+                    },
+
+                    contentActions: {
+                      actionBlocks: [],
+                    },
+
+                    formRateLimitBlocks: [],
+
+                    formSanitationBlocks: [],
+
+                    formValidationBlocks: [],
+
+                    inputSanitationBlocks: [],
+
+                    inputValidationBlocks: [],
+
+                    backdropChildren: [],
+
+                    ds: {},
+
+                    pops: {},
+
+                    triggerStaticDataAttributes: [],
+
+                    staticDataAttributes: [],
+                  },
+
+                  {
+                    blockType: 'AtomicChild',
+                    type: 'button',
+                    tagType: 'div',
+                    buttonType: 'link',
+                    linkType: 'internalLink',
+
+                    internalLink: toPageRelationship(prose),
+                    triggerClassName: 'menu-trigger-text',
+
+                    triggerChildren: [
+                      {
+                        blockType: 'SimpleTextChild',
+                        tagType: 'span',
+                        text: 'Prose',
+                        id: '69287facdf37686e6978aeb5',
+
+                        contentActions: {
+                          actionBlocks: [],
+                        },
+
+                        staticDataAttributes: [],
+                      },
+                    ],
+                    id: '69287facdf37686e6978aeb4',
+                    blockName: 'Prose',
 
                     children: [],
 

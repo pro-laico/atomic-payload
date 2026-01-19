@@ -451,5 +451,26 @@ export const designSet: (args: DesignSetArgs) => Omit<DesignSet, 'createdAt' | '
 
       textStrokeWidth: {},
     },
+
+    proseColorStorage: {
+      hr: ['var(--foreground)', 'var(--foreground)'],
+      kbd: ['var(--foreground)', 'var(--foreground)'],
+      body: ['var(--foreground)', 'var(--foreground)'],
+      lead: ['var(--foreground)', 'ovar(--foreground)'],
+      bold: ['var(--foreground)', 'var(--foreground)'],
+      code: ['var(--foreground)', 'ovar(--foreground)'],
+      links: ['var(--foreground)', 'var(--foreground)'],
+      quotes: ['var(--foreground)', 'var(--foreground)'],
+      'pre-bg': ['var(--foreground)', 'var(--foreground)'],
+      bullets: ['var(--foreground)', 'var(--brand-primary)'],
+      headings: ['var(--foreground)', 'var(--foreground)'],
+      counters: ['var(--foreground)', 'var(--brand-primary)'],
+      captions: ['var(--foreground)', 'var(--foreground)'],
+      'pre-code': ['oklch(0.145 0 0)', 'oklch(0.985 0 0)'],
+      'th-borders': ['var(--foreground)', 'var(--foreground)'],
+      'td-borders': ['var(--foreground)', 'var(--foreground)'],
+      'kbd-shadows': ['var(--foreground)', 'var(--foreground)'],
+      'quote-borders': ['var(--foreground)', 'var(--brand-primary)'],
+    },
   }
 }
