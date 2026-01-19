@@ -1,7 +1,7 @@
 import deepMerge from '@/utilities/deepMerge'
-import getCached from '@/utilities/get/cache/react'
 import manualLogger from '@/utilities/log/manual'
 import type { cssProcessorType } from '@/ts/types'
+import getCached from '@/utilities/get/cache/react'
 import { defaultAtomicClasses } from '@/collections/designSets/defaults'
 import { createGenerator, PresetWind4Theme, presetWind4, presetAttributify, presetTypography } from 'unocss'
 
@@ -38,9 +38,13 @@ export const cssProcessor: cssProcessorType = async ({ slug, context, draft, req
       presetWind4(),
       presetAttributify(),
       presetTypography({
-        colorScheme: {},
-        cssExtend: {},
-        sizeScheme: {},
+        colorScheme: ds?.proseColorStorage,
+        cssExtend: ds?.proseDefaultStorage,
+        sizeScheme: {
+          sm: ds?.prosesmStorage || {},
+          base: ds?.proseBaseStorage || {},
+          lg: ds?.proselgStorage || {},
+        },
       }),
     ],
     extendTheme: (theme: PresetWind4Theme) => deepMerge(theme, deepMerge(ds?.tokenStorage, defaultClasses)),

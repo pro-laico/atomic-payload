@@ -339,13 +339,6 @@ export type TokenStringArray =
     }[]
   | null;
 /**
- * Type: {@link SOSA} String | String[]
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "SOSA".
- */
-export type SOSA = string | string[];
-/**
  * This size applies to large screens and above with "prose prose-lg".
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -353,11 +346,15 @@ export type SOSA = string | string[];
  */
 export type TypographyStyles =
   | {
-      tag?: TypographySupportedTags;
+      tag: TypographySupportedTags;
+      /**
+       * Optionally add a psuedo-class (e.g., :hover, :focus, etc.) to target specific states.
+       */
+      psuedoClass?: string | null;
       values?:
         | {
-            cssSelector?: string | null;
-            value?: string | null;
+            cssSelector: string;
+            value: string;
             id?: string | null;
           }[]
         | null;
@@ -371,37 +368,41 @@ export type TypographyStyles =
  * via the `definition` "TypographySupportedTags".
  */
 export type TypographySupportedTags =
-  | (
-      | 'headings'
-      | 'h1'
-      | 'h2'
-      | 'h3'
-      | 'h4'
-      | 'h5'
-      | 'h6'
-      | 'th'
-      | 'p'
-      | 'a'
-      | 'blockquote'
-      | 'figure'
-      | 'figcaption'
-      | 'strong'
-      | 'em'
-      | 'kbd'
-      | 'code'
-      | 'pre'
-      | 'ol'
-      | 'ul'
-      | 'li'
-      | 'table'
-      | 'thead'
-      | 'tr'
-      | 'td'
-      | 'img'
-      | 'video'
-      | 'hr'
-    )
-  | null;
+  | 'headings'
+  | 'h1'
+  | 'h2'
+  | 'h3'
+  | 'h4'
+  | 'h5'
+  | 'h6'
+  | 'th'
+  | 'p'
+  | 'a'
+  | 'blockquote'
+  | 'figure'
+  | 'figcaption'
+  | 'strong'
+  | 'em'
+  | 'kbd'
+  | 'code'
+  | 'pre'
+  | 'ol'
+  | 'ul'
+  | 'li'
+  | 'table'
+  | 'thead'
+  | 'tr'
+  | 'td'
+  | 'img'
+  | 'video'
+  | 'hr';
+/**
+ * Type: {@link SOSA} String | String[]
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "SOSA".
+ */
+export type SOSA = string | string[];
 /**
  * Supported timezones in IANA format.
  *
@@ -2156,6 +2157,13 @@ export interface DesignSet {
   insetShadow?: TokenStringArray;
   dropShadow?: TokenStringArray;
   textShadow?: TokenStringArray;
+  proseColors: ProseColors;
+  proseStyles?: {
+    default?: TypographyStyles;
+    sm?: TypographyStyles;
+    base?: TypographyStyles;
+    lg?: TypographyStyles;
+  };
   preflightStorage?: string | null;
   tokenStorage?: TokenStorage;
   proseDefaultStorage?: RSRSS;
@@ -2163,16 +2171,43 @@ export interface DesignSet {
   proseBaseStorage?: RSRSS;
   proselgStorage?: RSRSS;
   proseColorStorage?: ProseColorStorage;
-  prose: ProseColors;
-  default?: TypographyStyles;
-  sm?: TypographyStyles;
-  base?: TypographyStyles;
-  lg?: TypographyStyles;
   'apf-classes'?: boolean | null;
   'apf-active'?: boolean | null;
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ProseColors".
+ */
+export interface ProseColors {
+  body: ProseColorField;
+  headings: ProseColorField;
+  lead: ProseColorField;
+  links: ProseColorField;
+  bold: ProseColorField;
+  counters: ProseColorField;
+  bullets: ProseColorField;
+  hr: ProseColorField;
+  quotes: ProseColorField;
+  'quote-borders': ProseColorField;
+  captions: ProseColorField;
+  kbd: ProseColorField;
+  'kbd-shadows': ProseColorField;
+  code: ProseColorField;
+  'pre-code': ProseColorField;
+  'pre-bg': ProseColorField;
+  'th-borders': ProseColorField;
+  'td-borders': ProseColorField;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ProseColorField".
+ */
+export interface ProseColorField {
+  light: string;
+  dark: string;
 }
 /**
  * Type: {@link TokenStorage}
@@ -2269,38 +2304,6 @@ export interface RSRSS {
  */
 export interface ProseColorStorage {
   [k: string]: [] | [string] | [string, string];
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "ProseColors".
- */
-export interface ProseColors {
-  body?: ProseColorField;
-  headings?: ProseColorField;
-  lead?: ProseColorField;
-  links?: ProseColorField;
-  bold?: ProseColorField;
-  counters?: ProseColorField;
-  bullets?: ProseColorField;
-  hr?: ProseColorField;
-  quotes?: ProseColorField;
-  'quote-borders'?: ProseColorField;
-  captions?: ProseColorField;
-  kbd?: ProseColorField;
-  'kbd-shadows'?: ProseColorField;
-  code?: ProseColorField;
-  'pre-code'?: ProseColorField;
-  'pre-bg'?: ProseColorField;
-  'th-borders'?: ProseColorField;
-  'td-borders'?: ProseColorField;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "ProseColorField".
- */
-export interface ProseColorField {
-  light?: string | null;
-  dark?: string | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -3124,6 +3127,15 @@ export interface DesignSetSelect<T extends boolean = true> {
             };
         id?: T;
       };
+  proseColors?: T | ProseColorsSelect<T>;
+  proseStyles?:
+    | T
+    | {
+        default?: T | TypographyStylesSelect<T>;
+        sm?: T | TypographyStylesSelect<T>;
+        base?: T | TypographyStylesSelect<T>;
+        lg?: T | TypographyStylesSelect<T>;
+      };
   preflightStorage?: T;
   tokenStorage?: T;
   proseDefaultStorage?: T;
@@ -3131,11 +3143,6 @@ export interface DesignSetSelect<T extends boolean = true> {
   proseBaseStorage?: T;
   proselgStorage?: T;
   proseColorStorage?: T;
-  prose?: T | ProseColorsSelect<T>;
-  default?: T | TypographyStylesSelect<T>;
-  sm?: T | TypographyStylesSelect<T>;
-  base?: T | TypographyStylesSelect<T>;
-  lg?: T | TypographyStylesSelect<T>;
   'apf-classes'?: T;
   'apf-active'?: T;
   updatedAt?: T;
@@ -3180,6 +3187,7 @@ export interface ProseColorFieldSelect<T extends boolean = true> {
  */
 export interface TypographyStylesSelect<T extends boolean = true> {
   tag?: T;
+  psuedoClass?: T;
   values?:
     | T
     | {

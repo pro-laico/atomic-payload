@@ -246,6 +246,106 @@ export const designSet: (args: DesignSetArgs) => Omit<DesignSet, 'createdAt' | '
 
     dropShadow: [],
 
+    proseColors: {
+      body: {
+        light: 'var(--foreground)',
+        dark: 'var(--foreground)',
+      },
+
+      headings: {
+        light: 'var(--foreground)',
+        dark: 'var(--foreground)',
+      },
+
+      lead: {
+        light: 'var(--foreground)',
+        dark: 'ovar(--foreground)',
+      },
+
+      links: {
+        light: 'var(--foreground)',
+        dark: 'var(--foreground)',
+      },
+
+      bold: {
+        light: 'var(--foreground)',
+        dark: 'var(--foreground)',
+      },
+
+      counters: {
+        light: 'var(--foreground)',
+        dark: 'var(--brand-primary)',
+      },
+
+      bullets: {
+        light: 'var(--foreground)',
+        dark: 'var(--brand-primary)',
+      },
+
+      hr: {
+        light: 'var(--foreground)',
+        dark: 'var(--foreground)',
+      },
+
+      quotes: {
+        light: 'var(--foreground)',
+        dark: 'var(--foreground)',
+      },
+
+      'quote-borders': {
+        light: 'var(--foreground)',
+        dark: 'var(--brand-primary)',
+      },
+
+      captions: {
+        light: 'var(--foreground)',
+        dark: 'var(--foreground)',
+      },
+
+      kbd: {
+        light: 'var(--foreground)',
+        dark: 'var(--foreground)',
+      },
+
+      'kbd-shadows': {
+        light: 'var(--foreground)',
+        dark: 'var(--foreground)',
+      },
+
+      code: {
+        light: 'var(--foreground)',
+        dark: 'ovar(--foreground)',
+      },
+
+      'pre-code': {
+        light: 'oklch(0.145 0 0)',
+        dark: 'oklch(0.985 0 0)',
+      },
+
+      'pre-bg': {
+        light: 'var(--foreground)',
+        dark: 'var(--foreground)',
+      },
+
+      'th-borders': {
+        light: 'var(--foreground)',
+        dark: 'var(--foreground)',
+      },
+
+      'td-borders': {
+        light: 'var(--foreground)',
+        dark: 'var(--foreground)',
+      },
+    },
+
+    proseBaseStorage: {},
+
+    proseDefaultStorage: {},
+
+    proselgStorage: {},
+
+    prosesmStorage: {},
+
     textShadow: [],
     preflightStorage:
       ':root {\n--sampler: #ffffff;\n--background: oklch(1 0 0);\n--foreground: oklch(0.145 0 0);\n--card: oklch(1 0 0);\n--card-foreground: oklch(0.145 0 0);\n--popover: oklch(1 0 0);\n--popover-foreground: oklch(0.145 0 0);\n--primary: oklch(0.205 0 0);\n--primary-foreground: oklch(0.985 0 0);\n--secondary: oklch(0.97 0 0);\n--secondary-foreground: oklch(0.205 0 0);\n--muted: oklch(0.97 0 0);\n--muted-foreground: oklch(0.556 0 0);\n--accent: oklch(0.97 0 0);\n--accent-foreground: oklch(0.205 0 0);\n--destructive: oklch(0.577 0.245 27.325);\n--border: oklch(0.922 0 0);\n--input: oklch(0.922 0 0);\n--ring: oklch(0.708 0 0);\n--success: oklch(0.3 0.15 140);\n--brand-primary: oklch(87.62% 0.240 148.61);\n--brand-secondary: oklch(73.03% 0.052 183.44);\n--radius: 0.625rem;\n}\n.dark {\n--sampler: #ffffff;\n--background: oklch(0.145 0 0);\n--foreground: oklch(0.985 0 0);\n--card: oklch(0.205 0 0);\n--card-foreground: oklch(0.985 0 0);\n--popover: oklch(0.205 0 0);\n--popover-foreground: oklch(0.985 0 0);\n--primary: oklch(0.922 0 0);\n--primary-foreground: oklch(0.205 0 0);\n--secondary: oklch(0.269 0 0);\n--secondary-foreground: oklch(0.985 0 0);\n--muted: oklch(0.269 0 0);\n--muted-foreground: oklch(0.708 0 0);\n--accent: oklch(0.269 0 0);\n--accent-foreground: oklch(0.985 0 0);\n--destructive: oklch(0.704 0.191 22.216);\n--border: oklch(1 0 0 / 10%);\n--input: oklch(1 0 0 / 15%);\n--ring: oklch(0.556 0 0);\n--success: oklch(0.9 0.1 140);\n--brand-primary: oklch(87.62% 0.240 148.61);\n--brand-secondary: oklch(73.03% 0.052 183.44);\n}',

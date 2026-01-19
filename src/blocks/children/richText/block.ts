@@ -22,7 +22,11 @@ export const RichText: Block = {
         {
           label: 'Content',
           fields: [
-            ClassNameField({ label: 'Rich Text Atomic Classes', admin: { description: d.richTextAtomicClasses } }),
+            ClassNameField({
+              label: 'Rich Text Atomic Classes',
+              defaultValue: 'prose dark:prose-invert',
+              admin: { description: d.richTextAtomicClasses },
+            }),
             {
               name: 'richText',
               type: 'richText',

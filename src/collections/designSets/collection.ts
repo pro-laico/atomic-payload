@@ -33,7 +33,7 @@ const DesignSet: CollectionConfig = {
   fields: [
     {
       type: 'tabs',
-      tabs: [SettingsTab(), VariablesTab(), ColorsTab(), SizesTab(), FontsTab(), AnimationsTab(), MiscellaneousTab(), StorageTab(), ProseTab],
+      tabs: [SettingsTab(), VariablesTab(), ColorsTab(), SizesTab(), FontsTab(), AnimationsTab(), MiscellaneousTab(), ProseTab, StorageTab()],
     },
     ...generateAPFFields(APFunctions),
   ],

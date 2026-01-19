@@ -1,5 +1,5 @@
 import { APField } from '@/fields/apf'
-import { ArrayField, SelectField, TabAsField, GroupField } from 'payload'
+import { ArrayField, TextField, SelectField, TabAsField, GroupField } from 'payload'
 
 export const typographySupportedTags = [
   'headings',
@@ -35,9 +35,23 @@ export const typographySupportedTags = [
 const tagField: SelectField = APField({
   type: 'select',
   name: 'tag',
+  required: true,
+  apf: ['classes'],
   admin: { width: '50%', style: { maxWidth: '500px' }, description: 'Select the tag the nested styles will apply to.' },
   options: typographySupportedTags,
   interfaceName: 'TypographySupportedTags',
+})
+
+const psuedoClassField: TextField = APField({
+  name: 'psuedoClass',
+  type: 'text',
+  required: false,
+  admin: {
+    width: '50%',
+    style: { maxWidth: '500px' },
+    description: 'Optionally add a psuedo-class (e.g., :hover, :focus, etc.) to target specific states.',
+  },
+  apf: ['classes'],
 })
 
 const typeographyField = (name: string, description: string): ArrayField => {
@@ -48,10 +62,18 @@ const typeographyField = (name: string, description: string): ArrayField => {
     interfaceName: 'TypographyStyles',
     fields: [
       tagField,
+      psuedoClassField,
       {
         type: 'row',
         fields: [
-          { type: 'array', name: 'values', fields: [APField({ type: 'text', name: 'cssSelector' }), APField({ type: 'text', name: 'value' })] },
+          {
+            type: 'array',
+            name: 'values',
+            fields: [
+              APField({ type: 'text', name: 'cssSelector', required: true, apf: ['classes'] }),
+              APField({ type: 'text', name: 'value', required: true, apf: ['classes'] }),
+            ],
+          },
         ],
       },
     ],
@@ -67,8 +89,8 @@ const colorField = (name: string, light: string, dark: string): GroupField => {
       {
         type: 'row',
         fields: [
-          APField({ name: 'light', type: 'text', defaultValue: light, admin: { width: '50%' } }),
-          APField({ name: 'dark', type: 'text', defaultValue: dark, admin: { width: '50%' } }),
+          APField({ name: 'light', required: true, type: 'text', defaultValue: light, admin: { width: '50%' }, apf: ['classes'] }),
+          APField({ name: 'dark', required: true, type: 'text', defaultValue: dark, admin: { width: '50%' }, apf: ['classes'] }),
         ],
       },
     ],
@@ -78,6 +100,9 @@ const colorField = (name: string, light: string, dark: string): GroupField => {
 export const ProseTab: TabAsField = {
   type: 'tab',
   label: 'Prose',
+  admin: {
+    description: 'Configure typography styles and colors for prose content. Utilizes UnoCSS Typography Preset: https://unocss.dev/presets/typography',
+  },
   fields: [
     {
       label: 'Colors',
@@ -86,7 +111,7 @@ export const ProseTab: TabAsField = {
         {
           type: 'group',
           label: false,
-          name: 'prose',
+          name: 'proseColors',
           required: true,
           interfaceName: 'ProseColors',
           fields: [
@@ -112,9 +137,15 @@ export const ProseTab: TabAsField = {
         },
       ],
     },
-    typeographyField('default', 'The default typography styles applied with "prose".'),
-    typeographyField('sm', 'This size applies to small screens and above with "prose prose-sm".'),
-    typeographyField('base', 'This size applies to base screens and above with "prose prose-base".'),
-    typeographyField('lg', 'This size applies to large screens and above with "prose prose-lg".'),
+    {
+      type: 'group',
+      name: 'proseStyles',
+      fields: [
+        typeographyField('default', 'The default typography styles applied with "prose".'),
+        typeographyField('sm', 'This size applies to small screens and above with "prose prose-sm".'),
+        typeographyField('base', 'This size applies to base screens and above with "prose prose-base".'),
+        typeographyField('lg', 'This size applies to large screens and above with "prose prose-lg".'),
+      ],
+    },
   ],
 }
