@@ -6,9 +6,7 @@ import { APField } from '@/fields/apf'
 import { onArraySetAPFShallow } from '@/hooks/field/apf'
 
 export const UnoColors = z.ap.add(z.record(z.string(), z.string().or(z.record(z.string(), z.string()))), { id: 'UnoColors' })
-export const designSetColors = z.ap.add(z.array(z.object({ name: z.string(), light: z.string(), dark: z.string() })), {
-  id: 'DesignSetColors',
-})
+export const designSetColors = z.ap.add(z.array(z.object({ name: z.string(), light: z.string(), dark: z.string() })), { id: 'DesignSetColors' })
 
 export const ColorsTab = () => {
   const colorsField: Tab = {

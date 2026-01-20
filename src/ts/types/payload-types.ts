@@ -339,6 +339,64 @@ export type TokenStringArray =
     }[]
   | null;
 /**
+ * This size applies to large screens and above with "prose prose-lg".
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TypographyStyles".
+ */
+export type TypographyStyles =
+  | {
+      tag: TypographySupportedTags;
+      /**
+       * Optionally add a psuedo-class (e.g., :hover, :focus, etc.) to target specific states.
+       */
+      psuedoClass?: string | null;
+      values?:
+        | {
+            cssSelector: string;
+            value: string;
+            id?: string | null;
+          }[]
+        | null;
+      id?: string | null;
+    }[]
+  | null;
+/**
+ * Select the tag the nested styles will apply to.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TypographySupportedTags".
+ */
+export type TypographySupportedTags =
+  | 'headings'
+  | 'h1'
+  | 'h2'
+  | 'h3'
+  | 'h4'
+  | 'h5'
+  | 'h6'
+  | 'th'
+  | 'p'
+  | 'a'
+  | 'blockquote'
+  | 'figure'
+  | 'figcaption'
+  | 'strong'
+  | 'em'
+  | 'kbd'
+  | 'code'
+  | 'pre'
+  | 'ol'
+  | 'ul'
+  | 'li'
+  | 'table'
+  | 'thead'
+  | 'tr'
+  | 'td'
+  | 'img'
+  | 'video'
+  | 'hr';
+/**
  * Type: {@link SOSA} String | String[]
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -766,7 +824,7 @@ export interface AtomicChild {
   numberDefault?: number | null;
   checkboxDefault?: boolean | null;
   radioDefault?: boolean | null;
-  radioValue: string;
+  radioValue?: string | null;
   /**
    * Add atomic classes or shortcuts to the portal backdrop div here.
    */
@@ -2099,13 +2157,57 @@ export interface DesignSet {
   insetShadow?: TokenStringArray;
   dropShadow?: TokenStringArray;
   textShadow?: TokenStringArray;
+  proseColors: ProseColors;
+  proseStyles?: {
+    default?: TypographyStyles;
+    sm?: TypographyStyles;
+    base?: TypographyStyles;
+    lg?: TypographyStyles;
+  };
   preflightStorage?: string | null;
   tokenStorage?: TokenStorage;
+  proseDefaultStorage?: RSRSS;
+  prosesmStorage?: RSRSS;
+  proseBaseStorage?: RSRSS;
+  proselgStorage?: RSRSS;
+  proseColorStorage?: ProseColorStorage;
   'apf-classes'?: boolean | null;
   'apf-active'?: boolean | null;
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ProseColors".
+ */
+export interface ProseColors {
+  body: ProseColorField;
+  headings: ProseColorField;
+  lead: ProseColorField;
+  links: ProseColorField;
+  bold: ProseColorField;
+  counters: ProseColorField;
+  bullets: ProseColorField;
+  hr: ProseColorField;
+  quotes: ProseColorField;
+  'quote-borders': ProseColorField;
+  captions: ProseColorField;
+  kbd: ProseColorField;
+  'kbd-shadows': ProseColorField;
+  code: ProseColorField;
+  'pre-code': ProseColorField;
+  'pre-bg': ProseColorField;
+  'th-borders': ProseColorField;
+  'td-borders': ProseColorField;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ProseColorField".
+ */
+export interface ProseColorField {
+  light: string;
+  dark: string;
 }
 /**
  * Type: {@link TokenStorage}
@@ -2193,6 +2295,15 @@ export interface UnoThemeAnimation {
  */
 export interface RSRSS {
   [k: string]: RSS;
+}
+/**
+ * Type: {@link ProseColorStorage}
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ProseColorStorage".
+ */
+export interface ProseColorStorage {
+  [k: string]: [] | [string] | [string, string];
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -3016,13 +3127,75 @@ export interface DesignSetSelect<T extends boolean = true> {
             };
         id?: T;
       };
+  proseColors?: T | ProseColorsSelect<T>;
+  proseStyles?:
+    | T
+    | {
+        default?: T | TypographyStylesSelect<T>;
+        sm?: T | TypographyStylesSelect<T>;
+        base?: T | TypographyStylesSelect<T>;
+        lg?: T | TypographyStylesSelect<T>;
+      };
   preflightStorage?: T;
   tokenStorage?: T;
+  proseDefaultStorage?: T;
+  prosesmStorage?: T;
+  proseBaseStorage?: T;
+  proselgStorage?: T;
+  proseColorStorage?: T;
   'apf-classes'?: T;
   'apf-active'?: T;
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ProseColors_select".
+ */
+export interface ProseColorsSelect<T extends boolean = true> {
+  body?: T | ProseColorFieldSelect<T>;
+  headings?: T | ProseColorFieldSelect<T>;
+  lead?: T | ProseColorFieldSelect<T>;
+  links?: T | ProseColorFieldSelect<T>;
+  bold?: T | ProseColorFieldSelect<T>;
+  counters?: T | ProseColorFieldSelect<T>;
+  bullets?: T | ProseColorFieldSelect<T>;
+  hr?: T | ProseColorFieldSelect<T>;
+  quotes?: T | ProseColorFieldSelect<T>;
+  'quote-borders'?: T | ProseColorFieldSelect<T>;
+  captions?: T | ProseColorFieldSelect<T>;
+  kbd?: T | ProseColorFieldSelect<T>;
+  'kbd-shadows'?: T | ProseColorFieldSelect<T>;
+  code?: T | ProseColorFieldSelect<T>;
+  'pre-code'?: T | ProseColorFieldSelect<T>;
+  'pre-bg'?: T | ProseColorFieldSelect<T>;
+  'th-borders'?: T | ProseColorFieldSelect<T>;
+  'td-borders'?: T | ProseColorFieldSelect<T>;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ProseColorField_select".
+ */
+export interface ProseColorFieldSelect<T extends boolean = true> {
+  light?: T;
+  dark?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TypographyStyles_select".
+ */
+export interface TypographyStylesSelect<T extends boolean = true> {
+  tag?: T;
+  psuedoClass?: T;
+  values?:
+    | T
+    | {
+        cssSelector?: T;
+        value?: T;
+        id?: T;
+      };
+  id?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -3462,6 +3635,7 @@ export interface AtomicRegistry {
   TokenStringArray?: TokenStringArray;
   UnoThemeAnimation: UnoThemeAnimation;
   TokenStorage: TokenStorage;
+  ProseColorStorage: ProseColorStorage;
   CollectionThatUsesAtomicHookSlug: CollectionThatUsesAtomicHookSlug;
   CollectionWithStoredAtomicClassesSlug: CollectionWithStoredAtomicClassesSlug;
   CollectionThatUsesCSSProcessorSlug: CollectionThatUsesCSSProcessorSlug;

@@ -1,6 +1,7 @@
 import { APFControlsPath } from '@/ui'
 import { FontsTab } from './tabs/fonts'
 import { SizesTab } from './tabs/sizes'
+import { ProseTab } from './tabs/prose'
 import { ColorsTab } from './tabs/colors'
 import { StorageTab } from './tabs/storage'
 import { SettingsTab } from './tabs/settings'
@@ -32,7 +33,7 @@ const DesignSet: CollectionConfig = {
   fields: [
     {
       type: 'tabs',
-      tabs: [SettingsTab(), VariablesTab(), ColorsTab(), SizesTab(), FontsTab(), AnimationsTab(), MiscellaneousTab(), StorageTab()],
+      tabs: [SettingsTab(), VariablesTab(), ColorsTab(), SizesTab(), FontsTab(), AnimationsTab(), MiscellaneousTab(), ProseTab, StorageTab()],
     },
     ...generateAPFFields(APFunctions),
   ],
