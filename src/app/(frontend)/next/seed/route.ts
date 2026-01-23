@@ -9,6 +9,8 @@ export async function POST(): Promise<Response> {
   const payload = await getPayload({ config })
   const requestHeaders = await headers()
 
+  if (process.env.INCLUDE_SEED !== 'true') return new Response('Seeding is disabled.', { status: 403 })
+
   // Authenticate by passing request headers
   const { user } = await payload.auth({ headers: requestHeaders })
 

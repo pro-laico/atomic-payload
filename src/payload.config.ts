@@ -52,8 +52,11 @@ export default buildConfig({
   admin: {
     user: Users.slug,
     importMap: { baseDir: path.resolve(dirname) },
-    //Remove BeforeDashboard if you no longer need seeding.
-    components: { beforeDashboard: [BeforeDashboard], beforeNavLinks: [SiteTriggersPath], graphics: { Icon: IconPath, Logo: LogoPath } },
+    components: {
+      beforeDashboard: process.env.INCLUDE_SEED === 'true' ? [BeforeDashboard] : [],
+      beforeNavLinks: [SiteTriggersPath],
+      graphics: { Icon: IconPath, Logo: LogoPath },
+    },
     livePreview: {
       breakpoints: [
         { label: 'Mobile', name: 'mobile', width: 375, height: 667 },
