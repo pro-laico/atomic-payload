@@ -23,7 +23,7 @@ export const GenerateMetaData: GenerateMetaData = ({ page, siteMetadata }) => {
   const fallbackLightFaviconUrl = processImageUrl(fallbackLightFavicon)
 
   const metadata: Metadata = {
-    title: siteName || title || 'Atomic Payload',
+    title: title || siteName || 'Atomic Payload',
     robots: page ? (noIndex ? 'noindex' : 'index, follow') : 'noindex',
     description: description || fallbackSiteDescription || '',
     openGraph: {
