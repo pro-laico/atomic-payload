@@ -1,6 +1,6 @@
 'use client'
 import { useStore } from 'zustand'
-import { createContext, useRef, useContext } from 'react'
+import { createContext, useState, useContext } from 'react'
 import { createAtomicStore } from '@/hooks/frontEnd/atomicStore/create'
 import type { AtomicStore, AtomicStoreProviderProps } from '@/ts/types'
 
@@ -8,10 +8,9 @@ export type AtomicStoreApi = ReturnType<typeof createAtomicStore>
 export const AtomicStoreContext = createContext<AtomicStoreApi | undefined>(undefined)
 
 export const AtomicStoreProvider = ({ children, initialState }: AtomicStoreProviderProps) => {
-  const storeRef = useRef<AtomicStoreApi | null>(null)
-  if (storeRef.current === null) storeRef.current = createAtomicStore(initialState)
+  const [store] = useState(() => createAtomicStore(initialState))
 
-  return <AtomicStoreContext.Provider value={storeRef.current}>{children}</AtomicStoreContext.Provider>
+  return <AtomicStoreContext.Provider value={store}>{children}</AtomicStoreContext.Provider>
 }
 
 export const useAtomicStore = <T,>(selector: (store: AtomicStore) => T): T => {
