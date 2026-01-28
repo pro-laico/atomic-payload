@@ -5,7 +5,7 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "lint": "eslint .",
+    "lint": "pnpm exec eslint .",
     "payload": "payload",
     "start": "next start",
     "build": "next build",
@@ -52,7 +52,6 @@
     "zustand": "^5.0.10"
   },
   "devDependencies": {
-    "@eslint/eslintrc": "^3.3.3",
     "@types/json-schema": "^7.0.15",
     "@types/node": "^22.19.7",
     "@types/react": "^19.2.10",
