@@ -24,28 +24,6 @@ const nextConfig: NextConfig = {
       }),
     ],
   },
-  webpack: (config, { isServer }) => {
-    //KNOWN ISSUE: Payload removed production turbopack support until nextjs resolves some issues. Once supported these suppressions can be removed.
-    config.ignoreWarnings = [
-      {
-        module: /node_modules\/svgo/,
-        message: /Critical dependency: the request of a dependency is an expression/,
-      },
-      {
-        module: /node_modules\/local-pkg/,
-        message: /Critical dependency: the request of a dependency is an expression/,
-      },
-      {
-        module: /node_modules\/mlly/,
-        message: /Critical dependency: the request of a dependency is an expression/,
-      },
-      {
-        module: /node_modules\/@iconify\/utils/,
-        message: /Critical dependency: the request of a dependency is an expression/,
-      },
-    ]
-    return config
-  },
 }
 
 const withBundleAnalyzer = bundleAnalyzer({ enabled: process.env.ANALYZE === 'true' })
