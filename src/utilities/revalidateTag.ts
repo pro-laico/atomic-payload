@@ -34,7 +34,7 @@ async function revalidateTag(...args: RArgs<'all'>): RReturns<'all'> {
       break
     case 'draft':
     case 'published':
-      rt(t)
+      rt(t,'max')
       revalidationLogger([t])
       return { success: true, message: `Revalidated ${tag}`, timestamp: new Date().toISOString() }
     default:
@@ -42,10 +42,10 @@ async function revalidateTag(...args: RArgs<'all'>): RReturns<'all'> {
   }
 
   if (draft) {
-    rt(mt([t, 'draft']))
+    rt(mt([t, 'draft']),'max')
     tags.push(mt([t, 'draft']))
   } else {
-    rt(t)
+    rt(t,'max')
     tags.push(t)
   }
 

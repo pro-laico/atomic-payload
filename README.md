@@ -12,7 +12,7 @@ This separation makes it easy to enforce best practices and achieve great perfor
 
 
 > [!IMPORTANT]
-> Our [Discord](https://discord.gg/54cEtwCVTk) is the best place to get quick answers to questions.
+> Our [Discord](https://discord.gg/EPHgjrQBxY) is the best place to get quick answers to questions.
 > 
 > For documentation check out [Atomic Payload](https://atomicpayload.com).
 > 
@@ -145,7 +145,7 @@ You now have a working version of Atomic Payload. It is recommended to go to the
 
 
 > [!IMPORTANT]
-> Our [Discord](https://discord.gg/54cEtwCVTk) is the best place to get quick answers to questions.
+> Our [Discord](https://discord.gg/EPHgjrQBxY) is the best place to get quick answers to questions.
 > 
 > For documentation check out [Atomic Payload](https://atomicpayload.com).
 > 
