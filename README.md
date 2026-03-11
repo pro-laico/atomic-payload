@@ -96,7 +96,7 @@ All of the above functionality meshes with the additional Sanitation, Validation
 **Create a new project** (recommended):
 
 ```bash
-npx create-atomic-payload my-project
+npx @pro-laico/create-atomic-payload my-project
 cd my-project
 ```
 

@@ -6,6 +6,7 @@ import fs from 'fs'
 import fsp from 'fs/promises'
 import { execa } from 'execa'
 import chalk from 'chalk'
+import ora from 'ora'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
@@ -31,28 +32,98 @@ function getProjectName() {
   return 'my-atomic-payload'
 }
 
+function isCurrentDir(projectName) {
+  return projectName === '.'
+}
+
+function printBanner() {
+  const title = chalk.cyan.bold('  Atomic Payload')
+  const tagline = chalk.gray('  The Payload CMS starter where all you need to know is Tailwind')
+  const line = chalk.cyan('  ─────────────────────────────────────────')
+  console.log()
+  console.log(title)
+  console.log(tagline)
+  console.log(line)
+  console.log()
+}
+
+function printHelp() {
+  console.log(`
+  ${chalk.cyan.bold('create-atomic-payload')} - Scaffold a new Atomic Payload project
+
+  ${chalk.gray('Usage:')}
+    npx @pro-laico/create-atomic-payload ${chalk.dim('[project-name]')}
+
+  ${chalk.gray('Options:')}
+    --help, -h    Show this help message
+
+  ${chalk.gray('Examples:')}
+    npx @pro-laico/create-atomic-payload
+    npx @pro-laico/create-atomic-payload my-website
+    npx @pro-laico/create-atomic-payload .          ${chalk.dim('# create in current directory')}
+`)
+}
+
+function printNextSteps(projectName) {
+  const steps = isCurrentDir(projectName)
+    ? ['cp .env.example .env', '# Edit .env with your MongoDB URI, Payload secret, etc.', 'pnpm dev']
+    : [`cd ${projectName}`, 'cp .env.example .env', '# Edit .env with your MongoDB URI, Payload secret, etc.', 'pnpm dev']
+  const maxLen = Math.max(...steps.map((s) => s.length), 40)
+  const line = '─'.repeat(maxLen + 2)
+
+  console.log()
+  console.log(chalk.green.bold('  ✓ Created ') + chalk.green(isCurrentDir(projectName) ? 'in current directory' : projectName))
+  console.log()
+  console.log(chalk.gray('  Next steps:'))
+  console.log(chalk.cyan('  ╭' + line + '╮'))
+  for (const step of steps) {
+    const padding = ' '.repeat(Math.max(0, maxLen - step.length))
+    const styled = step.startsWith('#') ? chalk.gray(step) : chalk.cyan(step)
+    console.log(chalk.cyan('  │ ') + styled + padding + chalk.cyan(' │'))
+  }
+  console.log(chalk.cyan('  ╰' + line + '╯'))
+  console.log()
+}
+
 async function main() {
+  const args = process.argv.slice(2)
+  if (args.includes('--help') || args.includes('-h')) {
+    printBanner()
+    printHelp()
+    return
+  }
+
   const projectName = getProjectName()
 
-  if (!/^[a-z0-9-]+$/.test(projectName)) {
-    console.error(chalk.red('Project name must use only lowercase letters, numbers, and hyphens'))
+  if (!isCurrentDir(projectName) && !/^[a-z0-9-]+$/.test(projectName)) {
+    console.error(chalk.red('  ✗ Project name must use only lowercase letters, numbers, and hyphens, or "." for current directory'))
     process.exit(1)
   }
 
-  console.log(chalk.cyan('\n  Atomic Payload\n  The Payload CMS starter where all you need to know is Tailwind.\n'))
+  printBanner()
 
   const targetDir = path.resolve(process.cwd(), projectName)
-  const targetExists = fs.existsSync(targetDir)
 
-  if (targetExists) {
-    console.error(chalk.red(`Directory "${projectName}" already exists. Remove it or choose a different name.`))
-    process.exit(1)
+  if (isCurrentDir(projectName)) {
+    if (fs.existsSync(path.join(targetDir, 'package.json'))) {
+      console.error(chalk.red('  ✗ Current directory already has a package.json. Use a different directory or remove it first.'))
+      process.exit(1)
+    }
+  } else {
+    const targetExists = fs.existsSync(targetDir)
+    if (targetExists) {
+      console.error(chalk.red(`  ✗ Directory "${projectName}" already exists. Remove it or choose a different name.`))
+      process.exit(1)
+    }
   }
 
-  console.log(chalk.gray('Copying template...'))
-
   const templatePath = await getTemplatePath()
-  await fsp.mkdir(path.dirname(targetDir), { recursive: true })
+  const copySpinner = ora({ text: 'Copying template...', color: 'cyan' }).start()
+  const startCopy = Date.now()
+
+  if (!isCurrentDir(projectName)) {
+    await fsp.mkdir(path.dirname(targetDir), { recursive: true })
+  }
   await fsp.cp(templatePath, targetDir, {
     recursive: true,
     filter: (src) => {
@@ -61,18 +132,39 @@ async function main() {
     },
   })
 
-  console.log(chalk.gray('Installing dependencies with pnpm...'))
-  await execa('pnpm', ['install'], { cwd: targetDir, stdio: 'inherit' })
+  copySpinner.succeed(`Template copied in ${((Date.now() - startCopy) / 1000).toFixed(1)}s`)
 
-  console.log(chalk.green(`\n✓ Created ${projectName}\n`))
-  console.log(chalk.gray('Next steps:'))
-  console.log(chalk.cyan(`  cd ${projectName}`))
-  console.log(chalk.cyan('  cp .env.example .env'))
-  console.log(chalk.cyan('  # Edit .env with your MongoDB URI, Payload secret, etc.'))
-  console.log(chalk.cyan('  pnpm dev\n'))
+  const installSpinner = ora({ text: 'Installing dependencies with pnpm...', color: 'cyan' }).start()
+  try {
+    await execa('pnpm', ['install'], { cwd: targetDir, stdio: 'pipe' })
+    installSpinner.succeed('Dependencies installed')
+  } catch (err) {
+    installSpinner.fail('Failed to install dependencies')
+    throw err
+  }
+
+  // Rebuild sharp to ensure native binary is built for current platform (fixes Windows/OneDrive issues)
+  const sharpSpinner = ora({ text: 'Building sharp (image processing)...', color: 'cyan' }).start()
+  try {
+    await execa('pnpm', ['rebuild', 'sharp'], { cwd: targetDir, stdio: 'pipe' })
+    sharpSpinner.succeed('Sharp ready')
+  } catch (err) {
+    sharpSpinner.warn('Sharp rebuild skipped (run "pnpm rebuild sharp" if images fail)')
+  }
+
+  const fontsSpinner = ora({ text: 'Downloading fonts...', color: 'cyan' }).start()
+  try {
+    await execa('pnpm', ['download:fonts'], { cwd: targetDir, stdio: 'pipe' })
+    fontsSpinner.succeed('Fonts ready')
+  } catch (err) {
+    fontsSpinner.fail('Font download failed')
+    throw err
+  }
+
+  printNextSteps(projectName)
 }
 
 main().catch((err) => {
-  console.error(chalk.red(err.message))
+  console.error(chalk.red('\n  ✗ ' + err.message))
   process.exit(1)
 })

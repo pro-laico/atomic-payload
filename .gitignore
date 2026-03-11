@@ -12,6 +12,9 @@ public/sitemap*.xml
 .env
 .env*.local
 
+# Output of 'npm pack'
+*.tgz
+
 # Ignore all automatically generated font files
 /src/app/definition.ts
 /public/fonts
