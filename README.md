@@ -1,20 +1,13 @@
 > [!Important]
 > While this project utilizes [Payload CMS](https://payloadcms.com/), Atomic Payload is not affiliated with [Payload CMS](https://payloadcms.com/) in any capacity.
 
-![Atomic Payload](public/ogImage.webp)
+![Atomic Payload](/templates/atomic-payload/public/ogImage.webp)
 
 A website builder that creates a hard separation between front-end development and the backend. Build your website directly in Payload CMS's dashboard, without ever having to touch real code.
 
 This separation makes it easy to enforce best practices and achieve great performance out the box.
 
 <img width="521" height="173" alt="100" src="https://github.com/user-attachments/assets/b3998740-6bd3-4980-b7d7-e2d3f7d0b782" />
-
-> [!IMPORTANT]
-> Our [Discord](https://discord.gg/EPHgjrQBxY) is the best place to get quick answers to questions.
->
-> For documentation check out [Atomic Payload](https://atomicpayload.com).
->
-> We are also looking for contributors!
 
 # Features
 
