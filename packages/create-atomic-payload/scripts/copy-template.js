@@ -3,7 +3,7 @@
  * Copies the template into the package for npm publish.
  * Run before `pnpm pack` or `npm publish`.
  */
-import { cpSync, mkdirSync, existsSync } from 'fs'
+import { cpSync, mkdirSync, existsSync, rmSync } from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
 
@@ -24,4 +24,7 @@ cpSync(templateSource, templateDest, {
     return !['node_modules', '.next', '.git', '.env'].includes(name) && !name.endsWith('.tsbuildinfo')
   },
 })
+// Remove stale .gitignore (we use gitignore.template; npm renames .gitignore to .npmignore during pack)
+const oldGitignore = path.join(templateDest, '.gitignore')
+if (existsSync(oldGitignore)) rmSync(oldGitignore)
 console.log('Template copied to package/template')

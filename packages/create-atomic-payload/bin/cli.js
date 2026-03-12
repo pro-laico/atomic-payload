@@ -132,6 +132,12 @@ async function main() {
     },
   })
 
+  // Rename gitignore.template → .gitignore (npm renames .gitignore to .npmignore during pack/extract)
+  const gitignoreTemplate = path.join(targetDir, 'gitignore.template')
+  if (fs.existsSync(gitignoreTemplate)) {
+    await fsp.rename(gitignoreTemplate, path.join(targetDir, '.gitignore'))
+  }
+
   copySpinner.succeed(`Template copied in ${((Date.now() - startCopy) / 1000).toFixed(1)}s`)
 
   const installSpinner = ora({ text: 'Installing dependencies with pnpm...', color: 'cyan' }).start()
