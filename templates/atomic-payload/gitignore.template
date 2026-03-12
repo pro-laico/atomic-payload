@@ -1,0 +1,17 @@
+node_modules
+.next
+.vercel
+.DS_Store
+
+# TypeScript
+tsconfig.tsbuildinfo
+
+public/robots.txt
+public/sitemap*.xml
+
+.env
+.env*.local
+
+# Ignore all automatically generated font files
+/src/app/definition.ts
+/public/fonts

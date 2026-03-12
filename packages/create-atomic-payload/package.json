@@ -1,0 +1,29 @@
+{
+  "name": "@pro-laico/create-atomic-payload",
+  "publishConfig": {
+    "access": "public"
+  },
+  "version": "0.2.0",
+  "description": "Scaffold a new Atomic Payload project - the Payload CMS starter where all you need to know is Tailwind.",
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "create-atomic-payload": "bin/cli.js"
+  },
+  "files": [
+    "bin",
+    "template"
+  ],
+  "scripts": {
+    "prepack": "node scripts/copy-template.js",
+    "create": "node bin/cli.js"
+  },
+  "dependencies": {
+    "chalk": "^5.3.0",
+    "execa": "^9.5.2",
+    "ora": "^8.1.1"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
