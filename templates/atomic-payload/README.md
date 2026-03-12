@@ -34,7 +34,7 @@ This guide covers environment setup, deployment, and optional integrations (Mux,
    PREVIEW_SECRET=77E41879964C5D1C251661663DCD3
    ```
 
-3. **Run**
+3. **Create First Admin User**
 
    ```bash
    pnpm dev

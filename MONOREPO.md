@@ -14,27 +14,6 @@ atomic-payload/
 └── package.json               # Workspace root
 ```
 
-## Quick Start
-
-### Create a new project
-
-To scaffold a project (run from **outside** this repo, e.g. your projects folder):
-
-```bash
-pnpx @pro-laico/create-atomic-payload my-project
-cd my-project
-cp .env.example .env
-# Edit .env with your MongoDB URI, Payload secret, etc.
-pnpm dev
-```
-
-### Develop the template locally
-
-```bash
-pnpm install
-pnpm dev          # Runs templates/atomic-payload
-```
-
 ## Packages
 
 | Package                            | Description                                 |
