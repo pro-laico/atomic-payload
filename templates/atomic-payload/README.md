@@ -7,7 +7,7 @@
 
 # Template Setup
 
-This guide covers environment setup, deployment, and optional integrations (Mux, Resend) for your Atomic Payload project. Use it whether you created a project with `npx create-atomic-payload` or are developing from the monorepo template folder.
+This guide covers environment setup, deployment, and optional integrations (Mux, Resend) for your Atomic Payload project. Use it whether you created a project with `pnpx create-atomic-payload` or are developing from the monorepo template folder.
 
 > **Developing the monorepo?** See [MONOREPO.md](../../MONOREPO.md) in the repo root for structure, local dev, and plugin instructions.
 
@@ -34,12 +34,9 @@ This guide covers environment setup, deployment, and optional integrations (Mux,
    PREVIEW_SECRET=77E41879964C5D1C251661663DCD3
    ```
 
-3. **Install and run**
-   - Paste and run the code below into your terminal. Which installs dependencies, runs the font download script to generate a blank definition file (even if it says it failed, it generates the file as blank), and then starts the dev server.
+3. **Run**
 
    ```bash
-   pnpm i
-   pnpm download:fonts
    pnpm dev
    ```
 

@@ -83,11 +83,11 @@ All of the above functionality meshes with the additional Sanitation, Validation
 
 ### Planned
 
+- Convert To Plugin(s) (In Progress)
 - Tailwind Styled Emails
 - Version Routes
 - Component Library
 - UnoCSS Autocomplete
-- Convert To Plugin(s)
 
 ---
 
@@ -96,8 +96,7 @@ All of the above functionality meshes with the additional Sanitation, Validation
 **Create a new project** (recommended):
 
 ```bash
-npx @pro-laico/create-atomic-payload my-project
-cd my-project
+pnpx @pro-laico/create-atomic-payload .
 ```
 
 Then follow the [template setup guide](templates/atomic-payload/README.md) for MongoDB, Vercel Blob, deployment, and optional integrations (Mux, Resend).
