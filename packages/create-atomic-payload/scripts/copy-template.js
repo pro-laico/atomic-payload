@@ -21,7 +21,10 @@ cpSync(templateSource, templateDest, {
   recursive: true,
   filter: (src) => {
     const name = path.basename(src)
-    return !['node_modules', '.next', '.git', '.env'].includes(name) && !name.endsWith('.tsbuildinfo')
+    const relative = path.relative(templateSource, src).split(path.sep).join('/')
+    const excludeByName = ['node_modules', '.next', '.git', '.env'].includes(name) || name.endsWith('.tsbuildinfo')
+    const excludeFonts = relative === 'public/fonts' || relative.startsWith('public/fonts/')
+    return !excludeByName && !excludeFonts
   },
 })
 // Remove stale .gitignore (we use gitignore.template; npm renames .gitignore to .npmignore during pack)

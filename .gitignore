@@ -16,9 +16,9 @@ public/sitemap*.xml
 *.tgz
 
 # Ignore all automatically generated font files
-/src/app/definition.ts
-/public/fonts
+templates/atomic-payload/src/app/definition.ts
 templates/atomic-payload/public/fonts
+
 
 # CLI packed template (generated during prepack)
 packages/create-atomic-payload/template

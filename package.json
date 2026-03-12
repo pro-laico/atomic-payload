@@ -9,6 +9,9 @@
     "dev": "pnpm --filter atomic-payload dev",
     "build": "pnpm --filter atomic-payload build",
     "start": "pnpm --filter atomic-payload start",
+    "download:fonts": "pnpm --filter atomic-payload download:fonts",
+    "generate:types": "pnpm --filter atomic-payload generate:types",
+    "generate:importmap": "pnpm --filter atomic-payload generate:importmap",
     "lint": "pnpm -r lint",
     "create": "pnpm --filter create-atomic-payload exec node bin/cli.js"
   },
