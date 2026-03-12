@@ -66,8 +66,8 @@ function printHelp() {
 
 function printNextSteps(projectName) {
   const steps = isCurrentDir(projectName)
-    ? ['cp .env.example .env', '# Edit .env with your MongoDB URI, Payload secret, etc.', 'pnpm dev']
-    : [`cd ${projectName}`, 'cp .env.example .env', '# Edit .env with your MongoDB URI, Payload secret, etc.', 'pnpm dev']
+    ? ['# Edit .env with your MongoDB URI, Payload secret, etc.', 'pnpm dev']
+    : [`cd ${projectName}`, '# Edit .env with your MongoDB URI, Payload secret, etc.', 'pnpm dev']
   const maxLen = Math.max(...steps.map((s) => s.length), 40)
   const line = '─'.repeat(maxLen + 2)
 
@@ -136,6 +136,12 @@ async function main() {
   const gitignoreTemplate = path.join(targetDir, 'gitignore.template')
   if (fs.existsSync(gitignoreTemplate)) {
     await fsp.rename(gitignoreTemplate, path.join(targetDir, '.gitignore'))
+  }
+
+  // Copy .env.example → .env so the project is ready to run
+  const envExample = path.join(targetDir, '.env.example')
+  if (fs.existsSync(envExample)) {
+    await fsp.copyFile(envExample, path.join(targetDir, '.env'))
   }
 
   copySpinner.succeed(`Template copied in ${((Date.now() - startCopy) / 1000).toFixed(1)}s`)
