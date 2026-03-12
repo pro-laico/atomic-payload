@@ -16,6 +16,9 @@ if (!existsSync(templateSource)) {
   process.exit(1)
 }
 
+if (existsSync(templateDest)) {
+  rmSync(templateDest, { recursive: true })
+}
 mkdirSync(templateDest, { recursive: true })
 cpSync(templateSource, templateDest, {
   recursive: true,
@@ -27,7 +30,4 @@ cpSync(templateSource, templateDest, {
     return !excludeByName && !excludeFonts
   },
 })
-// Remove stale .gitignore (we use gitignore.template; npm renames .gitignore to .npmignore during pack)
-const oldGitignore = path.join(templateDest, '.gitignore')
-if (existsSync(oldGitignore)) rmSync(oldGitignore)
 console.log('Template copied to package/template')
