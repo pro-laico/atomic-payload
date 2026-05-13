@@ -1,0 +1,13 @@
+import { APField, deepMerge } from '@pro-laico/atomic-payload-apf'
+import type { APArgs, APFieldWrapper } from '@pro-laico/atomic-payload-types'
+
+const description =
+  'If true, the value will be persisted in the browser storage, and replace the initial value. Beware of FOUC is using these for initial visual state.'
+
+/** Used in actions to persist the value in the browser storage.
+ * @defaults { name: 'persisted', apf: ['actions'], type: 'checkbox' }
+ */
+export const PersistedField: APFieldWrapper<'checkbox', 'name' | 'apf' | 'type'> = (args) => {
+  const baseField: APArgs<'checkbox'> = { name: 'persisted', type: 'checkbox', apf: ['actions'], admin: { description } }
+  return APField(deepMerge(baseField, args))
+}

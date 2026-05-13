@@ -1,26 +1,34 @@
-import type { Config, Plugin, Block } from 'payload'
+import type { Block, Config, Plugin } from 'payload'
+import { AllActionBlocks } from './blocks/blocks'
 
 export interface ActionsPluginOptions {
   enabled?: boolean
-  /** The action block configs to register on the Payload config's blocks array. */
+  /**
+   * Additional Payload blocks merged after the package’s default action blocks
+   * and before any blocks already on `config.blocks`.
+   */
+  actionBlocks?: Block[]
+  /**
+   * @deprecated Use {@link ActionsPluginOptions.actionBlocks} instead.
+   */
   blocks?: Block[]
 }
 
 /**
- * Registers the supplied action blocks on the Payload config.
- *
- * NOTE: the action blocks themselves currently live in the consuming template.
- * Once the dependency tree on template-only fields (KeySelectField,
- * ChangeKeyField, SetDataField, PerformSelectField) is also extracted, those
- * blocks will move into this package and `blocks` will default to a curated
- * set.
+ * Prepends default action blocks (cookie consent, forms, dynamic store, …) to
+ * `config.blocks`. Run this plugin **before** `childBlocksPlugin` so child
+ * blocks remain first in the merged list.
  */
 export const actionsPlugin =
   (opts: ActionsPluginOptions = {}): Plugin =>
   (config: Config): Config => {
-    const { enabled = true, blocks = [] } = opts
-    if (!enabled || blocks.length === 0) return config
-    return { ...config, blocks: [...(config.blocks ?? []), ...blocks] }
+    const { enabled = true, actionBlocks: more, blocks: legacy } = opts
+    if (!enabled) return config
+    const additional = [...(more ?? []), ...(legacy ?? [])]
+    return {
+      ...config,
+      blocks: [...AllActionBlocks, ...additional, ...(config.blocks ?? [])],
+    }
   }
 
 export default actionsPlugin

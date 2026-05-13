@@ -28,6 +28,7 @@ declare module '@pro-laico/atomic-payload-types/schema' {
     Attributers: G.Attributers
     Attributer: G.Attributer
     AllActions: G.AllActions
+    StoredAtomicActions: G.StoredAtomicActions
     FormRateLimitBlocks: G.FormRateLimitBlocks
     FormSanitationBlocks: G.FormSanitationBlocks
     FormValidationBlocks: G.FormValidationBlocks
@@ -73,6 +74,7 @@ declare module '@pro-laico/atomic-payload-types' {
     Attributers: G.Attributers
     Attributer: G.Attributer
     AllActions: G.AllActions
+    StoredAtomicActions: G.StoredAtomicActions
     FormRateLimitBlocks: G.FormRateLimitBlocks
     FormSanitationBlocks: G.FormSanitationBlocks
     FormValidationBlocks: G.FormValidationBlocks

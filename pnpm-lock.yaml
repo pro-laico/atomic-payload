@@ -10,6 +10,9 @@ importers:
 
   packages/atomic-payload-actions:
     dependencies:
+      '@pro-laico/atomic-payload-apf':
+        specifier: workspace:*
+        version: link:../atomic-payload-apf
       '@pro-laico/atomic-payload-types':
         specifier: workspace:*
         version: link:../atomic-payload-types

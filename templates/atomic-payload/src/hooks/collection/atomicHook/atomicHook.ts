@@ -12,7 +12,7 @@ import { CollectionBySlug, CollectionThatUsesCSSProcessor, StoredAtomicForm, Sto
 import { unsetActive } from './processors/unsetActive'
 import { cssProcessor } from './processors/cssProcessor'
 import processDesignSet from './processors/processDesignSet'
-import { ActionBlockStorageProcessor } from '@/blocks/actions/processor'
+import { ActionBlockStorageProcessor } from '@pro-laico/atomic-payload-actions/processor'
 
 function findClosestParent(inputPath: string[], parentPaths: MapIterator<string>): string | null {
   const inputPathString = inputPath.join('.')

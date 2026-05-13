@@ -1,5 +1,5 @@
 import { z } from '@pro-laico/atomic-payload-zap'
-import { themePerform } from '@/fields/actions/strict/registry/theme'
+import { themePerform } from '@pro-laico/atomic-payload-actions/fields/strict/registry/theme'
 
 export const SetThemeSchema = z.ap.add(
   z.object({

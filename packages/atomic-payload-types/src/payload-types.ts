@@ -60,6 +60,7 @@ export type Runners = Get<'Runners', DefaultActionFn[]>
 export type Attributers = Get<'Attributers', DefaultActionFn[]>
 export type Attributer = Get<'Attributer', DefaultActionFn>
 export type AllActions = Get<'AllActions', DefaultRecord>
+export type StoredAtomicActions = Get<'StoredAtomicActions', DefaultRecord>
 export type FormRateLimitBlocks = Get<'FormRateLimitBlocks', DefaultBlock[]>
 export type FormSanitationBlocks = Get<'FormSanitationBlocks', DefaultBlock[]>
 export type FormValidationBlocks = Get<'FormValidationBlocks', DefaultBlock[]>

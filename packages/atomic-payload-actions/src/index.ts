@@ -1,6 +1,11 @@
 export { actionsPlugin, default } from './plugin'
 export type { ActionsPluginOptions } from './plugin'
 
+export { AllActionBlocks } from './blocks/blocks'
+export { ActionBlockType } from './blocks/zap'
+export { ActionFilters } from './blocks/filters'
+export { ActionBlockStorageProcessor, ActionOptions } from './blocks/processor'
+
 // Re-export the action type surface from atomic-payload-types so consumers
 // of this package have a single import surface for action authoring.
 export type {

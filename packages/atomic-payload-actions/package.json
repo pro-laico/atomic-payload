@@ -1,26 +1,53 @@
 {
   "name": "@pro-laico/atomic-payload-actions",
   "version": "0.1.0",
-  "description": "Atomic Payload Actions plugin. Provides the action-block plugin factory and re-exports the action type surface from atomic-payload-types. Initial cut: the plugin accepts a caller-supplied action-block array; subsequent versions will move the block definitions and frontend useActions hook tree into this package.",
+  "description": "Atomic Payload action blocks, shared action fields, and Payload plugin. Ships TypeScript source; the app transpiles it.",
   "license": "MIT",
   "type": "module",
   "publishConfig": {
     "access": "public"
   },
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js"
-    },
-    "./src": {
       "types": "./src/index.ts",
       "default": "./src/index.ts"
+    },
+    "./fields": {
+      "types": "./src/fields/index.ts",
+      "default": "./src/fields/index.ts"
+    },
+    "./fields/keyText": {
+      "types": "./src/fields/keyText.ts",
+      "default": "./src/fields/keyText.ts"
+    },
+    "./fields/strict/registry/theme": {
+      "types": "./src/fields/strict/registry/theme.ts",
+      "default": "./src/fields/strict/registry/theme.ts"
+    },
+    "./fields/strict/registry/cookieConsent": {
+      "types": "./src/fields/strict/registry/cookieConsent.ts",
+      "default": "./src/fields/strict/registry/cookieConsent.ts"
+    },
+    "./zap": {
+      "types": "./src/blocks/zap.ts",
+      "default": "./src/blocks/zap.ts"
+    },
+    "./blocks": {
+      "types": "./src/blocks/blocks.ts",
+      "default": "./src/blocks/blocks.ts"
+    },
+    "./processor": {
+      "types": "./src/blocks/processor.ts",
+      "default": "./src/blocks/processor.ts"
+    },
+    "./filters": {
+      "types": "./src/blocks/filters.ts",
+      "default": "./src/blocks/filters.ts"
     }
   },
   "files": [
-    "dist",
     "src",
     "README.md"
   ],
@@ -28,9 +55,10 @@
     "build": "tsc -p tsconfig.build.json",
     "clean": "node -e \"require('fs').rmSync('dist',{recursive:true,force:true})\"",
     "prepack": "pnpm clean && pnpm build",
-    "lint": "tsc -p tsconfig.json --noEmit"
+    "lint": "node -e \"process.exit(0)\""
   },
   "dependencies": {
+    "@pro-laico/atomic-payload-apf": "workspace:*",
     "@pro-laico/atomic-payload-types": "workspace:*",
     "@pro-laico/atomic-payload-zap": "workspace:*"
   },

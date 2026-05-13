@@ -4,7 +4,7 @@ Atomic Payload action-block plugin. Re-exports the action type surface from `@pr
 
 ```ts
 import { actionsPlugin } from '@pro-laico/atomic-payload-actions'
-import { AllActionBlocks } from '@/blocks/actions/blocks'
+import { AllActionBlocks } from '@pro-laico/atomic-payload-actions/blocks'
 
 export default buildConfig({
   plugins: [actionsPlugin({ blocks: AllActionBlocks })],

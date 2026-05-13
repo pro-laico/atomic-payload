@@ -1,7 +1,7 @@
 import type { JSONSchema4 } from 'json-schema'
 import { generateBlocksType, toJSONSchemaExtensions } from '@pro-laico/atomic-payload-zap'
 import CollectionSchemas from '@/collections/zap'
-import { ActionBlockType } from '@/blocks/actions/zap'
+import { ActionBlockType } from '@pro-laico/atomic-payload-actions/zap'
 import { Runner, Attributer } from '@/hooks/frontEnd/useActions/dispatch/zap'
 import { ChildBlockType, BackdropChildSlug } from '@pro-laico/atomic-payload-child-blocks/zap'
 import { InputValidationBlockType, InputSanitationBlockType } from '@/blocks/submitForm/input/zap'
