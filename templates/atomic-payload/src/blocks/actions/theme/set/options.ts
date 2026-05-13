@@ -1,5 +1,5 @@
 import { z } from '@/ts/zap'
-import { ActionProcessFunction } from '@/ts/types/actions'
+import { ActionProcessFunction } from '@pro-laico/atomic-payload-types'
 
 const processFunction: ActionProcessFunction<'ActSetTheme'> = ({ perform, data }) => {
   const Run: z.ap.Type<'RunSetTheme'> = { type: 'RunSetTheme', perform }

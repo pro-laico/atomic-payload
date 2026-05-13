@@ -1,5 +1,5 @@
 import { z } from '@/ts/zap'
-import { ActionDefaultFunction, ActionProcessFunction, ActionSetKeyInitialByBlock } from '@/ts/types/actions'
+import { ActionDefaultFunction, ActionProcessFunction, ActionSetKeyInitialByBlock } from '@pro-laico/atomic-payload-types'
 
 const setKeyInitialByBlock: ActionSetKeyInitialByBlock = ({ block }) => {
   if (block.blockType === 'AtomicChild' && block.buttonType === 'portal' && block.portalName) {

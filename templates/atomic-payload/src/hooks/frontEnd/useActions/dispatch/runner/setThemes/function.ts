@@ -1,4 +1,4 @@
-import type { RunFunction } from '@/ts/types/actions'
+import type { RunFunction } from '@pro-laico/atomic-payload-types'
 
 export const RunSetTheme: RunFunction<'RunSetTheme'> = ({ perform, context: { theme } }) => {
   if (!theme) {

@@ -1,4 +1,4 @@
-import { AttFunction } from '@/ts/types/actions'
+import { AttFunction } from '@pro-laico/atomic-payload-types'
 
 export const AttBoolToDA: AttFunction<'AttBoolToDA'> = ({ key, persisted, initialValue, changeKey, context }) => {
   const { getValue, hydrated } = context.atomicStore

@@ -1,6 +1,4 @@
-import type { Config } from '@/ts/types'
 import type { NumberFieldClientProps, RequestContext } from 'payload'
-import type { NameKebabOptions } from '@/utilities/format/toKebabCase'
 import type {
   TextField,
   SelectField,
@@ -12,6 +10,31 @@ import type {
   TextareaFieldClientProps,
   CheckboxFieldClientProps,
 } from 'payload'
+import type { Config } from './payload-types'
+
+// /////////////////////////////////////
+// Inlined toKebabCase options (kept type-only so the package has no runtime deps on it)
+// /////////////////////////////////////
+
+/**
+ * Configuration options for toKebabCase function.
+ *
+ * @options addQuotes, unicodeNormalization, camelCaseHandling, lowercase, dashCollapse, dashTrim
+ */
+export interface NameKebabOptions {
+  /** Add ' to beginning and end. @default false */
+  addQuotes?: boolean
+  /** Disable unicode normalization and diacritic removal. @default false */
+  unicodeNormalization?: boolean
+  /** Disable camelCase/PascalCase boundary detection. @default false */
+  camelCaseHandling?: boolean
+  /** Disable conversion to lowercase. @default false */
+  lowercase?: boolean
+  /** Disable collapsing multiple dashes into single dash. @default false */
+  dashCollapse?: boolean
+  /** Disable trimming dashes from start and end. @default false */
+  dashTrim?: boolean
+}
 
 // /////////////////////////////////////
 // General APF Types
@@ -69,10 +92,8 @@ export type APFieldWrapper<
   Defaults extends keyof APArgs<T>,
   AdditionalArgs extends Record<string, unknown> | void = void,
 > = AdditionalArgs extends void
-  ? // AdditionalArgs not provided → only base args
-    (args?: Omit<APArgs<T>, Defaults>) => Extract<APFieldType, { args: { type: T } }>['return']
-  : // AdditionalArgs provided → merged, required
-    (args: Omit<APArgs<T>, Defaults> & AdditionalArgs) => Extract<APFieldType, { args: { type: T } }>['return']
+  ? (args?: Omit<APArgs<T>, Defaults>) => Extract<APFieldType, { args: { type: T } }>['return']
+  : (args: Omit<APArgs<T>, Defaults> & AdditionalArgs) => Extract<APFieldType, { args: { type: T } }>['return']
 
 // /////////////////////////////////////
 // APF Field Component

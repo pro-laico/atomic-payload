@@ -1,4 +1,4 @@
-import {
+import type {
   Form,
   Page,
   Footer,
@@ -10,9 +10,9 @@ import {
   SiteMetaDatum,
   FormSubmission,
   StoredAtomicForm,
-  AtomicStoreInitialState,
-  ModifiedStoredAtomicForm,
-} from '@/ts/types'
+} from './payload-types'
+import type { AtomicStoreInitialState } from './frontEnd'
+import type { ModifiedStoredAtomicForm } from './forms'
 
 // /////////////////////////////////////
 // Helper Types

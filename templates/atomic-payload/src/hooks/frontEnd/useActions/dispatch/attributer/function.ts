@@ -1,5 +1,5 @@
 import { AttributerType } from '@/ts/types'
-import type { AttFunction } from '@/ts/types/actions'
+import type { AttFunction } from '@pro-laico/atomic-payload-types'
 
 //Functions
 import { AttCCToDA } from './cCToDA/function'

@@ -9,9 +9,7 @@ import type {
   RunnerType,
   Attributers,
   ChildBlocks,
-  AtomicStore,
   ActionBlocks,
-  FormResponse,
   ChildBlockType,
   AttributerType,
   ActionBlockType,
@@ -19,7 +17,9 @@ import type {
   AtomicButtonTypes,
   AtomicChildVariants,
   AtomicButtonPortalTypes,
-} from '@/ts/types'
+} from './payload-types'
+import type { AtomicStore } from './frontEnd'
+import type { FormResponse } from './forms'
 
 // /////////////////////////////////////
 // Action General Types
@@ -173,3 +173,6 @@ export interface ActionClass {
   triggerDefaults?: ProcessFunctionArgs
   contentDefaults?: ProcessFunctionArgs
 }
+
+/** Makes an object and all its properties non-nullable */
+type NonNullableObject<T> = { [K in keyof T]-?: NonNullable<T[K]> }

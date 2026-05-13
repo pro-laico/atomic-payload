@@ -3,7 +3,7 @@
 // OTHERWISE PERFORMANCE WILL SUFFER
 // /////////////////////////////////////
 import type { FieldHook } from 'payload'
-import type { APFunction } from '@/ts/types/apf'
+import type { APFunction } from '@pro-laico/atomic-payload-types'
 
 export const virtualAPFBeforeChangeFieldHook: FieldHook = ({ context, value, field, originalDoc }) => {
   if (!originalDoc?.id) return

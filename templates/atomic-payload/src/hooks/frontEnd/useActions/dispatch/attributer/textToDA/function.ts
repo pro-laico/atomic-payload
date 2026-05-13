@@ -1,4 +1,4 @@
-import { AttFunction } from '@/ts/types/actions'
+import { AttFunction } from '@pro-laico/atomic-payload-types'
 
 export const AttTextToDA: AttFunction<'AttTextToDA'> = ({
   key,

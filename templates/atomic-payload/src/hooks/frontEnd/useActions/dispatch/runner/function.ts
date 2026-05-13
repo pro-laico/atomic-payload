@@ -1,7 +1,7 @@
 import { RunnerType } from '@/ts/types'
 import { RunSetCC } from './setCCs/function'
 import { RunSetBool } from './setBool/function'
-import { RunFunction } from '@/ts/types/actions'
+import { RunFunction } from '@pro-laico/atomic-payload-types'
 import { RunSetTheme } from './setThemes/function'
 import { RunResetForm } from './resetForm/function'
 import { RunCycleText } from './cycleText/function'

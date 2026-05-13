@@ -1,5 +1,5 @@
 import type { RequestContext, PayloadRequest } from 'payload'
-import type { Config, CollectionThatUsesCSSProcessorSlug, CollectionWithStoredAtomicClassesSlug } from '@/ts/types'
+import type { Config, CollectionThatUsesCSSProcessorSlug, CollectionWithStoredAtomicClassesSlug } from './payload-types'
 
 /** Document types from collections that include storedAtomicClasses property. E.g., Page | Footer | Header */
 export type CollectionsWithStoredAtomicClasses = Config['collections'][CollectionWithStoredAtomicClassesSlug]

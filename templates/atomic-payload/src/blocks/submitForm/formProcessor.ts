@@ -7,7 +7,7 @@ import { FrlSimpleSlidingWindow } from '@/blocks/submitForm/form/rateLimiting/fu
 import { IvContains, IvDoesNotContain } from '@/blocks/submitForm/input/validation/functions'
 
 //Other Imports
-import { CookiePreferences } from '@/ts/types/actions'
+import { CookiePreferences } from '@pro-laico/atomic-payload-types'
 import {
   AFPBase,
   RunBlocksMethod,
@@ -17,7 +17,7 @@ import {
   PreProcessMethod,
   PostProcessMethod,
   MessageProcessorMethod,
-} from '@/ts/types/forms'
+} from '@pro-laico/atomic-payload-types'
 import type {
   FormRateLimitBlocks,
   FormSanitationBlocks,

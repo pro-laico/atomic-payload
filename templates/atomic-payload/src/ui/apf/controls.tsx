@@ -1,7 +1,7 @@
 'use client'
 import './index.scss'
 import React, { memo } from 'react'
-import { type APFunction } from '@/ts/types/apf'
+import { type APFunction } from '@pro-laico/atomic-payload-types'
 import { apfRegistry } from '@/fields/apf/storage'
 import type { BeforeDocumentControlsClientProps } from 'payload'
 import { Button, EditIcon, PlusIcon, LinkIcon, MenuIcon, PopupList, SearchIcon, FolderIcon, DocumentIcon, useFormFields } from '@payloadcms/ui'

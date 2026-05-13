@@ -4,7 +4,6 @@ import type {
   FormSubmission,
   StoredAtomicForm,
   AtomicInputTypes,
-  CookiePreferences,
   FormRateLimitBlocks,
   FormSanitationBlocks,
   FormValidationBlocks,
@@ -15,7 +14,8 @@ import type {
   FormValidationBlockType,
   InputValidationBlockType,
   InputSanitationBlockType,
-} from '@/ts/types'
+} from './payload-types'
+import type { CookiePreferences } from './actions'
 
 // /////////////////////////////////////
 // Collection Types

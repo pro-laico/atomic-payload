@@ -1,4 +1,4 @@
-import type { RunFunction } from '@/ts/types/actions'
+import type { RunFunction } from '@pro-laico/atomic-payload-types'
 
 export const RunCycleText: RunFunction<'RunCycleText'> = ({ key, textArray, persisted, context }) => {
   const {

@@ -1,6 +1,6 @@
 // Front End Types
 import type { ReactNode } from 'react'
-import type { ChildBlocks } from '@/ts/types'
+import type { ChildBlocks } from './payload-types'
 
 // /////////////////////////////////////
 // UTILITY FUNCTION TYPES

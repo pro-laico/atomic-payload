@@ -1,4 +1,4 @@
-import { RunAPFProps } from '@/ts/types/apf'
+import { RunAPFProps } from '@pro-laico/atomic-payload-types'
 
 /**
  * Checks if a document has been marked as changed in the context.

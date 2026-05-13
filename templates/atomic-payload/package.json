@@ -16,6 +16,7 @@
     "generate:importmap": "cross-env NODE_OPTIONS=\"--conditions=react-server\" payload generate:importmap"
   },
   "dependencies": {
+    "@pro-laico/atomic-payload-types": "workspace:*",
     "@base-ui-components/react": "1.0.0-rc.0",
     "@mux/blurup": "^1.0.2",
     "@mux/mux-video-react": "^0.25.3",
