@@ -1,8 +1,8 @@
-import { z } from '@/ts/zap'
+import { z } from '@pro-laico/atomic-payload-zap'
 import { type Tab } from 'payload'
-import { APField } from '@/fields/apf'
+import { APField } from '@pro-laico/atomic-payload-apf'
 import { AnimationLabelPath } from '@/ui'
-import { onArraySetAPFShallow } from '@/hooks/field/apf'
+import { onArraySetAPFShallow } from '@pro-laico/atomic-payload-apf'
 import { TokenValueArrayField, TokenValuesArrayField } from '@/fields/designSets/value'
 
 export const unoThemeAnimation = z.ap.add(

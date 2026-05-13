@@ -1,0 +1,54 @@
+{
+  "name": "@pro-laico/atomic-payload-revalidation",
+  "version": "0.1.0",
+  "description": "Atomic Payload revalidation package. Provides revalidateTag server action, collection/global hooks, and a Payload plugin factory for wiring revalidation into any Payload + Next.js project.",
+  "license": "MIT",
+  "type": "module",
+  "publishConfig": {
+    "access": "public"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./logger": {
+      "types": "./dist/utilities/log.d.ts",
+      "import": "./dist/utilities/log.js"
+    },
+    "./src": {
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
+    }
+  },
+  "files": [
+    "dist",
+    "src",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "clean": "node -e \"require('fs').rmSync('dist',{recursive:true,force:true})\"",
+    "prepack": "pnpm clean && pnpm build",
+    "lint": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@pro-laico/atomic-payload-types": "workspace:*"
+  },
+  "peerDependencies": {
+    "next": ">=15.0.0",
+    "payload": ">=3.0.0",
+    "server-only": ">=0.0.1"
+  },
+  "devDependencies": {
+    "next": "^16.1.6",
+    "payload": "^3.79.0",
+    "server-only": "^0.0.1",
+    "typescript": "5.8.3"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

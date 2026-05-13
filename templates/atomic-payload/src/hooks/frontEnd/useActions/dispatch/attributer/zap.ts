@@ -1,4 +1,4 @@
-import { z } from '@/ts/zap'
+import { z } from '@pro-laico/atomic-payload-zap'
 import { CCtoDASchema } from './cCToDA/zap'
 import { BoolToDASchema } from './boolToDA/zap'
 import { TextToDASchema } from './textToDA/zap'

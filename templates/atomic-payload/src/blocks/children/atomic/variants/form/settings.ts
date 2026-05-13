@@ -1,5 +1,5 @@
 import { GroupField } from 'payload'
-import { APField } from '@/fields/apf'
+import { APField } from '@pro-laico/atomic-payload-apf'
 
 const d = {
   lm: 'Forms Loading Message',

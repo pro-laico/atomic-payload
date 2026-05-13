@@ -3,7 +3,7 @@ import { draftMode } from 'next/headers'
 import Warning from '@/ui/assets/warningIcon'
 import getCached from '@/utilities/get/cache/react'
 import { IconChild as IconChildType, RenderChild } from '@/ts/types'
-import { extractSvgContent, extractSvgProps } from '@/utilities/extractSVG'
+import { extractSvgContent, extractSvgProps } from '@pro-laico/atomic-payload-icons'
 
 export const IconChild: React.FC<RenderChild<IconChildType>> = async ({ block: { icon }, pt }) => {
   const { isEnabled: draft } = await draftMode()

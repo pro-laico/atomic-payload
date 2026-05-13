@@ -1,8 +1,8 @@
-import { default as default_1e1f605507ac4d81abdbc5831da0e1b6 } from '@/ui/apf/label'
-import { default as default_fc544a7c902aadc9bfc55ed907448dfb } from '@/ui/apf/field'
+import { default as default_706fa81f65cdcaf1eb5da22666fd56d2 } from '@pro-laico/atomic-payload-apf/admin/label'
+import { default as default_48a0b447804f79e2e5d7392b807b6bc6 } from '@pro-laico/atomic-payload-apf/admin/field'
 import { default as default_8a7ac2c7c79c3ec2e1d6951d48900455 } from '@/ui/fields/slug'
-import { default as default_689cb8f6b693e47473455b66ff5e9bfa } from '@/ui/apf/controls'
-import { default as default_48cbfad44bafa59cfcf74fd784130a9a } from '@/ui/rowLabels/icon'
+import { default as default_969416254b63494afd9b9ed86136d4cc } from '@pro-laico/atomic-payload-apf/admin/controls'
+import { default as default_384c49f7244fb9cd287890d3020949b4 } from '@pro-laico/atomic-payload-icons/admin/iconRowLabel'
 import { default as default_e39b5279f914254b017758220055f1a8 } from '@/ui/rowLabels/designToken'
 import { default as default_e41ccc36c719f166558960cc3fb01689 } from '@/ui/rowLabels/color'
 import { default as default_16d35abd1d6b5b4f200680015a2919c3 } from '@/ui/rowLabels/animation'
@@ -41,11 +41,11 @@ import { VercelBlobClientUploadHandler as VercelBlobClientUploadHandler_16c82c5e
 import { CollectionCards as CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1 } from '@payloadcms/next/rsc'
 
 export const importMap = {
-  "@/ui/apf/label#default": default_1e1f605507ac4d81abdbc5831da0e1b6,
-  "@/ui/apf/field#default": default_fc544a7c902aadc9bfc55ed907448dfb,
+  "@pro-laico/atomic-payload-apf/admin/label#default": default_706fa81f65cdcaf1eb5da22666fd56d2,
+  "@pro-laico/atomic-payload-apf/admin/field#default": default_48a0b447804f79e2e5d7392b807b6bc6,
   "@/ui/fields/slug#default": default_8a7ac2c7c79c3ec2e1d6951d48900455,
-  "@/ui/apf/controls#default": default_689cb8f6b693e47473455b66ff5e9bfa,
-  "@/ui/rowLabels/icon#default": default_48cbfad44bafa59cfcf74fd784130a9a,
+  "@pro-laico/atomic-payload-apf/admin/controls#default": default_969416254b63494afd9b9ed86136d4cc,
+  "@pro-laico/atomic-payload-icons/admin/iconRowLabel#default": default_384c49f7244fb9cd287890d3020949b4,
   "@/ui/rowLabels/designToken#default": default_e39b5279f914254b017758220055f1a8,
   "@/ui/rowLabels/color#default": default_e41ccc36c719f166558960cc3fb01689,
   "@/ui/rowLabels/animation#default": default_16d35abd1d6b5b4f200680015a2919c3,

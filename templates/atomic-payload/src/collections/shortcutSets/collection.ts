@@ -4,9 +4,9 @@ import { authd } from '@/access/authenticated'
 import type { CollectionConfig } from 'payload'
 import { ShortcutsTab } from './tabs/shortcuts'
 import type { APFunction } from '@pro-laico/atomic-payload-types'
-import { generateAPFFields } from '@/fields/apf/storage'
+import { generateAPFFields } from '@pro-laico/atomic-payload-apf'
 import { atomicHook } from '@/hooks/collection/atomicHook/atomicHook'
-import { revalidateCacheOnDelete } from '@/hooks/collection/revalidate'
+import { revalidateCacheOnDelete } from '@pro-laico/atomic-payload-revalidation'
 import { generateLivePreviewPath } from '@/utilities/generatePreviewPath'
 
 const APFunctions: APFunction[] = ['classes', 'active']

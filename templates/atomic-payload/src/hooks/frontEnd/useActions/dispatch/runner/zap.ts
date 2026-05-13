@@ -1,4 +1,4 @@
-import { z } from '@/ts/zap'
+import { z } from '@pro-laico/atomic-payload-zap'
 import { SetCCSchema } from './setCCs/zap'
 import { SetThemeSchema } from './setThemes/zap'
 import { ResetFormSchema } from './resetForm/zap'

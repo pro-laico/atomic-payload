@@ -1,5 +1,6 @@
 import path from 'path'
 import sharp from 'sharp'
+import type { SharpDependency } from 'payload'
 import Globals from '@/globals'
 import { plugins } from '@/plugins'
 import { buildConfig } from 'payload'
@@ -24,7 +25,7 @@ const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
 export default buildConfig({
-  sharp,
+  sharp: sharp as unknown as SharpDependency,
   plugins: [...plugins],
   globals: [...Globals],
   editor: defaultLexical,

@@ -1,4 +1,4 @@
-import { z } from '@/ts/zap'
+import { z } from '@pro-laico/atomic-payload-zap'
 import { themePerform } from '@/fields/actions/strict/registry/theme'
 
 export const SetThemeSchema = z.ap.add(

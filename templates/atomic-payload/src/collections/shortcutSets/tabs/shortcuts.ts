@@ -1,8 +1,8 @@
 import { type Tab } from 'payload'
-import { APField } from '@/fields/apf'
+import { APField } from '@pro-laico/atomic-payload-apf'
 import { ShortcutLabelPath } from '@/ui'
 import { ClassNameField } from '@/fields/className'
-import { onArraySetAPFShallow } from '@/hooks/field/apf'
+import { onArraySetAPFShallow } from '@pro-laico/atomic-payload-apf'
 import { defaultShortcuts } from '@/collections/shortcutSets/defaults'
 import { protectedNames } from '@/collections/shortcutSets/protectedNames'
 

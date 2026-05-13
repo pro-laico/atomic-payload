@@ -1,16 +1,16 @@
-import { Icon } from './icons'
 import { Users } from './users'
-import { Images } from './images'
-import { Favicons } from './favicons'
-import { MuxVideo } from './muxVideos'
-import { Font } from './fonts/collection'
 import { Pages } from './pages/collection'
 import { Header } from './headers/collection'
 import { Footer } from './footers/collection'
 import { IconSet } from './iconSets/collection'
 import DesignSet from './designSets/collection'
 import ShortcutSet from './shortcutSets/collection'
-import { PostHogProperty } from './posthogProperty'
+
+import { Icon } from '@pro-laico/atomic-payload-icons'
+import { Images, Favicons } from '@pro-laico/atomic-payload-images'
+import { Font } from '@pro-laico/atomic-payload-fonts'
+import { MuxVideo } from '@pro-laico/atomic-payload-mux-video'
+import { PostHogProperty } from '@pro-laico/atomic-payload-posthog'
 
 const collections = [Font, Icon, Users, Pages, Footer, Header, Images, Favicons, IconSet, MuxVideo, DesignSet, ShortcutSet, PostHogProperty]
 

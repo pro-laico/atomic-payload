@@ -1,5 +1,5 @@
 import { PayloadRequest, CollectionSlug } from 'payload'
-import manualLogger from '@/utilities/log/manual'
+import { manualLogger } from '@pro-laico/atomic-payload-atomic-hook'
 
 export type UnsetActiveType = (args: { id: string; draft: boolean; req: PayloadRequest; slug: CollectionSlug }) => Promise<string | undefined>
 

@@ -1,5 +1,5 @@
 import type { Block } from 'payload'
-import { APField } from '@/fields/apf'
+import { APField } from '@pro-laico/atomic-payload-apf'
 
 export const ActResetForm: Block = {
   slug: 'ActResetForm',

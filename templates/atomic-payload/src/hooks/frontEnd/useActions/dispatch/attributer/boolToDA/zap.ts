@@ -1,4 +1,4 @@
-import { z } from '@/ts/zap'
+import { z } from '@pro-laico/atomic-payload-zap'
 
 export const BoolToDASchema = z.ap.add(
   z.object({

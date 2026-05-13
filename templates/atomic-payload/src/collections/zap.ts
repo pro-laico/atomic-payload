@@ -1,4 +1,4 @@
-import { z } from '@/ts/zap'
+import { z } from '@pro-laico/atomic-payload-zap'
 import traverse from 'traverse'
 import collections from './index'
 import { atomicHook } from '@/hooks/collection/atomicHook/atomicHook'

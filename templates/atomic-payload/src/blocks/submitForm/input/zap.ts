@@ -1,4 +1,4 @@
-import { z } from '@/ts/zap'
+import { z } from '@pro-laico/atomic-payload-zap'
 import sanitationBlocks from './sanitation/blocks'
 import validationBlocks from './validation/blocks'
 

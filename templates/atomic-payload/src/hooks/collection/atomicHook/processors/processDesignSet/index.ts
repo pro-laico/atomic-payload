@@ -1,5 +1,5 @@
-import { z } from '@/ts/zap'
-import manualLogger from '@/utilities/log/manual'
+import { z } from '@pro-laico/atomic-payload-zap'
+import { manualLogger } from '@pro-laico/atomic-payload-atomic-hook'
 import generatePreflights from './generatePreflights'
 import { designSetColors } from '@/collections/designSets/tabs/colors'
 import { TokenString, TokenStringArray } from '@/fields/designSets/value'

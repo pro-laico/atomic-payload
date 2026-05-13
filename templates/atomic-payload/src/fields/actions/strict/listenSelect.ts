@@ -1,4 +1,4 @@
-import { APField } from '@/fields/apf'
+import { APField } from '@pro-laico/atomic-payload-apf'
 import deepMerge from '@/utilities/deepMerge'
 import { APArgs, APFieldWrapper } from '@/ts/types'
 import { strictSelectRegistry, StrictSet } from './registry'

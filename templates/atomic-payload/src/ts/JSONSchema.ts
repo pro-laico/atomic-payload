@@ -1,5 +1,5 @@
-import { z } from '@/ts/zap'
 import type { JSONSchema4 } from 'json-schema'
+import { generateBlocksType, toJSONSchemaExtensions } from '@pro-laico/atomic-payload-zap'
 import CollectionSchemas from '@/collections/zap'
 import { ActionBlockType } from '@/blocks/actions/zap'
 import { Runner, Attributer } from '@/hooks/frontEnd/useActions/dispatch/zap'
@@ -10,22 +10,14 @@ import { FormRateLimitBlockType, FormSanitationBlockType, FormValidationBlockTyp
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const instantiate = [Runner, Attributer, CollectionSchemas] //Ensure the nested schemas are added to global registry before type generation
 
-type GenerateProps = { name: string; refs: (string | undefined)[] }
-
-const generateBlocksType = ({ name, refs }: GenerateProps) => ({
-  [name]: { oneOf: [{ items: { oneOf: refs.filter(Boolean).map((ref) => ({ $ref: `#/definitions/${ref}` })) } }] },
-})
-
 /**
  * This function is used to add custom type definitions to the JSON schema.
  * Which can be used as a normal type, or referenced in other JSON schema.
  */
 const JSONSchemaExtensions = ({ jsonSchema }: { jsonSchema: JSONSchema4 }): JSONSchema4 => ({
-  ...jsonSchema,
+  ...toJSONSchemaExtensions({ jsonSchema }),
   definitions: {
-    ...jsonSchema.definitions,
-    //Add type definitions as needed here
-    ...z.ap.toJSONSchema(),
+    ...toJSONSchemaExtensions({ jsonSchema }).definitions,
 
     // Child Blocks
     ...generateBlocksType({ name: 'ChildBlocks', refs: ChildBlockType.options }),

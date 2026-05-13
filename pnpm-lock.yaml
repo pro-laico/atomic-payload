@@ -8,6 +8,214 @@ importers:
 
   .: {}
 
+  packages/atomic-payload-actions:
+    dependencies:
+      '@pro-laico/atomic-payload-types':
+        specifier: workspace:*
+        version: link:../atomic-payload-types
+      '@pro-laico/atomic-payload-zap':
+        specifier: workspace:*
+        version: link:../atomic-payload-zap
+    devDependencies:
+      payload:
+        specifier: ^3.79.0
+        version: 3.79.0(graphql@16.11.0)(typescript@5.8.3)
+      typescript:
+        specifier: 5.8.3
+        version: 5.8.3
+
+  packages/atomic-payload-apf:
+    dependencies:
+      '@pro-laico/atomic-payload-types':
+        specifier: workspace:*
+        version: link:../atomic-payload-types
+    devDependencies:
+      '@payloadcms/ui':
+        specifier: ^3.79.0
+        version: 3.79.0(@types/react@19.2.14)(monaco-editor@0.52.2)(next@16.1.6(@babel/core@7.29.0)(@opentelemetry/api@1.9.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(sass@1.77.4))(payload@3.79.0(graphql@16.11.0)(typescript@5.8.3))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(typescript@5.8.3)
+      '@types/react':
+        specifier: ^19.2.14
+        version: 19.2.14
+      next:
+        specifier: ^16.1.6
+        version: 16.1.6(@babel/core@7.29.0)(@opentelemetry/api@1.9.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(sass@1.77.4)
+      payload:
+        specifier: ^3.79.0
+        version: 3.79.0(graphql@16.11.0)(typescript@5.8.3)
+      react:
+        specifier: ^19.2.4
+        version: 19.2.4
+      typescript:
+        specifier: 5.8.3
+        version: 5.8.3
+
+  packages/atomic-payload-atomic-hook:
+    dependencies:
+      '@pro-laico/atomic-payload-types':
+        specifier: workspace:*
+        version: link:../atomic-payload-types
+      traverse:
+        specifier: ^0.6.11
+        version: 0.6.11
+    devDependencies:
+      '@types/traverse':
+        specifier: ^0.6.37
+        version: 0.6.37
+      payload:
+        specifier: ^3.79.0
+        version: 3.79.0(graphql@16.11.0)(typescript@5.8.3)
+      typescript:
+        specifier: 5.8.3
+        version: 5.8.3
+
+  packages/atomic-payload-design-sets:
+    dependencies:
+      '@pro-laico/atomic-payload-types':
+        specifier: workspace:*
+        version: link:../atomic-payload-types
+    devDependencies:
+      payload:
+        specifier: ^3.79.0
+        version: 3.79.0(graphql@16.11.0)(typescript@5.8.3)
+      typescript:
+        specifier: 5.8.3
+        version: 5.8.3
+
+  packages/atomic-payload-fonts:
+    dependencies:
+      '@pro-laico/atomic-payload-types':
+        specifier: workspace:*
+        version: link:../atomic-payload-types
+    devDependencies:
+      '@payloadcms/sdk':
+        specifier: ^3.79.0
+        version: 3.79.0(graphql@16.11.0)(typescript@5.8.3)
+      dotenv:
+        specifier: ^17.3.1
+        version: 17.3.1
+      payload:
+        specifier: ^3.79.0
+        version: 3.79.0(graphql@16.11.0)(typescript@5.8.3)
+      typescript:
+        specifier: 5.8.3
+        version: 5.8.3
+
+  packages/atomic-payload-icons:
+    dependencies:
+      '@pro-laico/atomic-payload-apf':
+        specifier: workspace:*
+        version: link:../atomic-payload-apf
+      '@pro-laico/atomic-payload-revalidation':
+        specifier: workspace:*
+        version: link:../atomic-payload-revalidation
+      '@pro-laico/atomic-payload-types':
+        specifier: workspace:*
+        version: link:../atomic-payload-types
+    devDependencies:
+      '@payloadcms/ui':
+        specifier: ^3.79.0
+        version: 3.79.0(@types/react@19.2.14)(monaco-editor@0.52.2)(next@16.1.6(@babel/core@7.29.0)(@opentelemetry/api@1.9.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(sass@1.77.4))(payload@3.79.0(graphql@16.11.0)(typescript@5.8.3))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(typescript@5.8.3)
+      '@types/react':
+        specifier: ^19.2.14
+        version: 19.2.14
+      payload:
+        specifier: ^3.79.0
+        version: 3.79.0(graphql@16.11.0)(typescript@5.8.3)
+      react:
+        specifier: ^19.2.4
+        version: 19.2.4
+      svg-path-bbox:
+        specifier: ^2.1.0
+        version: 2.1.0
+      svgo:
+        specifier: ^3.3.3
+        version: 3.3.3
+      typescript:
+        specifier: 5.8.3
+        version: 5.8.3
+
+  packages/atomic-payload-images:
+    dependencies:
+      '@pro-laico/atomic-payload-apf':
+        specifier: workspace:*
+        version: link:../atomic-payload-apf
+      '@pro-laico/atomic-payload-revalidation':
+        specifier: workspace:*
+        version: link:../atomic-payload-revalidation
+      '@pro-laico/atomic-payload-types':
+        specifier: workspace:*
+        version: link:../atomic-payload-types
+    devDependencies:
+      '@oversightstudio/blur-data-urls':
+        specifier: ^1.0.4
+        version: 1.0.4(payload@3.79.0(graphql@16.11.0)(typescript@5.8.3))(sharp@0.34.5)
+      payload:
+        specifier: ^3.79.0
+        version: 3.79.0(graphql@16.11.0)(typescript@5.8.3)
+      typescript:
+        specifier: 5.8.3
+        version: 5.8.3
+
+  packages/atomic-payload-mux-video:
+    dependencies:
+      '@pro-laico/atomic-payload-types':
+        specifier: workspace:*
+        version: link:../atomic-payload-types
+    devDependencies:
+      '@oversightstudio/mux-video':
+        specifier: ^1.4.0
+        version: 1.4.0(@mux/mux-player-react@3.7.0(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(@payloadcms/ui@3.79.0(@types/react@19.2.14)(monaco-editor@0.52.2)(next@16.1.6(@babel/core@7.29.0)(@opentelemetry/api@1.9.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(sass@1.77.4))(payload@3.79.0(graphql@16.11.0)(typescript@5.8.3))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(typescript@5.8.3))(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(payload@3.79.0(graphql@16.11.0)(typescript@5.8.3))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      payload:
+        specifier: ^3.79.0
+        version: 3.79.0(graphql@16.11.0)(typescript@5.8.3)
+      typescript:
+        specifier: 5.8.3
+        version: 5.8.3
+
+  packages/atomic-payload-posthog:
+    dependencies:
+      '@pro-laico/atomic-payload-types':
+        specifier: workspace:*
+        version: link:../atomic-payload-types
+    devDependencies:
+      '@types/react':
+        specifier: ^19.2.14
+        version: 19.2.14
+      next:
+        specifier: ^16.1.6
+        version: 16.1.6(@babel/core@7.29.0)(@opentelemetry/api@1.9.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(sass@1.77.4)
+      payload:
+        specifier: ^3.79.0
+        version: 3.79.0(graphql@16.11.0)(typescript@5.8.3)
+      posthog-js:
+        specifier: ^1.360.0
+        version: 1.360.0
+      react:
+        specifier: ^19.2.4
+        version: 19.2.4
+      typescript:
+        specifier: 5.8.3
+        version: 5.8.3
+
+  packages/atomic-payload-revalidation:
+    dependencies:
+      '@pro-laico/atomic-payload-types':
+        specifier: workspace:*
+        version: link:../atomic-payload-types
+    devDependencies:
+      next:
+        specifier: ^16.1.6
+        version: 16.1.6(@babel/core@7.29.0)(@opentelemetry/api@1.9.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(sass@1.77.4)
+      payload:
+        specifier: ^3.79.0
+        version: 3.79.0(graphql@16.11.0)(typescript@5.8.3)
+      server-only:
+        specifier: ^0.0.1
+        version: 0.0.1
+      typescript:
+        specifier: 5.8.3
+        version: 5.8.3
+
   packages/atomic-payload-types:
     devDependencies:
       '@types/react':
@@ -22,6 +230,31 @@ importers:
       react:
         specifier: ^19.2.4
         version: 19.2.4
+      typescript:
+        specifier: 5.8.3
+        version: 5.8.3
+
+  packages/atomic-payload-zap:
+    dependencies:
+      '@pro-laico/atomic-payload-types':
+        specifier: workspace:*
+        version: link:../atomic-payload-types
+      server-only:
+        specifier: ^0.0.1
+        version: 0.0.1
+      traverse:
+        specifier: ^0.6.11
+        version: 0.6.11
+      zod:
+        specifier: 4.1.11
+        version: 4.1.11
+    devDependencies:
+      '@types/json-schema':
+        specifier: ^7.0.15
+        version: 7.0.15
+      '@types/traverse':
+        specifier: ^0.6.37
+        version: 0.6.37
       typescript:
         specifier: 5.8.3
         version: 5.8.3
@@ -91,9 +324,42 @@ importers:
       '@payloadcms/ui':
         specifier: ^3.79.0
         version: 3.79.0(@types/react@19.2.14)(monaco-editor@0.52.2)(next@16.1.6(@babel/core@7.29.0)(@opentelemetry/api@1.9.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(sass@1.77.4))(payload@3.79.0(graphql@16.11.0)(typescript@5.8.3))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(typescript@5.8.3)
+      '@pro-laico/atomic-payload-actions':
+        specifier: workspace:*
+        version: link:../../packages/atomic-payload-actions
+      '@pro-laico/atomic-payload-apf':
+        specifier: workspace:*
+        version: link:../../packages/atomic-payload-apf
+      '@pro-laico/atomic-payload-atomic-hook':
+        specifier: workspace:*
+        version: link:../../packages/atomic-payload-atomic-hook
+      '@pro-laico/atomic-payload-design-sets':
+        specifier: workspace:*
+        version: link:../../packages/atomic-payload-design-sets
+      '@pro-laico/atomic-payload-fonts':
+        specifier: workspace:*
+        version: link:../../packages/atomic-payload-fonts
+      '@pro-laico/atomic-payload-icons':
+        specifier: workspace:*
+        version: link:../../packages/atomic-payload-icons
+      '@pro-laico/atomic-payload-images':
+        specifier: workspace:*
+        version: link:../../packages/atomic-payload-images
+      '@pro-laico/atomic-payload-mux-video':
+        specifier: workspace:*
+        version: link:../../packages/atomic-payload-mux-video
+      '@pro-laico/atomic-payload-posthog':
+        specifier: workspace:*
+        version: link:../../packages/atomic-payload-posthog
+      '@pro-laico/atomic-payload-revalidation':
+        specifier: workspace:*
+        version: link:../../packages/atomic-payload-revalidation
       '@pro-laico/atomic-payload-types':
         specifier: workspace:*
         version: link:../../packages/atomic-payload-types
+      '@pro-laico/atomic-payload-zap':
+        specifier: workspace:*
+        version: link:../../packages/atomic-payload-zap
       '@vercel/analytics':
         specifier: ^1.6.1
         version: 1.6.1(next@16.1.6(@babel/core@7.29.0)(@opentelemetry/api@1.9.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(sass@1.77.4))(react@19.2.4)
@@ -6111,8 +6377,7 @@ snapshots:
       '@iconify/types': 2.0.0
       mlly: 1.8.1
 
-  '@img/colour@1.1.0':
-    optional: true
+  '@img/colour@1.1.0': {}
 
   '@img/sharp-darwin-arm64@0.34.5':
     optionalDependencies:
@@ -6652,6 +6917,11 @@ snapshots:
     dependencies:
       payload: 3.79.0(graphql@16.11.0)(typescript@5.8.3)
       sharp: 0.32.6
+
+  '@oversightstudio/blur-data-urls@1.0.4(payload@3.79.0(graphql@16.11.0)(typescript@5.8.3))(sharp@0.34.5)':
+    dependencies:
+      payload: 3.79.0(graphql@16.11.0)(typescript@5.8.3)
+      sharp: 0.34.5
 
   '@oversightstudio/mux-video@1.4.0(@mux/mux-player-react@3.7.0(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(@payloadcms/ui@3.79.0(@types/react@19.2.14)(monaco-editor@0.52.2)(next@16.1.6(@babel/core@7.29.0)(@opentelemetry/api@1.9.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(sass@1.77.4))(payload@3.79.0(graphql@16.11.0)(typescript@5.8.3))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(typescript@5.8.3))(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(payload@3.79.0(graphql@16.11.0)(typescript@5.8.3))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)':
     dependencies:
@@ -10424,7 +10694,6 @@ snapshots:
       '@img/sharp-win32-arm64': 0.34.5
       '@img/sharp-win32-ia32': 0.34.5
       '@img/sharp-win32-x64': 0.34.5
-    optional: true
 
   shebang-command@2.0.0:
     dependencies:

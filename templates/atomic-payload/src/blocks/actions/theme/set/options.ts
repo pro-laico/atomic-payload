@@ -1,4 +1,4 @@
-import { z } from '@/ts/zap'
+import { z } from '@pro-laico/atomic-payload-zap'
 import { ActionProcessFunction } from '@pro-laico/atomic-payload-types'
 
 const processFunction: ActionProcessFunction<'ActSetTheme'> = ({ perform, data }) => {

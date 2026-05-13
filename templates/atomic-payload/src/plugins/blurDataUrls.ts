@@ -1,4 +1,4 @@
-import { Images } from '@/collections/images'
+import { Images } from '@pro-laico/atomic-payload-images'
 import { blurDataUrlsPlugin } from '@oversightstudio/blur-data-urls'
 
 export const blurDataUrlsPluginConfig = blurDataUrlsPlugin({

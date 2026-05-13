@@ -1,4 +1,4 @@
-import { z } from '@/ts/zap'
+import { z } from '@pro-laico/atomic-payload-zap'
 import { cookieConsentKeys } from '@/fields/actions/strict/registry/cookieConsent'
 
 export const SetCCSchema = z.ap.add(

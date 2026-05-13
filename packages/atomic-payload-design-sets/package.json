@@ -1,0 +1,46 @@
+{
+  "name": "@pro-laico/atomic-payload-design-sets",
+  "version": "0.1.0",
+  "description": "Atomic Payload design-sets plugin. Plugin factory that registers caller-supplied DesignSet and ShortcutSet collection configs. Initial cut: the collection schemas remain in the consuming template because they depend on template-only field utilities (APField, ActiveField, UniqueTitleField, generateLivePreviewPath); subsequent versions will fold those into the package.",
+  "license": "MIT",
+  "type": "module",
+  "publishConfig": {
+    "access": "public"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./src": {
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
+    }
+  },
+  "files": [
+    "dist",
+    "src",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "clean": "node -e \"require('fs').rmSync('dist',{recursive:true,force:true})\"",
+    "prepack": "pnpm clean && pnpm build",
+    "lint": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@pro-laico/atomic-payload-types": "workspace:*"
+  },
+  "peerDependencies": {
+    "payload": ">=3.0.0"
+  },
+  "devDependencies": {
+    "payload": "^3.79.0",
+    "typescript": "5.8.3"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

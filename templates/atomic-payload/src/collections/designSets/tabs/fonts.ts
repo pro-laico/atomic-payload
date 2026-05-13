@@ -1,7 +1,7 @@
 import { type Tab } from 'payload'
-import { APField } from '@/fields/apf'
+import { APField } from '@pro-laico/atomic-payload-apf'
 import { DesignTokenLabelPath } from '@/ui'
-import { onArraySetAPFShallow } from '@/hooks/field/apf'
+import { onArraySetAPFShallow } from '@pro-laico/atomic-payload-apf'
 import { TokenValueArrayField } from '@/fields/designSets/value'
 
 export const FontsTab = () => {

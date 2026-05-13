@@ -2,7 +2,7 @@
 import './index.scss'
 import React from 'react'
 import { AtomicChild } from '@/ts/types'
-import { AtomicIcon } from '@/ui/assets/atomicIcon'
+import { AtomicIcon } from '@pro-laico/atomic-payload-icons'
 import { RowLabel, useRowLabel, SectionTitle } from '@payloadcms/ui'
 
 const AtomicRowLabel = () => {

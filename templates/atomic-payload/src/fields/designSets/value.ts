@@ -1,9 +1,9 @@
-import { z } from '@/ts/zap'
-import { APField } from '@/fields/apf'
+import { z } from '@pro-laico/atomic-payload-zap'
+import { APField } from '@pro-laico/atomic-payload-apf'
 import type { TextField } from 'payload'
 import type { ArrayField } from 'payload'
 import { DesignTokenLabelPath } from '@/ui'
-import { onArraySetAPFShallow } from '@/hooks/field/apf'
+import { onArraySetAPFShallow } from '@pro-laico/atomic-payload-apf'
 
 /** Creates a value field for use in the design sets collection. */
 export const ValueField: TextField = APField({ name: 'value', type: 'text', apf: ['classes'], required: true })

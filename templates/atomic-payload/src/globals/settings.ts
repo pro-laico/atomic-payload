@@ -1,6 +1,6 @@
 import type { GlobalConfig } from 'payload'
 import { authd } from '@/access/authenticated'
-import { revalidateCache } from '@/hooks/global/revalidate'
+import { revalidateCacheGlobal as revalidateCache } from '@pro-laico/atomic-payload-revalidation'
 
 const d = {
   draft: 'Settings for the draft version of the website.',

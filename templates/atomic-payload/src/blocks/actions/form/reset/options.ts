@@ -1,4 +1,4 @@
-import { z } from '@/ts/zap'
+import { z } from '@pro-laico/atomic-payload-zap'
 import type { ActionProcessFunction, ActionDefaultFunction } from '@/ts/types'
 
 const processFunction: ActionProcessFunction<'ActResetForm'> = ({ formName, useForm, data, initialValuesMap }) => {

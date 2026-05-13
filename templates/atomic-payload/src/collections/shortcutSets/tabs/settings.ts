@@ -1,5 +1,5 @@
 import { type Tab } from 'payload'
-import { ActiveField } from '@/fields/active'
+import { ActiveField } from '@pro-laico/atomic-payload-apf'
 import { TestPathField } from '@/fields/testPath'
 import { UniqueTitleField } from '@/fields/uniqueTitle'
 

@@ -14,6 +14,10 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     },
+    "./schema": {
+      "types": "./dist/payload-types.d.ts",
+      "import": "./dist/payload-types.js"
+    },
     "./src": {
       "types": "./src/index.ts",
       "default": "./src/index.ts"

@@ -11,9 +11,9 @@ import { VariablesTab } from './tabs/variables'
 import { type APFunction } from '@pro-laico/atomic-payload-types'
 import { AnimationsTab } from './tabs/animation'
 import { MiscellaneousTab } from './tabs/miscellaneous'
-import { generateAPFFields } from '@/fields/apf/storage'
+import { generateAPFFields } from '@pro-laico/atomic-payload-apf'
 import { atomicHook } from '@/hooks/collection/atomicHook/atomicHook'
-import { revalidateCacheOnDelete } from '@/hooks/collection/revalidate'
+import { revalidateCacheOnDelete } from '@pro-laico/atomic-payload-revalidation'
 import { generateLivePreviewPath } from '@/utilities/generatePreviewPath'
 
 const APFunctions: APFunction[] = ['classes', 'active']

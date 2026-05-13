@@ -2,7 +2,7 @@
 import { ReactNode } from 'react'
 import { Tracking } from '@/ts/types'
 import { VercelProvider } from './vercel'
-import { PostHogProvider } from './postHog'
+import { PostHogProvider } from '@pro-laico/atomic-payload-posthog/provider'
 import { GoogleTagManagerProvider } from './gtm'
 
 type ProviderType = 'postHog' | 'vercel' | 'googleTagManager'

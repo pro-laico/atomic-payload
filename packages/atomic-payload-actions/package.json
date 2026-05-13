@@ -1,0 +1,47 @@
+{
+  "name": "@pro-laico/atomic-payload-actions",
+  "version": "0.1.0",
+  "description": "Atomic Payload Actions plugin. Provides the action-block plugin factory and re-exports the action type surface from atomic-payload-types. Initial cut: the plugin accepts a caller-supplied action-block array; subsequent versions will move the block definitions and frontend useActions hook tree into this package.",
+  "license": "MIT",
+  "type": "module",
+  "publishConfig": {
+    "access": "public"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./src": {
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
+    }
+  },
+  "files": [
+    "dist",
+    "src",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "clean": "node -e \"require('fs').rmSync('dist',{recursive:true,force:true})\"",
+    "prepack": "pnpm clean && pnpm build",
+    "lint": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@pro-laico/atomic-payload-types": "workspace:*",
+    "@pro-laico/atomic-payload-zap": "workspace:*"
+  },
+  "peerDependencies": {
+    "payload": ">=3.0.0"
+  },
+  "devDependencies": {
+    "payload": "^3.79.0",
+    "typescript": "5.8.3"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

@@ -1,4 +1,4 @@
-import { z } from '@/ts/zap'
+import { z } from '@pro-laico/atomic-payload-zap'
 
 export const RunSubmitFormSchema = z.ap.add(
   z.object({

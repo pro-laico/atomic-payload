@@ -1,5 +1,5 @@
 import deepMerge from '@/utilities/deepMerge'
-import manualLogger from '@/utilities/log/manual'
+import { manualLogger } from '@pro-laico/atomic-payload-atomic-hook'
 import type { cssProcessorType } from '@/ts/types'
 import getCached from '@/utilities/get/cache/react'
 import { defaultAtomicClasses } from '@/collections/designSets/defaults'

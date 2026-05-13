@@ -1,0 +1,65 @@
+{
+  "name": "@pro-laico/atomic-payload-icons",
+  "version": "0.1.0",
+  "description": "Atomic Payload icons package. Provides Icon and IconSet Payload collections, an SVG-optimizing formatSVG hook, SVG extraction helpers, and the AtomicIcon component.",
+  "license": "MIT",
+  "type": "module",
+  "publishConfig": {
+    "access": "public"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./src": {
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
+    },
+    "./admin/iconRowLabel": {
+      "types": "./dist/components/admin/iconRowLabel.d.ts",
+      "import": "./dist/components/admin/iconRowLabel.js"
+    }
+  },
+  "files": [
+    "dist",
+    "src",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "clean": "node -e \"require('fs').rmSync('dist',{recursive:true,force:true})\"",
+    "prepack": "pnpm clean && pnpm build",
+    "lint": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@pro-laico/atomic-payload-types": "workspace:*",
+    "@pro-laico/atomic-payload-revalidation": "workspace:*",
+    "@pro-laico/atomic-payload-apf": "workspace:*"
+  },
+  "peerDependencies": {
+    "@payloadcms/ui": ">=3.0.0",
+    "payload": ">=3.0.0",
+    "react": ">=19.0.0",
+    "svg-path-bbox": ">=2.0.0",
+    "svgo": ">=3.0.0"
+  },
+  "peerDependenciesMeta": {
+    "svgo": { "optional": true },
+    "svg-path-bbox": { "optional": true }
+  },
+  "devDependencies": {
+    "@payloadcms/ui": "^3.79.0",
+    "@types/react": "^19.2.14",
+    "payload": "^3.79.0",
+    "react": "^19.2.4",
+    "svg-path-bbox": "^2.1.0",
+    "svgo": "^3.3.3",
+    "typescript": "5.8.3"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

@@ -1,4 +1,4 @@
-import { APField } from '@/fields/apf'
+import { APField } from '@pro-laico/atomic-payload-apf'
 import { ArrayField, TextField, SelectField, TabAsField, GroupField } from 'payload'
 
 export const typographySupportedTags = [

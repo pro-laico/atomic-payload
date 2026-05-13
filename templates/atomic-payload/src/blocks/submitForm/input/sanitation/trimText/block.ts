@@ -1,5 +1,5 @@
 import type { Block } from 'payload'
-import { APField } from '@/fields/apf'
+import { APField } from '@pro-laico/atomic-payload-apf'
 
 const d = {
   trimCharacters: 'The characters to trim. Comma seperated list. Defaults to just removing spaces.',

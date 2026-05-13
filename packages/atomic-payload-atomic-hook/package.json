@@ -1,0 +1,48 @@
+{
+  "name": "@pro-laico/atomic-payload-atomic-hook",
+  "version": "0.1.0",
+  "description": "Atomic Payload atomic-hook plugin. Hosts the orchestrating beforeChange hook utilities and a plugin factory that attaches a caller-supplied atomicHook to the specified collection slugs.",
+  "license": "MIT",
+  "type": "module",
+  "publishConfig": {
+    "access": "public"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./src": {
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
+    }
+  },
+  "files": [
+    "dist",
+    "src",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "clean": "node -e \"require('fs').rmSync('dist',{recursive:true,force:true})\"",
+    "prepack": "pnpm clean && pnpm build",
+    "lint": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@pro-laico/atomic-payload-types": "workspace:*",
+    "traverse": "^0.6.11"
+  },
+  "peerDependencies": {
+    "payload": ">=3.0.0"
+  },
+  "devDependencies": {
+    "@types/traverse": "^0.6.37",
+    "payload": "^3.79.0",
+    "typescript": "5.8.3"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

@@ -7,11 +7,12 @@ export * from './cache'
 export * from './forms'
 export * from './actions'
 export * from './frontEnd'
-// The package's payload-types stubs are internal and only used to type the
-// hand-written types above. Consumers get concrete Payload-generated names
-// (Page, Config, Icon, User, ...) from their own ./payload-types.ts. Only the
-// `PayloadAugment` interface is exported here — extend it via `declare module`
-// in your project to wire the package up to your generated types.
+// The package's payload-types stubs (Page, Config, Icon, Font, ...) are not
+// re-exported from the package root so consumer templates can `export *` from
+// both this package and their own generated `payload-types.ts` without
+// duplicate-export ambiguity. Internal packages that need the stubs by name
+// should import them from `@pro-laico/atomic-payload-types/schema`. Consumers
+// fill them in via the `PayloadAugment` module augmentation.
 export type { PayloadAugment } from './payload-types'
 
 // /////////////////////////////////////

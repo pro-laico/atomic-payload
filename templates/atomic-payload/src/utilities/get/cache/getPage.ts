@@ -4,8 +4,8 @@ import { GCFunction } from '@/ts/types'
 import configPromise from '@payload-config'
 import { getPayload, Where } from 'payload'
 import cacheLogger from '@/utilities/log/cache'
-import manualLogger from '@/utilities/log/manual'
-import sanitizeData from '@/utilities/sanitizeData'
+import { manualLogger } from '@pro-laico/atomic-payload-atomic-hook'
+import { sanitizeData } from '@pro-laico/atomic-payload-atomic-hook'
 
 /** Gets a page by its href. */
 export const getCachedPageByHref: GCFunction<'page'> = async (tag, tid, draft, pages) => {

@@ -1,6 +1,6 @@
 'use server'
 import 'server-only' //DO NOT REMOVE
-import { mt } from '@/utilities/mergeTags'
+import { mt } from '@pro-laico/atomic-payload-revalidation'
 import { unstable_cache } from 'next/cache'
 import { GCArgs, GCReturns, GCFunction, Last } from '@/ts/types'
 

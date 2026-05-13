@@ -1,4 +1,4 @@
-import { z } from '@/ts/zap'
+import { z } from '@pro-laico/atomic-payload-zap'
 import { ActionProcessFunction } from '@/ts/types'
 
 const processFunction: ActionProcessFunction<'ActSetCC'> = ({ perform, acceptAll, key, setDA, changeKey, data }) => {

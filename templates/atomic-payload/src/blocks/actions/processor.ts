@@ -13,7 +13,7 @@ import { ActDSCycleText } from './dynamicStore/text/cycle/options'
 import { ActDSBoolToDA } from './dynamicStore/boolean/toDA/options'
 
 //Other
-import { z } from '@/ts/zap'
+import { z } from '@pro-laico/atomic-payload-zap'
 import { ActionFilters } from './filters'
 import {
   AllActions,

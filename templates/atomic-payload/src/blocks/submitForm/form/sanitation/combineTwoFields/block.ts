@@ -1,5 +1,5 @@
 import type { Block } from 'payload'
-import { APField } from '@/fields/apf'
+import { APField } from '@pro-laico/atomic-payload-apf'
 
 const d = {
   addBetween: 'Adds a string between the two fields. Defaults to a space.',

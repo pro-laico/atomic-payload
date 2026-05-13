@@ -1,9 +1,9 @@
 // TODO: Make Color Picker Component
-import { z } from '@/ts/zap'
+import { z } from '@pro-laico/atomic-payload-zap'
 import { type Tab } from 'payload'
 import { ColorLabelPath } from '@/ui'
-import { APField } from '@/fields/apf'
-import { onArraySetAPFShallow } from '@/hooks/field/apf'
+import { APField } from '@pro-laico/atomic-payload-apf'
+import { onArraySetAPFShallow } from '@pro-laico/atomic-payload-apf'
 
 export const UnoColors = z.ap.add(z.record(z.string(), z.string().or(z.record(z.string(), z.string()))), { id: 'UnoColors' })
 export const designSetColors = z.ap.add(z.array(z.object({ name: z.string(), light: z.string(), dark: z.string() })), { id: 'DesignSetColors' })

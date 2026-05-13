@@ -37,6 +37,10 @@ export type Page = Get<'Page', DefaultRecord>;
 export type Header = Get<'Header', DefaultRecord>;
 export type Footer = Get<'Footer', DefaultRecord>;
 export type Form = Get<'Form', DefaultRecord>;
+export type Font = Get<'Font', DefaultRecord>;
+export type Icon = Get<'Icon', DefaultRecord>;
+export type IconSet = Get<'IconSet', DefaultRecord>;
+export type Image = Get<'Image', DefaultRecord>;
 export type Tracking = Get<'Tracking', DefaultRecord>;
 export type DesignSet = Get<'DesignSet', DefaultRecord>;
 export type ImageChild = Get<'ImageChild', DefaultRecord>;
@@ -70,5 +74,6 @@ export type InputValidationBlockType = Get<'InputValidationBlockType', string>;
 export type InputSanitationBlockType = Get<'InputSanitationBlockType', string>;
 export type CollectionThatUsesCSSProcessorSlug = Get<'CollectionThatUsesCSSProcessorSlug', string>;
 export type CollectionWithStoredAtomicClassesSlug = Get<'CollectionWithStoredAtomicClassesSlug', string>;
+export type AtomicRegistry = Get<'AtomicRegistry', Record<string, any>>;
 export {};
 //# sourceMappingURL=payload-types.d.ts.map

@@ -1,4 +1,4 @@
-import { z } from '@/ts/zap'
+import { z } from '@pro-laico/atomic-payload-zap'
 import type { ActionProcessFunction, ActionDefaultFunction, ActionSetKeyInitialByBlock } from '@/ts/types'
 
 const setKeyInitialByBlock: ActionSetKeyInitialByBlock = ({ block }) => {

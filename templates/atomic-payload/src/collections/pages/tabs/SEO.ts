@@ -1,7 +1,7 @@
 import { type Tab } from 'payload'
-import { APField } from '@/fields/apf'
-import { onUploadSetAPF } from '@/hooks/field/apf'
-import { FaviconField } from '@/fields/favicon'
+import { APField } from '@pro-laico/atomic-payload-apf'
+import { onUploadSetAPF } from '@pro-laico/atomic-payload-apf'
+import { FaviconField } from '@pro-laico/atomic-payload-images'
 
 const d = {
   darkFavicon: 'Overrides the global dark favicon.',

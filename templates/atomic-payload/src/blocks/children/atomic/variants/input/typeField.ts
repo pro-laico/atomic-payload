@@ -1,5 +1,5 @@
 import { SelectField } from 'payload'
-import { APField } from '@/fields/apf'
+import { APField } from '@pro-laico/atomic-payload-apf'
 
 export const inputTypeOptions = [
   { label: 'Text', value: 'text', type: 'string' },

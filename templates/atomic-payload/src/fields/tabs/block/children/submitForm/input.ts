@@ -1,5 +1,5 @@
 import { GroupField } from 'payload'
-import { APField } from '@/fields/apf'
+import { APField } from '@pro-laico/atomic-payload-apf'
 import { inputFunctionsBlockTemplate } from '@/fields/blocks/submitForm/input'
 
 export const inputTab: GroupField = {

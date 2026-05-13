@@ -1,6 +1,6 @@
 import 'server-only'
 import { AllTags } from '@/ts/types'
-import { mt } from '@/utilities/mergeTags'
+import { mt } from '@pro-laico/atomic-payload-revalidation'
 
 export default function cacheLogger({ tag, tid, draft }: { tag: AllTags; tid?: string; draft?: boolean }) {
   const fullTag: string = mt([tag, tid, draft ? 'draft' : undefined])

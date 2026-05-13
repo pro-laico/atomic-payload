@@ -1,4 +1,4 @@
-import { APField } from './apf'
+import { APField } from '@pro-laico/atomic-payload-apf'
 import deepMerge from '@/utilities/deepMerge'
 import type { APArgs, APFieldWrapper } from '@/ts/types'
 

@@ -1,6 +1,6 @@
 import { type Tab } from 'payload'
 import { DevModeField } from '@/fields/devMode'
-import { generateAPFFields } from '@/fields/apf/storage'
+import { generateAPFFields } from '@pro-laico/atomic-payload-apf'
 import { createBreadcrumbsField } from '@payloadcms/plugin-nested-docs'
 
 export const SettingsTab = () => {

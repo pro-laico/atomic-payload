@@ -3,6 +3,54 @@
 // every name from the package resolves to a permissive default (any / string).
 import type * as G from './types/payload-types'
 
+declare module '@pro-laico/atomic-payload-types/schema' {
+  interface PayloadAugment {
+    Config: G.Config
+    Page: G.Page
+    Header: G.Header
+    Footer: G.Footer
+    Form: G.Form
+    Tracking: G.Tracking
+    DesignSet: G.DesignSet
+    ImageChild: G.ImageChild
+    ShortcutSet: G.ShortcutSet
+    SiteMetaDatum: G.SiteMetaDatum
+    FormSubmission: G.FormSubmission
+    StoredAtomicForm: G.StoredAtomicForm
+    Font: G.Font
+    Icon: G.Icon
+    IconSet: G.IconSet
+    Image: G.Image
+    AtomicRegistry: G.AtomicRegistry
+    ChildBlocks: G.ChildBlocks
+    ActionBlocks: G.ActionBlocks
+    Runners: G.Runners
+    Attributers: G.Attributers
+    Attributer: G.Attributer
+    AllActions: G.AllActions
+    FormRateLimitBlocks: G.FormRateLimitBlocks
+    FormSanitationBlocks: G.FormSanitationBlocks
+    FormValidationBlocks: G.FormValidationBlocks
+    InputSanitationBlocks: G.InputSanitationBlocks
+    InputValidationBlocks: G.InputValidationBlocks
+    ChildBlockType: G.ChildBlockType
+    ActionBlockType: G.ActionBlockType
+    RunnerType: G.RunnerType
+    AttributerType: G.AttributerType
+    AtomicInputTypes: G.AtomicInputTypes
+    AtomicButtonTypes: G.AtomicButtonTypes
+    AtomicChildVariants: G.AtomicChildVariants
+    AtomicButtonPortalTypes: G.AtomicButtonPortalTypes
+    FormRateLimitBlockType: G.FormRateLimitBlockType
+    FormSanitationBlockType: G.FormSanitationBlockType
+    FormValidationBlockType: G.FormValidationBlockType
+    InputValidationBlockType: G.InputValidationBlockType
+    InputSanitationBlockType: G.InputSanitationBlockType
+    CollectionThatUsesCSSProcessorSlug: G.CollectionThatUsesCSSProcessorSlug
+    CollectionWithStoredAtomicClassesSlug: G.CollectionWithStoredAtomicClassesSlug
+  }
+}
+
 declare module '@pro-laico/atomic-payload-types' {
   interface PayloadAugment {
     Config: G.Config
