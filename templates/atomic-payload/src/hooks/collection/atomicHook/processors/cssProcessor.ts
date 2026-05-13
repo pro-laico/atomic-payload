@@ -2,7 +2,7 @@ import deepMerge from '@/utilities/deepMerge'
 import { manualLogger } from '@pro-laico/atomic-payload-atomic-hook'
 import type { cssProcessorType } from '@/ts/types'
 import getCached from '@/utilities/get/cache/react'
-import { defaultAtomicClasses } from '@/collections/designSets/defaults'
+import { defaultAtomicClasses } from '@pro-laico/atomic-payload-design-sets/designSet/defaults'
 import { createGenerator, PresetWind4Theme, presetWind4, presetAttributify, presetTypography } from 'unocss'
 
 export const cssProcessor: cssProcessorType = async ({ slug, context, draft, req }) => {

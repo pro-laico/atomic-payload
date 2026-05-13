@@ -13,9 +13,11 @@ import { revalidationPlugin } from '@pro-laico/atomic-payload-revalidation'
 import { formsPlugin } from '@pro-laico/atomic-payload-forms'
 import { actionsPlugin } from '@pro-laico/atomic-payload-actions'
 import { childBlocksPlugin } from '@pro-laico/atomic-payload-child-blocks'
+import { designSetsPluginConfig } from './designSets'
 
 // Notes on plugin composition:
-// - Collections owned by atomic-payload-* packages (Icon, Images, Favicons,
+// - The `designSet` and `shortcutSet` collections are registered via `designSetsPlugin` (see `./designSets`).
+// - Other collections owned by atomic-payload-* packages (Icon, Images, Favicons,
 //   Font, MuxVideo, PostHogProperty) are still registered through the
 //   template's `@/collections` array; their package plugin factories
 //   (`iconsPlugin`, `imagesPlugin`, `fontsPlugin`, `posthogPlugin`) are
@@ -32,6 +34,7 @@ export const plugins: Plugin[] = [
   actionsPlugin({ enabled: true }),
   // Pass `childBlocks: [myBlock, …]` to append more blocks alongside the defaults.
   childBlocksPlugin({ enabled: true }),
+  designSetsPluginConfig,
   revalidationPlugin({
     enabled: true,
     collectionSlugs: ['icon', 'iconSet', 'images', 'forms', 'form-submissions'],

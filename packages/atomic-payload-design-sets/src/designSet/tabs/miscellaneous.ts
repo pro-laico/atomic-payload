@@ -1,6 +1,6 @@
 import { type Tab } from 'payload'
-import { defaultAria } from '@/collections/designSets/defaults'
-import { TokenValueArrayField, TokenValuesArrayField, ValuesField } from '@/fields/designSets/value'
+import { defaultAria } from '../defaults'
+import { TokenValueArrayField, TokenValuesArrayField, ValuesField } from '../../fields/value'
 
 export const MiscellaneousTab = () => {
   const colorsField: Tab = {

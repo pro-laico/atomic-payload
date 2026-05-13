@@ -1,8 +1,8 @@
 import { z } from '@pro-laico/atomic-payload-zap'
 import { manualLogger } from '@pro-laico/atomic-payload-atomic-hook'
 import generatePreflights from './generatePreflights'
-import { designSetColors } from '@/collections/designSets/tabs/colors'
-import { TokenString, TokenStringArray } from '@/fields/designSets/value'
+import { designSetColors } from '@pro-laico/atomic-payload-design-sets/designSet/tabs/colors'
+import { TokenString, TokenStringArray } from '@pro-laico/atomic-payload-design-sets/fields/value'
 import type { DesignSet, TokenStorage, RSS, RSSOSA, UnoThemeAnimation, UnoColors as UnoColorsType } from '@/ts/types'
 
 const processTokenString = z.function({ input: [z.ap.get('TokenString', TokenString)], output: z.ap.get('RSS') }).implement((input) => {

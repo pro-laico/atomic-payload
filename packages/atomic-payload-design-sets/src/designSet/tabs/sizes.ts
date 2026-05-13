@@ -1,5 +1,5 @@
 import { type Tab } from 'payload'
-import { TokenValueArrayField } from '../../../fields/designSets/value'
+import { TokenValueArrayField } from '../../fields/value'
 
 export const SizesTab = () => {
   const sizesField: Tab = {

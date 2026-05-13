@@ -20,7 +20,7 @@ atomic-payload/
 │   ├── atomic-payload-actions/        # actionsPlugin + action blocks
 │   ├── atomic-payload-forms/            # formsPlugin + submit-form blocks + processor
 │   ├── atomic-payload-child-blocks/   # childBlocksPlugin + child blocks
-│   ├── atomic-payload-design-sets/    # designSetsPlugin factory
+│   ├── atomic-payload-design-sets/    # designSetsPlugin: designSet + shortcutSet
 │   └── atomic-payload-atomic-hook/    # atomicHookPlugin + sanitizeData/log
 ├── templates/
 │   └── atomic-payload/                # Full Atomic Payload starter template
@@ -44,7 +44,7 @@ atomic-payload/
 | `@pro-laico/atomic-payload-actions`    | actionsPlugin + action blocks + type re-exports                 |
 | `@pro-laico/atomic-payload-forms`      | formsPlugin + submit-form SVR blocks + server processor         |
 | `@pro-laico/atomic-payload-child-blocks` | childBlocksPlugin + default child blocks                      |
-| `@pro-laico/atomic-payload-design-sets`  | designSetsPlugin factory                                        |
+| `@pro-laico/atomic-payload-design-sets`  | designSetsPlugin: `designSet` + `shortcutSet` collections + token fields |
 | `@pro-laico/atomic-payload-atomic-hook`  | atomicHookPlugin + sanitizeData + manualLogger                  |
 
 ## Templates

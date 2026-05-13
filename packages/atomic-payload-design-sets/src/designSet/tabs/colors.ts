@@ -1,7 +1,7 @@
 // TODO: Make Color Picker Component
 import { z } from '@pro-laico/atomic-payload-zap'
 import { type Tab } from 'payload'
-import { ColorLabelPath } from '@/ui'
+import { ColorLabelPath } from '../../paths'
 import { APField } from '@pro-laico/atomic-payload-apf'
 import { onArraySetAPFShallow } from '@pro-laico/atomic-payload-apf'
 

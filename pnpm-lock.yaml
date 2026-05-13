@@ -125,9 +125,18 @@ importers:
 
   packages/atomic-payload-design-sets:
     dependencies:
+      '@pro-laico/atomic-payload-apf':
+        specifier: workspace:*
+        version: link:../atomic-payload-apf
+      '@pro-laico/atomic-payload-revalidation':
+        specifier: workspace:*
+        version: link:../atomic-payload-revalidation
       '@pro-laico/atomic-payload-types':
         specifier: workspace:*
         version: link:../atomic-payload-types
+      '@pro-laico/atomic-payload-zap':
+        specifier: workspace:*
+        version: link:../atomic-payload-zap
     devDependencies:
       payload:
         specifier: ^3.79.0

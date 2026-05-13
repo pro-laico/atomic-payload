@@ -1,33 +1,57 @@
-import type { Config, Plugin, CollectionConfig } from 'payload'
+import type { Config, Plugin } from 'payload'
+import { createDesignSetCollection, type DesignSetCollectionOptions } from './designSet/createCollection'
+import { createShortcutSetCollection, type ShortcutSetCollectionOptions } from './shortcutSet/createCollection'
 
-export interface DesignSetsPluginOptions {
+/** Omit hook + preview: those always come from the parent `designSetsPlugin` options. */
+export type DesignSetsShortcutSetOptions = Partial<
+  Omit<ShortcutSetCollectionOptions, 'atomicHook' | 'generateLivePreviewPath'>
+> & {
+  /** When false, the `shortcutSet` collection is not registered. Defaults to true. */
   enabled?: boolean
-  /** The DesignSet collection config to register. */
-  designSet?: CollectionConfig
-  /** The ShortcutSet collection config to register. Pass false to skip. */
-  shortcutSet?: CollectionConfig | false
+}
+
+export type DesignSetsPluginOptions = DesignSetCollectionOptions & {
+  /** When false, the plugin does not register the `designSet` collection. Defaults to true. */
+  enabled?: boolean
+  /**
+   * When false, the `shortcutSet` collection is not registered.
+   * When an object, shallow-merged with hook + preview from this plugin call.
+   */
+  shortcutSet?: false | DesignSetsShortcutSetOptions
 }
 
 /**
- * Registers the supplied DesignSet (and optionally ShortcutSet) collection
- * configs onto Payload.
- *
- * NOTE: the collection schemas still live in the consuming template because
- * they depend on template-only field utilities (APField wiring, ActiveField,
- * UniqueTitleField, generateLivePreviewPath, design-token row labels). A
- * subsequent release will move those dependencies and the schema definitions
- * into this package.
+ * Registers the `designSet` collection and (by default) the `shortcutSet` collection.
+ * Requires `atomicHook` and `generateLivePreviewPath` from the host app.
  */
 export const designSetsPlugin =
-  (opts: DesignSetsPluginOptions = {}): Plugin =>
+  (opts: DesignSetsPluginOptions): Plugin =>
   (config: Config): Config => {
-    const { enabled = true, designSet, shortcutSet } = opts
+    const { enabled = true, shortcutSet: shortcutSetOpt, ...collectionOpts } = opts
     if (!enabled) return config
-    const additions: CollectionConfig[] = []
-    if (designSet) additions.push(designSet)
-    if (shortcutSet) additions.push(shortcutSet)
-    if (additions.length === 0) return config
-    return { ...config, collections: [...(config.collections ?? []), ...additions] }
+
+    const collections = [...(config.collections ?? [])]
+
+    collections.push(createDesignSetCollection(collectionOpts))
+
+    if (shortcutSetOpt !== false) {
+      const slice: DesignSetsShortcutSetOptions =
+        shortcutSetOpt && typeof shortcutSetOpt === 'object' ? shortcutSetOpt : {}
+      if (slice.enabled !== false) {
+        const { enabled: _e, access, collection, defaultShortcuts } = slice
+        collections.push(
+          createShortcutSetCollection({
+            atomicHook: collectionOpts.atomicHook,
+            generateLivePreviewPath: collectionOpts.generateLivePreviewPath,
+            ...(access !== undefined ? { access } : {}),
+            ...(collection !== undefined ? { collection } : {}),
+            ...(defaultShortcuts !== undefined ? { defaultShortcuts } : {}),
+          }),
+        )
+      }
+    }
+
+    return { ...config, collections }
   }
 
 export default designSetsPlugin

@@ -2326,7 +2326,7 @@ export interface ShortcutSet {
     id?: string | null;
   }[];
   /**
-   * Default shortcuts are set in the project code at /src/collections/shortcutSets/defaults.ts
+   * Default shortcut rows come from `defaultShortcuts` on `designSetsPlugin({ shortcutSet: { defaultShortcuts: [...] } })`.
    */
   defaultShortcuts?:
     | {
