@@ -14,7 +14,7 @@ atomic-payload/
 │   ├── atomic-payload-apf/            # APF runtime, fields, admin UI
 │   ├── atomic-payload-icons/          # iconsPlugin: Icon + iconSet; AtomicIcon; iconSelect factory
 │   ├── atomic-payload-images/         # Images + Favicons + FaviconField
-│   ├── atomic-payload-fonts/          # Font collection + download CLI
+│   ├── atomic-payload-fonts/          # fontsPlugin + Font collection + download CLI
 │   ├── atomic-payload-mux-video/      # MuxVideo wrapper plugin
 │   ├── atomic-payload-posthog/        # PostHogProperty + tab + provider
 │   ├── atomic-payload-actions/        # actionsPlugin + action blocks
@@ -38,7 +38,7 @@ atomic-payload/
 | `@pro-laico/atomic-payload-apf`          | Atomic Payload Functions: runtime, fields, admin UI             |
 | `@pro-laico/atomic-payload-icons`        | iconsPlugin (Icon + iconSet), formatSVG, AtomicIcon, createIconSelect       |
 | `@pro-laico/atomic-payload-images`       | Images + Favicons collections + FaviconField + blur integration |
-| `@pro-laico/atomic-payload-fonts`        | Font collection + atomic-fonts-download CLI                     |
+| `@pro-laico/atomic-payload-fonts`        | fontsPlugin + Font collection + font download CLI / API            |
 | `@pro-laico/atomic-payload-mux-video`    | MuxVideo extension collection + plugin wrapper                  |
 | `@pro-laico/atomic-payload-posthog`      | PostHogProperty + tracking tab + React provider                 |
 | `@pro-laico/atomic-payload-actions`    | actionsPlugin + action blocks + type re-exports                 |

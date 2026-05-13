@@ -16,7 +16,7 @@
     "build": "next build",
     "dev": "next dev",
     "prebuild": "pnpm download:fonts",
-    "download:fonts": "pnpm exec tsx src/collections/fonts/script.ts",
+    "download:fonts": "pnpm exec tsx node_modules/@pro-laico/atomic-payload-fonts/src/scripts/cli.ts",
     "generate:types": "cross-env NODE_OPTIONS=\"--conditions=react-server\" payload  generate:types",
     "generate:importmap": "cross-env NODE_OPTIONS=\"--conditions=react-server\" payload generate:importmap"
   },

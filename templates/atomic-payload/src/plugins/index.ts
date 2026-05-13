@@ -13,15 +13,17 @@ import { revalidationPlugin } from '@pro-laico/atomic-payload-revalidation'
 import { formsPlugin } from '@pro-laico/atomic-payload-forms'
 import { actionsPlugin } from '@pro-laico/atomic-payload-actions'
 import { childBlocksPlugin } from '@pro-laico/atomic-payload-child-blocks'
+import { fontsPluginConfig } from './fonts'
 import { iconsPluginConfig } from './icons'
 import { designSetsPluginConfig } from './designSets'
 
 // Notes on plugin composition:
+// - `Font` is registered via `fontsPlugin` (see `./fonts`).
 // - `Icon` and `iconSet` are registered via `iconsPlugin` (see `./icons`).
 // - The `designSet` and `shortcutSet` collections are registered via `designSetsPlugin` (see `./designSets`).
 // - Other collections owned by atomic-payload-* packages (Images, Favicons,
-//   Font, MuxVideo, PostHogProperty) are still registered through the
-//   template's `@/collections` array; their `imagesPlugin`, `fontsPlugin`, and
+//   MuxVideo, PostHogProperty) are still registered through the
+//   template's `@/collections` array; their `imagesPlugin` and
 //   `posthogPlugin` factories are intentionally not invoked here to avoid
 //   double-registration.
 // - `formsPlugin` prepends default submit-form blocks; pass `formBlocks: […]` for more.
@@ -34,6 +36,7 @@ export const plugins: Plugin[] = [
   actionsPlugin({ enabled: true }),
   // Pass `childBlocks: [myBlock, …]` to append more blocks alongside the defaults.
   childBlocksPlugin({ enabled: true }),
+  fontsPluginConfig,
   iconsPluginConfig,
   designSetsPluginConfig,
   revalidationPlugin({
