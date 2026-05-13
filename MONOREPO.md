@@ -12,7 +12,7 @@ atomic-payload/
 │   ├── atomic-payload-zap/            # zod + AtomicRegistry helper
 │   ├── atomic-payload-revalidation/   # revalidateTag + hooks + plugin
 │   ├── atomic-payload-apf/            # APF runtime, fields, admin UI
-│   ├── atomic-payload-icons/          # Icon collection + formatSVG + AtomicIcon
+│   ├── atomic-payload-icons/          # iconsPlugin: Icon + iconSet; AtomicIcon; iconSelect factory
 │   ├── atomic-payload-images/         # Images + Favicons + FaviconField
 │   ├── atomic-payload-fonts/          # Font collection + download CLI
 │   ├── atomic-payload-mux-video/      # MuxVideo wrapper plugin
@@ -36,7 +36,7 @@ atomic-payload/
 | `@pro-laico/atomic-payload-zap`          | zod + AtomicRegistry helper                                     |
 | `@pro-laico/atomic-payload-revalidation` | revalidateTag + collection/global hooks + plugin                |
 | `@pro-laico/atomic-payload-apf`          | Atomic Payload Functions: runtime, fields, admin UI             |
-| `@pro-laico/atomic-payload-icons`        | Icon collection + formatSVG + AtomicIcon                        |
+| `@pro-laico/atomic-payload-icons`        | iconsPlugin (Icon + iconSet), formatSVG, AtomicIcon, createIconSelect       |
 | `@pro-laico/atomic-payload-images`       | Images + Favicons collections + FaviconField + blur integration |
 | `@pro-laico/atomic-payload-fonts`        | Font collection + atomic-fonts-download CLI                     |
 | `@pro-laico/atomic-payload-mux-video`    | MuxVideo extension collection + plugin wrapper                  |

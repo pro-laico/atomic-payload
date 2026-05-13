@@ -21,6 +21,14 @@
     "./admin/iconRowLabel": {
       "types": "./dist/components/admin/iconRowLabel.d.ts",
       "import": "./dist/components/admin/iconRowLabel.js"
+    },
+    "./admin/iconSelect": {
+      "types": "./dist/components/admin/iconSelect.d.ts",
+      "import": "./dist/components/admin/iconSelect.js"
+    },
+    "./iconSet/defaults": {
+      "types": "./dist/iconSet/defaults.d.ts",
+      "import": "./dist/iconSet/defaults.js"
     }
   },
   "files": [

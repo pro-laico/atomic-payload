@@ -1,5 +1,5 @@
 'use client'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, startTransition } from 'react'
 import { ActionContext, AtomicChild } from '@/ts/types'
 import { handleRunnerActions } from '@/hooks/frontEnd/useActions/dispatch'
 
@@ -21,8 +21,8 @@ export function usePortalActions(props: UsePortalActionsProps): UsePortalActions
 
   useEffect(() => {
     const storedOpen = context.atomicStore.getValue(block.portalName!, block.persisted)
-    if (typeof storedOpen === 'boolean') setOpen(storedOpen)
-    else setOpen(defaultOpen)
+    const next = typeof storedOpen === 'boolean' ? storedOpen : defaultOpen
+    startTransition(() => setOpen(next))
   }, [block.blockType, block.portalName, block.persisted, context, defaultOpen])
 
   const onOpenChange = async () => {

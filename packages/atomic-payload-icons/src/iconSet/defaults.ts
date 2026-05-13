@@ -74,8 +74,8 @@ const IconList = {
   BRAND_ICON_VARIANTS,
 }
 
-const DefaultIconList = Object.values(IconList)
+export const defaultIconNameList = Object.values(IconList)
   .flat()
   .map((icon) => ({ name: icon?.value }))
 
-export default DefaultIconList
+export default defaultIconNameList
