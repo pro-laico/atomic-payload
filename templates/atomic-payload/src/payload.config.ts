@@ -8,12 +8,11 @@ import Collections from '@/collections'
 import { fileURLToPath } from 'node:url'
 import { Users } from '@/collections/users'
 import JSONSchemaExtensions from '@/ts/JSONSchema'
-import ChildrenBlocks from '@/blocks/children/blocks'
+import { defaultLexical } from '@pro-laico/atomic-payload-child-blocks/default-lexical'
 //import { resendAdapter } from '@payloadcms/email-resend'
 import { mongooseAdapter } from '@payloadcms/db-mongodb'
 import { AllActionBlocks } from '@/blocks/actions/blocks'
 import { getServerSideURL } from '@/utilities/get/getURL'
-import { defaultLexical } from '@/blocks/children/richText/defaultLexical'
 import { IconPath, LogoPath, SiteTriggersPath, BeforeDashboard } from '@/ui'
 import FormSanitationBlocks from '@/blocks/submitForm/form/sanitation/blocks'
 import FormValidationBlocks from '@/blocks/submitForm/form/validation/blocks'
@@ -37,7 +36,6 @@ export default buildConfig({
   typescript: { schema: [JSONSchemaExtensions], outputFile: path.resolve(dirname, 'ts/types/payload-types.ts') },
   db: mongooseAdapter({ url: process.env.MONGODB_URI || '', collectionsSchemaOptions: { pages: { minimize: true } }, allowAdditionalKeys: false }),
   blocks: [
-    ...ChildrenBlocks,
     ...AllActionBlocks,
     ...FormRateLimitBlocks,
     ...FormSanitationBlocks,

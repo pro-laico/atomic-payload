@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "target": "ES2022",
+    "lib": ["DOM", "DOM.Iterable", "ES2022"],
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "react-jsx",
+    "noEmit": true,
+    "baseUrl": ".",
+    "paths": {
+      "atomic-payload/child-blocks-deps": ["../../templates/atomic-payload/src/child-blocks-deps.ts"],
+      "atomic-payload/child-blocks-types": ["../../templates/atomic-payload/src/child-blocks-types.ts"],
+      "atomic-payload/get-cached-react": ["../../templates/atomic-payload/src/utilities/get/cache/react.ts"]
+    }
+  },
+  "include": ["src/**/*.ts", "src/**/*.tsx"]
+}

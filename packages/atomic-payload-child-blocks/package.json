@@ -1,0 +1,74 @@
+{
+  "name": "@pro-laico/atomic-payload-child-blocks",
+  "version": "0.1.0",
+  "description": "Atomic Payload child content blocks with a Payload plugin factory. Ships TypeScript source; the app (Next.js) transpiles it.",
+  "license": "MIT",
+  "type": "module",
+  "publishConfig": {
+    "access": "public"
+  },
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
+    },
+    "./variant-settings": {
+      "types": "./src/variant-settings.ts",
+      "default": "./src/variant-settings.ts"
+    },
+    "./default-lexical": {
+      "types": "./src/richText/defaultLexical.ts",
+      "default": "./src/richText/defaultLexical.ts"
+    },
+    "./zap": {
+      "types": "./src/zap.ts",
+      "default": "./src/zap.ts"
+    },
+    "./frontend-components": {
+      "types": "./src/frontend-components.ts",
+      "default": "./src/frontend-components.ts"
+    }
+  },
+  "files": [
+    "src",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "node -e \"process.exit(0)\"",
+    "lint": "node -e \"process.exit(0)\""
+  },
+  "dependencies": {
+    "@base-ui-components/react": "1.0.0-rc.0",
+    "@mux/mux-video-react": "^0.25.3",
+    "@pro-laico/atomic-payload-types": "workspace:*",
+    "@pro-laico/atomic-payload-zap": "workspace:*",
+    "@pro-laico/atomic-payload-apf": "workspace:*",
+    "@pro-laico/atomic-payload-icons": "workspace:*"
+  },
+  "peerDependencies": {
+    "@payloadcms/richtext-lexical": ">=3.0.0",
+    "@payloadcms/ui": ">=3.0.0",
+    "atomic-payload": "workspace:*",
+    "next": ">=15.0.0",
+    "payload": ">=3.0.0",
+    "react": ">=19.0.0",
+    "react-dom": ">=19.0.0"
+  },
+  "devDependencies": {
+    "@payloadcms/richtext-lexical": "^3.79.0",
+    "@payloadcms/ui": "^3.79.0",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "atomic-payload": "workspace:*",
+    "next": "^16.1.6",
+    "payload": "^3.79.0",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "typescript": "5.8.3"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

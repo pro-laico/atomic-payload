@@ -4,39 +4,32 @@ import 'server-only' //DO NOT REMOVE
 import { BlockSlug } from 'payload'
 import { SSRProps } from './SSRProps'
 import { RenderChildrenProps, AtomicChild, ChildBySlug, ChildrenWithActions, ChildBlocks, PassThroughs, BlockBySlug } from '@/ts/types'
-
-//Components
-import { SVGChild } from '@/blocks/children/svg/component'
-import { IconChild } from '@/blocks/children/icon/component'
-import { ImageChild } from '@/blocks/children/image/component'
-import { VideoChild } from '@/blocks/children/video/component'
-import { RichTextChild } from '@/blocks/children/richText/component'
-
-//Simple Text Child
-import { SimpleTextChild } from '@/blocks/children/simpleText/component'
-import { SimpleTextChildClient } from '@/blocks/children/simpleText/component.client'
-
-// Atomic Components - Direct imports
-import { AtomicTag } from '@/blocks/children/atomic/variants/tag/component'
-import { AtomicTagClient } from '@/blocks/children/atomic/variants/tag/component.client'
-import { AtomicForm } from '@/blocks/children/atomic/variants/form/component'
-//Input Variants
-import { TextInputClient } from '@/blocks/children/atomic/variants/input/variants/text/component.client'
-import { TextInput } from '@/blocks/children/atomic/variants/input/variants/text/component'
-import { RadioInputClient } from '@/blocks/children/atomic/variants/input/variants/radio/component.client'
-import { RadioInput } from '@/blocks/children/atomic/variants/input/variants/radio/component'
-import { NumberInputClient } from '@/blocks/children/atomic/variants/input/variants/number/component.client'
-import { NumberInput } from '@/blocks/children/atomic/variants/input/variants/number/component'
-import { CheckboxInputClient } from '@/blocks/children/atomic/variants/input/variants/checkBox/component.client'
-import { CheckboxInput } from '@/blocks/children/atomic/variants/input/variants/checkBox/component'
-//Button Variants
-import { AtomicButtonLinkClient } from '@/blocks/children/atomic/variants/button/variants/link/component.client'
-import { AtomicButtonLink } from '@/blocks/children/atomic/variants/button/variants/link/component'
-
-import { AtomicButtonRegular } from '@/blocks/children/atomic/variants/button/variants/regular/component'
-import { AtomicButtonRegularClient } from '@/blocks/children/atomic/variants/button/variants/regular/component.client'
-import { AtomicButtonPortalDialog } from '@/blocks/children/atomic/variants/button/variants/portal/dialog/component'
-import { AtomicButtonPortalPopover } from '@/blocks/children/atomic/variants/button/variants/portal/popover/component'
+import {
+  SVGChild,
+  IconChild,
+  ImageChild,
+  VideoChild,
+  RichTextChild,
+  SimpleTextChild,
+  SimpleTextChildClient,
+  AtomicTag,
+  AtomicTagClient,
+  AtomicForm,
+  TextInputClient,
+  TextInput,
+  RadioInputClient,
+  RadioInput,
+  NumberInputClient,
+  NumberInput,
+  CheckboxInputClient,
+  CheckboxInput,
+  AtomicButtonLinkClient,
+  AtomicButtonLink,
+  AtomicButtonRegular,
+  AtomicButtonRegularClient,
+  AtomicButtonPortalDialog,
+  AtomicButtonPortalPopover,
+} from '@pro-laico/atomic-payload-child-blocks/frontend-components'
 
 const components = {
   SVGChild,
@@ -94,8 +87,8 @@ function is<T extends BlockSlug>(item: BlockBySlug<BlockSlug>, slug: T): item is
 const hasActions = (block: ChildBlocks[number], passThroughs: PassThroughs): block is ChildBySlug<ChildrenWithActions> => {
   return Boolean(
     ('contentActions' in block && block?.contentActions?.actions && block?.contentActions?.actions.length > 0) ||
-    ('triggerActions' in block && block?.triggerActions?.actions && block?.triggerActions?.actions.length > 0) ||
-    (is(block, 'SimpleTextChild') && Boolean(Object.keys(passThroughs.c?.da || {}).length > 0)),
+      ('triggerActions' in block && block?.triggerActions?.actions && block?.triggerActions?.actions.length > 0) ||
+      (is(block, 'SimpleTextChild') && Boolean(Object.keys(passThroughs.c?.da || {}).length > 0)),
   )
 }
 

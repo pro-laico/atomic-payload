@@ -68,6 +68,58 @@ importers:
         specifier: 5.8.3
         version: 5.8.3
 
+  packages/atomic-payload-child-blocks:
+    dependencies:
+      '@base-ui-components/react':
+        specifier: 1.0.0-rc.0
+        version: 1.0.0-rc.0(@types/react@19.2.14)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      '@mux/mux-video-react':
+        specifier: ^0.25.3
+        version: 0.25.3(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      '@pro-laico/atomic-payload-apf':
+        specifier: workspace:*
+        version: link:../atomic-payload-apf
+      '@pro-laico/atomic-payload-icons':
+        specifier: workspace:*
+        version: link:../atomic-payload-icons
+      '@pro-laico/atomic-payload-types':
+        specifier: workspace:*
+        version: link:../atomic-payload-types
+      '@pro-laico/atomic-payload-zap':
+        specifier: workspace:*
+        version: link:../atomic-payload-zap
+    devDependencies:
+      '@payloadcms/richtext-lexical':
+        specifier: ^3.79.0
+        version: 3.79.0(@faceless-ui/modal@3.0.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(@faceless-ui/scroll-info@2.0.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(@payloadcms/next@3.79.0(@types/react@19.2.14)(graphql@16.11.0)(monaco-editor@0.52.2)(next@16.1.6(@babel/core@7.29.0)(@opentelemetry/api@1.9.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(sass@1.77.4))(payload@3.79.0(graphql@16.11.0)(typescript@5.8.3))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(typescript@5.8.3))(@types/react@19.2.14)(monaco-editor@0.52.2)(next@16.1.6(@babel/core@7.29.0)(@opentelemetry/api@1.9.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(sass@1.77.4))(payload@3.79.0(graphql@16.11.0)(typescript@5.8.3))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(typescript@5.8.3)(yjs@13.6.27)
+      '@payloadcms/ui':
+        specifier: ^3.79.0
+        version: 3.79.0(@types/react@19.2.14)(monaco-editor@0.52.2)(next@16.1.6(@babel/core@7.29.0)(@opentelemetry/api@1.9.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(sass@1.77.4))(payload@3.79.0(graphql@16.11.0)(typescript@5.8.3))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(typescript@5.8.3)
+      '@types/react':
+        specifier: ^19.2.14
+        version: 19.2.14
+      '@types/react-dom':
+        specifier: ^19.2.3
+        version: 19.2.3(@types/react@19.2.14)
+      atomic-payload:
+        specifier: workspace:*
+        version: link:../../templates/atomic-payload
+      next:
+        specifier: ^16.1.6
+        version: 16.1.6(@babel/core@7.29.0)(@opentelemetry/api@1.9.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(sass@1.77.4)
+      payload:
+        specifier: ^3.79.0
+        version: 3.79.0(graphql@16.11.0)(typescript@5.8.3)
+      react:
+        specifier: ^19.2.4
+        version: 19.2.4
+      react-dom:
+        specifier: ^19.2.4
+        version: 19.2.4(react@19.2.4)
+      typescript:
+        specifier: 5.8.3
+        version: 5.8.3
+
   packages/atomic-payload-design-sets:
     dependencies:
       '@pro-laico/atomic-payload-types':
@@ -333,6 +385,9 @@ importers:
       '@pro-laico/atomic-payload-atomic-hook':
         specifier: workspace:*
         version: link:../../packages/atomic-payload-atomic-hook
+      '@pro-laico/atomic-payload-child-blocks':
+        specifier: workspace:*
+        version: link:../../packages/atomic-payload-child-blocks
       '@pro-laico/atomic-payload-design-sets':
         specifier: workspace:*
         version: link:../../packages/atomic-payload-design-sets

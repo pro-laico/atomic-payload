@@ -10,6 +10,7 @@ import { vercelBlobStoragePluginConfig } from './vercelBlobStorage'
 
 // Atomic Payload package plugins
 import { revalidationPlugin } from '@pro-laico/atomic-payload-revalidation'
+import { childBlocksPlugin } from '@pro-laico/atomic-payload-child-blocks'
 
 // Notes on plugin composition:
 // - Collections owned by atomic-payload-* packages (Icon, Images, Favicons,
@@ -24,6 +25,8 @@ import { revalidationPlugin } from '@pro-laico/atomic-payload-revalidation'
 //   to the listed slugs.
 
 export const plugins: Plugin[] = [
+  // Pass `childBlocks: [myBlock, …]` to append more blocks alongside the defaults.
+  childBlocksPlugin({ enabled: true }),
   revalidationPlugin({
     enabled: true,
     collectionSlugs: ['icon', 'iconSet', 'images', 'forms', 'form-submissions'],

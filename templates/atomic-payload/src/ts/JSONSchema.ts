@@ -3,7 +3,7 @@ import { generateBlocksType, toJSONSchemaExtensions } from '@pro-laico/atomic-pa
 import CollectionSchemas from '@/collections/zap'
 import { ActionBlockType } from '@/blocks/actions/zap'
 import { Runner, Attributer } from '@/hooks/frontEnd/useActions/dispatch/zap'
-import { ChildBlockType, BackdropChildSlug } from '@/blocks/children/zap'
+import { ChildBlockType, BackdropChildSlug } from '@pro-laico/atomic-payload-child-blocks/zap'
 import { InputValidationBlockType, InputSanitationBlockType } from '@/blocks/submitForm/input/zap'
 import { FormRateLimitBlockType, FormSanitationBlockType, FormValidationBlockType } from '@/blocks/submitForm/form/zap'
 
