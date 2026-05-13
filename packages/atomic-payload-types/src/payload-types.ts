@@ -66,6 +66,15 @@ export type FormSanitationBlocks = Get<'FormSanitationBlocks', DefaultBlock[]>
 export type FormValidationBlocks = Get<'FormValidationBlocks', DefaultBlock[]>
 export type InputSanitationBlocks = Get<'InputSanitationBlocks', DefaultBlock[]>
 export type InputValidationBlocks = Get<'InputValidationBlocks', DefaultBlock[]>
+export type StoredAtomicFormInput = Get<'StoredAtomicFormInput', DefaultRecord>
+
+/** Form / input SVR block payloads (definitions in generated `payload-types.ts`). */
+export type FrlSimpleSlidingWindow = Get<'FrlSimpleSlidingWindow', DefaultRecord>
+export type FsCombineTwoFields = Get<'FsCombineTwoFields', DefaultRecord>
+export type FvIsUnique = Get<'FvIsUnique', DefaultRecord>
+export type IsTrimText = Get<'IsTrimText', DefaultRecord>
+export type IvContains = Get<'IvContains', DefaultRecord>
+export type IvDoesNotContain = Get<'IvDoesNotContain', DefaultRecord>
 
 // /////////////////////////////////////
 // String-literal union types

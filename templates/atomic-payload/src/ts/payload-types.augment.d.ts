@@ -34,6 +34,7 @@ declare module '@pro-laico/atomic-payload-types/schema' {
     FormValidationBlocks: G.FormValidationBlocks
     InputSanitationBlocks: G.InputSanitationBlocks
     InputValidationBlocks: G.InputValidationBlocks
+    StoredAtomicFormInput: G.StoredAtomicFormInput
     ChildBlockType: G.ChildBlockType
     ActionBlockType: G.ActionBlockType
     RunnerType: G.RunnerType
@@ -47,6 +48,12 @@ declare module '@pro-laico/atomic-payload-types/schema' {
     FormValidationBlockType: G.FormValidationBlockType
     InputValidationBlockType: G.InputValidationBlockType
     InputSanitationBlockType: G.InputSanitationBlockType
+    FrlSimpleSlidingWindow: G.FrlSimpleSlidingWindow
+    FsCombineTwoFields: G.FsCombineTwoFields
+    FvIsUnique: G.FvIsUnique
+    IsTrimText: G.IsTrimText
+    IvContains: G.IvContains
+    IvDoesNotContain: G.IvDoesNotContain
     CollectionThatUsesCSSProcessorSlug: G.CollectionThatUsesCSSProcessorSlug
     CollectionWithStoredAtomicClassesSlug: G.CollectionWithStoredAtomicClassesSlug
   }
@@ -80,6 +87,7 @@ declare module '@pro-laico/atomic-payload-types' {
     FormValidationBlocks: G.FormValidationBlocks
     InputSanitationBlocks: G.InputSanitationBlocks
     InputValidationBlocks: G.InputValidationBlocks
+    StoredAtomicFormInput: G.StoredAtomicFormInput
 
     ChildBlockType: G.ChildBlockType
     ActionBlockType: G.ActionBlockType
@@ -94,6 +102,12 @@ declare module '@pro-laico/atomic-payload-types' {
     FormValidationBlockType: G.FormValidationBlockType
     InputValidationBlockType: G.InputValidationBlockType
     InputSanitationBlockType: G.InputSanitationBlockType
+    FrlSimpleSlidingWindow: G.FrlSimpleSlidingWindow
+    FsCombineTwoFields: G.FsCombineTwoFields
+    FvIsUnique: G.FvIsUnique
+    IsTrimText: G.IsTrimText
+    IvContains: G.IvContains
+    IvDoesNotContain: G.IvDoesNotContain
     CollectionThatUsesCSSProcessorSlug: G.CollectionThatUsesCSSProcessorSlug
     CollectionWithStoredAtomicClassesSlug: G.CollectionWithStoredAtomicClassesSlug
   }

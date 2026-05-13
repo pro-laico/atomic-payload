@@ -31,6 +31,7 @@
     "@pro-laico/atomic-payload-mux-video": "workspace:*",
     "@pro-laico/atomic-payload-posthog": "workspace:*",
     "@pro-laico/atomic-payload-actions": "workspace:*",
+    "@pro-laico/atomic-payload-forms": "workspace:*",
     "@pro-laico/atomic-payload-design-sets": "workspace:*",
     "@pro-laico/atomic-payload-atomic-hook": "workspace:*",
     "@pro-laico/atomic-payload-child-blocks": "workspace:*",

@@ -13,11 +13,6 @@ import { defaultLexical } from '@pro-laico/atomic-payload-child-blocks/default-l
 import { mongooseAdapter } from '@payloadcms/db-mongodb'
 import { getServerSideURL } from '@/utilities/get/getURL'
 import { IconPath, LogoPath, SiteTriggersPath, BeforeDashboard } from '@/ui'
-import FormSanitationBlocks from '@/blocks/submitForm/form/sanitation/blocks'
-import FormValidationBlocks from '@/blocks/submitForm/form/validation/blocks'
-import FormRateLimitBlocks from '@/blocks/submitForm/form/rateLimiting/blocks'
-import InputSanitationBlocks from '@/blocks/submitForm/input/sanitation/blocks'
-import InputValidationBlocks from '@/blocks/submitForm/input/validation/blocks'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -34,13 +29,7 @@ export default buildConfig({
   cors: [getServerSideURL()].filter(Boolean),
   typescript: { schema: [JSONSchemaExtensions], outputFile: path.resolve(dirname, 'ts/types/payload-types.ts') },
   db: mongooseAdapter({ url: process.env.MONGODB_URI || '', collectionsSchemaOptions: { pages: { minimize: true } }, allowAdditionalKeys: false }),
-  blocks: [
-    ...FormRateLimitBlocks,
-    ...FormSanitationBlocks,
-    ...FormValidationBlocks,
-    ...InputSanitationBlocks,
-    ...InputValidationBlocks,
-  ],
+  blocks: [],
   /*   email: resendAdapter({
     defaultFromAddress: 'chad@notifications.atomicpayload.com',
     defaultFromName: 'Chad At Atomic Payload',

@@ -1,6 +1,6 @@
 import { BlocksField } from 'payload'
 import { InputBlocksPath } from '@/ui'
-import { useOn } from '@/blocks/submitForm/input/useOn'
+import { useOn } from '@pro-laico/atomic-payload-forms/submitForm/input/useOn'
 import { InputSanitationBlockType, InputValidationBlockType } from '@/ts/types'
 
 type InputFunctionRegistry = {

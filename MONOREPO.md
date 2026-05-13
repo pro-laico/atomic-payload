@@ -17,7 +17,9 @@ atomic-payload/
 │   ├── atomic-payload-fonts/          # Font collection + download CLI
 │   ├── atomic-payload-mux-video/      # MuxVideo wrapper plugin
 │   ├── atomic-payload-posthog/        # PostHogProperty + tab + provider
-│   ├── atomic-payload-actions/        # actionsPlugin + action types
+│   ├── atomic-payload-actions/        # actionsPlugin + action blocks
+│   ├── atomic-payload-forms/            # formsPlugin + submit-form blocks + processor
+│   ├── atomic-payload-child-blocks/   # childBlocksPlugin + child blocks
 │   ├── atomic-payload-design-sets/    # designSetsPlugin factory
 │   └── atomic-payload-atomic-hook/    # atomicHookPlugin + sanitizeData/log
 ├── templates/
@@ -39,7 +41,9 @@ atomic-payload/
 | `@pro-laico/atomic-payload-fonts`        | Font collection + atomic-fonts-download CLI                     |
 | `@pro-laico/atomic-payload-mux-video`    | MuxVideo extension collection + plugin wrapper                  |
 | `@pro-laico/atomic-payload-posthog`      | PostHogProperty + tracking tab + React provider                 |
-| `@pro-laico/atomic-payload-actions`      | actionsPlugin + action type re-exports                          |
+| `@pro-laico/atomic-payload-actions`    | actionsPlugin + action blocks + type re-exports                 |
+| `@pro-laico/atomic-payload-forms`      | formsPlugin + submit-form SVR blocks + server processor         |
+| `@pro-laico/atomic-payload-child-blocks` | childBlocksPlugin + default child blocks                      |
 | `@pro-laico/atomic-payload-design-sets`  | designSetsPlugin factory                                        |
 | `@pro-laico/atomic-payload-atomic-hook`  | atomicHookPlugin + sanitizeData + manualLogger                  |
 

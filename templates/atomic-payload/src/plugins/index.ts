@@ -10,6 +10,7 @@ import { vercelBlobStoragePluginConfig } from './vercelBlobStorage'
 
 // Atomic Payload package plugins
 import { revalidationPlugin } from '@pro-laico/atomic-payload-revalidation'
+import { formsPlugin } from '@pro-laico/atomic-payload-forms'
 import { actionsPlugin } from '@pro-laico/atomic-payload-actions'
 import { childBlocksPlugin } from '@pro-laico/atomic-payload-child-blocks'
 
@@ -21,11 +22,13 @@ import { childBlocksPlugin } from '@pro-laico/atomic-payload-child-blocks'
 //   intentionally not invoked here to avoid double-registration. Projects
 //   that opt out of the template's `@/collections` aggregator can swap to the
 //   plugin factories directly.
+// - `formsPlugin` prepends default submit-form blocks; pass `formBlocks: […]` for more.
 // - `actionsPlugin` prepends default action blocks; pass `actionBlocks: […]` for more.
 // - `revalidationPlugin` attaches beforeChange / afterDelete revalidation hooks
 //   to the listed slugs.
 
 export const plugins: Plugin[] = [
+  formsPlugin({ enabled: true }),
   actionsPlugin({ enabled: true }),
   // Pass `childBlocks: [myBlock, …]` to append more blocks alongside the defaults.
   childBlocksPlugin({ enabled: true }),

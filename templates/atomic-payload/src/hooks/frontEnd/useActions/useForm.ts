@@ -2,7 +2,7 @@
 import { Toast } from '@base-ui-components/react/toast'
 import { useState, useEffect, useRef, useMemo } from 'react'
 import { useActionContext } from '@/hooks/frontEnd/useActions/useActionContext'
-import { submitForm as submitFormSF } from '@/blocks/submitForm/serverFunction'
+import { submitForm as submitFormSF } from '@pro-laico/atomic-payload-forms/submitForm/serverFunction'
 import { FormResponse, AtomicChild, FullFormContext, ActionContext } from '@/ts/types'
 
 export type UseFormProps = { block: AtomicChild }
