@@ -1,16 +1,10 @@
-import {
-  AtomicPath,
-  ColoredEnd,
-  ClassNameField,
-  TrackingTab,
-  inputTab,
-  AtomicChildSettingsTab,
-  TriggerActionsTab,
-  ContentActionsTab,
-  formRateLimitTab,
-  formSanitationTab,
-  formValidationTab,
-} from 'atomic-payload/child-blocks-deps'
+import { AtomicPath, ClassNameField } from 'atomic-payload/child-blocks-deps'
+import { ColoredEnd } from '../fields/coloredEnd'
+import { TrackingTab } from '../fields/trackingTab'
+import { AtomicChildSettingsTab } from '../fields/tabs/settings'
+import { TriggerActionsTab, ContentActionsTab } from '../fields/tabs/actions'
+import { inputTab } from '../fields/tabs/submitForm/input'
+import { formRateLimitTab, formSanitationTab, formValidationTab } from '../fields/tabs/submitForm/form'
 import { DepthControls, NonRecursiveChildBlockType } from 'atomic-payload/child-blocks-types'
 import { AtomicBlockControlBar } from './controlBar'
 import type { Block, BlocksField } from 'payload'

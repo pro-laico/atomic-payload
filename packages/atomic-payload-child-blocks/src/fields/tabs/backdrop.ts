@@ -1,6 +1,6 @@
 import { GroupField } from 'payload'
-import { ClassNameField } from '@/fields/className'
-import { BackdropChildren } from '@/fields/blocks/backdropChildren'
+import { ClassNameField } from 'atomic-payload/child-blocks-deps'
+import { BackdropChildren } from '../blocks/backdropChildren'
 
 const d = {
   className: 'Add atomic classes or shortcuts to the portal backdrop div here.',

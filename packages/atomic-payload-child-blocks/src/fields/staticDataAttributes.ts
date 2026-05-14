@@ -7,7 +7,6 @@ const d = {
   value: 'The string value of the data-key. Set to "true" to have a data attribute applied with no string value.',
 }
 
-/**Used to add a field to the admin panel that allows the user to add static data attributes to the element.*/
 export const StaticDataAttributesField = (location: 'trigger' | 'content') => {
   const sda: ArrayField = {
     type: 'array',

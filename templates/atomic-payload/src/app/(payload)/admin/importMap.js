@@ -28,9 +28,9 @@ import { StrikethroughFeatureClient as StrikethroughFeatureClient_e70f5e05f09f93
 import { UnderlineFeatureClient as UnderlineFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { BoldFeatureClient as BoldFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { ItalicFeatureClient as ItalicFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
-import { default as default_270f6bb8ae1323fe93100b8caf0d00e3 } from '@/ui/blocks/actionBlock'
-import { default as default_afd76833cc6ce7bb362fa549a0a6fedb } from '@/ui/blocks/inputBlock'
-import { default as default_8d0556207b1635189a14fae8651677fc } from '@/ui/decorative/coloredEnd'
+import { default as default_75e2cb5f8c3be2ee51b0078615d6a284 } from '@pro-laico/atomic-payload-child-blocks/admin/actionBlock'
+import { default as default_d3f2ac20f132f67d109515c4e18d78ba } from '@pro-laico/atomic-payload-child-blocks/admin/inputBlock'
+import { default as default_42627f30038b1f8762b631c7d2cb0c3c } from '@pro-laico/atomic-payload-child-blocks/admin/coloredEnd'
 import { default as default_7e0ebf8349626d5066c84607ea93eeb9 } from '@/ui/rowLabels/atomic'
 import { default as default_f1f0bac5666a44c5e8419518e1dd9915 } from '@/ui/rowLabels/simpleText'
 import { default as default_11ffef28c6d9fb8a04df535fd3b7f3ac } from '@/ui/fields/iconSelect'
@@ -71,9 +71,9 @@ export const importMap = {
   "@payloadcms/richtext-lexical/client#UnderlineFeatureClient": UnderlineFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "@payloadcms/richtext-lexical/client#BoldFeatureClient": BoldFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "@payloadcms/richtext-lexical/client#ItalicFeatureClient": ItalicFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
-  "@/ui/blocks/actionBlock#default": default_270f6bb8ae1323fe93100b8caf0d00e3,
-  "@/ui/blocks/inputBlock#default": default_afd76833cc6ce7bb362fa549a0a6fedb,
-  "@/ui/decorative/coloredEnd#default": default_8d0556207b1635189a14fae8651677fc,
+  "@pro-laico/atomic-payload-child-blocks/admin/actionBlock#default": default_75e2cb5f8c3be2ee51b0078615d6a284,
+  "@pro-laico/atomic-payload-child-blocks/admin/inputBlock#default": default_d3f2ac20f132f67d109515c4e18d78ba,
+  "@pro-laico/atomic-payload-child-blocks/admin/coloredEnd#default": default_42627f30038b1f8762b631c7d2cb0c3c,
   "@/ui/rowLabels/atomic#default": default_7e0ebf8349626d5066c84607ea93eeb9,
   "@/ui/rowLabels/simpleText#default": default_f1f0bac5666a44c5e8419518e1dd9915,
   "@/ui/fields/iconSelect#default": default_11ffef28c6d9fb8a04df535fd3b7f3ac,

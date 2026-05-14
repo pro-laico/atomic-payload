@@ -1,8 +1,8 @@
 import type { Block } from 'payload'
-import { ColoredEnd } from 'atomic-payload/child-blocks-deps'
-import { TrackingTab } from 'atomic-payload/child-blocks-deps'
+import { TrackingTab } from '../fields/trackingTab'
 import { ClassNameField } from 'atomic-payload/child-blocks-deps'
-import { ChildsSettingsTab } from 'atomic-payload/child-blocks-deps'
+import { ColoredEnd } from '../fields/coloredEnd'
+import { ChildsSettingsTab } from '../fields/tabs/settings'
 
 const d = {
   svgAtomicClasses: 'Add atomic classes or shortcuts to the svg element here.',

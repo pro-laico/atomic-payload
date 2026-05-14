@@ -25,3 +25,4 @@ export { updateHrefHook } from './hooks/field/href'
 export { updatePublishedAtHook } from './hooks/field/publishedAt'
 
 export { slugField } from './fields/slug'
+export { StorageTab } from './fields/storageTab'

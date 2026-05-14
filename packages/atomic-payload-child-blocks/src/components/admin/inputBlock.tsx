@@ -1,8 +1,8 @@
 'use client'
 import { useMemo } from 'react'
-import { AtomicInputTypes } from '@/ts/types'
 import { useFormFields, BlocksField } from '@payloadcms/ui'
-import { type InputBlocksFieldProps } from '@/ts/types'
+import type { InputBlocksFieldProps } from '@pro-laico/atomic-payload-types'
+import type { AtomicInputTypes } from '@pro-laico/atomic-payload-types/schema'
 
 const InputBlocksField: React.FC<InputBlocksFieldProps> = (props) => {
   const { path, field, usedOn } = props

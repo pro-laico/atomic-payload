@@ -171,9 +171,15 @@ importers:
       '@pro-laico/ap-utils':
         specifier: workspace:*
         version: link:../ap-utils
+      '@pro-laico/atomic-payload-actions':
+        specifier: workspace:*
+        version: link:../atomic-payload-actions
       '@pro-laico/atomic-payload-apf':
         specifier: workspace:*
         version: link:../atomic-payload-apf
+      '@pro-laico/atomic-payload-forms':
+        specifier: workspace:*
+        version: link:../atomic-payload-forms
       '@pro-laico/atomic-payload-icons':
         specifier: workspace:*
         version: link:../atomic-payload-icons

@@ -1,4 +1,4 @@
-import { ForField } from 'atomic-payload/child-blocks-deps'
+import { ForField } from '../../../fields/for'
 import type { GroupField } from 'payload'
 
 export const TagSettingsTab: GroupField = {

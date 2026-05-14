@@ -1,7 +1,7 @@
 import { BlocksField } from 'payload'
-import { InputBlocksPath } from '@/ui'
 import { useOn } from '@pro-laico/atomic-payload-forms/submitForm/input/useOn'
-import { InputSanitationBlockType, InputValidationBlockType } from '@/ts/types'
+import type { InputSanitationBlockType, InputValidationBlockType } from '@pro-laico/atomic-payload-types/schema'
+import { InputBlocksPath } from '../../../components/admin'
 
 type InputFunctionRegistry = {
   Sanitation: InputSanitationBlockType[]

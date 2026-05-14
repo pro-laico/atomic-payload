@@ -1,16 +1,13 @@
-import { TabAsField } from 'payload'
-import { ChildBlockType } from '@/ts/types'
-import type { Field, TextField } from 'payload'
-import { StaticDataAttributesField } from '@/fields/staticDataAttributes'
-import { PortalBackdropTab } from '@/fields/tabs/block/children/backdrop'
-import {
-  TagSettingsTab,
-  FormSettingsTab,
-  InputSettingsTab,
-  LinkSettingsTab,
-  DialogSettingsTab,
-  PopoverSettingsTab,
-} from '@pro-laico/atomic-payload-child-blocks/variant-settings'
+import type { Field, TabAsField, TextField } from 'payload'
+import type { ChildBlockType } from '@pro-laico/atomic-payload-types/schema'
+import { StaticDataAttributesField } from '../staticDataAttributes'
+import { PortalBackdropTab } from './backdrop'
+import { TagSettingsTab } from '../../atomic/variants/tag/settings'
+import { FormSettingsTab } from '../../atomic/variants/form/settings'
+import { InputSettingsTab } from '../../atomic/variants/input/settings'
+import { LinkSettingsTab } from '../../atomic/variants/button/variants/link/settings'
+import { DialogSettingsTab } from '../../atomic/variants/button/variants/portal/dialog/settings'
+import { PopoverSettingsTab } from '../../atomic/variants/button/variants/portal/popover/settings'
 
 const d = {
   tab: 'Whichever block type is selected, this tab will contain the non control bar settings for that block type.',

@@ -5,13 +5,6 @@ export { APFieldPath, APFieldLabelPath, APFControlsPath } from '@pro-laico/atomi
 export const LogoPath = '@/ui/assets/Logo'
 export const IconPath = '@/ui/assets/Icon'
 
-//Blocks
-export const InputBlocksPath = '@/ui/blocks/inputBlock'
-export const ActionBlocksPath = '@/ui/blocks/actionBlock'
-
-//Decorative
-export const ColoredEndPath = '@/ui/decorative/coloredEnd'
-
 //Fields
 export const SlugPath = '@/ui/fields/slug'
 export const IconSelectPath = '@/ui/fields/iconSelect'

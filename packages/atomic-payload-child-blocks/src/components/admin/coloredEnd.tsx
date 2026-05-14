@@ -1,8 +1,8 @@
 'use client'
-import './index.scss'
+import './coloredEnd.scss'
 import { useFormFields } from '@payloadcms/ui'
-import { AtomicChildVariants } from '@/ts/types'
 import type { UIFieldClientComponent } from 'payload'
+import type { AtomicChildVariants } from '@pro-laico/atomic-payload-types/schema'
 
 export const ColoredEnd: UIFieldClientComponent = ({ path }) => {
   const parentBlockPath = path.split('.').slice(0, -1).join('.')

@@ -1,9 +1,8 @@
 import type { Block } from 'payload'
-import { IconSelectPath } from 'atomic-payload/child-blocks-deps'
-import { ColoredEnd } from 'atomic-payload/child-blocks-deps'
-import { ClassNameField } from 'atomic-payload/child-blocks-deps'
-import { TrackingTab } from 'atomic-payload/child-blocks-deps'
-import { ChildsSettingsTab } from 'atomic-payload/child-blocks-deps'
+import { TrackingTab } from '../fields/trackingTab'
+import { IconSelectPath, ClassNameField } from 'atomic-payload/child-blocks-deps'
+import { ColoredEnd } from '../fields/coloredEnd'
+import { ChildsSettingsTab } from '../fields/tabs/settings'
 
 const d = {
   icon: 'Select an icon to display.',

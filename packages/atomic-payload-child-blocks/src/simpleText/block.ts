@@ -1,12 +1,11 @@
 import type { Block } from 'payload'
-import { ForField } from 'atomic-payload/child-blocks-deps'
-import { SimpleTextLabelPath } from 'atomic-payload/child-blocks-deps'
-import { TagTypeField } from 'atomic-payload/child-blocks-deps'
-import { ColoredEnd } from 'atomic-payload/child-blocks-deps'
-import { ClassNameField } from 'atomic-payload/child-blocks-deps'
-import { TrackingTab } from 'atomic-payload/child-blocks-deps'
-import { ContentActionsTab } from 'atomic-payload/child-blocks-deps'
-import { ChildsSettingsTab } from 'atomic-payload/child-blocks-deps'
+import { ForField } from '../fields/for'
+import { TagTypeField } from '../fields/tagType'
+import { TrackingTab } from '../fields/trackingTab'
+import { SimpleTextLabelPath, ClassNameField } from 'atomic-payload/child-blocks-deps'
+import { ColoredEnd } from '../fields/coloredEnd'
+import { ContentActionsTab } from '../fields/tabs/actions'
+import { ChildsSettingsTab } from '../fields/tabs/settings'
 
 const ds = {
   text: 'The text content to display. Use {{data attribute name}} to display the data attributes value.',

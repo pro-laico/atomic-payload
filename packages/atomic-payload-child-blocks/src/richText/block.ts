@@ -1,9 +1,9 @@
 import type { Block } from 'payload'
-import { ColoredEnd } from 'atomic-payload/child-blocks-deps'
-import { TrackingTab } from 'atomic-payload/child-blocks-deps'
+import { TrackingTab } from '../fields/trackingTab'
 import { ClassNameField } from 'atomic-payload/child-blocks-deps'
+import { ColoredEnd } from '../fields/coloredEnd'
+import { ChildsSettingsTab } from '../fields/tabs/settings'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
-import { ChildsSettingsTab } from 'atomic-payload/child-blocks-deps'
 import { FixedToolbarFeature, HeadingFeature, InlineToolbarFeature } from '@payloadcms/richtext-lexical'
 
 const d = {

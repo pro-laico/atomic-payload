@@ -1,9 +1,9 @@
 import type { Block } from 'payload'
-import { TagTypeField } from 'atomic-payload/child-blocks-deps'
-import { ColoredEnd } from 'atomic-payload/child-blocks-deps'
+import { TagTypeField } from '../fields/tagType'
+import { TrackingTab } from '../fields/trackingTab'
 import { ClassNameField } from 'atomic-payload/child-blocks-deps'
-import { TrackingTab } from 'atomic-payload/child-blocks-deps'
-import { ChildsSettingsTab } from 'atomic-payload/child-blocks-deps'
+import { ColoredEnd } from '../fields/coloredEnd'
+import { ChildsSettingsTab } from '../fields/tabs/settings'
 
 const d = {
   video: 'Select the video to be displayed.',

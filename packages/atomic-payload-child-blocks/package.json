@@ -14,10 +14,6 @@
       "types": "./src/index.ts",
       "default": "./src/index.ts"
     },
-    "./variant-settings": {
-      "types": "./src/variant-settings.ts",
-      "default": "./src/variant-settings.ts"
-    },
     "./default-lexical": {
       "types": "./src/richText/defaultLexical.ts",
       "default": "./src/richText/defaultLexical.ts"
@@ -29,6 +25,18 @@
     "./frontend-components": {
       "types": "./src/frontend-components.ts",
       "default": "./src/frontend-components.ts"
+    },
+    "./admin/coloredEnd": {
+      "types": "./src/components/admin/coloredEnd.tsx",
+      "default": "./src/components/admin/coloredEnd.tsx"
+    },
+    "./admin/actionBlock": {
+      "types": "./src/components/admin/actionBlock.tsx",
+      "default": "./src/components/admin/actionBlock.tsx"
+    },
+    "./admin/inputBlock": {
+      "types": "./src/components/admin/inputBlock.tsx",
+      "default": "./src/components/admin/inputBlock.tsx"
     }
   },
   "files": [
@@ -46,7 +54,9 @@
     "@pro-laico/atomic-payload-types": "workspace:*",
     "@pro-laico/atomic-payload-zap": "workspace:*",
     "@pro-laico/atomic-payload-apf": "workspace:*",
-    "@pro-laico/atomic-payload-icons": "workspace:*"
+    "@pro-laico/atomic-payload-icons": "workspace:*",
+    "@pro-laico/atomic-payload-actions": "workspace:*",
+    "@pro-laico/atomic-payload-forms": "workspace:*"
   },
   "peerDependencies": {
     "@payloadcms/richtext-lexical": ">=3.0.0",

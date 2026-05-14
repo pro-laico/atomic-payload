@@ -1,5 +1,5 @@
 import { GroupField } from 'payload'
-import { ActionBlocks } from '@/fields/blocks/actions'
+import { ActionBlocks } from '../blocks/actions'
 
 type ActionsTab = (prefix: 'trigger' | 'content') => GroupField
 

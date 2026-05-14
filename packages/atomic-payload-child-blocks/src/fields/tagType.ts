@@ -17,7 +17,6 @@ const locations: Record<ChildBlocksWithTagType, { interfaceName: string; default
   },
 }
 
-//Where this field is used, is where options are set.
 export const TagTypeField: TagTypeFieldType = ({ childBlock, width, condition }) => {
   const tagTypeField: SelectField = {
     name: 'tagType',

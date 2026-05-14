@@ -1,10 +1,12 @@
-import { CollapsibleField, TabAsField } from 'payload'
+import type { CollapsibleField, TabAsField } from 'payload'
 
-type StorageTabType = (args?: { filter?: ('classes' | 'forms' | 'actions')[] }) => TabAsField
+type StorageKey = 'classes' | 'forms' | 'actions'
 
-/**Used to add a tab to the admin panel that displays the stored atomic classes and forms.*/
-export const StorageTab: StorageTabType = ({ filter = ['classes', 'forms', 'actions'] } = {}) => {
-  const allFields: Record<'classes' | 'forms' | 'actions', CollapsibleField> = {
+const defaultFilter: StorageKey[] = ['classes', 'forms', 'actions']
+
+/** Adds a `Storage` tab containing read-only JSON fields for atomic classes, forms, and actions. */
+export const StorageTab = ({ filter = defaultFilter }: { filter?: StorageKey[] } = {}): TabAsField => {
+  const allFields: Record<StorageKey, CollapsibleField> = {
     classes: {
       type: 'collapsible',
       label: 'Class Names',
@@ -46,10 +48,7 @@ export const StorageTab: StorageTabType = ({ filter = ['classes', 'forms', 'acti
     },
   }
 
-  const filteredFields =
-    filter.length > 0
-      ? Object.values(Object.fromEntries(Object.entries(allFields).filter(([key]) => filter.includes(key))))
-      : Object.values(allFields)
+  const filteredFields = filter.length > 0 ? filter.map((key) => allFields[key]) : Object.values(allFields)
 
   return { type: 'tab', label: 'Storage', fields: filteredFields }
 }

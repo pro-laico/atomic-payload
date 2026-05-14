@@ -1,6 +1,6 @@
 import { BlocksField } from 'payload'
-import { ActionBlocksPath } from '@/ui'
-import { ActionBlockType } from '@/ts/types'
+import type { ActionBlockType } from '@pro-laico/atomic-payload-types/schema'
+import { ActionBlocksPath } from '../../components/admin'
 
 const AllActionBlocks: ActionBlockType[] = [
   'ActSetCC',
