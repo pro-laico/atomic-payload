@@ -458,12 +458,26 @@ export type SupportedTimezones =
   | 'Pacific/Auckland'
   | 'Pacific/Fiji';
 /**
+ * Type: {@link ThemeKeys}
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ThemeKeys".
+ */
+export type ThemeKeys = 'mode';
+/**
+ * Type: {@link ThemeListen}
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ThemeListen".
+ */
+export type ThemeListen = 'mode';
+/**
  * Type: {@link CollectionThatUsesAtomicHookSlug}
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "CollectionThatUsesAtomicHookSlug".
  */
-export type CollectionThatUsesAtomicHookSlug = 'pages' | 'footer' | 'header' | 'iconSet' | 'designSet' | 'shortcutSet';
+export type CollectionThatUsesAtomicHookSlug = 'pages' | 'footer' | 'header';
 /**
  * Type: {@link CollectionWithStoredAtomicClassesSlug}
  *
@@ -492,20 +506,6 @@ export type CollectionWithStoredAtomicFormsSlug = 'pages' | 'footer' | 'header';
  * via the `definition` "CollectionWithStoredAtomicActionsSlug".
  */
 export type CollectionWithStoredAtomicActionsSlug = 'pages' | 'footer' | 'header';
-/**
- * Type: {@link ThemeKeys}
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "ThemeKeys".
- */
-export type ThemeKeys = 'mode';
-/**
- * Type: {@link ThemeListen}
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "ThemeListen".
- */
-export type ThemeListen = 'mode';
 /**
  * Type: {@link RunnerType}
  *
@@ -643,18 +643,18 @@ export interface Config {
     IvDoesNotContain: IvDoesNotContain;
   };
   collections: {
-    font: Font;
-    icon: Icon;
     users: User;
     pages: Page;
     footer: Footer;
     header: Header;
     images: Image;
     favicons: Favicon;
+    posthogProperty: PosthogProperty;
+    font: Font;
+    icon: Icon;
     iconSet: IconSet;
     designSet: DesignSet;
     shortcutSet: ShortcutSet;
-    posthogProperty: PosthogProperty;
     'mux-video': MuxVideo;
     forms: Form;
     'form-submissions': FormSubmission;
@@ -666,18 +666,18 @@ export interface Config {
   };
   collectionsJoins: {};
   collectionsSelect: {
-    font: FontSelect<false> | FontSelect<true>;
-    icon: IconSelect<false> | IconSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     pages: PagesSelect<false> | PagesSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
     header: HeaderSelect<false> | HeaderSelect<true>;
     images: ImagesSelect<false> | ImagesSelect<true>;
     favicons: FaviconsSelect<false> | FaviconsSelect<true>;
+    posthogProperty: PosthogPropertySelect<false> | PosthogPropertySelect<true>;
+    font: FontSelect<false> | FontSelect<true>;
+    icon: IconSelect<false> | IconSelect<true>;
     iconSet: IconSetSelect<false> | IconSetSelect<true>;
     designSet: DesignSetSelect<false> | DesignSetSelect<true>;
     shortcutSet: ShortcutSetSelect<false> | ShortcutSetSelect<true>;
-    posthogProperty: PosthogPropertySelect<false> | PosthogPropertySelect<true>;
     'mux-video': MuxVideoSelect<false> | MuxVideoSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
@@ -706,9 +706,10 @@ export interface Config {
     publishedStorage: PublishedStorageSelect<false> | PublishedStorageSelect<true>;
   };
   locale: null;
-  user: User & {
-    collection: 'users';
+  widgets: {
+    collections: CollectionsWidget;
   };
+  user: User;
   jobs: {
     tasks: {
       schedulePublish: TaskSchedulePublish;
@@ -1915,46 +1916,6 @@ export interface PopoverSettings {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "font".
- */
-export interface Font {
-  id: string;
-  title: string;
-  family: GenericFontFamily;
-  updatedAt: string;
-  createdAt: string;
-  url?: string | null;
-  thumbnailURL?: string | null;
-  filename?: string | null;
-  mimeType?: string | null;
-  filesize?: number | null;
-  width?: number | null;
-  height?: number | null;
-  focalX?: number | null;
-  focalY?: number | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "icon".
- */
-export interface Icon {
-  id: string;
-  optimized?: string | null;
-  svgString?: string | null;
-  updatedAt: string;
-  createdAt: string;
-  url?: string | null;
-  thumbnailURL?: string | null;
-  filename?: string | null;
-  mimeType?: string | null;
-  filesize?: number | null;
-  width?: number | null;
-  height?: number | null;
-  focalX?: number | null;
-  focalY?: number | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */
 export interface User {
@@ -1976,6 +1937,7 @@ export interface User {
       }[]
     | null;
   password?: string | null;
+  collection: 'users';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -2028,6 +1990,46 @@ export interface Header {
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "font".
+ */
+export interface Font {
+  id: string;
+  title: string;
+  family: GenericFontFamily;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "icon".
+ */
+export interface Icon {
+  id: string;
+  optimized?: string | null;
+  svgString?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -2521,14 +2523,6 @@ export interface PayloadLockedDocument {
   id: string;
   document?:
     | ({
-        relationTo: 'font';
-        value: string | Font;
-      } | null)
-    | ({
-        relationTo: 'icon';
-        value: string | Icon;
-      } | null)
-    | ({
         relationTo: 'users';
         value: string | User;
       } | null)
@@ -2553,6 +2547,18 @@ export interface PayloadLockedDocument {
         value: string | Favicon;
       } | null)
     | ({
+        relationTo: 'posthogProperty';
+        value: string | PosthogProperty;
+      } | null)
+    | ({
+        relationTo: 'font';
+        value: string | Font;
+      } | null)
+    | ({
+        relationTo: 'icon';
+        value: string | Icon;
+      } | null)
+    | ({
         relationTo: 'iconSet';
         value: string | IconSet;
       } | null)
@@ -2563,10 +2569,6 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'shortcutSet';
         value: string | ShortcutSet;
-      } | null)
-    | ({
-        relationTo: 'posthogProperty';
-        value: string | PosthogProperty;
       } | null)
     | ({
         relationTo: 'mux-video';
@@ -2621,44 +2623,6 @@ export interface PayloadMigration {
   batch?: number | null;
   updatedAt: string;
   createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "font_select".
- */
-export interface FontSelect<T extends boolean = true> {
-  title?: T;
-  family?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  url?: T;
-  thumbnailURL?: T;
-  filename?: T;
-  mimeType?: T;
-  filesize?: T;
-  width?: T;
-  height?: T;
-  focalX?: T;
-  focalY?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "icon_select".
- */
-export interface IconSelect<T extends boolean = true> {
-  optimized?: T;
-  svgString?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  url?: T;
-  thumbnailURL?: T;
-  filename?: T;
-  mimeType?: T;
-  filesize?: T;
-  width?: T;
-  height?: T;
-  focalX?: T;
-  focalY?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -2876,6 +2840,60 @@ export interface ImagesSelect<T extends boolean = true> {
  * via the `definition` "favicons_select".
  */
 export interface FaviconsSelect<T extends boolean = true> {
+  updatedAt?: T;
+  createdAt?: T;
+  url?: T;
+  thumbnailURL?: T;
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
+  focalX?: T;
+  focalY?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "posthogProperty_select".
+ */
+export interface PosthogPropertySelect<T extends boolean = true> {
+  title?: T;
+  description?: T;
+  purpose?: T;
+  propertyFormal?: T;
+  propertyObfuscated?: T;
+  valueFormal?: T;
+  valueObfuscated?: T;
+  location?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "font_select".
+ */
+export interface FontSelect<T extends boolean = true> {
+  title?: T;
+  family?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  url?: T;
+  thumbnailURL?: T;
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
+  focalX?: T;
+  focalY?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "icon_select".
+ */
+export interface IconSelect<T extends boolean = true> {
+  optimized?: T;
+  svgString?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;
@@ -3228,22 +3246,6 @@ export interface ShortcutSetSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "posthogProperty_select".
- */
-export interface PosthogPropertySelect<T extends boolean = true> {
-  title?: T;
-  description?: T;
-  purpose?: T;
-  propertyFormal?: T;
-  propertyObfuscated?: T;
-  valueFormal?: T;
-  valueObfuscated?: T;
-  location?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "mux-video_select".
  */
 export interface MuxVideoSelect<T extends boolean = true> {
@@ -3577,6 +3579,16 @@ export interface PublishedStorageSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "collections_widget".
+ */
+export interface CollectionsWidget {
+  data?: {
+    [k: string]: unknown;
+  };
+  width: 'full';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "TaskSchedulePublish".
  */
 export interface TaskSchedulePublish {
@@ -3629,10 +3641,17 @@ export interface AtomicRegistry {
   SOSA: SOSA;
   RSRSS: RSRSS;
   RSSOSA: RSSOSA;
-  UnoColors: UnoColors;
-  DesignSetColors: DesignSetColors;
+  ThemeKeys: ThemeKeys;
+  ThemeListen: ThemeListen;
+  ThemePerform: ThemePerform;
+  CookieConsentPreferenceKeys: CookieConsentPreferenceKeys;
+  CookieConsentListen: CookieConsentListen;
+  CookieConsentPerform: CookieConsentPerform;
+  ActionBlockType: ActionBlockType;
   TokenString?: TokenString;
   TokenStringArray?: TokenStringArray;
+  UnoColors: UnoColors;
+  DesignSetColors: DesignSetColors;
   UnoThemeAnimation: UnoThemeAnimation;
   TokenStorage: TokenStorage;
   ProseColorStorage: ProseColorStorage;
@@ -3641,13 +3660,6 @@ export interface AtomicRegistry {
   CollectionThatUsesCSSProcessorSlug: CollectionThatUsesCSSProcessorSlug;
   CollectionWithStoredAtomicFormsSlug: CollectionWithStoredAtomicFormsSlug;
   CollectionWithStoredAtomicActionsSlug: CollectionWithStoredAtomicActionsSlug;
-  ThemeKeys: ThemeKeys;
-  ThemeListen: ThemeListen;
-  ThemePerform: ThemePerform;
-  CookieConsentPreferenceKeys: CookieConsentPreferenceKeys;
-  CookieConsentListen: CookieConsentListen;
-  CookieConsentPerform: CookieConsentPerform;
-  ActionBlockType: ActionBlockType;
   RunSetCC: RunSetCC;
   RunSetTheme: RunSetTheme;
   RunResetForm: RunResetForm;

@@ -6,9 +6,9 @@
   "type": "module",
   "exports": {
     "./child-blocks-deps": "./src/child-blocks-deps.ts",
+    "./child-blocks-deps-client": "./src/child-blocks-deps-client.ts",
     "./child-blocks-use-form": "./src/hooks/frontEnd/useActions/useForm.ts",
-    "./child-blocks-types": "./src/child-blocks-types.ts",
-    "./get-cached-react": "./src/utilities/get/cache/react.ts"
+    "./child-blocks-types": "./src/child-blocks-types.ts"
   },
   "scripts": {
     "lint": "pnpm exec eslint .",

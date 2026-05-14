@@ -14,8 +14,8 @@
     "baseUrl": ".",
     "paths": {
       "atomic-payload/child-blocks-deps": ["../../templates/atomic-payload/src/child-blocks-deps.ts"],
-      "atomic-payload/child-blocks-types": ["../../templates/atomic-payload/src/child-blocks-types.ts"],
-      "atomic-payload/get-cached-react": ["../../templates/atomic-payload/src/utilities/get/cache/react.ts"]
+      "atomic-payload/child-blocks-deps-client": ["../../templates/atomic-payload/src/child-blocks-deps-client.ts"],
+      "atomic-payload/child-blocks-types": ["../../templates/atomic-payload/src/child-blocks-types.ts"]
     }
   },
   "include": ["src/**/*.ts", "src/**/*.tsx"]

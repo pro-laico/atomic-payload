@@ -1,6 +1,6 @@
 'use client'
 import { AtomicChild, RenderChild } from 'atomic-payload/child-blocks-types'
-import { useActionContext, useToDa } from 'atomic-payload/child-blocks-deps'
+import { useActionContext, useToDa } from 'atomic-payload/child-blocks-deps-client'
 
 export const NumberInputClient: React.FC<RenderChild<AtomicChild>> = (props) => {
   const { pt, block } = props

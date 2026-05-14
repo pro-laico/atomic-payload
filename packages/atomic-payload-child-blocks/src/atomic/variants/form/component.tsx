@@ -1,7 +1,7 @@
 'use client'
 import { AtomicChild, RenderChild } from 'atomic-payload/child-blocks-types'
 import { useForm } from 'atomic-payload/child-blocks-use-form'
-import { useToDa, FormContextProvider } from 'atomic-payload/child-blocks-deps'
+import { useToDa, FormContextProvider } from 'atomic-payload/child-blocks-deps-client'
 
 export const AtomicForm: React.FC<RenderChild<AtomicChild>> = (props) => {
   const { pt, contentChildren, block } = props

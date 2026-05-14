@@ -2,7 +2,7 @@
 import React from 'react'
 import dynamic from 'next/dynamic'
 import { AtomicChild, RenderChild } from 'atomic-payload/child-blocks-types'
-import { useActionContext, usePortalActions, useToDa } from 'atomic-payload/child-blocks-deps'
+import { useActionContext, usePortalActions, useToDa } from 'atomic-payload/child-blocks-deps-client'
 
 const Root = dynamic(() => import('@base-ui-components/react/popover').then((mod) => mod.Popover.Root))
 const Trigger = dynamic(() => import('@base-ui-components/react/popover').then((mod) => mod.Popover.Trigger))

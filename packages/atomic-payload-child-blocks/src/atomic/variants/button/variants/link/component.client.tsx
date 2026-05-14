@@ -2,7 +2,7 @@
 import React from 'react'
 import NextLink from 'next/link'
 import { AtomicChild, RenderChild } from 'atomic-payload/child-blocks-types'
-import { useToDa, useButtonActions, useActionContext } from 'atomic-payload/child-blocks-deps'
+import { useToDa, useButtonActions, useActionContext } from 'atomic-payload/child-blocks-deps-client'
 
 export const AtomicButtonLinkClient: React.FC<RenderChild<AtomicChild>> = (props) => {
   const { block, pt, triggerChildren } = props

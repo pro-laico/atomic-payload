@@ -10,9 +10,6 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "paths": {
-      "atomic-payload/get-cached-react": ["../../templates/atomic-payload/src/utilities/get/cache/react.ts"]
-    }
   },
   "include": ["src/**/*.ts"]
 }

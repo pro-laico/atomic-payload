@@ -1,6 +1,6 @@
 'use client'
 import { AtomicChild, RenderChild } from 'atomic-payload/child-blocks-types'
-import { useActionContext, useToDa } from 'atomic-payload/child-blocks-deps'
+import { useActionContext, useToDa } from 'atomic-payload/child-blocks-deps-client'
 
 export const TextInputClient: React.FC<RenderChild<AtomicChild>> = ({ block, pt }) => {
   const Tag = block.inputType === 'textarea' ? 'textarea' : 'input'

@@ -27,7 +27,10 @@ declare class AtomicPayloadZodClass {
      * @returns A type that TypeScript can infer from AtomicRegistry.
      */
     type<T extends keyof AtomicRegistry>(id: T): AtomicRegistry[T];
-    /** Converts the ZOD global registry to a JSON Schema. */
+    /** Converts the ZOD global registry to a JSON Schema. Idempotent — callers
+     *  (e.g. Payload's `typescript.schema`) may invoke this more than once per
+     *  process, so we only register the aggregate `AtomicRegistry` entry if it
+     *  isn't already present in the global registry. */
     toJSONSchema(): Record<string, z.core.JSONSchema.JSONSchema>;
 }
 /** {@link AtomicPayloadsZodClass}: Adds methods that enhance Payload's typing. */

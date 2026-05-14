@@ -44,10 +44,15 @@ class AtomicPayloadZodClass {
         // The actual type is resolved at compile time via the Type helper
         return undefined;
     }
-    /** Converts the ZOD global registry to a JSON Schema. */
+    /** Converts the ZOD global registry to a JSON Schema. Idempotent — callers
+     *  (e.g. Payload's `typescript.schema`) may invoke this more than once per
+     *  process, so we only register the aggregate `AtomicRegistry` entry if it
+     *  isn't already present in the global registry. */
     toJSONSchema() {
         const entries = Array.from(z.globalRegistry._idmap.entries()).filter(([key]) => typeof key === 'string');
-        z.globalRegistry.add(z.object(Object.fromEntries(entries)), { id: 'AtomicRegistry' });
+        if (!z.globalRegistry._idmap.has('AtomicRegistry')) {
+            z.globalRegistry.add(z.object(Object.fromEntries(entries)), { id: 'AtomicRegistry' });
+        }
         const jsonSchema = z.toJSONSchema(z.globalRegistry, { target: 'draft-4', uri: (id) => `#/definitions/${id}` }).schemas;
         traverse(jsonSchema).forEach(function () {
             if (this.key === '$id')

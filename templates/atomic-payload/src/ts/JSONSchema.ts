@@ -14,10 +14,12 @@ const instantiate = [Runner, Attributer, CollectionSchemas] //Ensure the nested 
  * This function is used to add custom type definitions to the JSON schema.
  * Which can be used as a normal type, or referenced in other JSON schema.
  */
-const JSONSchemaExtensions = ({ jsonSchema }: { jsonSchema: JSONSchema4 }): JSONSchema4 => ({
-  ...toJSONSchemaExtensions({ jsonSchema }),
+const JSONSchemaExtensions = ({ jsonSchema }: { jsonSchema: JSONSchema4 }): JSONSchema4 => {
+  const base = toJSONSchemaExtensions({ jsonSchema })
+  return ({
+  ...base,
   definitions: {
-    ...toJSONSchemaExtensions({ jsonSchema }).definitions,
+    ...base.definitions,
 
     // Child Blocks
     ...generateBlocksType({ name: 'ChildBlocks', refs: ChildBlockType.options }),
@@ -81,5 +83,6 @@ const JSONSchemaExtensions = ({ jsonSchema }: { jsonSchema: JSONSchema4 }): JSON
     },
   },
 })
+}
 
 export default JSONSchemaExtensions

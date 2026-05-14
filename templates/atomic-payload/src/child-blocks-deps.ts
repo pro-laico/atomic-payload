@@ -15,9 +15,10 @@ export { TriggerActionsTab, ContentActionsTab } from './fields/tabs/block/childr
 export { inputTab } from './fields/tabs/block/children/submitForm/input'
 export { formRateLimitTab, formSanitationTab, formValidationTab } from './fields/tabs/block/children/submitForm/form'
 export { IconSelectPath, AtomicPath, SimpleTextLabelPath } from './ui'
-export * from './hooks/frontEnd/useActions'
-// `getCached` is intentionally NOT re-exported here — `./utilities/get/cache/react`
-// uses `server-only` and would poison any client component that imports this barrel
-// (e.g. atomic button link client). Import from `atomic-payload/get-cached-react`.
-export { FormContextProvider } from './components/providers/formProvider'
+// Client-only re-exports (`useActions` hooks, `FormContextProvider`) live in
+// `./child-blocks-deps-client`. Keeping them out of this server-side barrel
+// prevents `payload generate:types` (run under `--conditions=react-server`)
+// from loading client modules that pull `createContext` out of `react`.
+// `getCached` is similarly NOT re-exported here — `server-only` would poison
+// any client component that imports this barrel.
 export { default as Warning } from './ui/assets/warningIcon'
