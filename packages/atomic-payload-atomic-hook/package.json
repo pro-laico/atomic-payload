@@ -39,6 +39,7 @@
     "lint": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
+    "@pro-laico/atomic-payload-actions": "workspace:*",
     "@pro-laico/atomic-payload-apf": "workspace:*",
     "@pro-laico/atomic-payload-design-sets": "workspace:*",
     "@pro-laico/ap-utils": "workspace:*",
