@@ -34,6 +34,30 @@
       "types": "./dist/ui/root/siteTriggers/index.d.ts",
       "import": "./dist/ui/root/siteTriggers/index.js"
     },
+    "./components/frontend/Toaster": {
+      "types": "./dist/components/frontend/Toaster.d.ts",
+      "import": "./dist/components/frontend/Toaster.js"
+    },
+    "./components/frontend/LivePreviewListener": {
+      "types": "./dist/components/frontend/LivePreviewListener.d.ts",
+      "import": "./dist/components/frontend/LivePreviewListener.js"
+    },
+    "./ui/fields/slug": {
+      "types": "./dist/ui/fields/slug/index.d.ts",
+      "import": "./dist/ui/fields/slug/index.js"
+    },
+    "./next/preview": {
+      "types": "./dist/next/previewRouteHandler.d.ts",
+      "import": "./dist/next/previewRouteHandler.js"
+    },
+    "./next/exit-preview": {
+      "types": "./dist/next/exitPreviewRouteHandler.d.ts",
+      "import": "./dist/next/exitPreviewRouteHandler.js"
+    },
+    "./auth/getMeUser": {
+      "types": "./dist/utilities/getMeUser.d.ts",
+      "import": "./dist/utilities/getMeUser.js"
+    },
     "./src": {
       "types": "./src/index.ts",
       "default": "./src/index.ts"
@@ -45,7 +69,7 @@
     "README.md"
   ],
   "scripts": {
-    "build": "tsc -p tsconfig.build.json && node -e \"require('fs').cpSync('src/ui/root/siteTriggers/index.scss','dist/ui/root/siteTriggers/index.scss')\"",
+    "build": "tsc -p tsconfig.build.json && node -e \"require('fs').cpSync('src/ui/root/siteTriggers/index.scss','dist/ui/root/siteTriggers/index.scss')\" && node -e \"require('fs').cpSync('src/components/frontend/Toaster.module.css','dist/components/frontend/Toaster.module.css')\" && node -e \"require('fs').cpSync('src/ui/fields/slug/index.scss','dist/ui/fields/slug/index.scss')\"",
     "clean": "node -e \"require('fs').rmSync('dist',{recursive:true,force:true})\"",
     "prepack": "pnpm clean && pnpm build",
     "lint": "tsc -p tsconfig.json --noEmit"
@@ -57,6 +81,8 @@
     "dayjs": "^1.11.13"
   },
   "peerDependencies": {
+    "@base-ui-components/react": ">=1.0.0-rc.0",
+    "@payloadcms/live-preview-react": ">=3.0.0",
     "@payloadcms/ui": ">=3.0.0",
     "next": ">=15.0.0",
     "payload": ">=3.0.0",
@@ -64,6 +90,8 @@
     "server-only": ">=0.0.1"
   },
   "devDependencies": {
+    "@base-ui-components/react": "1.0.0-rc.0",
+    "@payloadcms/live-preview-react": "^3.79.0",
     "@payloadcms/ui": "^3.79.0",
     "@types/react": "^19.2.14",
     "next": "^16.1.6",

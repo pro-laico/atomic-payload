@@ -6,12 +6,18 @@ export { revalidateCache as revalidateCacheCollection, revalidateCacheOnDelete }
 export { revalidateCache as revalidateCacheGlobal } from './hooks/global/revalidate';
 export { sanitizeAfterRead } from './hooks/collection/sanitize';
 export declare const SiteTriggersPath = "@pro-laico/ap-utils/ui/root/siteTriggers";
+export declare const SlugPath = "@pro-laico/ap-utils/ui/fields/slug";
 export { toTitleCase } from './utilities/toTitleCase';
 export { toKebabCase, type NameKebabOptions } from './utilities/toKebabCase';
 export { default as deepMerge, isObject } from './utilities/deepMerge';
 export { formatDurationString } from './utilities/formatDurationWithTokens';
 export { GenerateMetaData } from './utilities/generateMetaData';
 export { getServerSideURL, getClientSideURL } from './utilities/getURL';
+export { getImageUrl } from './utilities/getImageURL';
+export { generateLivePreviewPath } from './utilities/generatePreviewPath';
+export { anyone } from './access/anyone';
+export { authd } from './access/authd';
+export { authenticatedOrPublished } from './access/authenticatedOrPublished';
 export { formatSlug, formatSlugHook } from './hooks/field/formatSlug';
 export { updateHrefHook } from './hooks/field/href';
 export { updatePublishedAtHook } from './hooks/field/publishedAt';

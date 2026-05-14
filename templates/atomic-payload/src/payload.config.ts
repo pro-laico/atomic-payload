@@ -1,7 +1,6 @@
 import path from 'path'
 import sharp from 'sharp'
 import type { SharpDependency } from 'payload'
-import Globals from '@/globals'
 import { plugins } from '@/plugins'
 import { buildConfig } from 'payload'
 import Collections from '@/collections'
@@ -19,7 +18,6 @@ const dirname = path.dirname(filename)
 export default buildConfig({
   sharp: sharp as unknown as SharpDependency,
   plugins: [...plugins],
-  globals: [...Globals],
   editor: defaultLexical,
   graphQL: { disable: true },
   serverURL: getServerSideURL(), // Used in csrf white list and live preview.

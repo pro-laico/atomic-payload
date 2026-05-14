@@ -1,6 +1,6 @@
 import { generateBlocksType, toJSONSchemaExtensions } from '@pro-laico/ap-zap'
 import { jsonSchemaPlugin } from '@pro-laico/ap-types'
-import CollectionSchemas from '@/collections/zap'
+import CollectionSchemas from '@pro-laico/ap-site/zap'
 import { ActionBlockType } from '@pro-laico/ap-actions/zap'
 import { Runner, Attributer } from '@pro-laico/ap-child-blocks/useActions/zap'
 import { ChildBlockType, BackdropChildSlug } from '@pro-laico/ap-child-blocks/zap'

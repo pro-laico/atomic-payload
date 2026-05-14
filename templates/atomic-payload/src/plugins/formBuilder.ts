@@ -1,5 +1,4 @@
-import { authd } from '@/access/authenticated'
-import { revalidateCacheCollection as revalidateCache } from '@pro-laico/ap-utils'
+import { authd, revalidateCacheCollection as revalidateCache } from '@pro-laico/ap-utils'
 import { formBuilderPlugin } from '@payloadcms/plugin-form-builder'
 
 function insertFieldAtPosition<T>(fields: T[], field: T, position: number): T[] {

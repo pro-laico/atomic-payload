@@ -1,3 +1,4 @@
+import './types/zod';
 import * as z from './ap';
 export { z };
 export default z;

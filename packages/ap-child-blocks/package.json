@@ -30,6 +30,10 @@
       "types": "./src/frontend-components.ts",
       "default": "./src/frontend-components.ts"
     },
+    "./render": {
+      "types": "./src/render/index.ts",
+      "default": "./src/render/index.ts"
+    },
     "./admin/coloredEnd": {
       "types": "./src/components/admin/coloredEnd.tsx",
       "default": "./src/components/admin/coloredEnd.tsx"
@@ -77,22 +81,32 @@
     "next-themes": "^0.4.6"
   },
   "peerDependencies": {
+    "@mux/blurup": ">=1.0.0",
     "@payloadcms/richtext-lexical": ">=3.0.0",
     "@payloadcms/ui": ">=3.0.0",
+    "@pro-laico/ap-tracking": "workspace:*",
     "next": ">=15.0.0",
     "payload": ">=3.0.0",
     "react": ">=19.0.0",
-    "react-dom": ">=19.0.0"
+    "react-dom": ">=19.0.0",
+    "server-only": ">=0.0.1"
+  },
+  "peerDependenciesMeta": {
+    "@mux/blurup": { "optional": true },
+    "@pro-laico/ap-tracking": { "optional": true }
   },
   "devDependencies": {
+    "@mux/blurup": "^1.0.2",
     "@payloadcms/richtext-lexical": "^3.79.0",
     "@payloadcms/ui": "^3.79.0",
+    "@pro-laico/ap-tracking": "workspace:*",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "next": "^16.1.6",
     "payload": "^3.79.0",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
+    "server-only": "^0.0.1",
     "typescript": "5.8.3"
   },
   "engines": {

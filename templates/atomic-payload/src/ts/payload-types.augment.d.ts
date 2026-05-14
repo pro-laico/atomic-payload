@@ -42,6 +42,8 @@ declare module '@pro-laico/ap-types/schema' {
     InputSanitationBlocks: G.InputSanitationBlocks
     InputValidationBlocks: G.InputValidationBlocks
     StoredAtomicFormInput: G.StoredAtomicFormInput
+    StaticDataAttributes: G.StaticDataAttributes
+    ChildrenWithActions: G.ChildrenWithActions
     ChildBlockType: G.ChildBlockType
     ActionBlockType: G.ActionBlockType
     RunnerType: G.RunnerType
@@ -102,6 +104,8 @@ declare module '@pro-laico/ap-types' {
     InputSanitationBlocks: G.InputSanitationBlocks
     InputValidationBlocks: G.InputValidationBlocks
     StoredAtomicFormInput: G.StoredAtomicFormInput
+    StaticDataAttributes: G.StaticDataAttributes
+    ChildrenWithActions: G.ChildrenWithActions
 
     ChildBlockType: G.ChildBlockType
     ActionBlockType: G.ActionBlockType

@@ -32,6 +32,7 @@
     "@pro-laico/ap-design-sets": "workspace:*",
     "@pro-laico/ap-atomic-hook": "workspace:*",
     "@pro-laico/ap-child-blocks": "workspace:*",
+    "@pro-laico/ap-site": "workspace:*",
     "@base-ui-components/react": "1.0.0-rc.0",
     "@mux/blurup": "^1.0.2",
     "@mux/mux-video-react": "^0.25.3",

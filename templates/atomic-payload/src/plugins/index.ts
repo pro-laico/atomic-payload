@@ -15,6 +15,7 @@ import { actionsPlugin } from '@pro-laico/ap-actions'
 import { childBlocksPlugin } from '@pro-laico/ap-child-blocks'
 import { trackingPlugin } from '@pro-laico/ap-tracking'
 import { seedPlugin } from '@pro-laico/ap-seed'
+import { sitePlugin } from '@pro-laico/ap-site'
 import { fontsPluginConfig } from './fonts'
 import { iconsPluginConfig } from './icons'
 import { designSetsPluginConfig } from './designSets'
@@ -29,6 +30,9 @@ import { jsonSchemaPluginConfig } from './jsonSchema'
 // - `seedPlugin` mounts `POST /api/seed` and the `BeforeDashboard` SEED DATABASE
 //   banner. The bundled atomic-payload seed runs by default; pass `seed: …` to
 //   override. Gate registration on `INCLUDE_SEED`.
+// - `sitePlugin` registers the Pages, Header, Footer collections plus the
+//   SiteMetaData, Settings, draftStorage, publishedStorage globals — the
+//   opinionated "site shape" that used to live in the template.
 // - Other collections owned by atomic-payload-* packages (Images, Favicons,
 //   MuxVideo) are still registered through the template's `@/collections` array;
 //   their `imagesPlugin` factories are intentionally not invoked here to avoid
@@ -39,6 +43,7 @@ import { jsonSchemaPluginConfig } from './jsonSchema'
 //   to the listed slugs.
 
 export const plugins: Plugin[] = [
+  sitePlugin({ enabled: true }),
   jsonSchemaPluginConfig,
   formsPlugin({ enabled: true }),
   actionsPlugin({ enabled: true }),

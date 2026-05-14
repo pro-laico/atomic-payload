@@ -76,6 +76,9 @@ export type InputSanitationBlocks = Get<'InputSanitationBlocks', DefaultBlock[]>
 export type InputValidationBlocks = Get<'InputValidationBlocks', DefaultBlock[]>
 export type StoredAtomicFormInput = Get<'StoredAtomicFormInput', DefaultRecord>
 
+export type StaticDataAttributes = Get<'StaticDataAttributes', Array<{ key?: string | null; value?: string | null }> | null | undefined>
+export type ChildrenWithActions = Get<'ChildrenWithActions', string>
+
 /** Form / input SVR block payloads (definitions in generated `payload-types.ts`). */
 export type FrlSimpleSlidingWindow = Get<'FrlSimpleSlidingWindow', DefaultBlock>
 export type FsCombineTwoFields = Get<'FsCombineTwoFields', DefaultBlock>

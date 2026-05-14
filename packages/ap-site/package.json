@@ -1,0 +1,62 @@
+{
+  "name": "@pro-laico/ap-site",
+  "version": "0.1.0",
+  "description": "Opinionated site shape for Atomic Payload — Pages, Header, Footer collections + SiteMetaData, Settings, draft/published Storage globals, paired with a single `sitePlugin()` that registers them all.",
+  "license": "MIT",
+  "type": "module",
+  "publishConfig": {
+    "access": "public"
+  },
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
+    },
+    "./zap": {
+      "types": "./src/zap.ts",
+      "default": "./src/zap.ts"
+    },
+    "./components/frontend": {
+      "types": "./src/components/frontend/index.ts",
+      "default": "./src/components/frontend/index.ts"
+    }
+  },
+  "files": [
+    "src",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "node -e \"process.exit(0)\"",
+    "lint": "node -e \"process.exit(0)\""
+  },
+  "dependencies": {
+    "@pro-laico/ap-apf": "workspace:*",
+    "@pro-laico/ap-atomic-hook": "workspace:*",
+    "@pro-laico/ap-child-blocks": "workspace:*",
+    "@pro-laico/ap-images": "workspace:*",
+    "@pro-laico/ap-types": "workspace:*",
+    "@pro-laico/ap-utils": "workspace:*",
+    "@pro-laico/ap-zap": "workspace:*"
+  },
+  "peerDependencies": {
+    "@payloadcms/plugin-nested-docs": ">=3.0.0",
+    "@payloadcms/ui": ">=3.0.0",
+    "next": ">=15.0.0",
+    "payload": ">=3.0.0",
+    "react": ">=19.0.0"
+  },
+  "devDependencies": {
+    "@payloadcms/plugin-nested-docs": "^3.79.0",
+    "@payloadcms/ui": "^3.79.0",
+    "@types/react": "^19.2.14",
+    "next": "^16.1.6",
+    "payload": "^3.79.0",
+    "react": "^19.2.4",
+    "typescript": "5.8.3"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

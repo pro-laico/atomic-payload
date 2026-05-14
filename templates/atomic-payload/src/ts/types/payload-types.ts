@@ -472,6 +472,41 @@ export type ThemeKeys = 'mode';
  */
 export type ThemeListen = 'mode';
 /**
+ * Type: {@link CollectionThatUsesAtomicHookSlug}
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CollectionThatUsesAtomicHookSlug".
+ */
+export type CollectionThatUsesAtomicHookSlug = 'pages' | 'header' | 'footer' | 'designSet' | 'shortcutSet' | 'iconSet';
+/**
+ * Type: {@link CollectionWithStoredAtomicClassesSlug}
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CollectionWithStoredAtomicClassesSlug".
+ */
+export type CollectionWithStoredAtomicClassesSlug = 'pages' | 'header' | 'footer';
+/**
+ * Type: {@link CollectionThatUsesCSSProcessorSlug}
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CollectionThatUsesCSSProcessorSlug".
+ */
+export type CollectionThatUsesCSSProcessorSlug = 'designSet' | 'shortcutSet' | 'pages' | 'header' | 'footer';
+/**
+ * Type: {@link CollectionWithStoredAtomicFormsSlug}
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CollectionWithStoredAtomicFormsSlug".
+ */
+export type CollectionWithStoredAtomicFormsSlug = 'pages' | 'header' | 'footer';
+/**
+ * Type: {@link CollectionWithStoredAtomicActionsSlug}
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CollectionWithStoredAtomicActionsSlug".
+ */
+export type CollectionWithStoredAtomicActionsSlug = 'pages' | 'header' | 'footer';
+/**
  * Type: {@link RunnerType}
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -575,41 +610,6 @@ export type ChildrenWithContentActions = 'AtomicChild' | 'SimpleTextChild';
  * via the `definition` "ChildrenWithActions".
  */
 export type ChildrenWithActions = 'AtomicChild' | 'SimpleTextChild';
-/**
- * Type: {@link CollectionThatUsesAtomicHookSlug}
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "CollectionThatUsesAtomicHookSlug".
- */
-export type CollectionThatUsesAtomicHookSlug = 'pages' | 'footer' | 'header';
-/**
- * Type: {@link CollectionWithStoredAtomicClassesSlug}
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "CollectionWithStoredAtomicClassesSlug".
- */
-export type CollectionWithStoredAtomicClassesSlug = 'pages' | 'footer' | 'header';
-/**
- * Type: {@link CollectionThatUsesCSSProcessorSlug}
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "CollectionThatUsesCSSProcessorSlug".
- */
-export type CollectionThatUsesCSSProcessorSlug = 'designSet' | 'shortcutSet' | 'pages' | 'footer' | 'header';
-/**
- * Type: {@link CollectionWithStoredAtomicFormsSlug}
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "CollectionWithStoredAtomicFormsSlug".
- */
-export type CollectionWithStoredAtomicFormsSlug = 'pages' | 'footer' | 'header';
-/**
- * Type: {@link CollectionWithStoredAtomicActionsSlug}
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "CollectionWithStoredAtomicActionsSlug".
- */
-export type CollectionWithStoredAtomicActionsSlug = 'pages' | 'footer' | 'header';
 
 export interface Config {
   auth: {
@@ -644,11 +644,11 @@ export interface Config {
   };
   collections: {
     users: User;
-    pages: Page;
-    footer: Footer;
-    header: Header;
     images: Image;
     favicons: Favicon;
+    pages: Page;
+    header: Header;
+    footer: Footer;
     posthogProperty: PosthogProperty;
     font: Font;
     icon: Icon;
@@ -667,11 +667,11 @@ export interface Config {
   collectionsJoins: {};
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
-    pages: PagesSelect<false> | PagesSelect<true>;
-    footer: FooterSelect<false> | FooterSelect<true>;
-    header: HeaderSelect<false> | HeaderSelect<true>;
     images: ImagesSelect<false> | ImagesSelect<true>;
     favicons: FaviconsSelect<false> | FaviconsSelect<true>;
+    pages: PagesSelect<false> | PagesSelect<true>;
+    header: HeaderSelect<false> | HeaderSelect<true>;
+    footer: FooterSelect<false> | FooterSelect<true>;
     posthogProperty: PosthogPropertySelect<false> | PosthogPropertySelect<true>;
     font: FontSelect<false> | FontSelect<true>;
     icon: IconSelect<false> | IconSelect<true>;
@@ -1941,9 +1941,9 @@ export interface User {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "footer".
+ * via the `definition` "header".
  */
-export interface Footer {
+export interface Header {
   id: string;
   active: boolean;
   devMode: boolean;
@@ -1967,9 +1967,9 @@ export interface Footer {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "header".
+ * via the `definition` "footer".
  */
-export interface Header {
+export interface Footer {
   id: string;
   active: boolean;
   devMode: boolean;
@@ -2527,24 +2527,24 @@ export interface PayloadLockedDocument {
         value: string | User;
       } | null)
     | ({
-        relationTo: 'pages';
-        value: string | Page;
-      } | null)
-    | ({
-        relationTo: 'footer';
-        value: string | Footer;
-      } | null)
-    | ({
-        relationTo: 'header';
-        value: string | Header;
-      } | null)
-    | ({
         relationTo: 'images';
         value: string | Image;
       } | null)
     | ({
         relationTo: 'favicons';
         value: string | Favicon;
+      } | null)
+    | ({
+        relationTo: 'pages';
+        value: string | Page;
+      } | null)
+    | ({
+        relationTo: 'header';
+        value: string | Header;
+      } | null)
+    | ({
+        relationTo: 'footer';
+        value: string | Footer;
       } | null)
     | ({
         relationTo: 'posthogProperty';
@@ -2645,102 +2645,6 @@ export interface UsersSelect<T extends boolean = true> {
         createdAt?: T;
         expiresAt?: T;
       };
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "pages_select".
- */
-export interface PagesSelect<T extends boolean = true> {
-  title?: T;
-  publishedAt?: T;
-  slug?: T;
-  slugLock?: T;
-  parent?: T;
-  href?: T;
-  live?: T;
-  mainClassName?: T;
-  children?: T | {};
-  meta?: T | PageSEOSelect<T>;
-  storedAtomicClasses?: T;
-  storedAtomicForms?: T;
-  storedAtomicActions?: T;
-  devMode?: T;
-  breadcrumbs?:
-    | T
-    | {
-        doc?: T;
-        url?: T;
-        label?: T;
-        id?: T;
-      };
-  'apf-form'?: T;
-  'apf-page'?: T;
-  'apf-pages'?: T;
-  'apf-actions'?: T;
-  'apf-classes'?: T;
-  'apf-seo'?: T;
-  'apf-sitemap'?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  _status?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "PageSEO_select".
- */
-export interface PageSEOSelect<T extends boolean = true> {
-  title?: T;
-  description?: T;
-  image?: T;
-  lightFavicon?: T;
-  darkFavicon?: T;
-  noIndex?: T;
-  priority?: T;
-  changeFrequency?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "footer_select".
- */
-export interface FooterSelect<T extends boolean = true> {
-  active?: T;
-  devMode?: T;
-  title?: T;
-  testPath?: T;
-  ClassName?: T;
-  children?: T | {};
-  storedAtomicClasses?: T;
-  storedAtomicForms?: T;
-  storedAtomicActions?: T;
-  'apf-form'?: T;
-  'apf-actions'?: T;
-  'apf-classes'?: T;
-  'apf-active'?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  _status?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "header_select".
- */
-export interface HeaderSelect<T extends boolean = true> {
-  active?: T;
-  devMode?: T;
-  title?: T;
-  testPath?: T;
-  ClassName?: T;
-  children?: T | {};
-  storedAtomicClasses?: T;
-  storedAtomicForms?: T;
-  storedAtomicActions?: T;
-  'apf-form'?: T;
-  'apf-actions'?: T;
-  'apf-classes'?: T;
-  'apf-active'?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  _status?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -2851,6 +2755,102 @@ export interface FaviconsSelect<T extends boolean = true> {
   height?: T;
   focalX?: T;
   focalY?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pages_select".
+ */
+export interface PagesSelect<T extends boolean = true> {
+  title?: T;
+  publishedAt?: T;
+  slug?: T;
+  slugLock?: T;
+  parent?: T;
+  href?: T;
+  live?: T;
+  mainClassName?: T;
+  children?: T | {};
+  meta?: T | PageSEOSelect<T>;
+  storedAtomicClasses?: T;
+  storedAtomicForms?: T;
+  storedAtomicActions?: T;
+  devMode?: T;
+  breadcrumbs?:
+    | T
+    | {
+        doc?: T;
+        url?: T;
+        label?: T;
+        id?: T;
+      };
+  'apf-form'?: T;
+  'apf-page'?: T;
+  'apf-pages'?: T;
+  'apf-actions'?: T;
+  'apf-classes'?: T;
+  'apf-seo'?: T;
+  'apf-sitemap'?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PageSEO_select".
+ */
+export interface PageSEOSelect<T extends boolean = true> {
+  title?: T;
+  description?: T;
+  image?: T;
+  lightFavicon?: T;
+  darkFavicon?: T;
+  noIndex?: T;
+  priority?: T;
+  changeFrequency?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "header_select".
+ */
+export interface HeaderSelect<T extends boolean = true> {
+  active?: T;
+  devMode?: T;
+  title?: T;
+  testPath?: T;
+  ClassName?: T;
+  children?: T | {};
+  storedAtomicClasses?: T;
+  storedAtomicForms?: T;
+  storedAtomicActions?: T;
+  'apf-form'?: T;
+  'apf-actions'?: T;
+  'apf-classes'?: T;
+  'apf-active'?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "footer_select".
+ */
+export interface FooterSelect<T extends boolean = true> {
+  active?: T;
+  devMode?: T;
+  title?: T;
+  testPath?: T;
+  ClassName?: T;
+  children?: T | {};
+  storedAtomicClasses?: T;
+  storedAtomicForms?: T;
+  storedAtomicActions?: T;
+  'apf-form'?: T;
+  'apf-actions'?: T;
+  'apf-classes'?: T;
+  'apf-active'?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -3601,12 +3601,12 @@ export interface TaskSchedulePublish {
           value: string | Page;
         } | null)
       | ({
-          relationTo: 'footer';
-          value: string | Footer;
-        } | null)
-      | ({
           relationTo: 'header';
           value: string | Header;
+        } | null)
+      | ({
+          relationTo: 'footer';
+          value: string | Footer;
         } | null)
       | ({
           relationTo: 'iconSet';
@@ -3655,6 +3655,11 @@ export interface AtomicRegistry {
   UnoThemeAnimation: UnoThemeAnimation;
   TokenStorage: TokenStorage;
   ProseColorStorage: ProseColorStorage;
+  CollectionThatUsesAtomicHookSlug: CollectionThatUsesAtomicHookSlug;
+  CollectionWithStoredAtomicClassesSlug: CollectionWithStoredAtomicClassesSlug;
+  CollectionThatUsesCSSProcessorSlug: CollectionThatUsesCSSProcessorSlug;
+  CollectionWithStoredAtomicFormsSlug: CollectionWithStoredAtomicFormsSlug;
+  CollectionWithStoredAtomicActionsSlug: CollectionWithStoredAtomicActionsSlug;
   RunSetCC: RunSetCC;
   RunSetTheme: RunSetTheme;
   RunResetForm: RunResetForm;
@@ -3683,11 +3688,6 @@ export interface AtomicRegistry {
   ChildrenWithTriggerActions: ChildrenWithTriggerActions;
   ChildrenWithContentActions: ChildrenWithContentActions;
   ChildrenWithActions: ChildrenWithActions;
-  CollectionThatUsesAtomicHookSlug: CollectionThatUsesAtomicHookSlug;
-  CollectionWithStoredAtomicClassesSlug: CollectionWithStoredAtomicClassesSlug;
-  CollectionThatUsesCSSProcessorSlug: CollectionThatUsesCSSProcessorSlug;
-  CollectionWithStoredAtomicFormsSlug: CollectionWithStoredAtomicFormsSlug;
-  CollectionWithStoredAtomicActionsSlug: CollectionWithStoredAtomicActionsSlug;
 }
 
 

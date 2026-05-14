@@ -6,7 +6,7 @@ export const LogoPath = '@/ui/assets/Logo'
 export const IconPath = '@/ui/assets/Icon'
 
 //Fields
-export const SlugPath = '@/ui/fields/slug'
+export { SlugPath } from '@pro-laico/ap-utils'
 
 //Root
 export { SiteTriggersPath } from '@pro-laico/ap-utils'

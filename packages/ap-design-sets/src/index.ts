@@ -1,3 +1,5 @@
+import './types/payload'
+
 export { designSetsPlugin, default } from './plugin'
 export type { DesignSetsPluginOptions, DesignSetsShortcutSetOptions } from './plugin'
 export { createDesignSetCollection } from './designSet/createCollection'
