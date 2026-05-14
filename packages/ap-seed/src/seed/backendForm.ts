@@ -1,4 +1,4 @@
-import type { Form } from '@/ts/types'
+import type { Form } from '@pro-laico/atomic-payload-types/schema'
 
 export const backendForm: Omit<Form, 'createdAt' | 'id' | 'updatedAt'> = {
   title: 'Contact',

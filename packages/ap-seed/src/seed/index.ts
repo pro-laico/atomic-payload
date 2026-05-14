@@ -1,3 +1,6 @@
+import { readFile } from 'node:fs/promises'
+import { fileURLToPath } from 'node:url'
+import { dirname, join } from 'node:path'
 import type { CollectionSlug, Payload, PayloadRequest, File } from 'payload'
 
 //Collection Data
@@ -36,13 +39,13 @@ export const seed = async ({ payload, req }: { payload: Payload; req: PayloadReq
 
   payload.logger.info(`Grabbing Icons...`)
   const [checkBuffer, closeBuffer, cookieBuffer, githubBuffer, logoBuffer, menuBuffer, themeBuffer] = await Promise.all([
-    fetchFileByURL('https://raw.githubusercontent.com/pro-laico/atomic-payload/refs/heads/main/src/endpoints/seed/icons/assets/check.svg'),
-    fetchFileByURL('https://raw.githubusercontent.com/pro-laico/atomic-payload/refs/heads/main/src/endpoints/seed/icons/assets/close.svg'),
-    fetchFileByURL('https://raw.githubusercontent.com/pro-laico/atomic-payload/refs/heads/main/src/endpoints/seed/icons/assets/cookie.svg'),
-    fetchFileByURL('https://raw.githubusercontent.com/pro-laico/atomic-payload/refs/heads/main/src/endpoints/seed/icons/assets/github.svg'),
-    fetchFileByURL('https://raw.githubusercontent.com/pro-laico/atomic-payload/refs/heads/main/src/endpoints/seed/icons/assets/logo.svg'),
-    fetchFileByURL('https://raw.githubusercontent.com/pro-laico/atomic-payload/refs/heads/main/src/endpoints/seed/icons/assets/menu.svg'),
-    fetchFileByURL('https://raw.githubusercontent.com/pro-laico/atomic-payload/refs/heads/main/src/endpoints/seed/icons/assets/theme.svg'),
+    readIconAsset('check.svg'),
+    readIconAsset('close.svg'),
+    readIconAsset('cookie.svg'),
+    readIconAsset('github.svg'),
+    readIconAsset('logo.svg'),
+    readIconAsset('menu.svg'),
+    readIconAsset('theme.svg'),
   ])
 
   payload.logger.info('Seeding Icons...')
@@ -84,17 +87,14 @@ export const seed = async ({ payload, req }: { payload: Payload; req: PayloadReq
   payload.logger.info('Seeded database successfully!')
 }
 
-async function fetchFileByURL(url: string): Promise<File> {
-  const res = await fetch(url, { credentials: 'include', method: 'GET' })
+const iconAssetsDir = join(dirname(fileURLToPath(import.meta.url)), 'icons', 'assets')
 
-  if (!res.ok) throw new Error(`Failed to fetch file from ${url}, status: ${res.status}`)
-
-  const data = await res.arrayBuffer()
-
+async function readIconAsset(name: string): Promise<File> {
+  const data = await readFile(join(iconAssetsDir, name))
   return {
-    name: url.split('/').pop() || `file-${Date.now()}`,
-    data: Buffer.from(data),
-    mimetype: `image/svg+xml`,
+    name,
+    data,
+    mimetype: 'image/svg+xml',
     size: data.byteLength,
   }
 }

@@ -36,6 +36,7 @@ import { default as default_ff8256de734e06fae92bb274f1a74d58 } from '@pro-laico/
 import { default as default_2f9ffd39d8abc1136972cf387dd19eee } from '@pro-laico/atomic-payload-child-blocks/admin/iconSelect'
 import { default as default_31e7983ad92c1ad30fcfef2a2c92e0de } from '@/ui/assets/Icon'
 import { default as default_0b906f3c09bdf05f31dac97d0009f13f } from '@/ui/assets/Logo'
+import { default as default_88fe4416561ddefdd63d9d2d572613f7 } from '@pro-laico/ap-seed/admin/beforeDashboard'
 import { default as default_9cc76e105739472576a6b8518c7d5bd2 } from '@pro-laico/ap-utils/ui/root/siteTriggers'
 import { VercelBlobClientUploadHandler as VercelBlobClientUploadHandler_16c82c5e25f430251a3e3ba57219ff4e } from '@payloadcms/storage-vercel-blob/client'
 import { CollectionCards as CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1 } from '@payloadcms/next/rsc'
@@ -79,6 +80,7 @@ export const importMap = {
   "@pro-laico/atomic-payload-child-blocks/admin/iconSelect#default": default_2f9ffd39d8abc1136972cf387dd19eee,
   "@/ui/assets/Icon#default": default_31e7983ad92c1ad30fcfef2a2c92e0de,
   "@/ui/assets/Logo#default": default_0b906f3c09bdf05f31dac97d0009f13f,
+  "@pro-laico/ap-seed/admin/beforeDashboard#default": default_88fe4416561ddefdd63d9d2d572613f7,
   "@pro-laico/ap-utils/ui/root/siteTriggers#default": default_9cc76e105739472576a6b8518c7d5bd2,
   "@payloadcms/storage-vercel-blob/client#VercelBlobClientUploadHandler": VercelBlobClientUploadHandler_16c82c5e25f430251a3e3ba57219ff4e,
   "@payloadcms/next/rsc#CollectionCards": CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1

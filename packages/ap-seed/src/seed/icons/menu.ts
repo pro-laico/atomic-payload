@@ -1,4 +1,4 @@
-import { Icon } from '@/ts/types'
+import { Icon } from '@pro-laico/atomic-payload-types/schema'
 
 export const menuIcon: Omit<Icon, 'createdAt' | 'updatedAt' | 'id'> = {
   optimized: 'SVG optimized: 617 to 273 bytes (55.8% reduction)',

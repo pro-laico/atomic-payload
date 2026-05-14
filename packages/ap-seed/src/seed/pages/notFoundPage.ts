@@ -1,5 +1,5 @@
-import type { Page } from '@/ts/types'
-import { toPageRelationship } from '@/utilities/seedNestedRelationship'
+import type { Page } from '@pro-laico/atomic-payload-types/schema'
+import { toPageRelationship } from '../utilities/seedNestedRelationship'
 
 type NotFoundArgs = {
   home: Page

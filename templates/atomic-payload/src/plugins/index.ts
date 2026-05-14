@@ -15,7 +15,6 @@ import { actionsPlugin } from '@pro-laico/atomic-payload-actions'
 import { childBlocksPlugin } from '@pro-laico/atomic-payload-child-blocks'
 import { trackingPlugin } from '@pro-laico/ap-tracking'
 import { seedPlugin } from '@pro-laico/ap-seed'
-import { seed } from '@/endpoints/seed'
 import { fontsPluginConfig } from './fonts'
 import { iconsPluginConfig } from './icons'
 import { designSetsPluginConfig } from './designSets'
@@ -28,7 +27,8 @@ import { jsonSchemaPluginConfig } from './jsonSchema'
 // - `trackingPlugin` registers the `Tracking` global (GTM + PostHog tabs + analytics toggles)
 //   and the `posthogProperty` collection — both used to live in the template.
 // - `seedPlugin` mounts `POST /api/seed` and the `BeforeDashboard` SEED DATABASE
-//   banner. Pass the template's `seed` function; gate it on `INCLUDE_SEED`.
+//   banner. The bundled atomic-payload seed runs by default; pass `seed: …` to
+//   override. Gate registration on `INCLUDE_SEED`.
 // - Other collections owned by atomic-payload-* packages (Images, Favicons,
 //   MuxVideo) are still registered through the template's `@/collections` array;
 //   their `imagesPlugin` factories are intentionally not invoked here to avoid
@@ -45,7 +45,7 @@ export const plugins: Plugin[] = [
   // Pass `childBlocks: [myBlock, …]` to append more blocks alongside the defaults.
   childBlocksPlugin({ enabled: true }),
   trackingPlugin({ enabled: true }),
-  seedPlugin({ enabled: process.env.INCLUDE_SEED === 'true', seed }),
+  seedPlugin({ enabled: process.env.INCLUDE_SEED === 'true' }),
   fontsPluginConfig,
   iconsPluginConfig,
   designSetsPluginConfig,

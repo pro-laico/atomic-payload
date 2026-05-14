@@ -1,4 +1,4 @@
-import { IconSet, Page, Icon } from '@/ts/types'
+import { IconSet, Page, Icon } from '@pro-laico/atomic-payload-types/schema'
 
 type IconSetArgs = { page: Page; icons: Icon[] }
 

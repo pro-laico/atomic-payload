@@ -1,12 +1,13 @@
 import type { Config, Plugin } from 'payload'
 import { createSeedEndpoint, type SeedFn } from './endpoint'
 import { BeforeDashboardPath } from './index'
+import { seed as defaultSeed } from './seed'
 
 export type { SeedFn } from './endpoint'
 
 export interface SeedPluginOptions {
-  /** Function that performs the actual seeding. Receives `payload` and `req`. */
-  seed: SeedFn
+  /** Function that performs the actual seeding. Defaults to the bundled atomic-payload seed. */
+  seed?: SeedFn
   /** When false, the plugin is a no-op. Defaults to true. */
   enabled?: boolean
   /** Endpoint path mounted under `/api`. Defaults to `/seed` (resolves to `/api/seed`). */
@@ -23,7 +24,7 @@ export interface SeedPluginOptions {
 export const seedPlugin =
   (opts: SeedPluginOptions): Plugin =>
   (config: Config): Config => {
-    const { seed, enabled = true, endpointPath = '/seed', registerBeforeDashboard = true } = opts
+    const { seed = defaultSeed, enabled = true, endpointPath = '/seed', registerBeforeDashboard = true } = opts
     if (!enabled) return config
 
     const endpoints = [...(config.endpoints ?? []), createSeedEndpoint(seed, endpointPath)]

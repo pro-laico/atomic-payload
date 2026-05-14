@@ -1,4 +1,4 @@
-import { Page, ShortcutSet } from '@/ts/types'
+import { Page, ShortcutSet } from '@pro-laico/atomic-payload-types/schema'
 
 type ShortcutSetArgs = { page: Page }
 

@@ -1,4 +1,4 @@
-import { Icon } from '@/ts/types'
+import { Icon } from '@pro-laico/atomic-payload-types/schema'
 
 export const githubIcon: Omit<Icon, 'createdAt' | 'updatedAt' | 'id'> = {
   optimized: 'SVG optimized: 744 to 487 bytes (34.5% reduction)',

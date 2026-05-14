@@ -1,7 +1,7 @@
 {
   "name": "@pro-laico/ap-seed",
   "version": "0.1.0",
-  "description": "Atomic Payload seed integration. Provides a Payload plugin that wires up a `POST /api/seed` endpoint and a `BeforeDashboard` admin banner with a SEED DATABASE button. Consumers supply the actual seed function.",
+  "description": "Atomic Payload seed integration. Provides a Payload plugin that wires up a `POST /api/seed` endpoint and a `BeforeDashboard` admin banner with a SEED DATABASE button. Ships an opinionated default seed for atomic-payload templates; consumers may override by passing `seed: …`.",
   "license": "MIT",
   "type": "module",
   "publishConfig": {
@@ -26,6 +26,9 @@
   "scripts": {
     "build": "node -e \"process.exit(0)\"",
     "lint": "node -e \"process.exit(0)\""
+  },
+  "dependencies": {
+    "@pro-laico/atomic-payload-types": "workspace:*"
   },
   "peerDependencies": {
     "@payloadcms/ui": ">=3.0.0",

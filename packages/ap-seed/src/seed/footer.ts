@@ -1,4 +1,4 @@
-import type { Footer, Page } from '@/ts/types'
+import type { Footer, Page } from '@pro-laico/atomic-payload-types/schema'
 
 type FooterArgs = { page: Page }
 

@@ -9,6 +9,10 @@ importers:
   .: {}
 
   packages/ap-seed:
+    dependencies:
+      '@pro-laico/atomic-payload-types':
+        specifier: workspace:*
+        version: link:../atomic-payload-types
     devDependencies:
       '@payloadcms/ui':
         specifier: ^3.79.0
