@@ -1,0 +1,22 @@
+.full-width-button {
+  width: 100% !important;
+  justify-content: space-between !important;
+  text-align: left !important;
+}
+
+.full-width-button .btn__content {
+  width: 100% !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+}
+
+.full-width-button .btn__label {
+  flex: 1 !important;
+  text-align: left !important;
+}
+
+.full-width-button .btn__icon {
+  margin-left: auto !important;
+  flex-shrink: 0 !important;
+}

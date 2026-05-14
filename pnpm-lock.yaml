@@ -78,6 +78,9 @@ importers:
         specifier: ^1.11.13
         version: 1.11.19
     devDependencies:
+      '@payloadcms/ui':
+        specifier: ^3.79.0
+        version: 3.79.0(@types/react@19.2.14)(monaco-editor@0.52.2)(next@16.1.6(@babel/core@7.29.0)(@opentelemetry/api@1.9.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(sass@1.77.4))(payload@3.79.0(graphql@16.11.0)(typescript@5.8.3))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(typescript@5.8.3)
       '@types/react':
         specifier: ^19.2.14
         version: 19.2.14

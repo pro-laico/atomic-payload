@@ -9,6 +9,8 @@ export { mt } from './utilities/mergeTags';
 // '@pro-laico/ap-utils/getCached' on the server when needed.
 export { revalidateCache as revalidateCacheCollection, revalidateCacheOnDelete } from './hooks/collection/revalidate';
 export { revalidateCache as revalidateCacheGlobal } from './hooks/global/revalidate';
+export { sanitizeAfterRead } from './hooks/collection/sanitize';
+export const SiteTriggersPath = '@pro-laico/ap-utils/ui/root/siteTriggers';
 export { toTitleCase } from './utilities/toTitleCase';
 export { toKebabCase } from './utilities/toKebabCase';
 export { default as deepMerge, isObject } from './utilities/deepMerge';

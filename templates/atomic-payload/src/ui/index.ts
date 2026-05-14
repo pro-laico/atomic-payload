@@ -9,7 +9,7 @@ export const IconPath = '@/ui/assets/Icon'
 export const SlugPath = '@/ui/fields/slug'
 
 //Root
-export const SiteTriggersPath = '@/ui/root/siteTriggers'
+export { SiteTriggersPath } from '@pro-laico/ap-utils'
 
 //Row Labels
 export const ColorLabelPath = '@/ui/rowLabels/color'

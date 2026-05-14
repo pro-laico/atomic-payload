@@ -2,7 +2,7 @@
 import './index.scss'
 import { useState } from 'react'
 import { UIFieldClientComponent } from 'payload'
-import { revalidateTag } from '@pro-laico/ap-utils'
+import { revalidateTag } from '../../../utilities/revalidateTag'
 import { Button, toast, PopupList } from '@payloadcms/ui'
 import { triggerVercelDeployServerFunction } from './triggerVercelDeploy'
 
