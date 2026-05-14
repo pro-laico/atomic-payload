@@ -1,5 +1,5 @@
 'use client'
-import type { FullFormContext } from '@/ts/types'
+import type { FullFormContext } from '@pro-laico/atomic-payload-types'
 import React, { createContext, useContext } from 'react'
 
 const FormContext = createContext<FullFormContext>({ formResponse: null })

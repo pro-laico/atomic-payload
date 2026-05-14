@@ -1,8 +1,11 @@
 'use client'
 import React from 'react'
 import dynamic from 'next/dynamic'
-import { AtomicChild, RenderChild } from 'atomic-payload/child-blocks-types'
-import { useActionContext, usePortalActions, useToDa } from 'atomic-payload/child-blocks-deps-client'
+import type { RenderChild } from '@pro-laico/atomic-payload-types'
+import type { AtomicChild } from '@pro-laico/atomic-payload-types/schema'
+import { useActionContext } from '../../../../../../hooks/useActions/useActionContext'
+import { usePortalActions } from '../../../../../../hooks/useActions/usePortal'
+import { useToDa } from '../../../../../../hooks/useActions/useToDa'
 
 const Root = dynamic(() => import('@base-ui-components/react/dialog').then((mod) => mod.Dialog.Root))
 const Trigger = dynamic(() => import('@base-ui-components/react/dialog').then((mod) => mod.Dialog.Trigger))

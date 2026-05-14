@@ -1,8 +1,9 @@
 'use client'
 import { Toast } from '@base-ui-components/react/toast'
 import { useState, useEffect, useRef, useMemo } from 'react'
-import { useActionContext } from '@/hooks/frontEnd/useActions/useActionContext'
-import { FormResponse, AtomicChild, FullFormContext, ActionContext } from '@/ts/types'
+import { useActionContext } from './useActionContext'
+import type { FormResponse, FullFormContext, ActionContext } from '@pro-laico/atomic-payload-types'
+import type { AtomicChild } from '@pro-laico/atomic-payload-types/schema'
 
 /** Dynamic import avoids a server-module / getCached init cycle during client graph evaluation (Next collect page data). */
 let submitFormLoader: Promise<

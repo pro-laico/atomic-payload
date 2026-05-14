@@ -1,8 +1,11 @@
 'use client'
 import React from 'react'
 import NextLink from 'next/link'
-import { AtomicChild, RenderChild } from 'atomic-payload/child-blocks-types'
-import { useToDa, useButtonActions, useActionContext } from 'atomic-payload/child-blocks-deps-client'
+import type { RenderChild } from '@pro-laico/atomic-payload-types'
+import type { AtomicChild } from '@pro-laico/atomic-payload-types/schema'
+import { useToDa } from '../../../../../hooks/useActions/useToDa'
+import { useButtonActions } from '../../../../../hooks/useActions/useButtonActions'
+import { useActionContext } from '../../../../../hooks/useActions/useActionContext'
 
 export const AtomicButtonLinkClient: React.FC<RenderChild<AtomicChild>> = (props) => {
   const { block, pt, triggerChildren } = props

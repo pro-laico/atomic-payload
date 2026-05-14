@@ -44,11 +44,19 @@ export type IconSet = Get<'IconSet', DefaultRecord>
 export type Image = Get<'Image', DefaultRecord>
 export type Tracking = Get<'Tracking', DefaultRecord>
 export type DesignSet = Get<'DesignSet', DefaultRecord>
-export type ImageChild = Get<'ImageChild', DefaultRecord>
+export type AtomicChild = Get<'AtomicChild', DefaultBlock>
+export type ImageChild = Get<'ImageChild', DefaultBlock>
+export type VideoChild = Get<'VideoChild', DefaultBlock>
+export type IconChild = Get<'IconChild', DefaultBlock>
+export type SVGChild = Get<'SVGChild', DefaultBlock>
+export type RichTextChild = Get<'RichTextChild', DefaultBlock>
+export type SimpleTextChild = Get<'SimpleTextChild', DefaultBlock>
 export type ShortcutSet = Get<'ShortcutSet', DefaultRecord>
 export type SiteMetaDatum = Get<'SiteMetaDatum', DefaultRecord>
 export type FormSubmission = Get<'FormSubmission', DefaultRecord>
 export type StoredAtomicForm = Get<'StoredAtomicForm', DefaultRecord>
+export type ImplementedStorageTypes = Get<'ImplementedStorageTypes', string | number | boolean | Record<string, any> | undefined>
+export type NonRecursiveChildBlockType = Get<'NonRecursiveChildBlockType', string>
 
 // /////////////////////////////////////
 // Tuple / array shapes (`X[number]` patterns)
@@ -69,12 +77,12 @@ export type InputValidationBlocks = Get<'InputValidationBlocks', DefaultBlock[]>
 export type StoredAtomicFormInput = Get<'StoredAtomicFormInput', DefaultRecord>
 
 /** Form / input SVR block payloads (definitions in generated `payload-types.ts`). */
-export type FrlSimpleSlidingWindow = Get<'FrlSimpleSlidingWindow', DefaultRecord>
-export type FsCombineTwoFields = Get<'FsCombineTwoFields', DefaultRecord>
-export type FvIsUnique = Get<'FvIsUnique', DefaultRecord>
-export type IsTrimText = Get<'IsTrimText', DefaultRecord>
-export type IvContains = Get<'IvContains', DefaultRecord>
-export type IvDoesNotContain = Get<'IvDoesNotContain', DefaultRecord>
+export type FrlSimpleSlidingWindow = Get<'FrlSimpleSlidingWindow', DefaultBlock>
+export type FsCombineTwoFields = Get<'FsCombineTwoFields', DefaultBlock>
+export type FvIsUnique = Get<'FvIsUnique', DefaultBlock>
+export type IsTrimText = Get<'IsTrimText', DefaultBlock>
+export type IvContains = Get<'IvContains', DefaultBlock>
+export type IvDoesNotContain = Get<'IvDoesNotContain', DefaultBlock>
 
 // /////////////////////////////////////
 // String-literal union types

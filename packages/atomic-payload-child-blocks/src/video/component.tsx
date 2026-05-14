@@ -1,8 +1,8 @@
 'use client'
 import React from 'react'
 import dynamic from 'next/dynamic'
-import { RenderChild } from 'atomic-payload/child-blocks-types'
-import type { VideoChild as VideoChildType } from 'atomic-payload/child-blocks-types'
+import type { RenderChild } from '@pro-laico/atomic-payload-types'
+import type { VideoChild as VideoChildType } from '@pro-laico/atomic-payload-types/schema'
 
 const MuxVideoReact = dynamic(() => import('@mux/mux-video-react'))
 

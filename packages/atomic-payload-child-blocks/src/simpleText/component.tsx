@@ -1,5 +1,6 @@
 'use server'
-import type { SimpleTextChild as SimpleTextChildType, RenderChild } from 'atomic-payload/child-blocks-types'
+import type { RenderChild } from '@pro-laico/atomic-payload-types'
+import type { SimpleTextChild as SimpleTextChildType } from '@pro-laico/atomic-payload-types/schema'
 
 export const SimpleTextChild: React.FC<RenderChild<SimpleTextChildType>> = async ({ block, pt }) => {
   if (block.tagType === 'fragment') return <>{block.text}</>

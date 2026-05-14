@@ -1,4 +1,4 @@
-import { AttFunction } from '@/ts/types'
+import type { AttFunction } from '@pro-laico/atomic-payload-types'
 
 export const AttCCToDA: AttFunction<'AttCCToDA'> = ({
   listen,

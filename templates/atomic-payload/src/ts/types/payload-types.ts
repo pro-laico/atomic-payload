@@ -472,41 +472,6 @@ export type ThemeKeys = 'mode';
  */
 export type ThemeListen = 'mode';
 /**
- * Type: {@link CollectionThatUsesAtomicHookSlug}
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "CollectionThatUsesAtomicHookSlug".
- */
-export type CollectionThatUsesAtomicHookSlug = 'pages' | 'footer' | 'header';
-/**
- * Type: {@link CollectionWithStoredAtomicClassesSlug}
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "CollectionWithStoredAtomicClassesSlug".
- */
-export type CollectionWithStoredAtomicClassesSlug = 'pages' | 'footer' | 'header';
-/**
- * Type: {@link CollectionThatUsesCSSProcessorSlug}
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "CollectionThatUsesCSSProcessorSlug".
- */
-export type CollectionThatUsesCSSProcessorSlug = 'designSet' | 'shortcutSet' | 'pages' | 'footer' | 'header';
-/**
- * Type: {@link CollectionWithStoredAtomicFormsSlug}
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "CollectionWithStoredAtomicFormsSlug".
- */
-export type CollectionWithStoredAtomicFormsSlug = 'pages' | 'footer' | 'header';
-/**
- * Type: {@link CollectionWithStoredAtomicActionsSlug}
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "CollectionWithStoredAtomicActionsSlug".
- */
-export type CollectionWithStoredAtomicActionsSlug = 'pages' | 'footer' | 'header';
-/**
  * Type: {@link RunnerType}
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -610,6 +575,41 @@ export type ChildrenWithContentActions = 'AtomicChild' | 'SimpleTextChild';
  * via the `definition` "ChildrenWithActions".
  */
 export type ChildrenWithActions = 'AtomicChild' | 'SimpleTextChild';
+/**
+ * Type: {@link CollectionThatUsesAtomicHookSlug}
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CollectionThatUsesAtomicHookSlug".
+ */
+export type CollectionThatUsesAtomicHookSlug = 'pages' | 'footer' | 'header';
+/**
+ * Type: {@link CollectionWithStoredAtomicClassesSlug}
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CollectionWithStoredAtomicClassesSlug".
+ */
+export type CollectionWithStoredAtomicClassesSlug = 'pages' | 'footer' | 'header';
+/**
+ * Type: {@link CollectionThatUsesCSSProcessorSlug}
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CollectionThatUsesCSSProcessorSlug".
+ */
+export type CollectionThatUsesCSSProcessorSlug = 'designSet' | 'shortcutSet' | 'pages' | 'footer' | 'header';
+/**
+ * Type: {@link CollectionWithStoredAtomicFormsSlug}
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CollectionWithStoredAtomicFormsSlug".
+ */
+export type CollectionWithStoredAtomicFormsSlug = 'pages' | 'footer' | 'header';
+/**
+ * Type: {@link CollectionWithStoredAtomicActionsSlug}
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CollectionWithStoredAtomicActionsSlug".
+ */
+export type CollectionWithStoredAtomicActionsSlug = 'pages' | 'footer' | 'header';
 
 export interface Config {
   auth: {
@@ -693,17 +693,17 @@ export interface Config {
   fallbackLocale: null;
   globals: {
     settings: Setting;
-    tracking: Tracking;
     siteMetaData: SiteMetaDatum;
     draftStorage: DraftStorage;
     publishedStorage: PublishedStorage;
+    tracking: Tracking;
   };
   globalsSelect: {
     settings: SettingsSelect<false> | SettingsSelect<true>;
-    tracking: TrackingSelect<false> | TrackingSelect<true>;
     siteMetaData: SiteMetaDataSelect<false> | SiteMetaDataSelect<true>;
     draftStorage: DraftStorageSelect<false> | DraftStorageSelect<true>;
     publishedStorage: PublishedStorageSelect<false> | PublishedStorageSelect<true>;
+    tracking: TrackingSelect<false> | TrackingSelect<true>;
   };
   locale: null;
   widgets: {
@@ -3407,40 +3407,6 @@ export interface Setting {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "tracking".
- */
-export interface Tracking {
-  id: string;
-  googleTagManagerEnabled?: boolean | null;
-  postHogEnabled?: boolean | null;
-  vercelAnalyticsEnabled?: boolean | null;
-  googleTagManagerId?: string | null;
-  postHogPublicKey: string;
-  postHogHost: string;
-  enableAutoCapture?: boolean | null;
-  disableSessionRecording?: boolean | null;
-  disableSurveys?: boolean | null;
-  capturePerformance?: boolean | null;
-  postHogAutoCaptureSettings?: {
-    urlAllowList?:
-      | {
-          url?: string | null;
-          id?: string | null;
-        }[]
-      | null;
-    urlIgnoreList?:
-      | {
-          url?: string | null;
-          id?: string | null;
-        }[]
-      | null;
-  };
-  _status?: ('draft' | 'published') | null;
-  updatedAt?: string | null;
-  createdAt?: string | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "siteMetaData".
  */
 export interface SiteMetaDatum {
@@ -3485,6 +3451,40 @@ export interface PublishedStorage {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tracking".
+ */
+export interface Tracking {
+  id: string;
+  googleTagManagerEnabled?: boolean | null;
+  postHogEnabled?: boolean | null;
+  vercelAnalyticsEnabled?: boolean | null;
+  googleTagManagerId?: string | null;
+  postHogPublicKey: string;
+  postHogHost: string;
+  enableAutoCapture?: boolean | null;
+  disableSessionRecording?: boolean | null;
+  disableSurveys?: boolean | null;
+  capturePerformance?: boolean | null;
+  postHogAutoCaptureSettings?: {
+    urlAllowList?:
+      | {
+          url?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+    urlIgnoreList?:
+      | {
+          url?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  _status?: ('draft' | 'published') | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "settings_select".
  */
 export interface SettingsSelect<T extends boolean = true> {
@@ -3497,42 +3497,6 @@ export interface SettingsSelect<T extends boolean = true> {
     | T
     | {
         storeVersion?: T;
-      };
-  _status?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  globalType?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "tracking_select".
- */
-export interface TrackingSelect<T extends boolean = true> {
-  googleTagManagerEnabled?: T;
-  postHogEnabled?: T;
-  vercelAnalyticsEnabled?: T;
-  googleTagManagerId?: T;
-  postHogPublicKey?: T;
-  postHogHost?: T;
-  enableAutoCapture?: T;
-  disableSessionRecording?: T;
-  disableSurveys?: T;
-  capturePerformance?: T;
-  postHogAutoCaptureSettings?:
-    | T
-    | {
-        urlAllowList?:
-          | T
-          | {
-              url?: T;
-              id?: T;
-            };
-        urlIgnoreList?:
-          | T
-          | {
-              url?: T;
-              id?: T;
-            };
       };
   _status?: T;
   updatedAt?: T;
@@ -3573,6 +3537,42 @@ export interface DraftStorageSelect<T extends boolean = true> {
 export interface PublishedStorageSelect<T extends boolean = true> {
   cssSize?: T;
   layoutCSS?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tracking_select".
+ */
+export interface TrackingSelect<T extends boolean = true> {
+  googleTagManagerEnabled?: T;
+  postHogEnabled?: T;
+  vercelAnalyticsEnabled?: T;
+  googleTagManagerId?: T;
+  postHogPublicKey?: T;
+  postHogHost?: T;
+  enableAutoCapture?: T;
+  disableSessionRecording?: T;
+  disableSurveys?: T;
+  capturePerformance?: T;
+  postHogAutoCaptureSettings?:
+    | T
+    | {
+        urlAllowList?:
+          | T
+          | {
+              url?: T;
+              id?: T;
+            };
+        urlIgnoreList?:
+          | T
+          | {
+              url?: T;
+              id?: T;
+            };
+      };
+  _status?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
@@ -3620,7 +3620,7 @@ export interface TaskSchedulePublish {
           relationTo: 'shortcutSet';
           value: string | ShortcutSet;
         } | null);
-    global?: ('settings' | 'tracking' | 'siteMetaData') | null;
+    global?: ('settings' | 'siteMetaData' | 'tracking') | null;
     user?: (string | null) | User;
   };
   output?: unknown;
@@ -3655,11 +3655,6 @@ export interface AtomicRegistry {
   UnoThemeAnimation: UnoThemeAnimation;
   TokenStorage: TokenStorage;
   ProseColorStorage: ProseColorStorage;
-  CollectionThatUsesAtomicHookSlug: CollectionThatUsesAtomicHookSlug;
-  CollectionWithStoredAtomicClassesSlug: CollectionWithStoredAtomicClassesSlug;
-  CollectionThatUsesCSSProcessorSlug: CollectionThatUsesCSSProcessorSlug;
-  CollectionWithStoredAtomicFormsSlug: CollectionWithStoredAtomicFormsSlug;
-  CollectionWithStoredAtomicActionsSlug: CollectionWithStoredAtomicActionsSlug;
   RunSetCC: RunSetCC;
   RunSetTheme: RunSetTheme;
   RunResetForm: RunResetForm;
@@ -3688,6 +3683,11 @@ export interface AtomicRegistry {
   ChildrenWithTriggerActions: ChildrenWithTriggerActions;
   ChildrenWithContentActions: ChildrenWithContentActions;
   ChildrenWithActions: ChildrenWithActions;
+  CollectionThatUsesAtomicHookSlug: CollectionThatUsesAtomicHookSlug;
+  CollectionWithStoredAtomicClassesSlug: CollectionWithStoredAtomicClassesSlug;
+  CollectionThatUsesCSSProcessorSlug: CollectionThatUsesCSSProcessorSlug;
+  CollectionWithStoredAtomicFormsSlug: CollectionWithStoredAtomicFormsSlug;
+  CollectionWithStoredAtomicActionsSlug: CollectionWithStoredAtomicActionsSlug;
 }
 
 

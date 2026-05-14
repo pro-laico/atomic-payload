@@ -1,4 +1,5 @@
-import type { RunFunction, ImplementedStorageTypes } from '@/ts/types'
+import type { RunFunction } from '@pro-laico/atomic-payload-types'
+import type { ImplementedStorageTypes } from '@pro-laico/atomic-payload-types/schema'
 
 export const RunSubmitForm: RunFunction<'RunSubmitForm'> = async ({
   formName,

@@ -1,4 +1,4 @@
-import type { RunFunction } from '@/ts/types'
+import type { RunFunction } from '@pro-laico/atomic-payload-types'
 
 export const RunSetCC: RunFunction<'RunSetCC'> = ({
   values,

@@ -1,4 +1,5 @@
-import { AttFunction, ImplementedStorageTypes } from '@/ts/types'
+import type { AttFunction } from '@pro-laico/atomic-payload-types'
+import type { ImplementedStorageTypes } from '@pro-laico/atomic-payload-types/schema'
 
 export const AttFormErrorToDA: AttFunction<'AttFormErrorToDA'> = ({ key, inputName = 'form', context }) => {
   if (!context.fullFormContext) {

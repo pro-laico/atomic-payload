@@ -1,6 +1,9 @@
 'use client'
-import { useActionContext, useDaToText, useToDa } from 'atomic-payload/child-blocks-deps-client'
-import type { SimpleTextChild as SimpleTextChildType, RenderChild } from 'atomic-payload/child-blocks-types'
+import { useActionContext } from '../hooks/useActions/useActionContext'
+import { useDaToText } from '../hooks/useActions/useDaToText'
+import { useToDa } from '../hooks/useActions/useToDa'
+import type { RenderChild } from '@pro-laico/atomic-payload-types'
+import type { SimpleTextChild as SimpleTextChildType } from '@pro-laico/atomic-payload-types/schema'
 
 export const SimpleTextChildClient: React.FC<RenderChild<SimpleTextChildType>> = (props) => {
   const { block, pt } = props

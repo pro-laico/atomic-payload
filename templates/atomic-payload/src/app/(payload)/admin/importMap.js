@@ -31,9 +31,9 @@ import { ItalicFeatureClient as ItalicFeatureClient_e70f5e05f09f93e00b997edb1ef0
 import { default as default_75e2cb5f8c3be2ee51b0078615d6a284 } from '@pro-laico/atomic-payload-child-blocks/admin/actionBlock'
 import { default as default_d3f2ac20f132f67d109515c4e18d78ba } from '@pro-laico/atomic-payload-child-blocks/admin/inputBlock'
 import { default as default_42627f30038b1f8762b631c7d2cb0c3c } from '@pro-laico/atomic-payload-child-blocks/admin/coloredEnd'
-import { default as default_7e0ebf8349626d5066c84607ea93eeb9 } from '@/ui/rowLabels/atomic'
-import { default as default_f1f0bac5666a44c5e8419518e1dd9915 } from '@/ui/rowLabels/simpleText'
-import { default as default_11ffef28c6d9fb8a04df535fd3b7f3ac } from '@/ui/fields/iconSelect'
+import { default as default_c18863d59d2eba9502f05ad0064dd2e2 } from '@pro-laico/atomic-payload-child-blocks/admin/atomicRowLabel'
+import { default as default_ff8256de734e06fae92bb274f1a74d58 } from '@pro-laico/atomic-payload-child-blocks/admin/simpleTextRowLabel'
+import { default as default_2f9ffd39d8abc1136972cf387dd19eee } from '@pro-laico/atomic-payload-child-blocks/admin/iconSelect'
 import { default as default_31e7983ad92c1ad30fcfef2a2c92e0de } from '@/ui/assets/Icon'
 import { default as default_0b906f3c09bdf05f31dac97d0009f13f } from '@/ui/assets/Logo'
 import { default as default_45314b1f13e96bdb34e5fc218cfc22ae } from '@/ui/root/siteTriggers'
@@ -74,9 +74,9 @@ export const importMap = {
   "@pro-laico/atomic-payload-child-blocks/admin/actionBlock#default": default_75e2cb5f8c3be2ee51b0078615d6a284,
   "@pro-laico/atomic-payload-child-blocks/admin/inputBlock#default": default_d3f2ac20f132f67d109515c4e18d78ba,
   "@pro-laico/atomic-payload-child-blocks/admin/coloredEnd#default": default_42627f30038b1f8762b631c7d2cb0c3c,
-  "@/ui/rowLabels/atomic#default": default_7e0ebf8349626d5066c84607ea93eeb9,
-  "@/ui/rowLabels/simpleText#default": default_f1f0bac5666a44c5e8419518e1dd9915,
-  "@/ui/fields/iconSelect#default": default_11ffef28c6d9fb8a04df535fd3b7f3ac,
+  "@pro-laico/atomic-payload-child-blocks/admin/atomicRowLabel#default": default_c18863d59d2eba9502f05ad0064dd2e2,
+  "@pro-laico/atomic-payload-child-blocks/admin/simpleTextRowLabel#default": default_ff8256de734e06fae92bb274f1a74d58,
+  "@pro-laico/atomic-payload-child-blocks/admin/iconSelect#default": default_2f9ffd39d8abc1136972cf387dd19eee,
   "@/ui/assets/Icon#default": default_31e7983ad92c1ad30fcfef2a2c92e0de,
   "@/ui/assets/Logo#default": default_0b906f3c09bdf05f31dac97d0009f13f,
   "@/ui/root/siteTriggers#default": default_45314b1f13e96bdb34e5fc218cfc22ae,

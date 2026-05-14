@@ -22,6 +22,10 @@
       "types": "./src/zap.ts",
       "default": "./src/zap.ts"
     },
+    "./useActions/zap": {
+      "types": "./src/hooks/useActions/dispatch/zap.ts",
+      "default": "./src/hooks/useActions/dispatch/zap.ts"
+    },
     "./frontend-components": {
       "types": "./src/frontend-components.ts",
       "default": "./src/frontend-components.ts"
@@ -37,6 +41,18 @@
     "./admin/inputBlock": {
       "types": "./src/components/admin/inputBlock.tsx",
       "default": "./src/components/admin/inputBlock.tsx"
+    },
+    "./admin/iconSelect": {
+      "types": "./src/components/admin/iconSelect.tsx",
+      "default": "./src/components/admin/iconSelect.tsx"
+    },
+    "./admin/atomicRowLabel": {
+      "types": "./src/components/admin/AtomicRowLabel.tsx",
+      "default": "./src/components/admin/AtomicRowLabel.tsx"
+    },
+    "./admin/simpleTextRowLabel": {
+      "types": "./src/components/admin/SimpleTextRowLabel.tsx",
+      "default": "./src/components/admin/SimpleTextRowLabel.tsx"
     }
   },
   "files": [
@@ -56,12 +72,13 @@
     "@pro-laico/atomic-payload-apf": "workspace:*",
     "@pro-laico/atomic-payload-icons": "workspace:*",
     "@pro-laico/atomic-payload-actions": "workspace:*",
-    "@pro-laico/atomic-payload-forms": "workspace:*"
+    "@pro-laico/atomic-payload-forms": "workspace:*",
+    "@pro-laico/atomic-payload-atomic-hook": "workspace:*",
+    "next-themes": "^0.4.6"
   },
   "peerDependencies": {
     "@payloadcms/richtext-lexical": ">=3.0.0",
     "@payloadcms/ui": ">=3.0.0",
-    "atomic-payload": "workspace:*",
     "next": ">=15.0.0",
     "payload": ">=3.0.0",
     "react": ">=19.0.0",
@@ -72,7 +89,6 @@
     "@payloadcms/ui": "^3.79.0",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
-    "atomic-payload": "workspace:*",
     "next": "^16.1.6",
     "payload": "^3.79.0",
     "react": "^19.2.4",

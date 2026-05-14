@@ -1,10 +1,11 @@
 'use server'
 import { draftMode } from 'next/headers'
-import { Warning } from 'atomic-payload/child-blocks-deps'
+import Warning from '../components/admin/warningIcon'
 
 import getCached from '@pro-laico/ap-utils/cache/auto'
 
-import { IconChild as IconChildType, RenderChild } from 'atomic-payload/child-blocks-types'
+import type { RenderChild } from '@pro-laico/atomic-payload-types'
+import type { IconChild as IconChildType } from '@pro-laico/atomic-payload-types/schema'
 import { extractSvgContent, extractSvgProps } from '@pro-laico/atomic-payload-icons'
 
 export const IconChild: React.FC<RenderChild<IconChildType>> = async ({ block: { icon }, pt }) => {

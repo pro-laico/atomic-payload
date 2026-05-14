@@ -3,7 +3,7 @@ import { TrackingTab } from '../fields/trackingTab'
 import { ClassNameField } from '@pro-laico/ap-utils'
 import { ColoredEnd } from '../fields/coloredEnd'
 import { ChildsSettingsTab } from '../fields/tabs/settings'
-import type { Image as ImageType } from 'atomic-payload/child-blocks-types'
+import type { Image as ImageType } from '@pro-laico/atomic-payload-types/schema'
 
 const d = {
   image: 'Select the image to be displayed.',

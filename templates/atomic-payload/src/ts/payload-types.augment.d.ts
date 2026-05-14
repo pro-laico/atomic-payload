@@ -12,7 +12,14 @@ declare module '@pro-laico/atomic-payload-types/schema' {
     Form: G.Form
     Tracking: G.Tracking
     DesignSet: G.DesignSet
+    AtomicChild: G.AtomicChild
     ImageChild: G.ImageChild
+    VideoChild: G.VideoChild
+    IconChild: G.IconChild
+    SVGChild: G.SVGChild
+    RichTextChild: G.RichTextChild
+    SimpleTextChild: G.SimpleTextChild
+    NonRecursiveChildBlockType: G.NonRecursiveChildBlockType
     ShortcutSet: G.ShortcutSet
     SiteMetaDatum: G.SiteMetaDatum
     FormSubmission: G.FormSubmission
@@ -69,7 +76,14 @@ declare module '@pro-laico/atomic-payload-types' {
     Form: G.Form
     Tracking: G.Tracking
     DesignSet: G.DesignSet
+    AtomicChild: G.AtomicChild
     ImageChild: G.ImageChild
+    VideoChild: G.VideoChild
+    IconChild: G.IconChild
+    SVGChild: G.SVGChild
+    RichTextChild: G.RichTextChild
+    SimpleTextChild: G.SimpleTextChild
+    NonRecursiveChildBlockType: G.NonRecursiveChildBlockType
     ShortcutSet: G.ShortcutSet
     SiteMetaDatum: G.SiteMetaDatum
     FormSubmission: G.FormSubmission

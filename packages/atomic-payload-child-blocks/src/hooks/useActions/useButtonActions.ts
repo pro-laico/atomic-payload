@@ -1,6 +1,7 @@
 'use client'
-import { ActionContext, AtomicChild } from '@/ts/types'
-import { handleRunnerActions } from '@/hooks/frontEnd/useActions/dispatch'
+import type { ActionContext } from '@pro-laico/atomic-payload-types'
+import type { AtomicChild } from '@pro-laico/atomic-payload-types/schema'
+import { handleRunnerActions } from './dispatch'
 
 export type UseButtonActionsProps = { block: AtomicChild; context: ActionContext }
 

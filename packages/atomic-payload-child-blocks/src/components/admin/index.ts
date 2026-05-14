@@ -2,3 +2,6 @@
 export const ColoredEndPath = '@pro-laico/atomic-payload-child-blocks/admin/coloredEnd'
 export const ActionBlocksPath = '@pro-laico/atomic-payload-child-blocks/admin/actionBlock'
 export const InputBlocksPath = '@pro-laico/atomic-payload-child-blocks/admin/inputBlock'
+export const IconSelectPath = '@pro-laico/atomic-payload-child-blocks/admin/iconSelect'
+export const AtomicRowLabelPath = '@pro-laico/atomic-payload-child-blocks/admin/atomicRowLabel'
+export const SimpleTextRowLabelPath = '@pro-laico/atomic-payload-child-blocks/admin/simpleTextRowLabel'

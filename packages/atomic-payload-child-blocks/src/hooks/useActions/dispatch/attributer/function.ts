@@ -1,4 +1,4 @@
-import { AttributerType } from '@/ts/types'
+import type { AttributerType } from '@pro-laico/atomic-payload-types/schema'
 import type { AttFunction } from '@pro-laico/atomic-payload-types'
 
 //Functions

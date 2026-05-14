@@ -1,6 +1,7 @@
 'use server'
 import NextLink from 'next/link'
-import { AtomicChild, RenderChild } from 'atomic-payload/child-blocks-types'
+import type { RenderChild } from '@pro-laico/atomic-payload-types'
+import type { AtomicChild } from '@pro-laico/atomic-payload-types/schema'
 
 export const AtomicButtonLink: React.FC<RenderChild<AtomicChild>> = async ({ block, pt, triggerChildren }) => {
   return (

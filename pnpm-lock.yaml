@@ -201,6 +201,9 @@ importers:
       '@pro-laico/atomic-payload-apf':
         specifier: workspace:*
         version: link:../atomic-payload-apf
+      '@pro-laico/atomic-payload-atomic-hook':
+        specifier: workspace:*
+        version: link:../atomic-payload-atomic-hook
       '@pro-laico/atomic-payload-forms':
         specifier: workspace:*
         version: link:../atomic-payload-forms
@@ -213,6 +216,9 @@ importers:
       '@pro-laico/atomic-payload-zap':
         specifier: workspace:*
         version: link:../atomic-payload-zap
+      next-themes:
+        specifier: ^0.4.6
+        version: 0.4.6(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
     devDependencies:
       '@payloadcms/richtext-lexical':
         specifier: ^3.79.0
@@ -226,9 +232,6 @@ importers:
       '@types/react-dom':
         specifier: ^19.2.3
         version: 19.2.3(@types/react@19.2.14)
-      atomic-payload:
-        specifier: workspace:*
-        version: link:../../templates/atomic-payload
       next:
         specifier: ^16.1.6
         version: 16.1.6(@babel/core@7.29.0)(@opentelemetry/api@1.9.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(sass@1.77.4)

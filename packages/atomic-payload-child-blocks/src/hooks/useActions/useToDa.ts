@@ -1,7 +1,8 @@
 'use client'
 import { useMemo } from 'react'
-import { ActionContext, Attributers } from '@/ts/types'
-import { handleAttributerActions } from '@/hooks/frontEnd/useActions/dispatch'
+import type { ActionContext } from '@pro-laico/atomic-payload-types'
+import type { Attributers } from '@pro-laico/atomic-payload-types/schema'
+import { handleAttributerActions } from './dispatch'
 
 export type UseToDaProps = { attributers: Attributers | undefined; context: ActionContext }
 export type DataAttributes = Record<string, string> | undefined
