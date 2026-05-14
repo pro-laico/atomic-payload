@@ -12,6 +12,7 @@ export { mt } from './utilities/mergeTags'
 
 export { revalidateCache as revalidateCacheCollection, revalidateCacheOnDelete } from './hooks/collection/revalidate'
 export { revalidateCache as revalidateCacheGlobal } from './hooks/global/revalidate'
+export { sanitizeAfterRead } from './hooks/collection/sanitize'
 
 export { toTitleCase } from './utilities/toTitleCase'
 export { toKebabCase, type NameKebabOptions } from './utilities/toKebabCase'
