@@ -19,6 +19,7 @@ import { seed } from '@/endpoints/seed'
 import { fontsPluginConfig } from './fonts'
 import { iconsPluginConfig } from './icons'
 import { designSetsPluginConfig } from './designSets'
+import { jsonSchemaPluginConfig } from './jsonSchema'
 
 // Notes on plugin composition:
 // - `Font` is registered via `fontsPlugin` (see `./fonts`).
@@ -38,6 +39,7 @@ import { designSetsPluginConfig } from './designSets'
 //   to the listed slugs.
 
 export const plugins: Plugin[] = [
+  jsonSchemaPluginConfig,
   formsPlugin({ enabled: true }),
   actionsPlugin({ enabled: true }),
   // Pass `childBlocks: [myBlock, …]` to append more blocks alongside the defaults.

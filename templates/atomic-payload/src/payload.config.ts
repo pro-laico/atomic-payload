@@ -7,7 +7,6 @@ import { buildConfig } from 'payload'
 import Collections from '@/collections'
 import { fileURLToPath } from 'node:url'
 import { Users } from '@/collections/users'
-import JSONSchemaExtensions from '@/ts/JSONSchema'
 import { defaultLexical } from '@pro-laico/atomic-payload-child-blocks/default-lexical'
 //import { resendAdapter } from '@payloadcms/email-resend'
 import { mongooseAdapter } from '@payloadcms/db-mongodb'
@@ -27,7 +26,7 @@ export default buildConfig({
   collections: [...Collections],
   secret: process.env.PAYLOAD_SECRET || '',
   cors: [getServerSideURL()].filter(Boolean),
-  typescript: { schema: [JSONSchemaExtensions], outputFile: path.resolve(dirname, 'ts/types/payload-types.ts') },
+  typescript: { outputFile: path.resolve(dirname, 'ts/types/payload-types.ts') },
   db: mongooseAdapter({ url: process.env.MONGODB_URI || '', collectionsSchemaOptions: { pages: { minimize: true } }, allowAdditionalKeys: false }),
   blocks: [],
   /*   email: resendAdapter({

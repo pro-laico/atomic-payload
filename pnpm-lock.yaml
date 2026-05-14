@@ -390,6 +390,9 @@ importers:
 
   packages/atomic-payload-types:
     devDependencies:
+      '@types/json-schema':
+        specifier: ^7.0.15
+        version: 7.0.15
       '@types/react':
         specifier: ^19.2.14
         version: 19.2.14

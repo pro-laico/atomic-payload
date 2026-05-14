@@ -1,6 +1,7 @@
 import type { BlockSlug, CollectionSlug } from 'payload';
 import type { Config, ChildBlockType, ActionBlockType } from './payload-types';
 export * from './apf';
+export * from './jsonSchema';
 export * from './css';
 export * from './cache';
 export * from './forms';
