@@ -1,8 +1,8 @@
 import { Settings } from './settings'
 import { baseStorage } from './storage'
-import { Tracking } from './tracking/global'
 import { SiteMetaData } from './siteMetaData'
 
-const globals = [Settings, Tracking, SiteMetaData, baseStorage('draft'), baseStorage('published')]
+// Tracking global is registered by `trackingPlugin` (see `@/plugins`).
+const globals = [Settings, SiteMetaData, baseStorage('draft'), baseStorage('published')]
 
 export default globals

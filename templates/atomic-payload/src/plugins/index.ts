@@ -13,6 +13,7 @@ import { revalidationPlugin } from '@pro-laico/ap-utils'
 import { formsPlugin } from '@pro-laico/atomic-payload-forms'
 import { actionsPlugin } from '@pro-laico/atomic-payload-actions'
 import { childBlocksPlugin } from '@pro-laico/atomic-payload-child-blocks'
+import { trackingPlugin } from '@pro-laico/ap-tracking'
 import { fontsPluginConfig } from './fonts'
 import { iconsPluginConfig } from './icons'
 import { designSetsPluginConfig } from './designSets'
@@ -21,10 +22,11 @@ import { designSetsPluginConfig } from './designSets'
 // - `Font` is registered via `fontsPlugin` (see `./fonts`).
 // - `Icon` and `iconSet` are registered via `iconsPlugin` (see `./icons`).
 // - The `designSet` and `shortcutSet` collections are registered via `designSetsPlugin` (see `./designSets`).
+// - `trackingPlugin` registers the `Tracking` global (GTM + PostHog tabs + analytics toggles)
+//   and the `posthogProperty` collection — both used to live in the template.
 // - Other collections owned by atomic-payload-* packages (Images, Favicons,
-//   MuxVideo, PostHogProperty) are still registered through the
-//   template's `@/collections` array; their `imagesPlugin` and
-//   `posthogPlugin` factories are intentionally not invoked here to avoid
+//   MuxVideo) are still registered through the template's `@/collections` array;
+//   their `imagesPlugin` factories are intentionally not invoked here to avoid
 //   double-registration.
 // - `formsPlugin` prepends default submit-form blocks; pass `formBlocks: […]` for more.
 // - `actionsPlugin` prepends default action blocks; pass `actionBlocks: […]` for more.
@@ -36,6 +38,7 @@ export const plugins: Plugin[] = [
   actionsPlugin({ enabled: true }),
   // Pass `childBlocks: [myBlock, …]` to append more blocks alongside the defaults.
   childBlocksPlugin({ enabled: true }),
+  trackingPlugin({ enabled: true }),
   fontsPluginConfig,
   iconsPluginConfig,
   designSetsPluginConfig,

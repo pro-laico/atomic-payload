@@ -8,6 +8,40 @@ importers:
 
   .: {}
 
+  packages/ap-tracking:
+    dependencies:
+      '@pro-laico/ap-utils':
+        specifier: workspace:*
+        version: link:../ap-utils
+      '@pro-laico/atomic-payload-types':
+        specifier: workspace:*
+        version: link:../atomic-payload-types
+    devDependencies:
+      '@next/third-parties':
+        specifier: ^16.1.6
+        version: 16.1.6(next@16.1.6(@babel/core@7.29.0)(@opentelemetry/api@1.9.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(sass@1.77.4))(react@19.2.4)
+      '@types/react':
+        specifier: ^19.2.14
+        version: 19.2.14
+      '@vercel/analytics':
+        specifier: ^1.6.1
+        version: 1.6.1(next@16.1.6(@babel/core@7.29.0)(@opentelemetry/api@1.9.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(sass@1.77.4))(react@19.2.4)
+      next:
+        specifier: ^16.1.6
+        version: 16.1.6(@babel/core@7.29.0)(@opentelemetry/api@1.9.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(sass@1.77.4)
+      payload:
+        specifier: ^3.79.0
+        version: 3.79.0(graphql@16.11.0)(typescript@5.8.3)
+      posthog-js:
+        specifier: ^1.360.0
+        version: 1.360.0
+      react:
+        specifier: ^19.2.4
+        version: 19.2.4
+      typescript:
+        specifier: 5.8.3
+        version: 5.8.3
+
   packages/ap-utils:
     dependencies:
       '@pro-laico/atomic-payload-atomic-hook':
@@ -321,31 +355,6 @@ importers:
         specifier: 5.8.3
         version: 5.8.3
 
-  packages/atomic-payload-posthog:
-    dependencies:
-      '@pro-laico/atomic-payload-types':
-        specifier: workspace:*
-        version: link:../atomic-payload-types
-    devDependencies:
-      '@types/react':
-        specifier: ^19.2.14
-        version: 19.2.14
-      next:
-        specifier: ^16.1.6
-        version: 16.1.6(@babel/core@7.29.0)(@opentelemetry/api@1.9.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(sass@1.77.4)
-      payload:
-        specifier: ^3.79.0
-        version: 3.79.0(graphql@16.11.0)(typescript@5.8.3)
-      posthog-js:
-        specifier: ^1.360.0
-        version: 1.360.0
-      react:
-        specifier: ^19.2.4
-        version: 19.2.4
-      typescript:
-        specifier: 5.8.3
-        version: 5.8.3
-
   packages/atomic-payload-types:
     devDependencies:
       '@types/react':
@@ -454,6 +463,9 @@ importers:
       '@payloadcms/ui':
         specifier: ^3.79.0
         version: 3.79.0(@types/react@19.2.14)(monaco-editor@0.52.2)(next@16.1.6(@babel/core@7.29.0)(@opentelemetry/api@1.9.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(sass@1.77.4))(payload@3.79.0(graphql@16.11.0)(typescript@5.8.3))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(typescript@5.8.3)
+      '@pro-laico/ap-tracking':
+        specifier: workspace:*
+        version: link:../../packages/ap-tracking
       '@pro-laico/ap-utils':
         specifier: workspace:*
         version: link:../../packages/ap-utils
@@ -487,9 +499,6 @@ importers:
       '@pro-laico/atomic-payload-mux-video':
         specifier: workspace:*
         version: link:../../packages/atomic-payload-mux-video
-      '@pro-laico/atomic-payload-posthog':
-        specifier: workspace:*
-        version: link:../../packages/atomic-payload-posthog
       '@pro-laico/atomic-payload-types':
         specifier: workspace:*
         version: link:../../packages/atomic-payload-types

@@ -7,7 +7,7 @@ import getCached from '@pro-laico/ap-utils/cache/auto'
 import { Header } from '@/collections/headers/component'
 import { Footer } from '@/collections/footers/component'
 import { AtomicStoreProvider } from '@pro-laico/atomic-payload-atomic-hook/client'
-import { TrackingProvider } from '@/components/providers/tracking'
+import { TrackingProvider } from '@pro-laico/ap-tracking/provider'
 
 /** Payload-backed layouts need a live DB; avoid static prerender at `next build` when Mongo is unavailable. */
 export const dynamic = 'force-dynamic'

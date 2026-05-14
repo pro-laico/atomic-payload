@@ -1,7 +1,7 @@
 import 'server-only' //DO NOT REMOVE
 import { createBlurUp } from '@mux/blurup'
 import { PassThroughs, ChildBlocks, StaticDataAttributes } from '@/ts/types'
-import { postHogPropertyApplicator } from '@pro-laico/atomic-payload-posthog'
+import { postHogPropertyApplicator } from '@pro-laico/ap-tracking'
 
 type PassThrough = { p: Record<string, unknown>; da: Record<string, string> }
 

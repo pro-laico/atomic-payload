@@ -16,7 +16,7 @@ atomic-payload/
 │   ├── atomic-payload-images/         # Images + Favicons + FaviconField
 │   ├── atomic-payload-fonts/          # fontsPlugin + Font collection + download CLI
 │   ├── atomic-payload-mux-video/      # MuxVideo wrapper plugin
-│   ├── atomic-payload-posthog/        # PostHogProperty + tab + provider
+│   ├── ap-tracking/                   # Tracking plugin: Tracking global + PostHogProperty + GTM/PostHog/Vercel providers
 │   ├── atomic-payload-actions/        # actionsPlugin + action blocks
 │   ├── atomic-payload-forms/            # formsPlugin + submit-form blocks + processor
 │   ├── atomic-payload-child-blocks/   # childBlocksPlugin + child blocks
@@ -40,7 +40,7 @@ atomic-payload/
 | `@pro-laico/atomic-payload-images`       | Images + Favicons collections + FaviconField + blur integration |
 | `@pro-laico/atomic-payload-fonts`        | fontsPlugin + Font collection + font download CLI / API            |
 | `@pro-laico/atomic-payload-mux-video`    | MuxVideo extension collection + plugin wrapper                  |
-| `@pro-laico/atomic-payload-posthog`      | PostHogProperty + tracking tab + React provider                 |
+| `@pro-laico/ap-tracking`                 | Tracking plugin: Tracking global (GTM + PostHog tabs + toggles) + PostHogProperty collection + GTM/PostHog/Vercel/composite providers |
 | `@pro-laico/atomic-payload-actions`    | actionsPlugin + action blocks + type re-exports                 |
 | `@pro-laico/atomic-payload-forms`      | formsPlugin + submit-form SVR blocks + server processor         |
 | `@pro-laico/atomic-payload-child-blocks` | childBlocksPlugin + default child blocks                      |

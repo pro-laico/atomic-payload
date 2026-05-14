@@ -1,0 +1,67 @@
+{
+  "name": "@pro-laico/ap-tracking",
+  "version": "0.1.0",
+  "description": "Atomic Payload tracking integration. Home for all tracking-related functionality (Tracking global, PostHog property collection + tab + provider, Google Tag Manager tab + provider, Vercel Analytics provider, composite TrackingProvider) plugged into atomic-payload.",
+  "license": "MIT",
+  "type": "module",
+  "publishConfig": {
+    "access": "public"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./src": {
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
+    },
+    "./provider": {
+      "types": "./dist/components/frontend/index.d.ts",
+      "import": "./dist/components/frontend/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "src",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "clean": "node -e \"require('fs').rmSync('dist',{recursive:true,force:true})\"",
+    "prepack": "pnpm clean && pnpm build",
+    "lint": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@pro-laico/atomic-payload-types": "workspace:*",
+    "@pro-laico/ap-utils": "workspace:*"
+  },
+  "peerDependencies": {
+    "@next/third-parties": ">=15.0.0",
+    "@vercel/analytics": ">=1.0.0",
+    "next": ">=15.0.0",
+    "payload": ">=3.0.0",
+    "posthog-js": ">=1.0.0",
+    "react": ">=19.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@next/third-parties": { "optional": true },
+    "@vercel/analytics": { "optional": true },
+    "posthog-js": { "optional": true }
+  },
+  "devDependencies": {
+    "@next/third-parties": "^16.1.6",
+    "@types/react": "^19.2.14",
+    "@vercel/analytics": "^1.6.1",
+    "next": "^16.1.6",
+    "payload": "^3.79.0",
+    "posthog-js": "^1.360.0",
+    "react": "^19.2.4",
+    "typescript": "5.8.3"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
