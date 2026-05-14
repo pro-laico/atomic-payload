@@ -51,9 +51,9 @@
     "lint": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@pro-laico/atomic-payload-atomic-hook": "workspace:*",
-    "@pro-laico/atomic-payload-types": "workspace:*",
-    "@pro-laico/atomic-payload-apf": "workspace:*",
+    "@pro-laico/ap-atomic-hook": "workspace:*",
+    "@pro-laico/ap-types": "workspace:*",
+    "@pro-laico/ap-apf": "workspace:*",
     "dayjs": "^1.11.13"
   },
   "peerDependencies": {

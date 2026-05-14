@@ -1,0 +1,61 @@
+{
+  "name": "@pro-laico/ap-types",
+  "version": "0.1.0",
+  "description": "Shared TypeScript types for Atomic Payload projects. Decoupled from any specific Payload CMS schema via module augmentation, so the package can be consumed by any project that supplies its own generated payload-types.",
+  "license": "MIT",
+  "type": "module",
+  "publishConfig": {
+    "access": "public"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./schema": {
+      "types": "./dist/payload-types.d.ts",
+      "import": "./dist/payload-types.js"
+    },
+    "./src": {
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
+    }
+  },
+  "files": [
+    "dist",
+    "src",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "clean": "node -e \"require('fs').rmSync('dist',{recursive:true,force:true})\"",
+    "prepack": "pnpm clean && pnpm build",
+    "lint": "tsc -p tsconfig.json --noEmit"
+  },
+  "peerDependencies": {
+    "next-themes": ">=0.4.0",
+    "payload": ">=3.0.0",
+    "react": ">=19.0.0"
+  },
+  "peerDependenciesMeta": {
+    "next-themes": {
+      "optional": true
+    },
+    "react": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@types/json-schema": "^7.0.15",
+    "@types/react": "^19.2.14",
+    "next-themes": "^0.4.6",
+    "payload": "^3.79.0",
+    "react": "^19.2.4",
+    "typescript": "5.8.3"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

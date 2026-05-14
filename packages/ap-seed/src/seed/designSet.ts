@@ -1,4 +1,4 @@
-import { DesignSet, Page } from '@pro-laico/atomic-payload-types/schema'
+import { DesignSet, Page } from '@pro-laico/ap-types/schema'
 
 type DesignSetArgs = { page: Page }
 

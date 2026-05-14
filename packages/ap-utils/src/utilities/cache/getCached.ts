@@ -8,7 +8,7 @@ import type {
   GCFunction,
   IconSetReturn,
   PayloadConfigPromise,
-} from '@pro-laico/atomic-payload-types'
+} from '@pro-laico/ap-types'
 
 export type GetRegistry = { [K in AllTagsWithGetters]: GCFunction<K> }
 

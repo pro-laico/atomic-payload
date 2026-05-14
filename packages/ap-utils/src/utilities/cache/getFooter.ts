@@ -1,7 +1,7 @@
 'use server'
 import 'server-only' //DO NOT REMOVE
 import { getPayload } from 'payload'
-import type { GCFunction } from '@pro-laico/atomic-payload-types'
+import type { GCFunction } from '@pro-laico/ap-types'
 import cacheLogger from '../cacheLogger'
 
 /** Gets the active footer. */

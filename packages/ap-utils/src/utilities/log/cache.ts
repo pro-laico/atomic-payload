@@ -1,5 +1,5 @@
 import 'server-only'
-import type { AllTags } from '@pro-laico/atomic-payload-types'
+import type { AllTags } from '@pro-laico/ap-types'
 import { mt } from '@pro-laico/ap-utils'
 
 export function cacheLogger({ tag, tid, draft }: { tag: AllTags; tid?: string; draft?: boolean }) {

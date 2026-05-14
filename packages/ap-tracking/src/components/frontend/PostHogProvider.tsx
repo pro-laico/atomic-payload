@@ -1,7 +1,7 @@
 'use client'
 import posthog from 'posthog-js'
 import { useEffect } from 'react'
-import type { Tracking } from '@pro-laico/atomic-payload-types/schema'
+import type { Tracking } from '@pro-laico/ap-types/schema'
 import { usePathname } from 'next/navigation'
 import { PostHogProvider as PHProvider } from 'posthog-js/react'
 

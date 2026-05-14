@@ -1,4 +1,4 @@
-import { Page, ShortcutSet } from '@pro-laico/atomic-payload-types/schema'
+import { Page, ShortcutSet } from '@pro-laico/ap-types/schema'
 
 type ShortcutSetArgs = { page: Page }
 

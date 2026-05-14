@@ -1,4 +1,4 @@
-import { z } from '@pro-laico/atomic-payload-zap'
+import { z } from '@pro-laico/ap-zap'
 import traverse from 'traverse'
 import collections from './index'
 import { COLLECTION_SLUGS_WITH_ATOMIC_HOOK } from './pages/atomicHookSlugs'

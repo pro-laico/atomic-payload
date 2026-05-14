@@ -1,5 +1,5 @@
 import 'server-only';
-import type { AllTagsWithGetters, GCArgs, GCReturns, GCFunction, PayloadConfigPromise } from '@pro-laico/atomic-payload-types';
+import type { AllTagsWithGetters, GCArgs, GCReturns, GCFunction, PayloadConfigPromise } from '@pro-laico/ap-types';
 export type GetRegistry = {
     [K in AllTagsWithGetters]: GCFunction<K>;
 };

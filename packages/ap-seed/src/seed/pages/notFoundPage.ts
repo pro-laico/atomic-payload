@@ -1,4 +1,4 @@
-import type { Page } from '@pro-laico/atomic-payload-types/schema'
+import type { Page } from '@pro-laico/ap-types/schema'
 import { toPageRelationship } from '../utilities/seedNestedRelationship'
 
 type NotFoundArgs = {

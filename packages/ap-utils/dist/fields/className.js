@@ -1,4 +1,4 @@
-import { APField } from '@pro-laico/atomic-payload-apf';
+import { APField } from '@pro-laico/ap-apf';
 import deepMerge from '../utilities/deepMerge';
 export const ClassNameField = (args) => {
     let namePrefix = '';

@@ -1,6 +1,6 @@
 import 'server-only' //DO NOT REMOVE
 import { cache } from 'react'
-import type { PayloadConfigPromise } from '@pro-laico/atomic-payload-types'
+import type { PayloadConfigPromise } from '@pro-laico/ap-types'
 import { createDefaultGetCached } from './index'
 
 /** Builds a per-request memoized `getCached` (via `react.cache`) bound to the

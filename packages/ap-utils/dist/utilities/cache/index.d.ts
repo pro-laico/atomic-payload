@@ -1,5 +1,5 @@
 import 'server-only';
-import type { PayloadConfigPromise } from '@pro-laico/atomic-payload-types';
+import type { PayloadConfigPromise } from '@pro-laico/ap-types';
 import { type GetRegistry } from './getCached';
 import { getCachedPages } from './getPages';
 import { getCachedImage } from './getImage';

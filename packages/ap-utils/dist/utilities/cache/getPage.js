@@ -1,7 +1,7 @@
 'use server';
 import 'server-only'; //DO NOT REMOVE
 import { getPayload } from 'payload';
-import { manualLogger, sanitizeData } from '@pro-laico/atomic-payload-atomic-hook/light';
+import { manualLogger, sanitizeData } from '@pro-laico/ap-atomic-hook/light';
 import cacheLogger from '../cacheLogger';
 /** Gets a page by its href. */
 export const getCachedPageByHref = async (configPromise, tag, tid, draft, pages) => {

@@ -1,5 +1,5 @@
 import 'server-only';
-import type { GCFunction } from '@pro-laico/atomic-payload-types';
+import type { GCFunction } from '@pro-laico/ap-types';
 /** Gets all backend forms stored in the forms collection. */
 export declare const getCachedBackendForms: GCFunction<'backend-forms'>;
 /** Gets all atomic forms stored in the pages collection. */

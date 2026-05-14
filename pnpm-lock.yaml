@@ -10,9 +10,9 @@ importers:
 
   packages/ap-seed:
     dependencies:
-      '@pro-laico/atomic-payload-types':
+      '@pro-laico/ap-types':
         specifier: workspace:*
-        version: link:../atomic-payload-types
+        version: link:../ap-types
     devDependencies:
       '@payloadcms/ui':
         specifier: ^3.79.0
@@ -38,9 +38,9 @@ importers:
       '@pro-laico/ap-utils':
         specifier: workspace:*
         version: link:../ap-utils
-      '@pro-laico/atomic-payload-types':
+      '@pro-laico/ap-types':
         specifier: workspace:*
-        version: link:../atomic-payload-types
+        version: link:../ap-types
     devDependencies:
       '@next/third-parties':
         specifier: ^16.1.6
@@ -69,15 +69,15 @@ importers:
 
   packages/ap-utils:
     dependencies:
-      '@pro-laico/atomic-payload-apf':
+      '@pro-laico/ap-apf':
         specifier: workspace:*
-        version: link:../atomic-payload-apf
-      '@pro-laico/atomic-payload-atomic-hook':
+        version: link:../ap-apf
+      '@pro-laico/ap-atomic-hook':
         specifier: workspace:*
-        version: link:../atomic-payload-atomic-hook
-      '@pro-laico/atomic-payload-types':
+        version: link:../ap-atomic-hook
+      '@pro-laico/ap-types':
         specifier: workspace:*
-        version: link:../atomic-payload-types
+        version: link:../ap-types
       dayjs:
         specifier: ^1.11.13
         version: 1.11.19
@@ -104,17 +104,17 @@ importers:
         specifier: 5.8.3
         version: 5.8.3
 
-  packages/atomic-payload-actions:
+  packages/ap-actions:
     dependencies:
-      '@pro-laico/atomic-payload-apf':
+      '@pro-laico/ap-apf':
         specifier: workspace:*
-        version: link:../atomic-payload-apf
-      '@pro-laico/atomic-payload-types':
+        version: link:../ap-apf
+      '@pro-laico/ap-types':
         specifier: workspace:*
-        version: link:../atomic-payload-types
-      '@pro-laico/atomic-payload-zap':
+        version: link:../ap-types
+      '@pro-laico/ap-zap':
         specifier: workspace:*
-        version: link:../atomic-payload-zap
+        version: link:../ap-zap
     devDependencies:
       payload:
         specifier: ^3.79.0
@@ -123,11 +123,11 @@ importers:
         specifier: 5.8.3
         version: 5.8.3
 
-  packages/atomic-payload-apf:
+  packages/ap-apf:
     dependencies:
-      '@pro-laico/atomic-payload-types':
+      '@pro-laico/ap-types':
         specifier: workspace:*
-        version: link:../atomic-payload-types
+        version: link:../ap-types
     devDependencies:
       '@payloadcms/ui':
         specifier: ^3.79.0
@@ -148,26 +148,26 @@ importers:
         specifier: 5.8.3
         version: 5.8.3
 
-  packages/atomic-payload-atomic-hook:
+  packages/ap-atomic-hook:
     dependencies:
       '@pro-laico/ap-utils':
         specifier: workspace:*
         version: link:../ap-utils
-      '@pro-laico/atomic-payload-actions':
+      '@pro-laico/ap-actions':
         specifier: workspace:*
-        version: link:../atomic-payload-actions
-      '@pro-laico/atomic-payload-apf':
+        version: link:../ap-actions
+      '@pro-laico/ap-apf':
         specifier: workspace:*
-        version: link:../atomic-payload-apf
-      '@pro-laico/atomic-payload-design-sets':
+        version: link:../ap-apf
+      '@pro-laico/ap-design-sets':
         specifier: workspace:*
-        version: link:../atomic-payload-design-sets
-      '@pro-laico/atomic-payload-types':
+        version: link:../ap-design-sets
+      '@pro-laico/ap-types':
         specifier: workspace:*
-        version: link:../atomic-payload-types
-      '@pro-laico/atomic-payload-zap':
+        version: link:../ap-types
+      '@pro-laico/ap-zap':
         specifier: workspace:*
-        version: link:../atomic-payload-zap
+        version: link:../ap-zap
       traverse:
         specifier: ^0.6.11
         version: 0.6.11
@@ -194,7 +194,7 @@ importers:
         specifier: ^5.0.11
         version: 5.0.11(@types/react@19.2.14)(react@19.2.4)(use-sync-external-store@1.6.0(react@19.2.4))
 
-  packages/atomic-payload-child-blocks:
+  packages/ap-child-blocks:
     dependencies:
       '@base-ui-components/react':
         specifier: 1.0.0-rc.0
@@ -205,27 +205,27 @@ importers:
       '@pro-laico/ap-utils':
         specifier: workspace:*
         version: link:../ap-utils
-      '@pro-laico/atomic-payload-actions':
+      '@pro-laico/ap-actions':
         specifier: workspace:*
-        version: link:../atomic-payload-actions
-      '@pro-laico/atomic-payload-apf':
+        version: link:../ap-actions
+      '@pro-laico/ap-apf':
         specifier: workspace:*
-        version: link:../atomic-payload-apf
-      '@pro-laico/atomic-payload-atomic-hook':
+        version: link:../ap-apf
+      '@pro-laico/ap-atomic-hook':
         specifier: workspace:*
-        version: link:../atomic-payload-atomic-hook
-      '@pro-laico/atomic-payload-forms':
+        version: link:../ap-atomic-hook
+      '@pro-laico/ap-forms':
         specifier: workspace:*
-        version: link:../atomic-payload-forms
-      '@pro-laico/atomic-payload-icons':
+        version: link:../ap-forms
+      '@pro-laico/ap-icons':
         specifier: workspace:*
-        version: link:../atomic-payload-icons
-      '@pro-laico/atomic-payload-types':
+        version: link:../ap-icons
+      '@pro-laico/ap-types':
         specifier: workspace:*
-        version: link:../atomic-payload-types
-      '@pro-laico/atomic-payload-zap':
+        version: link:../ap-types
+      '@pro-laico/ap-zap':
         specifier: workspace:*
-        version: link:../atomic-payload-zap
+        version: link:../ap-zap
       next-themes:
         specifier: ^0.4.6
         version: 0.4.6(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
@@ -258,20 +258,20 @@ importers:
         specifier: 5.8.3
         version: 5.8.3
 
-  packages/atomic-payload-design-sets:
+  packages/ap-design-sets:
     dependencies:
       '@pro-laico/ap-utils':
         specifier: workspace:*
         version: link:../ap-utils
-      '@pro-laico/atomic-payload-apf':
+      '@pro-laico/ap-apf':
         specifier: workspace:*
-        version: link:../atomic-payload-apf
-      '@pro-laico/atomic-payload-types':
+        version: link:../ap-apf
+      '@pro-laico/ap-types':
         specifier: workspace:*
-        version: link:../atomic-payload-types
-      '@pro-laico/atomic-payload-zap':
+        version: link:../ap-types
+      '@pro-laico/ap-zap':
         specifier: workspace:*
-        version: link:../atomic-payload-zap
+        version: link:../ap-zap
     devDependencies:
       '@payloadcms/ui':
         specifier: ^3.79.0
@@ -289,11 +289,11 @@ importers:
         specifier: 5.8.3
         version: 5.8.3
 
-  packages/atomic-payload-fonts:
+  packages/ap-fonts:
     dependencies:
-      '@pro-laico/atomic-payload-types':
+      '@pro-laico/ap-types':
         specifier: workspace:*
-        version: link:../atomic-payload-types
+        version: link:../ap-types
     devDependencies:
       '@payloadcms/sdk':
         specifier: ^3.79.0
@@ -308,20 +308,20 @@ importers:
         specifier: 5.8.3
         version: 5.8.3
 
-  packages/atomic-payload-forms:
+  packages/ap-forms:
     dependencies:
       '@pro-laico/ap-utils':
         specifier: workspace:*
         version: link:../ap-utils
-      '@pro-laico/atomic-payload-apf':
+      '@pro-laico/ap-apf':
         specifier: workspace:*
-        version: link:../atomic-payload-apf
-      '@pro-laico/atomic-payload-types':
+        version: link:../ap-apf
+      '@pro-laico/ap-types':
         specifier: workspace:*
-        version: link:../atomic-payload-types
-      '@pro-laico/atomic-payload-zap':
+        version: link:../ap-types
+      '@pro-laico/ap-zap':
         specifier: workspace:*
-        version: link:../atomic-payload-zap
+        version: link:../ap-zap
       atomic-payload:
         specifier: workspace:*
         version: link:../../templates/atomic-payload
@@ -335,17 +335,17 @@ importers:
         specifier: '>=3.0.0'
         version: 3.79.0(graphql@16.11.0)(typescript@5.8.3)
 
-  packages/atomic-payload-icons:
+  packages/ap-icons:
     dependencies:
       '@pro-laico/ap-utils':
         specifier: workspace:*
         version: link:../ap-utils
-      '@pro-laico/atomic-payload-apf':
+      '@pro-laico/ap-apf':
         specifier: workspace:*
-        version: link:../atomic-payload-apf
-      '@pro-laico/atomic-payload-types':
+        version: link:../ap-apf
+      '@pro-laico/ap-types':
         specifier: workspace:*
-        version: link:../atomic-payload-types
+        version: link:../ap-types
     devDependencies:
       '@payloadcms/ui':
         specifier: ^3.79.0
@@ -369,17 +369,17 @@ importers:
         specifier: 5.8.3
         version: 5.8.3
 
-  packages/atomic-payload-images:
+  packages/ap-images:
     dependencies:
       '@pro-laico/ap-utils':
         specifier: workspace:*
         version: link:../ap-utils
-      '@pro-laico/atomic-payload-apf':
+      '@pro-laico/ap-apf':
         specifier: workspace:*
-        version: link:../atomic-payload-apf
-      '@pro-laico/atomic-payload-types':
+        version: link:../ap-apf
+      '@pro-laico/ap-types':
         specifier: workspace:*
-        version: link:../atomic-payload-types
+        version: link:../ap-types
     devDependencies:
       '@oversightstudio/blur-data-urls':
         specifier: ^1.0.4
@@ -391,11 +391,11 @@ importers:
         specifier: 5.8.3
         version: 5.8.3
 
-  packages/atomic-payload-mux-video:
+  packages/ap-mux-video:
     dependencies:
-      '@pro-laico/atomic-payload-types':
+      '@pro-laico/ap-types':
         specifier: workspace:*
-        version: link:../atomic-payload-types
+        version: link:../ap-types
     devDependencies:
       '@oversightstudio/mux-video':
         specifier: ^1.4.0
@@ -407,7 +407,7 @@ importers:
         specifier: 5.8.3
         version: 5.8.3
 
-  packages/atomic-payload-types:
+  packages/ap-types:
     devDependencies:
       '@types/json-schema':
         specifier: ^7.0.15
@@ -428,11 +428,11 @@ importers:
         specifier: 5.8.3
         version: 5.8.3
 
-  packages/atomic-payload-zap:
+  packages/ap-zap:
     dependencies:
-      '@pro-laico/atomic-payload-types':
+      '@pro-laico/ap-types':
         specifier: workspace:*
-        version: link:../atomic-payload-types
+        version: link:../ap-types
       server-only:
         specifier: ^0.0.1
         version: 0.0.1
@@ -527,42 +527,42 @@ importers:
       '@pro-laico/ap-utils':
         specifier: workspace:*
         version: link:../../packages/ap-utils
-      '@pro-laico/atomic-payload-actions':
+      '@pro-laico/ap-actions':
         specifier: workspace:*
-        version: link:../../packages/atomic-payload-actions
-      '@pro-laico/atomic-payload-apf':
+        version: link:../../packages/ap-actions
+      '@pro-laico/ap-apf':
         specifier: workspace:*
-        version: link:../../packages/atomic-payload-apf
-      '@pro-laico/atomic-payload-atomic-hook':
+        version: link:../../packages/ap-apf
+      '@pro-laico/ap-atomic-hook':
         specifier: workspace:*
-        version: link:../../packages/atomic-payload-atomic-hook
-      '@pro-laico/atomic-payload-child-blocks':
+        version: link:../../packages/ap-atomic-hook
+      '@pro-laico/ap-child-blocks':
         specifier: workspace:*
-        version: link:../../packages/atomic-payload-child-blocks
-      '@pro-laico/atomic-payload-design-sets':
+        version: link:../../packages/ap-child-blocks
+      '@pro-laico/ap-design-sets':
         specifier: workspace:*
-        version: link:../../packages/atomic-payload-design-sets
-      '@pro-laico/atomic-payload-fonts':
+        version: link:../../packages/ap-design-sets
+      '@pro-laico/ap-fonts':
         specifier: workspace:*
-        version: link:../../packages/atomic-payload-fonts
-      '@pro-laico/atomic-payload-forms':
+        version: link:../../packages/ap-fonts
+      '@pro-laico/ap-forms':
         specifier: workspace:*
-        version: link:../../packages/atomic-payload-forms
-      '@pro-laico/atomic-payload-icons':
+        version: link:../../packages/ap-forms
+      '@pro-laico/ap-icons':
         specifier: workspace:*
-        version: link:../../packages/atomic-payload-icons
-      '@pro-laico/atomic-payload-images':
+        version: link:../../packages/ap-icons
+      '@pro-laico/ap-images':
         specifier: workspace:*
-        version: link:../../packages/atomic-payload-images
-      '@pro-laico/atomic-payload-mux-video':
+        version: link:../../packages/ap-images
+      '@pro-laico/ap-mux-video':
         specifier: workspace:*
-        version: link:../../packages/atomic-payload-mux-video
-      '@pro-laico/atomic-payload-types':
+        version: link:../../packages/ap-mux-video
+      '@pro-laico/ap-types':
         specifier: workspace:*
-        version: link:../../packages/atomic-payload-types
-      '@pro-laico/atomic-payload-zap':
+        version: link:../../packages/ap-types
+      '@pro-laico/ap-zap':
         specifier: workspace:*
-        version: link:../../packages/atomic-payload-zap
+        version: link:../../packages/ap-zap
       '@vercel/analytics':
         specifier: ^1.6.1
         version: 1.6.1(next@16.1.6(@babel/core@7.29.0)(@opentelemetry/api@1.9.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(sass@1.77.4))(react@19.2.4)

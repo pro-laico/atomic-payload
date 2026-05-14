@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
-import type { PageReturn } from '@pro-laico/atomic-payload-types';
-import type { SiteMetaDatum } from '@pro-laico/atomic-payload-types/schema';
+import type { PageReturn } from '@pro-laico/ap-types';
+import type { SiteMetaDatum } from '@pro-laico/ap-types/schema';
 type GenerateMetaDataArgs = {
     page?: PageReturn;
     siteMetadata?: SiteMetaDatum;

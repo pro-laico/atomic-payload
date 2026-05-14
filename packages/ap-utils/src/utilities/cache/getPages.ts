@@ -1,7 +1,7 @@
 'use server'
 import 'server-only' //DO NOT REMOVE
 import { getPayload, Where } from 'payload'
-import type { GCFunction } from '@pro-laico/atomic-payload-types'
+import type { GCFunction } from '@pro-laico/ap-types'
 import cacheLogger from '../cacheLogger'
 
 /** Gets all pages set in the pages collection and returns them as an array of strings. */

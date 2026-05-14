@@ -3,7 +3,7 @@ import { draftMode } from 'next/headers'
 import { NextRequest } from 'next/server'
 import { redirect } from 'next/navigation'
 import configPromise from '@payload-config'
-import { manualLogger } from '@pro-laico/atomic-payload-atomic-hook/light'
+import { manualLogger } from '@pro-laico/ap-atomic-hook/light'
 import type { CollectionSlug, PayloadRequest } from 'payload'
 
 export async function GET(req: NextRequest): Promise<Response> {

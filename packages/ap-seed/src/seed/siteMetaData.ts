@@ -1,4 +1,4 @@
-import { SiteMetaDatum } from '@pro-laico/atomic-payload-types/schema'
+import { SiteMetaDatum } from '@pro-laico/ap-types/schema'
 
 export const siteMetaData: Omit<SiteMetaDatum, 'createdAt' | 'updatedAt' | 'id'> = {
   siteName: 'Atomic Payload',

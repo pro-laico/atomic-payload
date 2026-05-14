@@ -1,4 +1,4 @@
-import { Header, Page } from '@pro-laico/atomic-payload-types/schema'
+import { Header, Page } from '@pro-laico/ap-types/schema'
 import { toPageRelationship } from './utilities/seedNestedRelationship'
 
 type HeaderArgs = { testing: Page; home: Page; prose: Page }

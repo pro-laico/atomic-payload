@@ -1,3 +1,3 @@
-import { fontsPlugin } from '@pro-laico/atomic-payload-fonts'
+import { fontsPlugin } from '@pro-laico/ap-fonts'
 
 export const fontsPluginConfig = fontsPlugin({ enabled: true })

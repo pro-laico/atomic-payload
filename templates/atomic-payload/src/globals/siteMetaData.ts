@@ -1,9 +1,9 @@
-import { APField } from '@pro-laico/atomic-payload-apf'
+import { APField } from '@pro-laico/ap-apf'
 import type { GlobalConfig } from 'payload'
 import { authd } from '@/access/authenticated'
-import { FaviconField } from '@pro-laico/atomic-payload-images'
-import { onUploadSetAPF } from '@pro-laico/atomic-payload-apf'
-import { generateAPFFields } from '@pro-laico/atomic-payload-apf'
+import { FaviconField } from '@pro-laico/ap-images'
+import { onUploadSetAPF } from '@pro-laico/ap-apf'
+import { generateAPFFields } from '@pro-laico/ap-apf'
 import { revalidateCacheGlobal as revalidateCache } from '@pro-laico/ap-utils'
 
 export const SiteMetaData: GlobalConfig = {

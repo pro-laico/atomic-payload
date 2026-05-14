@@ -1,4 +1,4 @@
-import type { Footer, Page } from '@pro-laico/atomic-payload-types/schema'
+import type { Footer, Page } from '@pro-laico/ap-types/schema'
 
 type FooterArgs = { page: Page }
 

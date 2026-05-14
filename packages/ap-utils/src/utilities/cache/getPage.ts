@@ -1,8 +1,8 @@
 'use server'
 import 'server-only' //DO NOT REMOVE
 import { getPayload, Where } from 'payload'
-import type { GCFunction } from '@pro-laico/atomic-payload-types'
-import { manualLogger, sanitizeData } from '@pro-laico/atomic-payload-atomic-hook/light'
+import type { GCFunction } from '@pro-laico/ap-types'
+import { manualLogger, sanitizeData } from '@pro-laico/ap-atomic-hook/light'
 import cacheLogger from '../cacheLogger'
 
 /** Gets a page by its href. */

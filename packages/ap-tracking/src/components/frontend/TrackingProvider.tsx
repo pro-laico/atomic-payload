@@ -1,6 +1,6 @@
 'use client'
 import type { ReactNode } from 'react'
-import type { Tracking } from '@pro-laico/atomic-payload-types/schema'
+import type { Tracking } from '@pro-laico/ap-types/schema'
 import { PostHogProvider } from './PostHogProvider'
 import { GoogleTagManagerProvider } from './GoogleTagManagerProvider'
 import { VercelProvider } from './VercelProvider'

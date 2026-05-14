@@ -1,4 +1,4 @@
-import type { Page } from '@pro-laico/atomic-payload-types/schema'
+import type { Page } from '@pro-laico/ap-types/schema'
 
 export const prosePage: Omit<Page, 'createdAt' | 'updatedAt' | 'publishedAt' | 'id'> = {
   title: 'Prose',

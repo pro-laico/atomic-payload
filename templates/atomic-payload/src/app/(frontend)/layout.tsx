@@ -6,7 +6,7 @@ import { Toaster } from '@/components/toast'
 import getCached from '@pro-laico/ap-utils/cache/auto'
 import { Header } from '@/collections/headers/component'
 import { Footer } from '@/collections/footers/component'
-import { AtomicStoreProvider } from '@pro-laico/atomic-payload-atomic-hook/client'
+import { AtomicStoreProvider } from '@pro-laico/ap-atomic-hook/client'
 import { TrackingProvider } from '@pro-laico/ap-tracking/provider'
 
 /** Payload-backed layouts need a live DB; avoid static prerender at `next build` when Mongo is unavailable. */

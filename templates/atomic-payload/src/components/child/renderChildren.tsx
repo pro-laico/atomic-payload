@@ -29,7 +29,7 @@ import {
   AtomicButtonRegularClient,
   AtomicButtonPortalDialog,
   AtomicButtonPortalPopover,
-} from '@pro-laico/atomic-payload-child-blocks/frontend-components'
+} from '@pro-laico/ap-child-blocks/frontend-components'
 
 const components = {
   SVGChild,

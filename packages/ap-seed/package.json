@@ -28,7 +28,7 @@
     "lint": "node -e \"process.exit(0)\""
   },
   "dependencies": {
-    "@pro-laico/atomic-payload-types": "workspace:*"
+    "@pro-laico/ap-types": "workspace:*"
   },
   "peerDependencies": {
     "@payloadcms/ui": ">=3.0.0",

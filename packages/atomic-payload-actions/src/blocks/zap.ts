@@ -1,4 +1,0 @@
-import { z } from '@pro-laico/atomic-payload-zap'
-import { AllActionBlocks } from './blocks'
-
-export const ActionBlockType = z.ap.add(z.enum(AllActionBlocks.map((block) => block.slug)), { id: 'ActionBlockType' })
