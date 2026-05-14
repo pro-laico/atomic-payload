@@ -1,7 +1,6 @@
-import { Banner } from '@payloadcms/ui/elements/Banner'
 import React from 'react'
-
-import { SeedButton } from './seedButton'
+import { Banner } from '@payloadcms/ui/elements/Banner'
+import { SeedButton } from './SeedButton'
 import './index.scss'
 
 const baseClass = 'before-dashboard'
@@ -21,13 +20,7 @@ const BeforeDashboard: React.FC = () => {
         </li>
         <li>
           {'Check out the home page: '}
-          <a href="/" target="_blank">
-            Link
-          </a>
-        </li>
-        <li>
-          {'Return To ReadMe Setup Steps: '}
-          <a href="https://github.com/pro-laico/atomic-payload" target="_blank">
+          <a href="/" target="_blank" rel="noreferrer">
             Link
           </a>
         </li>

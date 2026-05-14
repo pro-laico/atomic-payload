@@ -3,18 +3,21 @@
 import React, { Fragment, useCallback, useState } from 'react'
 import { toast } from '@payloadcms/ui'
 
-import './index.scss'
-
 const SuccessMessage: React.FC = () => (
   <div>
     Database seeded! You can now{' '}
-    <a target="_blank" href="/">
+    <a target="_blank" href="/" rel="noreferrer">
       visit your website
     </a>
   </div>
 )
 
-export const SeedButton: React.FC = () => {
+export interface SeedButtonProps {
+  /** Endpoint URL the button POSTs to. Defaults to `/api/seed`. */
+  endpoint?: string
+}
+
+export const SeedButton: React.FC<SeedButtonProps> = ({ endpoint = '/api/seed' }) => {
   const [loading, setLoading] = useState(false)
   const [seeded, setSeeded] = useState(false)
   const [error, setError] = useState<null | string>(null)
@@ -41,18 +44,14 @@ export const SeedButton: React.FC = () => {
       try {
         toast.promise(
           new Promise((resolve, reject) => {
-            try {
-              fetch('/next/seed', { method: 'POST', credentials: 'include' })
-                .then((res) => {
-                  if (res.ok) {
-                    resolve(true)
-                    setSeeded(true)
-                  } else reject('An error occurred while seeding.')
-                })
-                .catch((error) => reject(error))
-            } catch (error) {
-              reject(error)
-            }
+            fetch(endpoint, { method: 'POST', credentials: 'include' })
+              .then((res) => {
+                if (res.ok) {
+                  resolve(true)
+                  setSeeded(true)
+                } else reject('An error occurred while seeding.')
+              })
+              .catch((err) => reject(err))
           }),
           {
             loading: 'Seeding with data....',
@@ -61,11 +60,10 @@ export const SeedButton: React.FC = () => {
           },
         )
       } catch (err) {
-        const error = err instanceof Error ? err.message : String(err)
-        setError(error)
+        setError(err instanceof Error ? err.message : String(err))
       }
     },
-    [loading, seeded, error],
+    [loading, seeded, error, endpoint],
   )
 
   let message = ''
@@ -82,3 +80,5 @@ export const SeedButton: React.FC = () => {
     </Fragment>
   )
 }
+
+export default SeedButton

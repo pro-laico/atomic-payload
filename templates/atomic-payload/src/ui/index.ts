@@ -10,7 +10,6 @@ export const SlugPath = '@/ui/fields/slug'
 export const IconSelectPath = '@/ui/fields/iconSelect'
 
 //Root
-export const BeforeDashboard = '@/ui/root/beforeDashboard'
 export const SiteTriggersPath = '@/ui/root/siteTriggers'
 
 //Row Labels

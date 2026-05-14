@@ -12,7 +12,7 @@ import { defaultLexical } from '@pro-laico/atomic-payload-child-blocks/default-l
 //import { resendAdapter } from '@payloadcms/email-resend'
 import { mongooseAdapter } from '@payloadcms/db-mongodb'
 import { getServerSideURL } from '@pro-laico/ap-utils'
-import { IconPath, LogoPath, SiteTriggersPath, BeforeDashboard } from '@/ui'
+import { IconPath, LogoPath, SiteTriggersPath } from '@/ui'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -39,7 +39,6 @@ export default buildConfig({
     user: Users.slug,
     importMap: { baseDir: path.resolve(dirname) },
     components: {
-      beforeDashboard: process.env.INCLUDE_SEED === 'true' ? [BeforeDashboard] : [],
       beforeNavLinks: [SiteTriggersPath],
       graphics: { Icon: IconPath, Logo: LogoPath },
     },
