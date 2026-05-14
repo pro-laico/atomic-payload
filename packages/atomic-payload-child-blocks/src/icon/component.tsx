@@ -1,7 +1,9 @@
 'use server'
 import { draftMode } from 'next/headers'
 import { Warning } from 'atomic-payload/child-blocks-deps'
-import getCached from 'atomic-payload/get-cached-react'
+import configPromise from '@payload-config'
+import { createReactCachedGetCached } from '../../../ap-utils/src/utilities/cache/react'
+const getCached = createReactCachedGetCached(configPromise)
 import { IconChild as IconChildType, RenderChild } from 'atomic-payload/child-blocks-types'
 import { extractSvgContent, extractSvgProps } from '@pro-laico/atomic-payload-icons'
 

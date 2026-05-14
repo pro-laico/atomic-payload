@@ -1,0 +1,66 @@
+{
+  "name": "@pro-laico/ap-utils",
+  "version": "0.1.0",
+  "description": "Atomic Payload utilities. Provides revalidateTag server action, collection/global revalidation hooks, a getCached factory, and a Payload plugin for wiring revalidation into any Payload + Next.js project.",
+  "license": "MIT",
+  "type": "module",
+  "publishConfig": {
+    "access": "public"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./logger": {
+      "types": "./dist/utilities/log.d.ts",
+      "import": "./dist/utilities/log.js"
+    },
+    "./cache": {
+      "types": "./dist/utilities/cache/index.d.ts",
+      "import": "./dist/utilities/cache/index.js"
+    },
+    "./cache/react": {
+      "types": "./dist/utilities/cache/react.d.ts",
+      "import": "./dist/utilities/cache/react.js"
+    },
+    "./src": {
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
+    }
+  },
+  "files": [
+    "dist",
+    "src",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "clean": "node -e \"require('fs').rmSync('dist',{recursive:true,force:true})\"",
+    "prepack": "pnpm clean && pnpm build",
+    "lint": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@pro-laico/atomic-payload-atomic-hook": "workspace:*",
+    "@pro-laico/atomic-payload-types": "workspace:*"
+  },
+  "peerDependencies": {
+    "next": ">=15.0.0",
+    "payload": ">=3.0.0",
+    "react": ">=19.0.0",
+    "server-only": ">=0.0.1"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.14",
+    "next": "^16.1.6",
+    "payload": "^3.79.0",
+    "react": "^19.2.4",
+    "server-only": "^0.0.1",
+    "typescript": "5.8.3"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

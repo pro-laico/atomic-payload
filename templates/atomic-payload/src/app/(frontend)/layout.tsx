@@ -1,4 +1,3 @@
-'use server'
 import React from 'react'
 import fonts from '@/app/definition'
 import { draftMode } from 'next/headers'
@@ -7,8 +6,11 @@ import { Toaster } from '@/components/toast'
 import getCached from '@/utilities/get/cache/react'
 import { Header } from '@/collections/headers/component'
 import { Footer } from '@/collections/footers/component'
-import { AtomicStoreProvider } from '@/hooks/frontEnd/atomicStore'
+import { AtomicStoreProvider } from '@pro-laico/atomic-payload-atomic-hook/client'
 import { TrackingProvider } from '@/components/providers/tracking'
+
+/** Payload-backed layouts need a live DB; avoid static prerender at `next build` when Mongo is unavailable. */
+export const dynamic = 'force-dynamic'
 
 const fontVariables = Object.values(fonts)
   .map((font) => (font instanceof Object && 'variable' in font ? font.variable : ''))

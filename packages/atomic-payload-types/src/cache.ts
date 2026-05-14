@@ -1,3 +1,4 @@
+import type { SanitizedConfig } from 'payload'
 import type {
   Form,
   Page,
@@ -13,6 +14,9 @@ import type {
 } from './payload-types'
 import type { AtomicStoreInitialState } from './frontEnd'
 import type { ModifiedStoredAtomicForm } from './forms'
+
+/** The Payload config (or its resolution promise) that getter functions need to instantiate a Payload local-API client. */
+export type PayloadConfigPromise = SanitizedConfig | Promise<SanitizedConfig>
 
 // /////////////////////////////////////
 // Helper Types
@@ -153,8 +157,12 @@ export type GCReturns<T extends AllTagsWithGetters | 'all'> = T extends AllTagsW
   ? Promise<Extract<GetCached, { args: [T, ...any[]] }>['return']>
   : Promise<GetCached['return']>
 
-/** Function type for get cached functions. Used directly on variable definition getters. */
+/** Function type for get cached functions. Used directly on variable definition getters.
+ *  Accepts the host project's `configPromise` (from `@payload-config`) as the first
+ *  argument so getters can be defined inside a package without resolving the host's
+ *  Payload config at import time. */
 export type GCFunction<T extends AllTagsWithGetters> = (
+  configPromise: PayloadConfigPromise,
   ...args: Extract<GetCached, { args: [T, ...any[]] }>['args']
 ) => Promise<Extract<GetCached, { args: [T, ...any[]] }>['return']>
 

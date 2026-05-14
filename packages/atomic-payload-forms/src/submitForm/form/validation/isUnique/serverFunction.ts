@@ -1,7 +1,9 @@
 'use server'
-import getCached from 'atomic-payload/get-cached-react'
+import configPromise from '@payload-config'
+import { createReactCachedGetCached } from '../../../../../../ap-utils/src/utilities/cache/react'
 import type { FvIsUnique as FvIsUniqueType } from '@pro-laico/atomic-payload-types/schema'
 import { FilterSubmissionsByFieldAndValue, FormFunction } from '@pro-laico/atomic-payload-types'
+const getCached = createReactCachedGetCached(configPromise)
 
 /** Filters form submissions based on field and value inputs. */
 const filterSubmissionsByFieldAndValue: FilterSubmissionsByFieldAndValue = ({ submissions, fieldName, fieldValue }) => {

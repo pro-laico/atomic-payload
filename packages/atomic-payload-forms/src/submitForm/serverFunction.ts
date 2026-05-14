@@ -1,11 +1,11 @@
 'use server'
-import getCached from 'atomic-payload/get-cached-react'
+import configPromise from '@payload-config'
+import { createReactCachedGetCached } from '../../../ap-utils/src/utilities/cache/react'
 import { SubmitFormFunction } from '@pro-laico/atomic-payload-types'
+const getCached = createReactCachedGetCached(configPromise)
 import { getSubmitFormProcessor } from './formProcessor'
 import { getServerSideURL } from '../utilities/getServerSideURL'
 import { draftMode, headers as nextHeaders } from 'next/headers'
-
-const formProcessor = await getSubmitFormProcessor()
 
 export const submitForm: SubmitFormFunction = async (submissionData) => {
   const headers = await nextHeaders()
@@ -23,6 +23,7 @@ export const submitForm: SubmitFormFunction = async (submissionData) => {
     const storedForm = allForms.find((form) => form.id === blockID)
     if (!storedForm || !storedForm.id) return { success: false, formData, submissionID, fm: 'No backend form found for this atomic form.', im: {} }
 
+    const formProcessor = await getSubmitFormProcessor()
     const { response, submitToPayload } = await formProcessor.process({ submissionData, headers, storedForm })
 
     if (response.success) {

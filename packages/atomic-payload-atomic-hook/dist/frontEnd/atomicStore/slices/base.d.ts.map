@@ -1,0 +1,1 @@
+{"version":3,"file":"base.d.ts","sourceRoot":"","sources":["../../../../src/frontEnd/atomicStore/slices/base.ts"],"names":[],"mappings":"AAAA,OAAO,KAAK,EAAE,YAAY,EAAE,MAAM,SAAS,CAAA;AAC3C,OAAO,KAAK,EAAE,WAAW,EAAE,SAAS,EAAE,MAAM,iCAAiC,CAAA;AAE7E,eAAO,MAAM,SAAS,EAAE,YAAY,CAAC,WAAW,EAAE,EAAE,EAAE,EAAE,EAAE,SAAS,CAGjE,CAAA"}

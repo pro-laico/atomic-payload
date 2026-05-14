@@ -1,11 +1,4 @@
-/**
- * Registers a caller-supplied `atomicHook` on every collection slug in
- * `collectionSlugs`. The hook itself currently lives in the consuming template
- * because it directly references the template's ActionBlockStorageProcessor,
- * cssProcessor, processDesignSet, etc. Those processors will move into this
- * package once their template-only dependencies (action blocks, design-set
- * fields) are also extracted.
- */
+/** Attaches the provided `atomicHook` to `beforeChange` for each slug (use `createAtomicHook` from this package). */
 export const atomicHookPlugin = (opts) => (config) => {
     const { enabled = true, hook, collectionSlugs } = opts;
     if (!enabled)

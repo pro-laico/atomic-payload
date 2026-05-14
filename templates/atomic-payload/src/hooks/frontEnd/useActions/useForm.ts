@@ -2,8 +2,16 @@
 import { Toast } from '@base-ui-components/react/toast'
 import { useState, useEffect, useRef, useMemo } from 'react'
 import { useActionContext } from '@/hooks/frontEnd/useActions/useActionContext'
-import { submitForm as submitFormSF } from '@pro-laico/atomic-payload-forms/submitForm/serverFunction'
 import { FormResponse, AtomicChild, FullFormContext, ActionContext } from '@/ts/types'
+
+/** Dynamic import avoids a server-module / getCached init cycle during client graph evaluation (Next collect page data). */
+let submitFormLoader: Promise<
+  typeof import('@pro-laico/atomic-payload-forms/submitForm/serverFunction').submitForm
+> | null = null
+function loadSubmitForm() {
+  submitFormLoader ??= import('@pro-laico/atomic-payload-forms/submitForm/serverFunction').then((m) => m.submitForm)
+  return submitFormLoader
+}
 
 export type UseFormProps = { block: AtomicChild }
 
@@ -95,6 +103,7 @@ export function useForm(props: UseFormProps): UseFormReturns {
       let toastID
       if (block.formToastEnabled) toastID = toastManager.add({ type: 'loading', description: block.lm || 'Submitting form...' })
 
+      const submitFormSF = await loadSubmitForm()
       const response = await submitFormSF({ blockID: block.id, formData, submissionID, clientData })
 
       if (response.success && toastID) toastManager.update(toastID, { type: 'success', description: response.fm })

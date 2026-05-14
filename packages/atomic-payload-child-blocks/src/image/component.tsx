@@ -1,7 +1,9 @@
 'use server'
 import Image from 'next/image'
 import { RenderChild } from 'atomic-payload/child-blocks-types'
-import getCached from 'atomic-payload/get-cached-react'
+import configPromise from '@payload-config'
+import { createReactCachedGetCached } from '../../../ap-utils/src/utilities/cache/react'
+const getCached = createReactCachedGetCached(configPromise)
 import type { ImageChild as ImageChildType } from 'atomic-payload/child-blocks-types'
 
 export const ImageChild: React.FC<RenderChild<ImageChildType>> = async (props) => {

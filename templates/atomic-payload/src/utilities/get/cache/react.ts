@@ -1,5 +1,7 @@
 import 'server-only' //DO NOT REMOVE
-import getCached from '.'
-import { cache } from 'react'
+import configPromise from '@payload-config'
+import { createReactCachedGetCached } from '@pro-laico/ap-utils/cache/react'
 
-export default cache(getCached)
+const getCached = createReactCachedGetCached(configPromise)
+
+export default getCached

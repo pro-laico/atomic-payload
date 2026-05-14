@@ -2,7 +2,7 @@ import { APFControlsPath, generateAPFFields } from '@pro-laico/atomic-payload-ap
 import { authd } from '../access/authenticated'
 import type { CollectionConfig, CollectionBeforeChangeHook, PayloadRequest } from 'payload'
 import type { APFunction } from '@pro-laico/atomic-payload-types'
-import { revalidateCacheOnDelete } from '@pro-laico/atomic-payload-revalidation'
+import { revalidateCacheOnDelete } from '@pro-laico/ap-utils'
 import { FontsTab } from './tabs/fonts'
 import { SizesTab } from './tabs/sizes'
 import { ProseTab } from './tabs/prose'

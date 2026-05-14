@@ -11,7 +11,7 @@ import { generateAPFFields } from '@pro-laico/atomic-payload-apf'
 import { ChildrenBlocks } from '@/fields/blocks/children'
 import { StorageTab } from '@/fields/tabs/collection/storage'
 import { atomicHook } from '@/hooks/collection/atomicHook/atomicHook'
-import { revalidateCacheOnDelete } from '@pro-laico/atomic-payload-revalidation'
+import { revalidateCacheOnDelete } from '@pro-laico/ap-utils'
 import { generateLivePreviewPath } from '@/utilities/generatePreviewPath'
 
 const APFunctions: APFunction[] = ['form', 'actions', 'classes', 'active']

@@ -10,7 +10,7 @@ atomic-payload/
 │   ├── create-atomic-payload/         # CLI to scaffold new projects
 │   ├── atomic-payload-types/          # Shared TypeScript types
 │   ├── atomic-payload-zap/            # zod + AtomicRegistry helper
-│   ├── atomic-payload-revalidation/   # revalidateTag + hooks + plugin
+│   ├── ap-utils/                      # revalidateTag + hooks + getCached factory + plugin
 │   ├── atomic-payload-apf/            # APF runtime, fields, admin UI
 │   ├── atomic-payload-icons/          # iconsPlugin: Icon + iconSet; AtomicIcon; iconSelect factory
 │   ├── atomic-payload-images/         # Images + Favicons + FaviconField
@@ -34,7 +34,7 @@ atomic-payload/
 | `@pro-laico/create-atomic-payload`       | CLI to scaffold new Atomic Payload projects                     |
 | `@pro-laico/atomic-payload-types`        | Shared TypeScript types (decoupled via PayloadAugment)          |
 | `@pro-laico/atomic-payload-zap`          | zod + AtomicRegistry helper                                     |
-| `@pro-laico/atomic-payload-revalidation` | revalidateTag + collection/global hooks + plugin                |
+| `@pro-laico/ap-utils` | revalidateTag + collection/global hooks + plugin                |
 | `@pro-laico/atomic-payload-apf`          | Atomic Payload Functions: runtime, fields, admin UI             |
 | `@pro-laico/atomic-payload-icons`        | iconsPlugin (Icon + iconSet), formatSVG, AtomicIcon, createIconSelect       |
 | `@pro-laico/atomic-payload-images`       | Images + Favicons collections + FaviconField + blur integration |

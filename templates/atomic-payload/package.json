@@ -6,6 +6,7 @@
   "type": "module",
   "exports": {
     "./child-blocks-deps": "./src/child-blocks-deps.ts",
+    "./child-blocks-use-form": "./src/hooks/frontEnd/useActions/useForm.ts",
     "./child-blocks-types": "./src/child-blocks-types.ts",
     "./get-cached-react": "./src/utilities/get/cache/react.ts"
   },
@@ -22,7 +23,7 @@
   },
   "dependencies": {
     "@pro-laico/atomic-payload-types": "workspace:*",
-    "@pro-laico/atomic-payload-revalidation": "workspace:*",
+    "@pro-laico/ap-utils": "workspace:*",
     "@pro-laico/atomic-payload-zap": "workspace:*",
     "@pro-laico/atomic-payload-apf": "workspace:*",
     "@pro-laico/atomic-payload-icons": "workspace:*",

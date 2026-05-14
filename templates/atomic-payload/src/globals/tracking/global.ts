@@ -2,7 +2,7 @@ import type { GlobalConfig } from 'payload'
 import { authd } from '@/access/authenticated'
 import { postHogTabField } from '@pro-laico/atomic-payload-posthog'
 import { googleTagManagerTabField } from './tabs/gtm'
-import { revalidateCacheGlobal as revalidateCache } from '@pro-laico/atomic-payload-revalidation'
+import { revalidateCacheGlobal as revalidateCache } from '@pro-laico/ap-utils'
 
 export const Tracking: GlobalConfig = {
   slug: 'tracking',

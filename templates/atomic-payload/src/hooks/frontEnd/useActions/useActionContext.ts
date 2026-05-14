@@ -2,7 +2,7 @@
 import { useMemo } from 'react'
 import { useTheme } from 'next-themes'
 import { ActionContext, FullFormContext } from '@/ts/types'
-import { useAtomicStore } from '@/hooks/frontEnd/atomicStore'
+import { useAtomicStore } from '@pro-laico/atomic-payload-atomic-hook/client'
 import { useFormContext } from '@/components/providers/formProvider'
 
 type useActionContextProps = {

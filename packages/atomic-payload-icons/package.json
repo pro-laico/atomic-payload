@@ -44,7 +44,7 @@
   },
   "dependencies": {
     "@pro-laico/atomic-payload-types": "workspace:*",
-    "@pro-laico/atomic-payload-revalidation": "workspace:*",
+    "@pro-laico/ap-utils": "workspace:*",
     "@pro-laico/atomic-payload-apf": "workspace:*"
   },
   "peerDependencies": {

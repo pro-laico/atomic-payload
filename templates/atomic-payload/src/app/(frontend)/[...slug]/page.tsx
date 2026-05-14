@@ -13,10 +13,15 @@ type Props = { params: Promise<{ slug?: string[] }> }
 const slugJoin = (slug: string[] | undefined) => '/' + (slug?.join('/') || '')
 
 export async function generateStaticParams() {
-  const routes = await getCached('pages', false)
-  if (!routes || !Array.isArray(routes)) return []
-  const returns = routes.filter((href) => href !== '/').map((href) => ({ slug: href.split('/').slice(1) }))
-  return returns || []
+  try {
+    const routes = await getCached('pages', false)
+    if (!routes || !Array.isArray(routes)) return []
+    const returns = routes.filter((href) => href !== '/').map((href) => ({ slug: href.split('/').slice(1) }))
+    return returns || []
+  } catch {
+    // e.g. MongoDB unreachable during `next build` in CI — pages are still served dynamically
+    return []
+  }
 }
 
 export async function generateMetadata({ params: paramsPromise }: Props): Promise<Metadata> {

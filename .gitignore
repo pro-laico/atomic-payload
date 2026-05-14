@@ -22,3 +22,5 @@ templates/atomic-payload/public/fonts
 
 # CLI packed template (generated during prepack)
 packages/create-atomic-payload/template
+
+.claude

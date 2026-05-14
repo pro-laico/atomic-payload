@@ -2,7 +2,7 @@ import type { CollectionConfig, CollectionBeforeChangeHook, Field, PayloadReques
 import { authd } from '../access/authenticated'
 import type { APFunction } from '@pro-laico/atomic-payload-types'
 import { APField, ActiveField, generateAPFFields, APFControlsPath } from '@pro-laico/atomic-payload-apf'
-import { revalidateCacheOnDelete } from '@pro-laico/atomic-payload-revalidation'
+import { revalidateCacheOnDelete } from '@pro-laico/ap-utils'
 
 const APFunctions: APFunction[] = ['active']
 

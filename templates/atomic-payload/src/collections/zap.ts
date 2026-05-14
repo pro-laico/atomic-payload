@@ -1,7 +1,7 @@
 import { z } from '@pro-laico/atomic-payload-zap'
 import traverse from 'traverse'
 import collections from './index'
-import { atomicHook } from '@/hooks/collection/atomicHook/atomicHook'
+import { COLLECTION_SLUGS_WITH_ATOMIC_HOOK } from '@/hooks/collection/atomicHook/atomicHookSlugs'
 
 function hasField(collection: Record<string, unknown>, fieldName: string): boolean {
   let found = false
@@ -15,9 +15,8 @@ function hasField(collection: Record<string, unknown>, fieldName: string): boole
 }
 
 function hasAtomicHook(collection: Record<string, unknown>): boolean {
-  if (!('hooks' in collection) || !collection.hooks || typeof collection.hooks !== 'object' || !('beforeChange' in collection.hooks)) return false
-  const beforeChangeHooks = collection.hooks.beforeChange
-  return Array.isArray(beforeChangeHooks) && beforeChangeHooks.includes(atomicHook)
+  if (typeof collection.slug !== 'string') return false
+  return (COLLECTION_SLUGS_WITH_ATOMIC_HOOK as readonly string[]).includes(collection.slug)
 }
 
 export const CollectionThatUsesAtomicHookSlug = z.ap.add(z.enum(collections.filter(hasAtomicHook).map((collection) => collection.slug)), {

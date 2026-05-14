@@ -4,7 +4,7 @@ import { authd } from '@/access/authenticated'
 import { FaviconField } from '@pro-laico/atomic-payload-images'
 import { onUploadSetAPF } from '@pro-laico/atomic-payload-apf'
 import { generateAPFFields } from '@pro-laico/atomic-payload-apf'
-import { revalidateCacheGlobal as revalidateCache } from '@pro-laico/atomic-payload-revalidation'
+import { revalidateCacheGlobal as revalidateCache } from '@pro-laico/ap-utils'
 
 export const SiteMetaData: GlobalConfig = {
   slug: 'siteMetaData',

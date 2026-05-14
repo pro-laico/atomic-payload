@@ -13,7 +13,7 @@ import { SettingsTab } from '@/collections/pages/tabs/settings'
 import { updatePublishedAtHook } from '@/hooks/field/publishedAt'
 import { createParentField } from '@payloadcms/plugin-nested-docs'
 import { atomicHook } from '@/hooks/collection/atomicHook/atomicHook'
-import { revalidateCacheOnDelete } from '@pro-laico/atomic-payload-revalidation'
+import { revalidateCacheOnDelete } from '@pro-laico/ap-utils'
 import { generateLivePreviewPath } from '@/utilities/generatePreviewPath'
 import { authenticatedOrPublished } from '@/access/authenticatedOrPublished'
 
