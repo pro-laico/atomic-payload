@@ -1,7 +1,7 @@
 'use client'
 import './index.scss'
 import { TextFieldClientProps } from 'payload'
-import { formatSlug } from '@/hooks/field/formatSlug'
+import { formatSlug } from '@pro-laico/ap-utils'
 import React, { useCallback, useEffect } from 'react'
 import { useField, Button, TextInput, FieldLabel, useFormFields, useForm } from '@payloadcms/ui'
 

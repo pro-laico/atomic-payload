@@ -11,7 +11,7 @@ import JSONSchemaExtensions from '@/ts/JSONSchema'
 import { defaultLexical } from '@pro-laico/atomic-payload-child-blocks/default-lexical'
 //import { resendAdapter } from '@payloadcms/email-resend'
 import { mongooseAdapter } from '@payloadcms/db-mongodb'
-import { getServerSideURL } from '@/utilities/get/getURL'
+import { getServerSideURL } from '@pro-laico/ap-utils'
 import { IconPath, LogoPath, SiteTriggersPath, BeforeDashboard } from '@/ui'
 
 const filename = fileURLToPath(import.meta.url)

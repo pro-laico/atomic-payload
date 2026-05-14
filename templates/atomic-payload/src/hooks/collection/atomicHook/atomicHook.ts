@@ -11,7 +11,7 @@ export const atomicHook: CollectionBeforeChangeHook = async (args) => {
     const [hookMod, procMod, cacheMod] = await Promise.all([
       import('@pro-laico/atomic-payload-atomic-hook'),
       import('@pro-laico/atomic-payload-actions/processor'),
-      import('@/utilities/get/cache/react'),
+      import('@pro-laico/ap-utils/cache/auto'),
     ])
     inner = hookMod.createAtomicHook({
       getCached: cacheMod.default as AtomicHookGetCached,

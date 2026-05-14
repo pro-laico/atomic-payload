@@ -1,5 +1,5 @@
 import { PayloadRequest } from 'payload'
-import { getClientSideURL } from './get/getURL'
+import { getClientSideURL } from '@pro-laico/ap-utils'
 
 type Props = {
   data: Partial<any>

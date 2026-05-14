@@ -1,5 +1,5 @@
 import { TextField } from 'payload'
-import deepMerge from '@/utilities/deepMerge'
+import { deepMerge } from '@pro-laico/ap-utils'
 
 const description = 'The name of the input this label is associated with.'
 

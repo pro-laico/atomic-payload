@@ -42,6 +42,7 @@
   "dependencies": {
     "@base-ui-components/react": "1.0.0-rc.0",
     "@mux/mux-video-react": "^0.25.3",
+    "@pro-laico/ap-utils": "workspace:*",
     "@pro-laico/atomic-payload-types": "workspace:*",
     "@pro-laico/atomic-payload-zap": "workspace:*",
     "@pro-laico/atomic-payload-apf": "workspace:*",

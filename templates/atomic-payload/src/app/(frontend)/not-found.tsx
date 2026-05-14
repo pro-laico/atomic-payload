@@ -2,7 +2,7 @@
 import React from 'react'
 import Link from 'next/link'
 import { draftMode } from 'next/headers'
-import getCached from '@/utilities/get/cache/react'
+import getCached from '@pro-laico/ap-utils/cache/auto'
 import { RenderChildren } from '@/components/child/renderChildren'
 
 //KNOWN ISSUE: 404 Page Does not display in production environment when directly viewing the /404 route.

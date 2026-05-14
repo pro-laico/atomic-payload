@@ -2,7 +2,7 @@
 import 'server-only'; //DO NOT REMOVE
 import { getPayload } from 'payload';
 import cacheLogger from '../cacheLogger';
-import { getServerSideURL } from '../getServerSideURL';
+import { getServerSideURL } from '../getURL';
 /** Gets the pages stored in payload and formats them into a sitemap array. */
 export const getCachedSitemap = async (configPromise, tag, draft) => {
     const payload = await getPayload({ config: configPromise });

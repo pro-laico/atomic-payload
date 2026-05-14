@@ -1,8 +1,8 @@
 'use server'
-import configPromise from '@payload-config'
-import { createReactCachedGetCached } from '../../../ap-utils/src/utilities/cache/react'
+
+import getCached from '@pro-laico/ap-utils/cache/auto'
 import { SubmitFormFunction } from '@pro-laico/atomic-payload-types'
-const getCached = createReactCachedGetCached(configPromise)
+
 import { getSubmitFormProcessor } from './formProcessor'
 import { getServerSideURL } from '../utilities/getServerSideURL'
 import { draftMode, headers as nextHeaders } from 'next/headers'

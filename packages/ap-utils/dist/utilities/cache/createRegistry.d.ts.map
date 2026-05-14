@@ -1,1 +1,0 @@
-{"version":3,"file":"createRegistry.d.ts","sourceRoot":"","sources":["../../../src/utilities/cache/createRegistry.ts"],"names":[],"mappings":"AAAA,OAAO,KAAK,EAAE,WAAW,EAAE,MAAM,aAAa,CAAA;AAC9C,OAAO,KAAK,EAAE,oBAAoB,EAAE,MAAM,QAAQ,CAAA;AAkBlD,wBAAgB,yBAAyB,CAAC,QAAQ,EAAE,oBAAoB,GAAG,WAAW,CAuBrF"}

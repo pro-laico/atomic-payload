@@ -55,6 +55,7 @@
     "lint": "node -e \"process.exit(0)\""
   },
   "dependencies": {
+    "@pro-laico/ap-utils": "workspace:*",
     "@pro-laico/atomic-payload-apf": "workspace:*",
     "@pro-laico/atomic-payload-types": "workspace:*",
     "@pro-laico/atomic-payload-zap": "workspace:*",

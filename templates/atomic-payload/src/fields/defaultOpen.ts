@@ -1,5 +1,5 @@
 import { APField } from '@pro-laico/atomic-payload-apf'
-import deepMerge from '@/utilities/deepMerge'
+import { deepMerge } from '@pro-laico/ap-utils'
 import { APArgs, APFieldWrapper } from '@/ts/types'
 
 export const DefaultOpenField: APFieldWrapper<'checkbox', 'name' | 'apf' | 'type'> = (args) => {

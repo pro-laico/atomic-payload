@@ -1,16 +1,16 @@
-import { APFControlsPath } from '@/ui'
+import { APFControlsPath, SlugPath } from '@/ui'
 import { APField } from '@pro-laico/atomic-payload-apf'
-import { slugField } from '@/fields/slug'
+import { slugField } from '@pro-laico/ap-utils'
 import { authd } from '@/access/authenticated'
 import { type APFunction } from '@/ts/types'
 import type { CollectionConfig } from 'payload'
 import { ClassNameField } from '@/fields/className'
-import { updateHrefHook } from '@/hooks/field/href'
+import { updateHrefHook } from '@pro-laico/ap-utils'
 import { SEOTab } from '@/collections/pages/tabs/SEO'
 import { ChildrenBlocks } from '@/fields/blocks/children'
 import { StorageTab } from '@/fields/tabs/collection/storage'
 import { SettingsTab } from '@/collections/pages/tabs/settings'
-import { updatePublishedAtHook } from '@/hooks/field/publishedAt'
+import { updatePublishedAtHook } from '@pro-laico/ap-utils'
 import { createParentField } from '@payloadcms/plugin-nested-docs'
 import { atomicHook } from '@/hooks/collection/atomicHook/atomicHook'
 import { revalidateCacheOnDelete } from '@pro-laico/ap-utils'
@@ -49,7 +49,7 @@ export const Pages: CollectionConfig<'pages'> = {
         },
       ],
     },
-    ...slugField('title', {
+    ...slugField(SlugPath, 'title', {
       slugOverrides: { admin: { width: '30%', style: { maxWidth: '300px' } } },
     }),
     {

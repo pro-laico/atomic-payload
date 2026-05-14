@@ -3,7 +3,7 @@ import 'server-only' //DO NOT REMOVE
 import { getPayload, Where } from 'payload'
 import type { GCFunction } from '@pro-laico/atomic-payload-types'
 import cacheLogger from '../cacheLogger'
-import { getServerSideURL } from '../getServerSideURL'
+import { getServerSideURL } from '../getURL'
 
 /** Gets the pages stored in payload and formats them into a sitemap array. */
 export const getCachedSitemap: GCFunction<'sitemap'> = async (configPromise, tag, draft) => {

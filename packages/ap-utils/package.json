@@ -26,6 +26,10 @@
       "types": "./dist/utilities/cache/react.d.ts",
       "import": "./dist/utilities/cache/react.js"
     },
+    "./cache/auto": {
+      "types": "./dist/utilities/cache/auto.d.ts",
+      "import": "./dist/utilities/cache/auto.js"
+    },
     "./src": {
       "types": "./src/index.ts",
       "default": "./src/index.ts"
@@ -44,7 +48,8 @@
   },
   "dependencies": {
     "@pro-laico/atomic-payload-atomic-hook": "workspace:*",
-    "@pro-laico/atomic-payload-types": "workspace:*"
+    "@pro-laico/atomic-payload-types": "workspace:*",
+    "dayjs": "^1.11.13"
   },
   "peerDependencies": {
     "next": ">=15.0.0",

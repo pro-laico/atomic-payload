@@ -1,5 +1,5 @@
 import { APField } from '@pro-laico/atomic-payload-apf'
-import deepMerge from '@/utilities/deepMerge'
+import { deepMerge } from '@pro-laico/ap-utils'
 import type { APArgs, APFieldWrapper } from '@/ts/types'
 
 type PresetFields = 'apf' | 'type' | 'name'
