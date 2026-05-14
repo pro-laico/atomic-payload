@@ -1,5 +1,4 @@
-/** Resolved via the app admin `importMap` (see template `@/ui`). */
-export const ColorLabelPath = '@/ui/rowLabels/color'
-export const AnimationLabelPath = '@/ui/rowLabels/animation'
-export const DesignTokenLabelPath = '@/ui/rowLabels/designToken'
-export const ShortcutLabelPath = '@/ui/rowLabels/shortcut'
+export const ColorLabelPath = '@pro-laico/atomic-payload-design-sets/ui/rowLabels/color'
+export const AnimationLabelPath = '@pro-laico/atomic-payload-design-sets/ui/rowLabels/animation'
+export const DesignTokenLabelPath = '@pro-laico/atomic-payload-design-sets/ui/rowLabels/designToken'
+export const ShortcutLabelPath = '@pro-laico/atomic-payload-design-sets/ui/rowLabels/shortcut'

@@ -3,10 +3,10 @@ import { default as default_48a0b447804f79e2e5d7392b807b6bc6 } from '@pro-laico/
 import { default as default_8a7ac2c7c79c3ec2e1d6951d48900455 } from '@/ui/fields/slug'
 import { default as default_969416254b63494afd9b9ed86136d4cc } from '@pro-laico/atomic-payload-apf/admin/controls'
 import { default as default_384c49f7244fb9cd287890d3020949b4 } from '@pro-laico/atomic-payload-icons/admin/iconRowLabel'
-import { default as default_e39b5279f914254b017758220055f1a8 } from '@/ui/rowLabels/designToken'
-import { default as default_e41ccc36c719f166558960cc3fb01689 } from '@/ui/rowLabels/color'
-import { default as default_16d35abd1d6b5b4f200680015a2919c3 } from '@/ui/rowLabels/animation'
-import { default as default_21421aa6013972524cf1183a781258a6 } from '@/ui/rowLabels/shortcut'
+import { default as default_8011118ee2ced9318946af6c4f86ace5 } from '@pro-laico/atomic-payload-design-sets/ui/rowLabels/designToken'
+import { default as default_3d01e5b8b7a72fc033c71c45e48fff4e } from '@pro-laico/atomic-payload-design-sets/ui/rowLabels/color'
+import { default as default_4802f407aabea59a5db3efbe42a78af7 } from '@pro-laico/atomic-payload-design-sets/ui/rowLabels/animation'
+import { default as default_2a4edfab0c7dc290c673b56abdc06cf1 } from '@pro-laico/atomic-payload-design-sets/ui/rowLabels/shortcut'
 import { MuxUploaderField as MuxUploaderField_c369a797e256de625eba826a6acb8608 } from '@oversightstudio/mux-video/elements'
 import { MuxVideoImageCell as MuxVideoImageCell_c369a797e256de625eba826a6acb8608 } from '@oversightstudio/mux-video/elements'
 import { RscEntryLexicalCell as RscEntryLexicalCell_44fe37237e0ebf4470c9990d8cb7b07e } from '@payloadcms/richtext-lexical/rsc'
@@ -36,7 +36,7 @@ import { default as default_ff8256de734e06fae92bb274f1a74d58 } from '@pro-laico/
 import { default as default_2f9ffd39d8abc1136972cf387dd19eee } from '@pro-laico/atomic-payload-child-blocks/admin/iconSelect'
 import { default as default_31e7983ad92c1ad30fcfef2a2c92e0de } from '@/ui/assets/Icon'
 import { default as default_0b906f3c09bdf05f31dac97d0009f13f } from '@/ui/assets/Logo'
-import { default as default_45314b1f13e96bdb34e5fc218cfc22ae } from '@/ui/root/siteTriggers'
+import { default as default_9cc76e105739472576a6b8518c7d5bd2 } from '@pro-laico/ap-utils/ui/root/siteTriggers'
 import { VercelBlobClientUploadHandler as VercelBlobClientUploadHandler_16c82c5e25f430251a3e3ba57219ff4e } from '@payloadcms/storage-vercel-blob/client'
 import { CollectionCards as CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1 } from '@payloadcms/next/rsc'
 
@@ -46,10 +46,10 @@ export const importMap = {
   "@/ui/fields/slug#default": default_8a7ac2c7c79c3ec2e1d6951d48900455,
   "@pro-laico/atomic-payload-apf/admin/controls#default": default_969416254b63494afd9b9ed86136d4cc,
   "@pro-laico/atomic-payload-icons/admin/iconRowLabel#default": default_384c49f7244fb9cd287890d3020949b4,
-  "@/ui/rowLabels/designToken#default": default_e39b5279f914254b017758220055f1a8,
-  "@/ui/rowLabels/color#default": default_e41ccc36c719f166558960cc3fb01689,
-  "@/ui/rowLabels/animation#default": default_16d35abd1d6b5b4f200680015a2919c3,
-  "@/ui/rowLabels/shortcut#default": default_21421aa6013972524cf1183a781258a6,
+  "@pro-laico/atomic-payload-design-sets/ui/rowLabels/designToken#default": default_8011118ee2ced9318946af6c4f86ace5,
+  "@pro-laico/atomic-payload-design-sets/ui/rowLabels/color#default": default_3d01e5b8b7a72fc033c71c45e48fff4e,
+  "@pro-laico/atomic-payload-design-sets/ui/rowLabels/animation#default": default_4802f407aabea59a5db3efbe42a78af7,
+  "@pro-laico/atomic-payload-design-sets/ui/rowLabels/shortcut#default": default_2a4edfab0c7dc290c673b56abdc06cf1,
   "@oversightstudio/mux-video/elements#MuxUploaderField": MuxUploaderField_c369a797e256de625eba826a6acb8608,
   "@oversightstudio/mux-video/elements#MuxVideoImageCell": MuxVideoImageCell_c369a797e256de625eba826a6acb8608,
   "@payloadcms/richtext-lexical/rsc#RscEntryLexicalCell": RscEntryLexicalCell_44fe37237e0ebf4470c9990d8cb7b07e,
@@ -79,7 +79,7 @@ export const importMap = {
   "@pro-laico/atomic-payload-child-blocks/admin/iconSelect#default": default_2f9ffd39d8abc1136972cf387dd19eee,
   "@/ui/assets/Icon#default": default_31e7983ad92c1ad30fcfef2a2c92e0de,
   "@/ui/assets/Logo#default": default_0b906f3c09bdf05f31dac97d0009f13f,
-  "@/ui/root/siteTriggers#default": default_45314b1f13e96bdb34e5fc218cfc22ae,
+  "@pro-laico/ap-utils/ui/root/siteTriggers#default": default_9cc76e105739472576a6b8518c7d5bd2,
   "@payloadcms/storage-vercel-blob/client#VercelBlobClientUploadHandler": VercelBlobClientUploadHandler_16c82c5e25f430251a3e3ba57219ff4e,
   "@payloadcms/next/rsc#CollectionCards": CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1
 }

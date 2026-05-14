@@ -12,8 +12,5 @@ export const SlugPath = '@/ui/fields/slug'
 export { SiteTriggersPath } from '@pro-laico/ap-utils'
 
 //Row Labels
-export const ColorLabelPath = '@/ui/rowLabels/color'
-export const ShortcutLabelPath = '@/ui/rowLabels/shortcut'
-export const AnimationLabelPath = '@/ui/rowLabels/animation'
-export const DesignTokenLabelPath = '@/ui/rowLabels/designToken'
+export { ColorLabelPath, AnimationLabelPath, DesignTokenLabelPath, ShortcutLabelPath } from '@pro-laico/atomic-payload-design-sets'
 export { IconLabelPath } from '@pro-laico/atomic-payload-icons'

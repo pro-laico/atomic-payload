@@ -1,7 +1,7 @@
 'use client'
 import './index.scss'
 import { useMemo } from 'react'
-import { ShortcutSet } from '@/ts/types'
+import type { ShortcutSet } from '@pro-laico/atomic-payload-types/schema'
 import { Pill, RowLabel, useRowLabel } from '@payloadcms/ui'
 
 const ShortcutRowLabel = () => {

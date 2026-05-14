@@ -25,6 +25,22 @@
     "./fields/value": {
       "types": "./src/fields/value.ts",
       "default": "./src/fields/value.ts"
+    },
+    "./ui/rowLabels/shortcut": {
+      "types": "./src/ui/rowLabels/shortcut/index.tsx",
+      "default": "./src/ui/rowLabels/shortcut/index.tsx"
+    },
+    "./ui/rowLabels/color": {
+      "types": "./src/ui/rowLabels/color.tsx",
+      "default": "./src/ui/rowLabels/color.tsx"
+    },
+    "./ui/rowLabels/animation": {
+      "types": "./src/ui/rowLabels/animation.tsx",
+      "default": "./src/ui/rowLabels/animation.tsx"
+    },
+    "./ui/rowLabels/designToken": {
+      "types": "./src/ui/rowLabels/designToken.tsx",
+      "default": "./src/ui/rowLabels/designToken.tsx"
     }
   },
   "files": [
@@ -42,10 +58,15 @@
     "@pro-laico/atomic-payload-zap": "workspace:*"
   },
   "peerDependencies": {
-    "payload": ">=3.0.0"
+    "@payloadcms/ui": ">=3.0.0",
+    "payload": ">=3.0.0",
+    "react": ">=19.0.0"
   },
   "devDependencies": {
+    "@payloadcms/ui": "^3.79.0",
+    "@types/react": "^19.2.14",
     "payload": "^3.79.0",
+    "react": "^19.2.4",
     "typescript": "5.8.3"
   },
   "engines": {
