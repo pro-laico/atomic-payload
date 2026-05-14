@@ -31,10 +31,6 @@ export { generateLivePreviewPath } from './utilities/generatePreviewPath'
 // `--conditions=react-server`. Import it from
 // '@pro-laico/ap-utils/auth/getMeUser' on the frontend when needed.
 
-export { anyone } from './access/anyone'
-export { authd } from './access/authd'
-export { authenticatedOrPublished } from './access/authenticatedOrPublished'
-
 export { formatSlug, formatSlugHook } from './hooks/field/formatSlug'
 export { updateHrefHook } from './hooks/field/href'
 export { updatePublishedAtHook } from './hooks/field/publishedAt'

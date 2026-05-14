@@ -1,5 +1,5 @@
 import type { GlobalConfig } from 'payload'
-import { authd } from '@pro-laico/ap-utils'
+import { authd } from '../access'
 
 /** Factory for the per-state CSS storage globals (`draftStorage` /
  *  `publishedStorage`). These are written by `atomicHook` — they are not

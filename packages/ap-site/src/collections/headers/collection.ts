@@ -2,7 +2,6 @@ import { ActiveField, generateAPFFields, APFControlsPath } from '@pro-laico/ap-a
 import type { CollectionConfig } from 'payload'
 import { type APFunction } from '@pro-laico/ap-types'
 import {
-  authd,
   DevModeField,
   TestPathField,
   ClassNameField,
@@ -11,6 +10,7 @@ import {
   revalidateCacheOnDelete,
   generateLivePreviewPath,
 } from '@pro-laico/ap-utils'
+import { authd } from '../../access'
 import { ChildrenBlocksField as ChildrenBlocks } from '@pro-laico/ap-child-blocks'
 import { atomicHook } from '@pro-laico/ap-atomic-hook'
 

@@ -4,8 +4,6 @@ import type { CollectionConfig } from 'payload'
 import {
   slugField,
   SlugPath,
-  authd,
-  authenticatedOrPublished,
   ClassNameField,
   updateHrefHook,
   StorageTab,
@@ -13,6 +11,7 @@ import {
   revalidateCacheOnDelete,
   generateLivePreviewPath,
 } from '@pro-laico/ap-utils'
+import { authd, authenticatedOrPublished } from '../../access'
 import { SEOTab } from './tabs/SEO'
 import { ChildrenBlocksField as ChildrenBlocks } from '@pro-laico/ap-child-blocks'
 import { SettingsTab } from './tabs/settings'

@@ -1,6 +1,7 @@
 import { APField, generateAPFFields, onUploadSetAPF } from '@pro-laico/ap-apf'
 import type { GlobalConfig } from 'payload'
-import { authd, revalidateCacheGlobal as revalidateCache } from '@pro-laico/ap-utils'
+import { revalidateCacheGlobal as revalidateCache } from '@pro-laico/ap-utils'
+import { authd } from '../access'
 import { FaviconField } from '@pro-laico/ap-images'
 
 export const SiteMetaData: GlobalConfig = {

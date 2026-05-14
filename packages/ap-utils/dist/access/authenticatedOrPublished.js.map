@@ -1,1 +1,0 @@
-{"version":3,"file":"authenticatedOrPublished.js","sourceRoot":"","sources":["../../src/access/authenticatedOrPublished.ts"],"names":[],"mappings":"AAEA,MAAM,CAAC,MAAM,wBAAwB,GAAW,CAAC,EAAE,GAAG,EAAE,EAAE,IAAI,EAAE,EAAE,EAAE,EAAE;IACpE,IAAI,IAAI;QAAE,OAAO,IAAI,CAAA;IACrB,OAAO,EAAE,OAAO,EAAE,EAAE,MAAM,EAAE,WAAW,EAAE,EAAE,CAAA;AAC7C,CAAC,CAAA"}

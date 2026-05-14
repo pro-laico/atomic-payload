@@ -1,5 +1,6 @@
 import type { GlobalConfig } from 'payload'
-import { authd, revalidateCacheGlobal as revalidateCache } from '@pro-laico/ap-utils'
+import { revalidateCacheGlobal as revalidateCache } from '@pro-laico/ap-utils'
+import { authd } from '../access'
 
 const d = {
   draft: 'Settings for the draft version of the website.',
