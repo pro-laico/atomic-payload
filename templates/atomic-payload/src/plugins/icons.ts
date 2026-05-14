@@ -1,5 +1,5 @@
 import { iconsPlugin } from '@pro-laico/atomic-payload-icons'
-import { atomicHook } from '@/hooks/collection/atomicHook/atomicHook'
+import { atomicHook } from '@pro-laico/atomic-payload-atomic-hook'
 import { generateLivePreviewPath } from '@/utilities/generatePreviewPath'
 import { TestPathField } from '@pro-laico/ap-utils'
 

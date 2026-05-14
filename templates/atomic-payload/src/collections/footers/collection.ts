@@ -7,7 +7,7 @@ import { DevModeField, TestPathField, ClassNameField, UniqueTitleField } from '@
 import { generateAPFFields } from '@pro-laico/atomic-payload-apf'
 import { ChildrenBlocksField as ChildrenBlocks } from '@pro-laico/atomic-payload-child-blocks'
 import { StorageTab } from '@pro-laico/ap-utils'
-import { atomicHook } from '@/hooks/collection/atomicHook/atomicHook'
+import { atomicHook } from '@pro-laico/atomic-payload-atomic-hook'
 import { revalidateCacheOnDelete } from '@pro-laico/ap-utils'
 import { generateLivePreviewPath } from '@/utilities/generatePreviewPath'
 

@@ -1,7 +1,7 @@
 import { z } from '@pro-laico/atomic-payload-zap'
 import traverse from 'traverse'
 import collections from './index'
-import { COLLECTION_SLUGS_WITH_ATOMIC_HOOK } from '@/hooks/collection/atomicHook/atomicHookSlugs'
+import { COLLECTION_SLUGS_WITH_ATOMIC_HOOK } from './pages/atomicHookSlugs'
 
 function hasField(collection: Record<string, unknown>, fieldName: string): boolean {
   let found = false
