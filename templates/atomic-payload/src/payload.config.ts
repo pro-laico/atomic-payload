@@ -24,7 +24,7 @@ export default buildConfig({
   collections: [...Collections],
   secret: process.env.PAYLOAD_SECRET || '',
   cors: [getServerSideURL()].filter(Boolean),
-  typescript: { outputFile: path.resolve(dirname, 'ts/types/payload-types.ts') },
+  typescript: { outputFile: path.resolve(dirname, '../payload-types.ts') },
   db: mongooseAdapter({ url: process.env.MONGODB_URI || '', collectionsSchemaOptions: { pages: { minimize: true } }, allowAdditionalKeys: false }),
   blocks: [],
   /*   email: resendAdapter({
