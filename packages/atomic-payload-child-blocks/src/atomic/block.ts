@@ -1,4 +1,5 @@
-import { AtomicPath, ClassNameField } from 'atomic-payload/child-blocks-deps'
+import { AtomicPath } from 'atomic-payload/child-blocks-deps'
+import { ClassNameField } from '@pro-laico/ap-utils'
 import { ColoredEnd } from '../fields/coloredEnd'
 import { TrackingTab } from '../fields/trackingTab'
 import { AtomicChildSettingsTab } from '../fields/tabs/settings'

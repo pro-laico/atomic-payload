@@ -1,7 +1,7 @@
 import type { Tab } from 'payload'
 import { APField, onArraySetAPFShallow } from '@pro-laico/atomic-payload-apf'
 import { ShortcutLabelPath } from '../../paths'
-import { ClassNameField } from '../../fields/className'
+import { ClassNameField } from '@pro-laico/ap-utils'
 import { protectedNames } from '../protectedNames'
 
 const d = {

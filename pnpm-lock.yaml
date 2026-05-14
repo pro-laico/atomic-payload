@@ -65,6 +65,9 @@ importers:
 
   packages/ap-utils:
     dependencies:
+      '@pro-laico/atomic-payload-apf':
+        specifier: workspace:*
+        version: link:../atomic-payload-apf
       '@pro-laico/atomic-payload-atomic-hook':
         specifier: workspace:*
         version: link:../atomic-payload-atomic-hook

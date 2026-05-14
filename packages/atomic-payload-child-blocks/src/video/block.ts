@@ -1,7 +1,7 @@
 import type { Block } from 'payload'
 import { TagTypeField } from '../fields/tagType'
 import { TrackingTab } from '../fields/trackingTab'
-import { ClassNameField } from 'atomic-payload/child-blocks-deps'
+import { ClassNameField } from '@pro-laico/ap-utils'
 import { ColoredEnd } from '../fields/coloredEnd'
 import { ChildsSettingsTab } from '../fields/tabs/settings'
 

@@ -1,5 +1,5 @@
 import { type Tab } from 'payload'
-import { DevModeField } from '@/fields/devMode'
+import { DevModeField } from '@pro-laico/ap-utils'
 import { generateAPFFields } from '@pro-laico/atomic-payload-apf'
 import { createBreadcrumbsField } from '@payloadcms/plugin-nested-docs'
 

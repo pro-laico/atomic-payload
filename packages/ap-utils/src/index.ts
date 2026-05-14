@@ -26,3 +26,7 @@ export { updatePublishedAtHook } from './hooks/field/publishedAt'
 
 export { slugField } from './fields/slug'
 export { StorageTab } from './fields/storageTab'
+export { ClassNameField } from './fields/className'
+export { DevModeField } from './fields/devMode'
+export { TestPathField } from './fields/testPath'
+export { UniqueTitleField } from './fields/uniqueTitle'

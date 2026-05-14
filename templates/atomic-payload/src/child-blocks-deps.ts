@@ -1,11 +1,9 @@
 /**
  * Stable imports for @pro-laico/atomic-payload-child-blocks. Only template-side
- * symbols that the package still needs (the multi-package ClassNameField and
- * UI component paths whose renderers live in the template) are re-exported
- * here. Self-contained fields, tabs, and renderers now live inside the
- * child-blocks package itself.
+ * symbols that the package still needs (UI component paths whose renderers
+ * live in the template) are re-exported here. Self-contained fields, tabs,
+ * and renderers now live inside the child-blocks package itself.
  */
-export { ClassNameField } from './fields/className'
 export { IconSelectPath, AtomicPath, SimpleTextLabelPath } from './ui'
 // Client-only re-exports (`useActions` hooks, `FormContextProvider`) live in
 // `./child-blocks-deps-client`. Keeping them out of this server-side barrel

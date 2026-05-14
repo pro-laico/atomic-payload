@@ -1,6 +1,6 @@
 import type { Block } from 'payload'
 import { TrackingTab } from '../fields/trackingTab'
-import { ClassNameField } from 'atomic-payload/child-blocks-deps'
+import { ClassNameField } from '@pro-laico/ap-utils'
 import { ColoredEnd } from '../fields/coloredEnd'
 import { ChildsSettingsTab } from '../fields/tabs/settings'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
