@@ -7,7 +7,7 @@
 Other `@pro-laico/*` packages this package depends on:
 
 - [`ap-atomic-hook`](../ap-atomic-hook)
-- [`ap-child-blocks`](../ap-child-blocks)
+- [`children`](../children)
 - [`ap-core`](../ap-core)
 - [`ap-images`](../ap-images)
 - [`zap`](../zap)

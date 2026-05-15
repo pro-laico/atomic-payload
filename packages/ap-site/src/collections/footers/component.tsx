@@ -1,6 +1,6 @@
-'use server'
+﻿'use server'
 import type { Footer as FooterType } from '@pro-laico/ap-site/schema'
-import { RenderChildren } from '@pro-laico/ap-child-blocks/render'
+import { RenderChildren } from '@pro-laico/children/render'
 
 export const Footer = async ({ footer }: { footer: FooterType }) => {
   if (!footer) return <footer>No Footer Found</footer>

@@ -1,9 +1,9 @@
-'use server'
+﻿'use server'
 import React from 'react'
 import Link from 'next/link'
 import { draftMode } from 'next/headers'
 import getCached from '@pro-laico/ap-core/cache/auto'
-import { RenderChildren } from '@pro-laico/ap-child-blocks/render'
+import { RenderChildren } from '@pro-laico/children/render'
 
 //KNOWN ISSUE: 404 Page Does not display in production environment when directly viewing the /404 route.
 //Works in dev though, and works correctly when someone navigates to a non-existent page.
@@ -66,7 +66,7 @@ export default async function NotFound() {
             color: '#6b7280', // text-gray-500
           }}
         >
-          The page you’re looking for doesn’t exist or has been moved.
+          The page youâ€™re looking for doesnâ€™t exist or has been moved.
         </p>
 
         <div style={{ marginTop: '2rem' }}>

@@ -16,7 +16,7 @@ import { ActDSBoolToDA } from './dynamicStore/boolean/toDA/options'
 import { z } from '@pro-laico/zap'
 import { ActionFilters } from './filters'
 import type { AllActions, StoredAtomicActions } from '@pro-laico/ap-actions/schema'
-import type { ChildBlocks } from '@pro-laico/ap-child-blocks/schema'
+import type { ChildBlocks } from '@pro-laico/children/schema'
 import type { InitialValue, ActionProcessFunction, ActionBlockDefaultReturns, ActionSetKeyInitialByAction } from '@pro-laico/ap-actions'
 /** Makes an object and all its properties non-nullable */
 type NonNullableObject<T> = { [K in keyof T]-?: NonNullable<T[K]> }

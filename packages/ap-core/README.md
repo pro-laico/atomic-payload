@@ -19,7 +19,7 @@ This package ships `ap-core-augment-types` (formerly `ap-augment-types` in `@pro
 Other `@pro-laico/*` packages this package depends on:
 
 - [`ap-atomic-hook`](../ap-atomic-hook)
-- [`ap-child-blocks`](../ap-child-blocks)
+- [`children`](../children)
 - [`ap-design-sets`](../ap-design-sets)
 - [`ap-forms`](../ap-forms)
 - [`ap-images`](../ap-images)
@@ -30,7 +30,7 @@ Other `@pro-laico/*` packages that depend on this one:
 
 - [`ap-actions`](../ap-actions)
 - [`ap-atomic-hook`](../ap-atomic-hook)
-- [`ap-child-blocks`](../ap-child-blocks)
+- [`children`](../children)
 - [`ap-design-sets`](../ap-design-sets)
 - [`ap-fonts`](../ap-fonts)
 - [`ap-forms`](../ap-forms)

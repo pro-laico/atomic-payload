@@ -1,4 +1,4 @@
-# @pro-laico/ap-tracking
+﻿# @pro-laico/ap-tracking
 
 Atomic Payload tracking integration. Home for all tracking-related functionality (PostHog property collection, tracking global tab, React provider) consumed by atomic-payload via a plugin.
 
@@ -21,6 +21,6 @@ Other `@pro-laico/*` packages this package depends on:
 Other `@pro-laico/*` packages that depend on this one:
 
 - [`ap-core`](../ap-core)
-- [`ap-child-blocks`](../ap-child-blocks) _(peer)_
+- [`children`](../children) _(peer)_
 
 <!-- workspace-deps:end -->

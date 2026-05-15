@@ -33,6 +33,22 @@
     "./iconSet/defaults": {
       "types": "./dist/iconSet/defaults.d.ts",
       "import": "./dist/iconSet/defaults.js"
+    },
+    "./blocks/iconChild": {
+      "types": "./src/blocks/iconChild/block.ts",
+      "default": "./src/blocks/iconChild/block.ts"
+    },
+    "./blocks/iconChild/component": {
+      "types": "./src/blocks/iconChild/component.tsx",
+      "default": "./src/blocks/iconChild/component.tsx"
+    },
+    "./blocks/svgChild": {
+      "types": "./src/blocks/svgChild/block.ts",
+      "default": "./src/blocks/svgChild/block.ts"
+    },
+    "./blocks/svgChild/component": {
+      "types": "./src/blocks/svgChild/component.tsx",
+      "default": "./src/blocks/svgChild/component.tsx"
     }
   },
   "files": [
@@ -47,7 +63,8 @@
     "lint": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@pro-laico/ap-core": "workspace:*"
+    "@pro-laico/ap-core": "workspace:*",
+    "@pro-laico/children": "workspace:*"
   },
   "peerDependencies": {
     "@payloadcms/ui": ">=3.0.0",

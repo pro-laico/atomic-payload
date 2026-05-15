@@ -19,7 +19,7 @@ atomic-payload/
 â”‚   â”œâ”€â”€ ap-tracking/                   # Tracking plugin: Tracking global + PostHogProperty + GTM/PostHog/Vercel providers
 â”‚   â”œâ”€â”€ ap-actions/        # actionsPlugin + action blocks
 â”‚   â”œâ”€â”€ ap-forms/            # formsPlugin + submit-form blocks + processor
-â”‚   â”œâ”€â”€ ap-child-blocks/   # childBlocksPlugin + child blocks
+â”‚   â”œâ”€â”€ children/   # childBlocksPlugin + child blocks
 â”‚   â”œâ”€â”€ ap-design-sets/    # designSetsPlugin: designSet + shortcutSet
 â”‚   â””â”€â”€ ap-atomic-hook/    # atomicHookPlugin + sanitizeData/log
 â”œâ”€â”€ templates/
@@ -43,7 +43,7 @@ atomic-payload/
 | `@pro-laico/ap-tracking`                 | Tracking plugin: Tracking global (GTM + PostHog tabs + toggles) + PostHogProperty collection + GTM/PostHog/Vercel/composite providers |
 | `@pro-laico/ap-actions`    | actionsPlugin + action blocks + type re-exports                 |
 | `@pro-laico/ap-forms`      | formsPlugin + submit-form SVR blocks + server processor         |
-| `@pro-laico/ap-child-blocks` | childBlocksPlugin + default child blocks                      |
+| `@pro-laico/children` | childBlocksPlugin + default child blocks                      |
 | `@pro-laico/ap-design-sets`  | designSetsPlugin: `designSet` + `shortcutSet` collections + token fields |
 | `@pro-laico/ap-atomic-hook`  | atomicHookPlugin + sanitizeData + manualLogger                  |
 

@@ -36,7 +36,7 @@ Other `@pro-laico/*` packages this package depends on:
 Other `@pro-laico/*` packages that depend on this one:
 
 - [`ap-actions`](../ap-actions)
-- [`ap-child-blocks`](../ap-child-blocks)
+- [`children`](../children)
 - [`ap-core`](../ap-core)
 - [`ap-site`](../ap-site)
 

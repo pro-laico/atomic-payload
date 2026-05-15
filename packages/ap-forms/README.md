@@ -16,7 +16,7 @@ Other `@pro-laico/*` packages that depend on this one:
 
 - [`ap-actions`](../ap-actions)
 - [`ap-atomic-hook`](../ap-atomic-hook)
-- [`ap-child-blocks`](../ap-child-blocks)
+- [`children`](../children)
 - [`ap-core`](../ap-core)
 - [`ap-seed`](../ap-seed)
 

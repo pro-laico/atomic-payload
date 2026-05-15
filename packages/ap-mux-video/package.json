@@ -17,6 +17,14 @@
     "./src": {
       "types": "./src/index.ts",
       "default": "./src/index.ts"
+    },
+    "./blocks/videoChild": {
+      "types": "./src/blocks/videoChild/block.ts",
+      "default": "./src/blocks/videoChild/block.ts"
+    },
+    "./blocks/videoChild/component": {
+      "types": "./src/blocks/videoChild/component.tsx",
+      "default": "./src/blocks/videoChild/component.tsx"
     }
   },
   "files": [
@@ -31,7 +39,9 @@
     "lint": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@pro-laico/ap-core": "workspace:*"
+    "@pro-laico/ap-core": "workspace:*",
+    "@pro-laico/children": "workspace:*",
+    "@mux/mux-video-react": "^0.25.3"
   },
   "peerDependencies": {
     "@oversightstudio/mux-video": ">=1.0.0",

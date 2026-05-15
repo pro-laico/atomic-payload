@@ -37,7 +37,7 @@
   },
   "dependencies": {
     "@pro-laico/ap-atomic-hook": "workspace:*",
-    "@pro-laico/ap-child-blocks": "workspace:*",
+    "@pro-laico/children": "workspace:*",
     "@pro-laico/ap-images": "workspace:*",
     "@pro-laico/zap": "workspace:*",
     "@pro-laico/ap-core": "workspace:*"

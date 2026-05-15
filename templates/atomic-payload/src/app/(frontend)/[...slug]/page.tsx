@@ -5,7 +5,7 @@ import { draftMode } from 'next/headers'
 import { notFound } from 'next/navigation'
 import getCached from '@pro-laico/ap-core/cache/auto'
 import { GenerateMetaData } from '@pro-laico/ap-core'
-import { RenderChildren } from '@pro-laico/ap-child-blocks/render'
+import { RenderChildren } from '@pro-laico/children/render'
 import LivePreviewListener from '@pro-laico/ap-core/components/frontend/LivePreviewListener'
 
 type Props = { params: Promise<{ slug?: string[] }> }

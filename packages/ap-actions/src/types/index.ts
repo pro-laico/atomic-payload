@@ -1,4 +1,4 @@
-// /////////////////////////////////////
+﻿// /////////////////////////////////////
 // Hand-written types for the actions surface.
 // /////////////////////////////////////
 import type { UseThemeProps } from 'next-themes'
@@ -18,7 +18,7 @@ import type {
   AtomicChildVariants,
   AtomicButtonPortalTypes,
 } from './payload-augment'
-import type { ChildBlocks, ChildBlockType } from '@pro-laico/ap-child-blocks/schema'
+import type { ChildBlocks, ChildBlockType } from '@pro-laico/children/schema'
 
 // Schema stubs are intentionally NOT re-exported here: they live at
 // './payload-augment' and reach consumers via the `@pro-laico/ap-actions/schema`

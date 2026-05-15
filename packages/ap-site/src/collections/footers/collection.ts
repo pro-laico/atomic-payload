@@ -1,4 +1,4 @@
-import { ActiveField, generateAPFFields, APFControlsPath } from '@pro-laico/ap-core'
+﻿import { ActiveField, generateAPFFields, APFControlsPath } from '@pro-laico/ap-core'
 import type { CollectionConfig } from 'payload'
 import { type APFunction } from '@pro-laico/ap-core'
 import {
@@ -11,7 +11,7 @@ import {
   generateLivePreviewPath,
 } from '@pro-laico/ap-core'
 import { authd } from '../../access'
-import { ChildrenBlocksField as ChildrenBlocks } from '@pro-laico/ap-child-blocks'
+import { ChildrenBlocksField as ChildrenBlocks } from '@pro-laico/children'
 import { atomicHook } from '@pro-laico/ap-atomic-hook'
 
 const APFunctions: APFunction[] = ['form', 'actions', 'classes', 'active']

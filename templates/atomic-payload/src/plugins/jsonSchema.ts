@@ -2,8 +2,8 @@
 import { jsonSchemaPlugin } from '@pro-laico/ap-core'
 import CollectionSchemas from '@pro-laico/ap-site/zap'
 import { ActionBlockType } from '@pro-laico/ap-actions/zap'
-import { Runner, Attributer } from '@pro-laico/ap-child-blocks/useActions/zap'
-import { ChildBlockType, BackdropChildSlug } from '@pro-laico/ap-child-blocks/zap'
+import { Runner, Attributer } from '@pro-laico/children/useActions/zap'
+import { ChildBlockType, BackdropChildSlug } from '@pro-laico/children/zap'
 import { InputValidationBlockType, InputSanitationBlockType } from '@pro-laico/ap-forms/submitForm/input/zap'
 import { FormRateLimitBlockType, FormSanitationBlockType, FormValidationBlockType } from '@pro-laico/ap-forms/submitForm/form/zap'
 

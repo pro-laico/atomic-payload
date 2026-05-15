@@ -22,7 +22,7 @@ The 12 action block definitions, their filters/options/processor, and the `useAc
 Other `@pro-laico/*` packages this package depends on:
 
 - [`ap-atomic-hook`](../ap-atomic-hook)
-- [`ap-child-blocks`](../ap-child-blocks)
+- [`children`](../children)
 - [`ap-core`](../ap-core)
 - [`ap-forms`](../ap-forms)
 - [`zap`](../zap)
@@ -30,7 +30,7 @@ Other `@pro-laico/*` packages this package depends on:
 Other `@pro-laico/*` packages that depend on this one:
 
 - [`ap-atomic-hook`](../ap-atomic-hook)
-- [`ap-child-blocks`](../ap-child-blocks)
+- [`children`](../children)
 - [`ap-forms`](../ap-forms)
 
 <!-- workspace-deps:end -->

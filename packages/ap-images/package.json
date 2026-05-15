@@ -21,6 +21,14 @@
     "./src": {
       "types": "./src/index.ts",
       "default": "./src/index.ts"
+    },
+    "./blocks/imageChild": {
+      "types": "./src/blocks/imageChild/block.ts",
+      "default": "./src/blocks/imageChild/block.ts"
+    },
+    "./blocks/imageChild/component": {
+      "types": "./src/blocks/imageChild/component.tsx",
+      "default": "./src/blocks/imageChild/component.tsx"
     }
   },
   "files": [
@@ -35,7 +43,8 @@
     "lint": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@pro-laico/ap-core": "workspace:*"
+    "@pro-laico/ap-core": "workspace:*",
+    "@pro-laico/children": "workspace:*"
   },
   "peerDependencies": {
     "@oversightstudio/blur-data-urls": ">=1.0.0",

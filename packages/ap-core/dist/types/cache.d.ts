@@ -1,12 +1,12 @@
-/**
- * Cache / revalidate-tag types â€” owned by `@pro-laico/ap-utils` because the
+﻿/**
+ * Cache / revalidate-tag types Ã¢â‚¬â€ owned by `@pro-laico/ap-utils` because the
  * cache helpers (`getCached`, `revalidateTag`, etc.) live in this package.
  */
 import type { SanitizedConfig } from 'payload';
 import type { MergeTuples } from '../kernel';
 import type { Form, FormSubmission, StoredAtomicForm } from '@pro-laico/ap-forms/schema';
 import type { ModifiedStoredAtomicForm } from '@pro-laico/ap-forms';
-import type { ImageChild } from '@pro-laico/ap-child-blocks/schema';
+import type { ImageChild } from '@pro-laico/children/schema';
 import type { Page, Header, Footer, ShortcutSet, SiteMetaDatum } from '@pro-laico/ap-site/schema';
 import type { Tracking } from '@pro-laico/ap-tracking/schema';
 import type { DesignSet } from '@pro-laico/ap-design-sets/schema';

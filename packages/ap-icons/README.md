@@ -1,4 +1,4 @@
-# @pro-laico/ap-icons
+﻿# @pro-laico/ap-icons
 
 Atomic Payload icons plugin. Provides the `Icon` upload collection (SVG optimization via `svgo` + viewBox tightening via `svg-path-bbox`), `IconSet`, `formatSVGHook`, SVG helpers, `AtomicIcon`, admin row labels, and **`createIconSelect(getCached)`** for the Payload select field server component.
 
@@ -42,7 +42,7 @@ Other `@pro-laico/*` packages this package depends on:
 
 Other `@pro-laico/*` packages that depend on this one:
 
-- [`ap-child-blocks`](../ap-child-blocks)
+- [`children`](../children)
 - [`ap-seed`](../ap-seed)
 
 <!-- workspace-deps:end -->

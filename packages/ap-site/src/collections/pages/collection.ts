@@ -1,4 +1,4 @@
-import { APField, APFControlsPath } from '@pro-laico/ap-core'
+﻿import { APField, APFControlsPath } from '@pro-laico/ap-core'
 import { type APFunction } from '@pro-laico/ap-core'
 import type { CollectionConfig } from 'payload'
 import {
@@ -13,7 +13,7 @@ import {
 } from '@pro-laico/ap-core'
 import { authd, authenticatedOrPublished } from '../../access'
 import { SEOTab } from './tabs/SEO'
-import { ChildrenBlocksField as ChildrenBlocks } from '@pro-laico/ap-child-blocks'
+import { ChildrenBlocksField as ChildrenBlocks } from '@pro-laico/children'
 import { SettingsTab } from './tabs/settings'
 import { createParentField } from '@payloadcms/plugin-nested-docs'
 import { atomicHook } from '@pro-laico/ap-atomic-hook'

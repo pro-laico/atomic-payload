@@ -1,4 +1,4 @@
-{
+﻿{
   "name": "@pro-laico/ap-core",
   "version": "0.1.0",
   "description": "Atomic Payload core: kernel types (PayloadAugment / Get<>), APF (Atomic Payload Functions), shared utilities, cache helpers, revalidation plugin, JSON-schema plugin, and admin / frontend UI primitives. Replaces the older ap-types + ap-apf + ap-utils trio.",
@@ -96,7 +96,7 @@
   },
   "dependencies": {
     "@pro-laico/ap-atomic-hook": "workspace:*",
-    "@pro-laico/ap-child-blocks": "workspace:*",
+    "@pro-laico/children": "workspace:*",
     "@pro-laico/ap-design-sets": "workspace:*",
     "@pro-laico/ap-forms": "workspace:*",
     "@pro-laico/ap-images": "workspace:*",
