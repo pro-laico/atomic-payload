@@ -1,6 +1,5 @@
-import type { AttributerType } from '@pro-laico/ap-types/schema'
-import type { AttFunction } from '@pro-laico/ap-types'
-
+import type { AttributerType } from '@pro-laico/ap-actions/schema'
+import type { AttFunction } from '@pro-laico/ap-actions'
 //Functions
 import { AttCCToDA } from './cCToDA/function'
 import { AttBoolToDA } from './boolToDA/function'

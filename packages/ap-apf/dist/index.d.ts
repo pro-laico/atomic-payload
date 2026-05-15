@@ -1,3 +1,4 @@
+export type * from './types';
 export { default as deepMerge } from './utilities/deepMerge';
 export { runAPF } from './utilities/runAPF';
 export { APField } from './fields/index';

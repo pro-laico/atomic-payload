@@ -1,7 +1,7 @@
 'use client'
 import { useState, useEffect, startTransition } from 'react'
-import type { ActionContext } from '@pro-laico/ap-types'
-import type { AtomicChild } from '@pro-laico/ap-types/schema'
+import type { ActionContext } from '@pro-laico/ap-actions'
+import type { AtomicChild } from '@pro-laico/ap-child-blocks/schema'
 import { handleRunnerActions } from './dispatch'
 
 export type UsePortalActionsProps = {

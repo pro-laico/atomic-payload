@@ -1,4 +1,5 @@
 export { revalidationPlugin, default } from './plugin';
+export { jsonSchemaPlugin, createJSONSchemaExtensions, atomicPayloadStoredDefinitions, default as jsonSchemaPluginDefault, } from './jsonSchema';
 export { revalidateTag } from './utilities/revalidateTag';
 export { mt } from './utilities/mergeTags';
 // `revalidationLogger` from './utilities/log' and `createGetCached` from

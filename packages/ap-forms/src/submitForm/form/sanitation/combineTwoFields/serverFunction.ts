@@ -1,7 +1,6 @@
 'use server'
-import { FormFunction } from '@pro-laico/ap-types'
-import type { FsCombineTwoFields as FsCombineTwoFieldsType } from '@pro-laico/ap-types/schema'
-
+import { FormFunction } from '@pro-laico/ap-forms'
+import type { FsCombineTwoFields as FsCombineTwoFieldsType } from '@pro-laico/ap-forms/schema'
 export const FsCombineTwoFields: FormFunction<{ block: FsCombineTwoFieldsType }> = async (args) => {
   const { formData, block } = args
   const { firstFieldName, secondFieldName, outputFieldName } = block

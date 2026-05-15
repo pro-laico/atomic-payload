@@ -1,5 +1,5 @@
 'use client'
-import type { SimpleTextChild } from '@pro-laico/ap-types/schema'
+import type { SimpleTextChild } from '@pro-laico/ap-child-blocks/schema'
 import { Pill, RowLabel, useRowLabel, SectionTitle } from '@payloadcms/ui'
 
 const TRUNCATE_LENGTH = 50

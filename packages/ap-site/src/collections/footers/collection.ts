@@ -1,6 +1,6 @@
 import { ActiveField, generateAPFFields, APFControlsPath } from '@pro-laico/ap-apf'
 import type { CollectionConfig } from 'payload'
-import { type APFunction } from '@pro-laico/ap-types'
+import { type APFunction } from '@pro-laico/ap-apf'
 import {
   DevModeField,
   TestPathField,

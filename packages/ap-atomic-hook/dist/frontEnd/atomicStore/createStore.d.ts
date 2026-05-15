@@ -1,4 +1,4 @@
-import type { AtomicStore, AtomicStoreInitialState } from '@pro-laico/ap-types';
+import type { AtomicStore, AtomicStoreInitialState } from '@pro-laico/ap-atomic-hook';
 export declare const createAtomicStore: (initialState: AtomicStoreInitialState) => Omit<import("zustand").StoreApi<AtomicStore>, "setState" | "persist"> & {
     setState(partial: AtomicStore | Partial<AtomicStore> | ((state: AtomicStore) => AtomicStore | Partial<AtomicStore>), replace?: false | undefined): unknown;
     setState(state: AtomicStore | ((state: AtomicStore) => AtomicStore), replace: true): unknown;

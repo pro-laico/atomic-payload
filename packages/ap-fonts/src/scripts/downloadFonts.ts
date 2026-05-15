@@ -3,8 +3,7 @@ import path from 'path'
 import https from 'https'
 import dotenv from 'dotenv'
 import { PayloadSDK } from '@payloadcms/sdk'
-import type { Font } from '@pro-laico/ap-types/schema'
-
+import type { Font } from '@pro-laico/ap-fonts/schema'
 const colors = {
   blue: (t: string) => `\x1b[34m${t}\x1b[0m`,
   green: (t: string) => `\x1b[32m${t}\x1b[0m`,

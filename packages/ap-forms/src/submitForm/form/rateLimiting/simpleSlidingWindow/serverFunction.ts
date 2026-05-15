@@ -1,7 +1,6 @@
 'use server'
-import { FormFunction } from '@pro-laico/ap-types'
-import type { FrlSimpleSlidingWindow as FrlSimpleSlidingWindowType } from '@pro-laico/ap-types/schema'
-
+import { FormFunction } from '@pro-laico/ap-forms'
+import type { FrlSimpleSlidingWindow as FrlSimpleSlidingWindowType } from '@pro-laico/ap-forms/schema'
 const lastCleanup: Record<string, number> = {}
 const memoryStore: Record<string, Record<string, number[]>> = {}
 

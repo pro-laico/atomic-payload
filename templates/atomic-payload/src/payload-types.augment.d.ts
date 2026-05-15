@@ -3,132 +3,66 @@
 
 import type * as G from './payload-types'
 
-declare module '@pro-laico/ap-types/schema' {
-  interface PayloadAugment {
-    Config: G.Config
-    Page: G.Page
-    Header: G.Header
-    Footer: G.Footer
-    Form: G.Form
-    Font: G.Font
-    Icon: G.Icon
-    IconSet: G.IconSet
-    Image: G.Image
-    Tracking: G.Tracking
-    DesignSet: G.DesignSet
-    AtomicChild: G.AtomicChild
-    ImageChild: G.ImageChild
-    VideoChild: G.VideoChild
-    IconChild: G.IconChild
-    SVGChild: G.SVGChild
-    RichTextChild: G.RichTextChild
-    SimpleTextChild: G.SimpleTextChild
-    ShortcutSet: G.ShortcutSet
-    SiteMetaDatum: G.SiteMetaDatum
-    FormSubmission: G.FormSubmission
-    StoredAtomicForm: G.StoredAtomicForm
-    NonRecursiveChildBlockType: G.NonRecursiveChildBlockType
-    ChildBlocks: G.ChildBlocks
-    ActionBlocks: G.ActionBlocks
-    Runners: G.Runners
-    Attributers: G.Attributers
-    Attributer: G.Attributer
-    AllActions: G.AllActions
-    StoredAtomicActions: G.StoredAtomicActions
-    FormRateLimitBlocks: G.FormRateLimitBlocks
-    FormSanitationBlocks: G.FormSanitationBlocks
-    FormValidationBlocks: G.FormValidationBlocks
-    InputSanitationBlocks: G.InputSanitationBlocks
-    InputValidationBlocks: G.InputValidationBlocks
-    StoredAtomicFormInput: G.StoredAtomicFormInput
-    StaticDataAttributes: G.StaticDataAttributes
-    ChildrenWithActions: G.ChildrenWithActions
-    FrlSimpleSlidingWindow: G.FrlSimpleSlidingWindow
-    FsCombineTwoFields: G.FsCombineTwoFields
-    FvIsUnique: G.FvIsUnique
-    IsTrimText: G.IsTrimText
-    IvContains: G.IvContains
-    IvDoesNotContain: G.IvDoesNotContain
-    ChildBlockType: G.ChildBlockType
-    ActionBlockType: G.ActionBlockType
-    RunnerType: G.RunnerType
-    AttributerType: G.AttributerType
-    AtomicInputTypes: G.AtomicInputTypes
-    AtomicButtonTypes: G.AtomicButtonTypes
-    AtomicChildVariants: G.AtomicChildVariants
-    AtomicButtonPortalTypes: G.AtomicButtonPortalTypes
-    FormRateLimitBlockType: G.FormRateLimitBlockType
-    FormSanitationBlockType: G.FormSanitationBlockType
-    FormValidationBlockType: G.FormValidationBlockType
-    InputValidationBlockType: G.InputValidationBlockType
-    InputSanitationBlockType: G.InputSanitationBlockType
-    CollectionThatUsesCSSProcessorSlug: G.CollectionThatUsesCSSProcessorSlug
-    CollectionWithStoredAtomicClassesSlug: G.CollectionWithStoredAtomicClassesSlug
-    AtomicRegistry: G.AtomicRegistry
-  }
-}
-
 declare module '@pro-laico/ap-types' {
   interface PayloadAugment {
-    Config: G.Config
-    Page: G.Page
-    Header: G.Header
+    ActionBlockType: G.ActionBlockType
+    ActionBlocks: G.ActionBlocks
+    AllActions: G.AllActions
+    AtomicButtonPortalTypes: G.AtomicButtonPortalTypes
+    AtomicButtonTypes: G.AtomicButtonTypes
+    AtomicChild: G.AtomicChild
+    AtomicChildVariants: G.AtomicChildVariants
+    AtomicInputTypes: G.AtomicInputTypes
+    AtomicRegistry: G.AtomicRegistry
+    Attributer: G.Attributer
+    AttributerType: G.AttributerType
+    Attributers: G.Attributers
+    ChildBlockType: G.ChildBlockType
+    ChildBlocks: G.ChildBlocks
+    ChildrenWithActions: G.ChildrenWithActions
+    CollectionThatUsesCSSProcessorSlug: G.CollectionThatUsesCSSProcessorSlug
+    CollectionWithStoredAtomicClassesSlug: G.CollectionWithStoredAtomicClassesSlug
+    DesignSet: G.DesignSet
+    Font: G.Font
     Footer: G.Footer
     Form: G.Form
-    Font: G.Font
-    Icon: G.Icon
-    IconSet: G.IconSet
-    Image: G.Image
-    Tracking: G.Tracking
-    DesignSet: G.DesignSet
-    AtomicChild: G.AtomicChild
-    ImageChild: G.ImageChild
-    VideoChild: G.VideoChild
-    IconChild: G.IconChild
-    SVGChild: G.SVGChild
-    RichTextChild: G.RichTextChild
-    SimpleTextChild: G.SimpleTextChild
-    ShortcutSet: G.ShortcutSet
-    SiteMetaDatum: G.SiteMetaDatum
-    FormSubmission: G.FormSubmission
-    StoredAtomicForm: G.StoredAtomicForm
-    NonRecursiveChildBlockType: G.NonRecursiveChildBlockType
-    ChildBlocks: G.ChildBlocks
-    ActionBlocks: G.ActionBlocks
-    Runners: G.Runners
-    Attributers: G.Attributers
-    Attributer: G.Attributer
-    AllActions: G.AllActions
-    StoredAtomicActions: G.StoredAtomicActions
+    FormRateLimitBlockType: G.FormRateLimitBlockType
     FormRateLimitBlocks: G.FormRateLimitBlocks
+    FormSanitationBlockType: G.FormSanitationBlockType
     FormSanitationBlocks: G.FormSanitationBlocks
+    FormSubmission: G.FormSubmission
+    FormValidationBlockType: G.FormValidationBlockType
     FormValidationBlocks: G.FormValidationBlocks
-    InputSanitationBlocks: G.InputSanitationBlocks
-    InputValidationBlocks: G.InputValidationBlocks
-    StoredAtomicFormInput: G.StoredAtomicFormInput
-    StaticDataAttributes: G.StaticDataAttributes
-    ChildrenWithActions: G.ChildrenWithActions
     FrlSimpleSlidingWindow: G.FrlSimpleSlidingWindow
     FsCombineTwoFields: G.FsCombineTwoFields
     FvIsUnique: G.FvIsUnique
+    Header: G.Header
+    Icon: G.Icon
+    IconChild: G.IconChild
+    IconSet: G.IconSet
+    Image: G.Image
+    ImageChild: G.ImageChild
+    InputSanitationBlockType: G.InputSanitationBlockType
+    InputSanitationBlocks: G.InputSanitationBlocks
+    InputValidationBlockType: G.InputValidationBlockType
+    InputValidationBlocks: G.InputValidationBlocks
     IsTrimText: G.IsTrimText
     IvContains: G.IvContains
     IvDoesNotContain: G.IvDoesNotContain
-    ChildBlockType: G.ChildBlockType
-    ActionBlockType: G.ActionBlockType
+    NonRecursiveChildBlockType: G.NonRecursiveChildBlockType
+    Page: G.Page
+    RichTextChild: G.RichTextChild
     RunnerType: G.RunnerType
-    AttributerType: G.AttributerType
-    AtomicInputTypes: G.AtomicInputTypes
-    AtomicButtonTypes: G.AtomicButtonTypes
-    AtomicChildVariants: G.AtomicChildVariants
-    AtomicButtonPortalTypes: G.AtomicButtonPortalTypes
-    FormRateLimitBlockType: G.FormRateLimitBlockType
-    FormSanitationBlockType: G.FormSanitationBlockType
-    FormValidationBlockType: G.FormValidationBlockType
-    InputValidationBlockType: G.InputValidationBlockType
-    InputSanitationBlockType: G.InputSanitationBlockType
-    CollectionThatUsesCSSProcessorSlug: G.CollectionThatUsesCSSProcessorSlug
-    CollectionWithStoredAtomicClassesSlug: G.CollectionWithStoredAtomicClassesSlug
-    AtomicRegistry: G.AtomicRegistry
+    Runners: G.Runners
+    SVGChild: G.SVGChild
+    ShortcutSet: G.ShortcutSet
+    SimpleTextChild: G.SimpleTextChild
+    SiteMetaDatum: G.SiteMetaDatum
+    StaticDataAttributes: G.StaticDataAttributes
+    StoredAtomicActions: G.StoredAtomicActions
+    StoredAtomicForm: G.StoredAtomicForm
+    StoredAtomicFormInput: G.StoredAtomicFormInput
+    Tracking: G.Tracking
+    VideoChild: G.VideoChild
   }
 }

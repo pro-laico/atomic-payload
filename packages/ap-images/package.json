@@ -7,12 +7,16 @@
   "publishConfig": {
     "access": "public"
   },
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js"
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
+    },
+    "./schema": {
+      "types": "./src/types/payload-augment.ts",
+      "default": "./src/types/payload-augment.ts"
     },
     "./src": {
       "types": "./src/index.ts",
@@ -40,7 +44,9 @@
     "payload": ">=3.0.0"
   },
   "peerDependenciesMeta": {
-    "@oversightstudio/blur-data-urls": { "optional": true }
+    "@oversightstudio/blur-data-urls": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "@oversightstudio/blur-data-urls": "^1.0.4",

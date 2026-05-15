@@ -1,6 +1,5 @@
 import type { BlocksField } from 'payload'
-import type { ChildBlockType } from '@pro-laico/ap-types/schema'
-
+import type { ChildBlockType } from '@pro-laico/ap-child-blocks/schema'
 const AllChildBlocks: ChildBlockType[] = ['AtomicChild', 'SimpleTextChild', 'RichTextChild', 'ImageChild', 'VideoChild', 'IconChild', 'SVGChild']
 
 /** Adds all children blocks to a collection or global. Do not use in anything other than a collection or global. */

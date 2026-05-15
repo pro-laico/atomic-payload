@@ -1,6 +1,5 @@
 import { z } from '@pro-laico/ap-zap'
-import type { ActionProcessFunction, ActionDefaultFunction } from '@pro-laico/ap-types'
-
+import type { ActionProcessFunction, ActionDefaultFunction } from '@pro-laico/ap-actions'
 const processFunction: ActionProcessFunction<'ActResetForm'> = ({ formName, useForm, data, initialValuesMap }) => {
   const key = formName || useForm
   if (!key) throw new Error('ActFormError: formName or useForm is required')

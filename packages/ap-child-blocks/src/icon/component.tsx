@@ -4,8 +4,8 @@ import Warning from '../components/admin/warningIcon'
 
 import getCached from '@pro-laico/ap-utils/cache/auto'
 
-import type { RenderChild } from '@pro-laico/ap-types'
-import type { IconChild as IconChildType } from '@pro-laico/ap-types/schema'
+import type { RenderChild } from '@pro-laico/ap-child-blocks'
+import type { IconChild as IconChildType } from '@pro-laico/ap-child-blocks/schema'
 import { extractSvgContent, extractSvgProps } from '@pro-laico/ap-icons'
 
 export const IconChild: React.FC<RenderChild<IconChildType>> = async ({ block: { icon }, pt }) => {

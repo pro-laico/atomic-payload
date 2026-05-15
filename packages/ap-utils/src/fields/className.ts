@@ -1,5 +1,5 @@
 import { APField } from '@pro-laico/ap-apf'
-import type { APArgs, APFieldWrapper } from '@pro-laico/ap-types'
+import type { APArgs, APFieldWrapper } from '@pro-laico/ap-apf'
 import deepMerge from '../utilities/deepMerge'
 
 type PresetFields = 'apf' | 'type' | 'name'

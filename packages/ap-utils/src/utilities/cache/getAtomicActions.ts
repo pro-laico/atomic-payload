@@ -1,7 +1,8 @@
 'use server'
 import 'server-only' //DO NOT REMOVE
 import { getPayload, Where } from 'payload'
-import type { AtomicStoreInitialState, GCFunction } from '@pro-laico/ap-types'
+import type { AtomicStoreInitialState } from '@pro-laico/ap-atomic-hook'
+import type { GCFunction } from '@pro-laico/ap-utils'
 import cacheLogger from '../cacheLogger'
 
 /** Gets all atomic actions stored in the pages collection. */

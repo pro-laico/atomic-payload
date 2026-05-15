@@ -1,5 +1,8 @@
 export { revalidationPlugin, default } from './plugin';
 export type { RevalidationPluginOptions } from './plugin';
+export type * from './types/cache';
+export { jsonSchemaPlugin, createJSONSchemaExtensions, atomicPayloadStoredDefinitions, default as jsonSchemaPluginDefault, } from './jsonSchema';
+export type { JSONSchemaPluginOptions, JSONSchemaExtensionFn, BlockRefs, GenerateBlocksTypeProps, GenerateBlocksTypeFn, ToJSONSchemaExtensionsFn, AtomicPayloadSchemaBlocks, CreateJSONSchemaExtensionsOptions, } from './jsonSchema';
 export { revalidateTag } from './utilities/revalidateTag';
 export { mt } from './utilities/mergeTags';
 export { revalidateCache as revalidateCacheCollection, revalidateCacheOnDelete } from './hooks/collection/revalidate';

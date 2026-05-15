@@ -1,7 +1,7 @@
 'use client'
 import { useMemo } from 'react'
-import type { ActionContext } from '@pro-laico/ap-types'
-import type { Attributers } from '@pro-laico/ap-types/schema'
+import type { ActionContext } from '@pro-laico/ap-actions'
+import type { Attributers } from '@pro-laico/ap-actions/schema'
 import { handleAttributerActions } from './dispatch'
 
 export type UseToDaProps = { attributers: Attributers | undefined; context: ActionContext }

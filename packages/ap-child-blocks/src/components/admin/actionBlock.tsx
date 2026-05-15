@@ -3,16 +3,9 @@ import { useMemo } from 'react'
 import { type BlocksFieldClientProps } from 'payload'
 import { ActionFilters } from '@pro-laico/ap-actions/filters'
 import { useFormFields, BlocksField } from '@payloadcms/ui'
-import { ActionBlockFilter, ActionBlockPrefix } from '@pro-laico/ap-types'
-import type {
-  AtomicInputTypes,
-  AtomicButtonTypes,
-  AtomicButtonPortalTypes,
-  ChildBlockType,
-  AtomicChildVariants,
-  ActionBlockType,
-} from '@pro-laico/ap-types/schema'
-
+import { ActionBlockFilter, ActionBlockPrefix } from '@pro-laico/ap-actions'
+import type { AtomicInputTypes, AtomicButtonTypes, AtomicButtonPortalTypes, AtomicChildVariants, ActionBlockType } from '@pro-laico/ap-actions/schema'
+import type { ChildBlockType } from '@pro-laico/ap-child-blocks/schema'
 interface ActionBlocksFieldProps extends BlocksFieldClientProps {
   placement: ActionBlockPrefix
 }

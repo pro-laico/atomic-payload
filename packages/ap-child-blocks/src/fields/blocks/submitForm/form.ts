@@ -1,6 +1,5 @@
 import { BlocksField } from 'payload'
-import type { FormRateLimitBlockType, FormSanitationBlockType, FormValidationBlockType } from '@pro-laico/ap-types/schema'
-
+import type { FormRateLimitBlockType, FormSanitationBlockType, FormValidationBlockType } from '@pro-laico/ap-forms/schema'
 type formFunctionRegistry = {
   RateLimit: FormRateLimitBlockType[]
   Sanitation: FormSanitationBlockType[]

@@ -1,7 +1,7 @@
 'use server'
 import 'server-only' //DO NOT REMOVE
 import { getPayload, Where } from 'payload'
-import type { GCFunction } from '@pro-laico/ap-types'
+import type { GCFunction } from '@pro-laico/ap-utils'
 import { manualLogger, sanitizeData } from '@pro-laico/ap-atomic-hook/light'
 import cacheLogger from '../cacheLogger'
 

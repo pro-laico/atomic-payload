@@ -1,5 +1,5 @@
 import type { FieldHook } from 'payload';
-import type { APFunction } from '@pro-laico/ap-types';
+import type { APFunction } from '@pro-laico/ap-apf';
 export declare const virtualAPFBeforeChangeFieldHook: FieldHook;
 export declare const virtualAPFAfterReadFieldHook: FieldHook;
 /**

@@ -1,5 +1,4 @@
-import type { Page } from '@pro-laico/ap-types/schema'
-
+import type { Page } from '@pro-laico/ap-site/schema'
 export const homePage: Omit<Page, 'createdAt' | 'updatedAt' | 'publishedAt' | 'id'> = {
   title: 'Home',
   slug: '',

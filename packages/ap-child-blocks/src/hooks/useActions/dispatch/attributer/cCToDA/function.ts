@@ -1,5 +1,4 @@
-import type { AttFunction } from '@pro-laico/ap-types'
-
+import type { AttFunction } from '@pro-laico/ap-actions'
 export const AttCCToDA: AttFunction<'AttCCToDA'> = ({
   listen,
   changeKey,

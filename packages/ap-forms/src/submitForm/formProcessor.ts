@@ -7,25 +7,9 @@ import { FrlSimpleSlidingWindow } from './form/rateLimiting/functions'
 import { IvContains, IvDoesNotContain } from './input/validation/functions'
 
 //Other Imports
-import { CookiePreferences } from '@pro-laico/ap-types'
-import {
-  AFPBase,
-  RunBlocksMethod,
-  FormFunction,
-  ProcessMethod,
-  FormFunctionsMap,
-  PreProcessMethod,
-  PostProcessMethod,
-  MessageProcessorMethod,
-} from '@pro-laico/ap-types'
-import type {
-  FormRateLimitBlocks,
-  FormSanitationBlocks,
-  FormValidationBlocks,
-  InputSanitationBlocks,
-  InputValidationBlocks,
-  StoredAtomicFormInput,
-} from '@pro-laico/ap-types/schema'
+import { CookiePreferences } from '@pro-laico/ap-actions'
+import { AFPBase, RunBlocksMethod, FormFunction, ProcessMethod, FormFunctionsMap, PreProcessMethod, PostProcessMethod, MessageProcessorMethod } from '@pro-laico/ap-forms'
+import type { FormRateLimitBlocks, FormSanitationBlocks, FormValidationBlocks, InputSanitationBlocks, InputValidationBlocks, StoredAtomicFormInput } from '@pro-laico/ap-forms/schema'
 import { formatDurationString } from '../utilities/formatDurationWithTokens'
 
 const formFunctions: FormFunctionsMap = {

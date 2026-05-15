@@ -2,8 +2,7 @@
 import './coloredEnd.scss'
 import { useFormFields } from '@payloadcms/ui'
 import type { UIFieldClientComponent } from 'payload'
-import type { AtomicChildVariants } from '@pro-laico/ap-types/schema'
-
+import type { AtomicChildVariants } from '@pro-laico/ap-actions/schema'
 export const ColoredEnd: UIFieldClientComponent = ({ path }) => {
   const parentBlockPath = path.split('.').slice(0, -1).join('.')
   const type = useFormFields(([fields]) => fields[`${parentBlockPath}.type`]?.value as AtomicChildVariants | undefined)

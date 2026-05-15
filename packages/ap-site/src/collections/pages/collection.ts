@@ -1,5 +1,5 @@
 import { APField, APFControlsPath } from '@pro-laico/ap-apf'
-import { type APFunction } from '@pro-laico/ap-types'
+import { type APFunction } from '@pro-laico/ap-apf'
 import type { CollectionConfig } from 'payload'
 import {
   slugField,

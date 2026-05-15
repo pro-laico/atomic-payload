@@ -1,38 +1,51 @@
-import type { BlockSlug, CollectionSlug } from 'payload'
-import type { Config, ChildBlockType, ActionBlockType } from './payload-types'
+/**
+ * Kernel of the per-package PayloadAugment system.
+ *
+ * Domain packages (ap-actions, ap-icons, ap-site, …) define their own schema
+ * stubs as `export type X = Get<'X', Default>` against the single `PayloadAugment`
+ * interface declared here. Consumer projects fill the interface in once via
+ * module augmentation, and every package's stubs resolve to the project's
+ * concrete shapes.
+ */
 
-export * from './apf'
-export * from './jsonSchema'
-export * from './css'
-export * from './cache'
-export * from './forms'
-export * from './actions'
-export * from './frontEnd'
-// The package's payload-types stubs (Page, Config, Icon, Font, ...) are not
-// re-exported from the package root so consumer templates can `export *` from
-// both this package and their own generated `payload-types.ts` without
-// duplicate-export ambiguity. Internal packages that need the stubs by name
-// should import them from `@pro-laico/ap-types/schema`. Consumers
-// fill them in via the `PayloadAugment` module augmentation.
-export type { PayloadAugment } from './payload-types'
+/**
+ * Index interface that consumer projects extend via `declare module
+ * '@pro-laico/ap-types'` to supply concrete shapes from their generated
+ * `payload-types.ts`.
+ */
+export interface PayloadAugment {}
+
+/** Look up `K` in the augmented `PayloadAugment` interface; fall back to `F` when absent. */
+export type Get<K extends string, F> = PayloadAugment extends Record<K, infer T> ? T : F
 
 // /////////////////////////////////////
-// Miscellaneous Types
+// Default fallbacks. Picked so each domain package compiles cleanly without
+// augmentation — `Config['collections']` indexes by `string`, blocks have a
+// `blockType` discriminator, runners/attributers have a `type` discriminator.
+// /////////////////////////////////////
+
+export type DefaultRecord = Record<string, any>
+export type DefaultConfig = {
+  collections: Record<string, any>
+  globals: Record<string, any>
+  blocks: Record<string, any>
+  [key: string]: any
+}
+export type DefaultBlock = { blockType: string; [k: string]: any }
+export type DefaultActionFn = { type: string; [k: string]: any }
+
+// /////////////////////////////////////
+// Root config stub — used everywhere, kept here to avoid a cycle through any
+// single domain package.
+// /////////////////////////////////////
+
+export type Config = Get<'Config', DefaultConfig>
+
+// /////////////////////////////////////
+// Generic helpers (not Payload-specific).
 // /////////////////////////////////////
 
 export type StringKeyOf<T> = Extract<keyof T, string>
-
-/** The type used by the atomic child block's for depth management */
-export type DepthControls = {
-  /** Current content blocks depth. */
-  cd: number
-  /** The maximum content blocks depth. */
-  cmd: number
-  /** The current trigger blocks depth. */
-  td: number
-  /** The maximum trigger blocks depth. */
-  tmd: number
-}
 
 export type DotNestedKeys<T> = T extends object
   ? {
@@ -42,16 +55,16 @@ export type DotNestedKeys<T> = T extends object
 
 export type Last<T extends any[]> = T extends [...infer _, infer L] ? L : never
 
+/** Merges two tuple types by appending the second tuple to the first. */
+export type MergeTuples<T extends readonly unknown[], U extends readonly unknown[]> = [...T, ...U]
+
 // /////////////////////////////////////
-// Payload Types
+// Generic Payload-config helpers (rely only on the kernel `Config` stub).
 // /////////////////////////////////////
-export type AllBlocks = Config['blocks'][keyof Config['blocks']]
+
+import type { CollectionSlug, BlockSlug } from 'payload'
+
 export type AllCollections = Config['collections'][keyof Config['collections']]
-
+export type AllBlocks = Config['blocks'][keyof Config['blocks']]
 export type CollectionBySlug<T extends CollectionSlug> = Config['collections'][T]
-
 export type BlockBySlug<T extends BlockSlug> = Config['blocks'][T]
-export type ChildBySlug<T extends ChildBlockType> = BlockBySlug<T>
-export type ActionBySlug<T extends ActionBlockType> = BlockBySlug<T>
-
-export type AllBlockDotNestedKeys = DotNestedKeys<AllBlocks>

@@ -1,5 +1,4 @@
-import type { RunFunction } from '@pro-laico/ap-types'
-
+import type { RunFunction } from '@pro-laico/ap-actions'
 export const RunCycleText: RunFunction<'RunCycleText'> = ({ key, textArray, persisted, context }) => {
   const {
     atomicStore: { setValue, getValue, removeValue },

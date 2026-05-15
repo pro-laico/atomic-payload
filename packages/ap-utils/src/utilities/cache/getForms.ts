@@ -1,8 +1,8 @@
 'use server'
 import 'server-only' //DO NOT REMOVE
 import { getPayload, Where } from 'payload'
-import type { GCFunction } from '@pro-laico/ap-types'
-import type { Form, StoredAtomicForm } from '@pro-laico/ap-types/schema'
+import type { GCFunction } from '@pro-laico/ap-utils'
+import type { Form, StoredAtomicForm } from '@pro-laico/ap-forms/schema'
 import cacheLogger from '../cacheLogger'
 
 /** Gets all backend forms stored in the forms collection. */

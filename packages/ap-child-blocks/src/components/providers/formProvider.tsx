@@ -1,5 +1,5 @@
 'use client'
-import type { FullFormContext } from '@pro-laico/ap-types'
+import type { FullFormContext } from '@pro-laico/ap-actions'
 import React, { createContext, useContext } from 'react'
 
 const FormContext = createContext<FullFormContext>({ formResponse: null })

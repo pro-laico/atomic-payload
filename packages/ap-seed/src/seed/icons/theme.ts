@@ -1,5 +1,4 @@
-import { Icon } from '@pro-laico/ap-types/schema'
-
+import { Icon } from '@pro-laico/ap-icons/schema'
 export const themeIcon: Omit<Icon, 'createdAt' | 'updatedAt' | 'id'> = {
   optimized: 'SVG optimized: 687 to 315 bytes (54.1% reduction)',
   svgString:

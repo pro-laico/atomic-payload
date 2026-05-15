@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
-import type { PageReturn } from '@pro-laico/ap-types'
-import type { SiteMetaDatum, Image } from '@pro-laico/ap-types/schema'
-
+import type { PageReturn } from '@pro-laico/ap-utils'
+import type { SiteMetaDatum } from '@pro-laico/ap-site/schema'
+import type { Image } from '@pro-laico/ap-images/schema'
 type GenerateMetaDataArgs = { page?: PageReturn; siteMetadata?: SiteMetaDatum }
 type GenerateMetaDataFn = (args: GenerateMetaDataArgs) => Metadata
 

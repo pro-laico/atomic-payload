@@ -1,6 +1,6 @@
 import 'server-only';
 import z from 'zod';
-import type { AtomicRegistry } from '@pro-laico/ap-types/schema';
+import type { AtomicRegistry } from '@pro-laico/ap-zap/schema'
 type ZapSchemaRegistry = {
     id: string;
     description?: string;

@@ -15,14 +15,9 @@ import { ActDSBoolToDA } from './dynamicStore/boolean/toDA/options'
 //Other
 import { z } from '@pro-laico/ap-zap'
 import { ActionFilters } from './filters'
-import type { AllActions, ChildBlocks, StoredAtomicActions } from '@pro-laico/ap-types/schema'
-import type {
-  InitialValue,
-  ActionProcessFunction,
-  ActionBlockDefaultReturns,
-  ActionSetKeyInitialByAction,
-} from '@pro-laico/ap-types'
-
+import type { AllActions, StoredAtomicActions } from '@pro-laico/ap-actions/schema'
+import type { ChildBlocks } from '@pro-laico/ap-child-blocks/schema'
+import type { InitialValue, ActionProcessFunction, ActionBlockDefaultReturns, ActionSetKeyInitialByAction } from '@pro-laico/ap-actions'
 /** Makes an object and all its properties non-nullable */
 type NonNullableObject<T> = { [K in keyof T]-?: NonNullable<T[K]> }
 

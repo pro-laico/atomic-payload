@@ -1,4 +1,4 @@
-import type { DesignSet } from '@pro-laico/ap-types/schema';
+import type { DesignSet } from '@pro-laico/ap-design-sets/schema';
 declare function generatePreflights({ ds }: {
     ds: DesignSet;
 }): string;

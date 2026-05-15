@@ -1,7 +1,6 @@
 'use server'
-import { FormFunction } from '@pro-laico/ap-types'
-import type { IvContains as IvContainsType } from '@pro-laico/ap-types/schema'
-
+import { FormFunction } from '@pro-laico/ap-forms'
+import type { IvContains as IvContainsType } from '@pro-laico/ap-forms/schema'
 export const IvContains: FormFunction<{ block: IvContainsType & { inputName: string } }> = async (args) => {
   const { formData, response, block } = args
   const { containsValue, validationMessage, inputName } = block

@@ -1,7 +1,6 @@
 import { APField } from '@pro-laico/ap-apf'
 import { deepMerge } from '@pro-laico/ap-utils'
-import type { APArgs, APFieldWrapper } from '@pro-laico/ap-types'
-
+import type { APArgs, APFieldWrapper } from '@pro-laico/ap-apf'
 export const DefaultOpenField: APFieldWrapper<'checkbox', 'name' | 'apf' | 'type'> = (args) => {
   const baseField: APArgs<'checkbox'> = {
     name: 'defaultOpen',

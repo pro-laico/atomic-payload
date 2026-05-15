@@ -1,8 +1,7 @@
 'use server'
 import NextLink from 'next/link'
-import type { RenderChild } from '@pro-laico/ap-types'
-import type { AtomicChild } from '@pro-laico/ap-types/schema'
-
+import type { RenderChild } from '@pro-laico/ap-child-blocks'
+import type { AtomicChild } from '@pro-laico/ap-child-blocks/schema'
 export const AtomicButtonLink: React.FC<RenderChild<AtomicChild>> = async ({ block, pt, triggerChildren }) => {
   return (
     //@ts-expect-error href is already applied in the defaultProps

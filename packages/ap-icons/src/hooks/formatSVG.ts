@@ -1,5 +1,5 @@
 'use server'
-import type { Icon } from '@pro-laico/ap-types/schema'
+import type { Icon } from '@pro-laico/ap-icons/schema'
 import type { CollectionBeforeChangeHook } from 'payload'
 
 export const formatSvg = async (icon: Partial<Icon>, svgData: Buffer): Promise<Partial<Icon>> => {

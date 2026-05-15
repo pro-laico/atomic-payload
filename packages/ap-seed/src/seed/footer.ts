@@ -1,5 +1,4 @@
-import type { Footer, Page } from '@pro-laico/ap-types/schema'
-
+import type { Footer, Page } from '@pro-laico/ap-site/schema'
 type FooterArgs = { page: Page }
 
 export const footer: (args: FooterArgs) => Omit<Footer, 'createdAt' | 'updatedAt' | 'id'> = ({ page }) => {

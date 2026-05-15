@@ -1,5 +1,4 @@
-import type { RunFunction } from '@pro-laico/ap-types'
-
+import type { RunFunction } from '@pro-laico/ap-actions'
 export const RunSetTheme: RunFunction<'RunSetTheme'> = ({ perform, context: { theme } }) => {
   if (!theme) {
     console.error('RunSetTheme: theme is undefined')

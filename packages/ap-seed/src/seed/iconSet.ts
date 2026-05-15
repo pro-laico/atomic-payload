@@ -1,5 +1,5 @@
-import { IconSet, Page, Icon } from '@pro-laico/ap-types/schema'
-
+import { IconSet, Icon } from '@pro-laico/ap-icons/schema'
+import { Page } from '@pro-laico/ap-site/schema'
 type IconSetArgs = { page: Page; icons: Icon[] }
 
 export const iconSet: (args: IconSetArgs) => Omit<IconSet, 'createdAt' | 'updatedAt' | 'id'> = ({ page, icons }) => {

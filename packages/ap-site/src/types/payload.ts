@@ -4,8 +4,7 @@
  * request. Side-effect imported from `src/index.ts` so any consumer of the
  * package picks up the augmentation.
  */
-import type { Page, Header, Footer } from '@pro-laico/ap-types/schema'
-
+import type { Page, Header, Footer } from '@pro-laico/ap-site/schema'
 declare module 'payload' {
   export interface RequestContext {
     pages?: Page

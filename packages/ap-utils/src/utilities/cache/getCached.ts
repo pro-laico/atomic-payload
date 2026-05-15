@@ -1,15 +1,7 @@
 import 'server-only'
 import { unstable_cache } from 'next/cache'
 import { mt } from '../mergeTags'
-import type {
-  AllTagsWithGetters,
-  GCArgs,
-  GCReturns,
-  GCFunction,
-  IconSetReturn,
-  PayloadConfigPromise,
-} from '@pro-laico/ap-types'
-
+import type { AllTagsWithGetters, GCArgs, GCReturns, GCFunction, IconSetReturn, PayloadConfigPromise } from '@pro-laico/ap-utils'
 export type GetRegistry = { [K in AllTagsWithGetters]: GCFunction<K> }
 
 export interface GetCachedFn {

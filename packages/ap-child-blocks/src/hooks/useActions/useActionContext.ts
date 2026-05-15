@@ -1,7 +1,7 @@
 'use client'
 import { useMemo } from 'react'
 import { useTheme } from 'next-themes'
-import type { ActionContext, FullFormContext } from '@pro-laico/ap-types'
+import type { ActionContext, FullFormContext } from '@pro-laico/ap-actions'
 import { useAtomicStore } from '@pro-laico/ap-atomic-hook/client'
 import { useFormContext } from '../../components/providers/formProvider'
 

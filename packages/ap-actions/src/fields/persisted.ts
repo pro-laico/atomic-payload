@@ -1,6 +1,5 @@
 import { APField, deepMerge } from '@pro-laico/ap-apf'
-import type { APArgs, APFieldWrapper } from '@pro-laico/ap-types'
-
+import type { APArgs, APFieldWrapper } from '@pro-laico/ap-apf'
 const description =
   'If true, the value will be persisted in the browser storage, and replace the initial value. Beware of FOUC is using these for initial visual state.'
 

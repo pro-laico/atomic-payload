@@ -1,6 +1,6 @@
 'use client'
-import type { RenderChild } from '@pro-laico/ap-types'
-import type { AtomicChild } from '@pro-laico/ap-types/schema'
+import type { RenderChild } from '@pro-laico/ap-child-blocks'
+import type { AtomicChild } from '@pro-laico/ap-child-blocks/schema'
 import { useForm } from '../../../hooks/useActions/useForm'
 import { useToDa } from '../../../hooks/useActions/useToDa'
 import { FormContextProvider } from '../../../components/providers/formProvider'

@@ -1,5 +1,5 @@
 'use server'
-import type { Footer as FooterType } from '@pro-laico/ap-types/schema'
+import type { Footer as FooterType } from '@pro-laico/ap-site/schema'
 import { RenderChildren } from '@pro-laico/ap-child-blocks/render'
 
 export const Footer = async ({ footer }: { footer: FooterType }) => {

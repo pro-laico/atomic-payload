@@ -1,7 +1,7 @@
 'use server'
 import 'server-only' //DO NOT REMOVE
 import { getPayload } from 'payload'
-import type { GCFunction } from '@pro-laico/ap-types'
+import type { GCFunction } from '@pro-laico/ap-utils'
 import cacheLogger from '../cacheLogger'
 
 /** Gets tracking settings from payload about posthog, vercel and google tag manager. */

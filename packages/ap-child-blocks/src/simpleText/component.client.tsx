@@ -2,9 +2,8 @@
 import { useActionContext } from '../hooks/useActions/useActionContext'
 import { useDaToText } from '../hooks/useActions/useDaToText'
 import { useToDa } from '../hooks/useActions/useToDa'
-import type { RenderChild } from '@pro-laico/ap-types'
-import type { SimpleTextChild as SimpleTextChildType } from '@pro-laico/ap-types/schema'
-
+import type { RenderChild } from '@pro-laico/ap-child-blocks'
+import type { SimpleTextChild as SimpleTextChildType } from '@pro-laico/ap-child-blocks/schema'
 export const SimpleTextChildClient: React.FC<RenderChild<SimpleTextChildType>> = (props) => {
   const { block, pt } = props
 

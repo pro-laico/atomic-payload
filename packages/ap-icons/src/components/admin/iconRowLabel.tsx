@@ -1,6 +1,6 @@
 'use client'
 import React from 'react'
-import type { Icon } from '@pro-laico/ap-types/schema'
+import type { Icon } from '@pro-laico/ap-icons/schema'
 import { Pill, RowLabel, useRowLabel } from '@payloadcms/ui'
 
 interface IconData {

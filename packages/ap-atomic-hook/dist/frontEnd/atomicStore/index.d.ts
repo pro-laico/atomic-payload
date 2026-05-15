@@ -1,5 +1,5 @@
 import { createAtomicStore } from './createStore';
-import type { AtomicStore, AtomicStoreProviderProps } from '@pro-laico/ap-types';
+import type { AtomicStore, AtomicStoreProviderProps } from '@pro-laico/ap-atomic-hook';
 export type AtomicStoreApi = ReturnType<typeof createAtomicStore>;
 export declare const AtomicStoreContext: import("react").Context<(Omit<import("zustand").StoreApi<AtomicStore>, "setState" | "persist"> & {
     setState(partial: AtomicStore | Partial<AtomicStore> | ((state: AtomicStore) => AtomicStore | Partial<AtomicStore>), replace?: false | undefined): unknown;

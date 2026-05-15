@@ -1,4 +1,4 @@
-import type { APArgs, APReturn } from '@pro-laico/ap-types';
+import type { APArgs, APReturn } from '@pro-laico/ap-apf';
 /** Utility Field For Adding Atomic Payload Functionality to Fields */
 export declare function APField(args: APArgs<'text'>): APReturn<'text'>;
 export declare function APField(args: APArgs<'select'>): APReturn<'select'>;

@@ -28,7 +28,11 @@
     "lint": "node -e \"process.exit(0)\""
   },
   "dependencies": {
-    "@pro-laico/ap-types": "workspace:*"
+    "@pro-laico/ap-types": "workspace:*",
+    "@pro-laico/ap-design-sets": "workspace:*",
+    "@pro-laico/ap-forms": "workspace:*",
+    "@pro-laico/ap-icons": "workspace:*",
+    "@pro-laico/ap-site": "workspace:*"
   },
   "peerDependencies": {
     "@payloadcms/ui": ">=3.0.0",

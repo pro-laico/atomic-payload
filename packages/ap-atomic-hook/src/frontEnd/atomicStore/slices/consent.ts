@@ -1,6 +1,5 @@
 import type { StateCreator } from 'zustand'
-import type { AtomicStore, ConsentPreferences, ConsentSlice } from '@pro-laico/ap-types'
-
+import type { AtomicStore, ConsentPreferences, ConsentSlice } from '@pro-laico/ap-atomic-hook'
 const COOKIE_EXPIRY_YEARS = 1
 export const STORAGE_KEYS = {
   COOKIE_CONSENT: 'cookieConsent',

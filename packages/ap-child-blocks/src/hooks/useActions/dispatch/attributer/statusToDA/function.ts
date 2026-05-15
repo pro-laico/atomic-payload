@@ -1,5 +1,4 @@
-import { AttFunction } from '@pro-laico/ap-types'
-
+import { AttFunction } from '@pro-laico/ap-actions'
 export const AttFormStatusToDA: AttFunction<'AttFormStatusToDA'> = ({ key, context }) => {
   if (!context.fullFormContext) {
     console.error('AttFormStatusToDA: fullFormContext is undefined')

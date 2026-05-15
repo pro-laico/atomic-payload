@@ -1,5 +1,4 @@
-import { AttFunction } from '@pro-laico/ap-types'
-
+import { AttFunction } from '@pro-laico/ap-actions'
 export const AttTextToDA: AttFunction<'AttTextToDA'> = ({
   key,
   persisted,

@@ -1,9 +1,8 @@
 'use client'
 import { useMemo } from 'react'
 import { useFormFields, BlocksField } from '@payloadcms/ui'
-import type { InputBlocksFieldProps } from '@pro-laico/ap-types'
-import type { AtomicInputTypes } from '@pro-laico/ap-types/schema'
-
+import type { InputBlocksFieldProps } from '@pro-laico/ap-forms'
+import type { AtomicInputTypes } from '@pro-laico/ap-actions/schema'
 const InputBlocksField: React.FC<InputBlocksFieldProps> = (props) => {
   const { path, field, usedOn } = props
   const p = useMemo(() => path.split('.').slice(0, -1).join('.'), [path])

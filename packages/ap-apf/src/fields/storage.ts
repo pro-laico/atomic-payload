@@ -1,5 +1,5 @@
 import { CheckboxField } from 'payload'
-import { APFunction } from '@pro-laico/ap-types'
+import { APFunction } from '@pro-laico/ap-apf'
 import { virtualAPFAfterReadFieldHook, virtualAPFBeforeChangeFieldHook } from '../hooks/field/apf'
 
 /** Atomic Payload Functions Registry */

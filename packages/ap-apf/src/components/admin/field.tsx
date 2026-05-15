@@ -3,7 +3,7 @@ import './index.scss'
 import APFieldLabelServer from './label'
 import React, { memo, useMemo } from 'react'
 import { apfRegistry } from '../../fields/storage'
-import type { APFFieldComponentType } from '@pro-laico/ap-types'
+import type { APFFieldComponentType } from '@pro-laico/ap-apf'
 import { toKebabCase } from './toKebabCase'
 import { useField, useFormFields, NumberField, TextInput, TextareaInput, CheckboxInput, SelectField, FieldDescription } from '@payloadcms/ui'
 

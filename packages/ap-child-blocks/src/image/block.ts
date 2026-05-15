@@ -3,8 +3,7 @@ import { TrackingTab } from '../fields/trackingTab'
 import { ClassNameField } from '@pro-laico/ap-utils'
 import { ColoredEnd } from '../fields/coloredEnd'
 import { ChildsSettingsTab } from '../fields/tabs/settings'
-import type { Image as ImageType } from '@pro-laico/ap-types/schema'
-
+import type { Image as ImageType } from '@pro-laico/ap-images/schema'
 const d = {
   image: 'Select the image to be displayed.',
   quality: '0-100. Default is 75. Use 100 for best quality.',

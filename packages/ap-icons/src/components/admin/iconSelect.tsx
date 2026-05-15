@@ -1,5 +1,5 @@
 import { SelectField } from '@payloadcms/ui'
-import type { IconSetReturn } from '@pro-laico/ap-types'
+import type { IconSetReturn } from '@pro-laico/ap-utils'
 import type { SelectFieldServerComponent } from 'payload'
 
 /** `getCached` from the app (e.g. `@/utilities/get/cache/react`). */

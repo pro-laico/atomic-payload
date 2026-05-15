@@ -3,8 +3,7 @@
 import { useStore } from 'zustand'
 import { createContext, useState, useContext } from 'react'
 import { createAtomicStore } from './createStore'
-import type { AtomicStore, AtomicStoreProviderProps } from '@pro-laico/ap-types'
-
+import type { AtomicStore, AtomicStoreProviderProps } from '@pro-laico/ap-atomic-hook'
 export type AtomicStoreApi = ReturnType<typeof createAtomicStore>
 export const AtomicStoreContext = createContext<AtomicStoreApi | undefined>(undefined)
 

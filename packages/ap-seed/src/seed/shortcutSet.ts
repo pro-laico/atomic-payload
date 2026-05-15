@@ -1,5 +1,4 @@
-import { Page, ShortcutSet } from '@pro-laico/ap-types/schema'
-
+import { Page, ShortcutSet } from '@pro-laico/ap-site/schema'
 type ShortcutSetArgs = { page: Page }
 
 export const shortcutSet: (args: ShortcutSetArgs) => Omit<ShortcutSet, 'createdAt' | 'updatedAt' | 'id'> = ({ page }) => {

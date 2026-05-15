@@ -1,6 +1,6 @@
 import './index.scss';
 import React from 'react';
-import { type APFunction } from '@pro-laico/ap-types';
+import { type APFunction } from '@pro-laico/ap-apf';
 declare const _default: React.NamedExoticComponent<{
     APFunctions?: APFunction[];
 }>;

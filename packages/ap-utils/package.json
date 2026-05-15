@@ -7,12 +7,12 @@
   "publishConfig": {
     "access": "public"
   },
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js"
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
     },
     "./logger": {
       "types": "./dist/utilities/log.d.ts",
@@ -76,9 +76,16 @@
   },
   "dependencies": {
     "@pro-laico/ap-atomic-hook": "workspace:*",
+    "@pro-laico/ap-child-blocks": "workspace:*",
+    "@pro-laico/ap-design-sets": "workspace:*",
+    "@pro-laico/ap-forms": "workspace:*",
+    "@pro-laico/ap-site": "workspace:*",
+    "@pro-laico/ap-tracking": "workspace:*",
     "@pro-laico/ap-types": "workspace:*",
     "@pro-laico/ap-apf": "workspace:*",
-    "dayjs": "^1.11.13"
+    "@types/json-schema": "^7.0.15",
+    "dayjs": "^1.11.13",
+    "@pro-laico/ap-images": "workspace:*"
   },
   "peerDependencies": {
     "@base-ui-components/react": ">=1.0.0-rc.0",

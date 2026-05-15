@@ -1,5 +1,5 @@
 import type { UploadField } from 'payload';
-import type { APFunction } from '@pro-laico/ap-types';
+import type { APFunction } from '@pro-laico/ap-apf'
 type FaviconFieldType = (args?: Partial<UploadField> & {
     apf?: APFunction[];
 }) => UploadField;

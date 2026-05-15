@@ -1,5 +1,5 @@
-import type { RunnerType } from '@pro-laico/ap-types/schema'
-import type { RunFunction } from '@pro-laico/ap-types'
+import type { RunnerType } from '@pro-laico/ap-actions/schema'
+import type { RunFunction } from '@pro-laico/ap-actions'
 import { RunSetCC } from './setCCs/function'
 import { RunSetBool } from './setBool/function'
 import { RunSetTheme } from './setThemes/function'

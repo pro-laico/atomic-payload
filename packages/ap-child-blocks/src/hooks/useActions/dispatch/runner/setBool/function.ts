@@ -1,5 +1,4 @@
-import type { RunFunction } from '@pro-laico/ap-types'
-
+import type { RunFunction } from '@pro-laico/ap-actions'
 export const RunSetBool: RunFunction<'RunSetBool'> = ({ key, initialValue, persisted, context }) => {
   const { setValue, getValue } = context.atomicStore
 

@@ -1,7 +1,7 @@
 import { APFControlsPath, generateAPFFields } from '@pro-laico/ap-apf'
 import { authd } from '../access/authenticated'
 import type { CollectionConfig, CollectionBeforeChangeHook, PayloadRequest } from 'payload'
-import type { APFunction } from '@pro-laico/ap-types'
+import type { APFunction } from '@pro-laico/ap-apf'
 import { revalidateCacheOnDelete } from '@pro-laico/ap-utils'
 import { createShortcutsTab } from './tabs/shortcuts'
 import { ShortcutSettingsTab } from './tabs/settings'

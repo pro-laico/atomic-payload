@@ -1,6 +1,5 @@
 import { z } from '@pro-laico/ap-zap'
-import type { ActionProcessFunction } from '@pro-laico/ap-types'
-
+import type { ActionProcessFunction } from '@pro-laico/ap-actions'
 const processFunction: ActionProcessFunction<'ActFormErrorToDA'> = ({ formName, inputName, data, useForm, initialValuesMap }) => {
   const key = formName || useForm
   if (!key) throw new Error('ActFormError: formName or useForm is required')

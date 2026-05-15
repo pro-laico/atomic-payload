@@ -1,6 +1,6 @@
 import { BlocksField } from 'payload'
 import { useOn } from '@pro-laico/ap-forms/submitForm/input/useOn'
-import type { InputSanitationBlockType, InputValidationBlockType } from '@pro-laico/ap-types/schema'
+import type { InputSanitationBlockType, InputValidationBlockType } from '@pro-laico/ap-forms/schema'
 import { InputBlocksPath } from '../../../components/admin'
 
 type InputFunctionRegistry = {

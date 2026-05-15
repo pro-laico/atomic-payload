@@ -2,9 +2,9 @@
 import { Toast } from '@base-ui-components/react/toast'
 import { useState, useEffect, useRef, useMemo } from 'react'
 import { useActionContext } from './useActionContext'
-import type { FormResponse, FullFormContext, ActionContext } from '@pro-laico/ap-types'
-import type { AtomicChild } from '@pro-laico/ap-types/schema'
-
+import type { FormResponse } from '@pro-laico/ap-forms'
+import type { FullFormContext, ActionContext } from '@pro-laico/ap-actions'
+import type { AtomicChild } from '@pro-laico/ap-child-blocks/schema'
 /** Dynamic import avoids a server-module / getCached init cycle during client graph evaluation (Next collect page data). */
 let submitFormLoader: Promise<
   typeof import('@pro-laico/ap-forms/submitForm/serverFunction').submitForm

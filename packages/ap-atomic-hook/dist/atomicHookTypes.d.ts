@@ -1,4 +1,4 @@
-import type { StoredAtomicActions } from '@pro-laico/ap-types/schema';
+import type { StoredAtomicActions } from '@pro-laico/ap-actions/schema';
 /** Narrow getter used by `createCssProcessor` (e.g. app `getCached` / `unstable_cache` wrapper). */
 export type AtomicHookGetCached = (tag: 'atomic-classes' | 'header' | 'footer' | 'designSet' | 'shortcutSet', draft: boolean) => Promise<unknown>;
 /** Constructor for `@pro-laico/ap-actions/processor` (passed from the app to avoid pulling actions into this package's tsc graph). */

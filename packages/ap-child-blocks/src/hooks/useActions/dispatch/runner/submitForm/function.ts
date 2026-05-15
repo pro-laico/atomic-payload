@@ -1,6 +1,5 @@
-import type { RunFunction } from '@pro-laico/ap-types'
-import type { ImplementedStorageTypes } from '@pro-laico/ap-types/schema'
-
+import type { RunFunction } from '@pro-laico/ap-actions'
+import type { ImplementedStorageTypes } from '@pro-laico/ap-atomic-hook/schema'
 export const RunSubmitForm: RunFunction<'RunSubmitForm'> = async ({
   formName,
   context: {

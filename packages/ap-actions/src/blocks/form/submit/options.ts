@@ -1,6 +1,5 @@
 import { z } from '@pro-laico/ap-zap'
-import type { ActionProcessFunction, ActionDefaultFunction, ActionSetKeyInitialByBlock } from '@pro-laico/ap-types'
-
+import type { ActionProcessFunction, ActionDefaultFunction, ActionSetKeyInitialByBlock } from '@pro-laico/ap-actions'
 const setKeyInitialByBlock: ActionSetKeyInitialByBlock = ({ block }) => {
   if (block.blockType === 'AtomicChild' && block.type === 'form' && block.formName) {
     return { key: block.formName, persisted: Boolean(block?.persisted) }

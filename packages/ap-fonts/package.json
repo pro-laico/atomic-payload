@@ -7,15 +7,19 @@
   "publishConfig": {
     "access": "public"
   },
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
   "bin": {
     "atomic-fonts-download": "./dist/scripts/cli.js"
   },
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js"
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
+    },
+    "./schema": {
+      "types": "./src/types/payload-augment.ts",
+      "default": "./src/types/payload-augment.ts"
     },
     "./src": {
       "types": "./src/index.ts",
@@ -46,8 +50,12 @@
     "payload": ">=3.0.0"
   },
   "peerDependenciesMeta": {
-    "@payloadcms/sdk": { "optional": true },
-    "dotenv": { "optional": true }
+    "@payloadcms/sdk": {
+      "optional": true
+    },
+    "dotenv": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "@payloadcms/sdk": "^3.79.0",

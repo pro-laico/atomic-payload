@@ -14,6 +14,10 @@
       "types": "./src/index.ts",
       "default": "./src/index.ts"
     },
+    "./schema": {
+      "types": "./src/types/payload-augment.ts",
+      "default": "./src/types/payload-augment.ts"
+    },
     "./default-lexical": {
       "types": "./src/richText/defaultLexical.ts",
       "default": "./src/richText/defaultLexical.ts"
@@ -78,7 +82,8 @@
     "@pro-laico/ap-actions": "workspace:*",
     "@pro-laico/ap-forms": "workspace:*",
     "@pro-laico/ap-atomic-hook": "workspace:*",
-    "next-themes": "^0.4.6"
+    "next-themes": "^0.4.6",
+    "@pro-laico/ap-images": "workspace:*"
   },
   "peerDependencies": {
     "@mux/blurup": ">=1.0.0",
@@ -92,8 +97,12 @@
     "server-only": ">=0.0.1"
   },
   "peerDependenciesMeta": {
-    "@mux/blurup": { "optional": true },
-    "@pro-laico/ap-tracking": { "optional": true }
+    "@mux/blurup": {
+      "optional": true
+    },
+    "@pro-laico/ap-tracking": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "@mux/blurup": "^1.0.2",

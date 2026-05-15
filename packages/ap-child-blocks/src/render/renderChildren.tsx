@@ -3,8 +3,8 @@ import 'server-only' //DO NOT REMOVE
 
 import type { BlockSlug } from 'payload'
 import { SSRProps } from './SSRProps'
-import type { RenderChildrenProps, ChildBySlug, PassThroughs, BlockBySlug } from '@pro-laico/ap-types'
-import type { AtomicChild, ChildrenWithActions, ChildBlocks } from '@pro-laico/ap-types/schema'
+import type { RenderChildrenProps, ChildBySlug, PassThroughs, BlockBySlug } from '@pro-laico/ap-child-blocks'
+import type { AtomicChild, ChildrenWithActions, ChildBlocks } from '@pro-laico/ap-child-blocks/schema'
 import {
   SVGChild,
   IconChild,
@@ -114,8 +114,14 @@ export const RenderChildren: RenderChildrenProps = async ({ blocks }) => {
           const passThroughs = await SSRProps(block)
           const useAction = hasActions(block, passThroughs)
 
-          if (is(block, 'AtomicChild')) Component = getAtomicComponent(block, useAction)
-          else Component = useAction ? clientComponents[block.blockType] : components[block.blockType]
+          if (block.blockType === 'AtomicChild') {
+            Component = getAtomicComponent(block as AtomicChild, useAction)
+          } else {
+            const slug = (block as { blockType: string }).blockType
+            Component = useAction
+              ? clientComponents[slug as keyof typeof clientComponents]
+              : components[slug as keyof typeof components]
+          }
           if (!Component) return null
 
           // Pre-render children conditionally to avoid creating elements unnecessarily

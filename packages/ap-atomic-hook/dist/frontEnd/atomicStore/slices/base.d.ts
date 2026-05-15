@@ -1,4 +1,4 @@
 import type { StateCreator } from 'zustand';
-import type { AtomicStore, BaseSlice } from '@pro-laico/ap-types';
+import type { AtomicStore, BaseSlice } from '@pro-laico/ap-atomic-hook';
 export declare const baseSlice: StateCreator<AtomicStore, [], [], BaseSlice>;
 //# sourceMappingURL=base.d.ts.map

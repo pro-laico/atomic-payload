@@ -1,4 +1,4 @@
-import type { APFieldWrapper } from '@pro-laico/ap-types';
+import type { APFieldWrapper } from '@pro-laico/ap-apf';
 type PresetFields = 'apf' | 'type' | 'name';
 export declare const ClassNameField: APFieldWrapper<'textarea', PresetFields, {
     namePrefix?: string;

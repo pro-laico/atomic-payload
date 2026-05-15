@@ -1,6 +1,5 @@
-import type { AttFunction } from '@pro-laico/ap-types'
-import type { ImplementedStorageTypes } from '@pro-laico/ap-types/schema'
-
+import type { AttFunction } from '@pro-laico/ap-actions'
+import type { ImplementedStorageTypes } from '@pro-laico/ap-atomic-hook/schema'
 export const AttFormErrorToDA: AttFunction<'AttFormErrorToDA'> = ({ key, inputName = 'form', context }) => {
   if (!context.fullFormContext) {
     console.error('AttFormErrorToDA: fullFormContext is undefined')

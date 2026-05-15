@@ -1,5 +1,5 @@
 import type { Field, TabAsField, TextField } from 'payload'
-import type { ChildBlockType } from '@pro-laico/ap-types/schema'
+import type { ChildBlockType } from '@pro-laico/ap-child-blocks/schema'
 import { StaticDataAttributesField } from '../staticDataAttributes'
 import { PortalBackdropTab } from './backdrop'
 import { TagSettingsTab } from '../../atomic/variants/tag/settings'

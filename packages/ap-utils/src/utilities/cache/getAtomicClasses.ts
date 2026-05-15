@@ -1,7 +1,7 @@
 'use server'
 import 'server-only'
 import { getPayload, Where } from 'payload'
-import type { GCFunction } from '@pro-laico/ap-types'
+import type { GCFunction } from '@pro-laico/ap-utils'
 import cacheLogger from '../cacheLogger'
 
 export const getCachedAtomicClasses: GCFunction<'atomic-classes'> = async (configPromise, tag, draft) => {

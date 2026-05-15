@@ -3,8 +3,7 @@
 // OTHERWISE PERFORMANCE WILL SUFFER
 // /////////////////////////////////////
 import type { FieldHook } from 'payload'
-import type { APFunction } from '@pro-laico/ap-types'
-
+import type { APFunction } from '@pro-laico/ap-apf'
 export const virtualAPFBeforeChangeFieldHook: FieldHook = ({ context, value, field, originalDoc }) => {
   if (!originalDoc?.id) return
   const key = `${originalDoc?.id}-${field?.name?.replace(/^apf-/, '').trim()}`

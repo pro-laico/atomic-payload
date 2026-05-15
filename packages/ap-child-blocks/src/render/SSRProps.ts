@@ -1,7 +1,8 @@
 import 'server-only' //DO NOT REMOVE
 import { createBlurUp } from '@mux/blurup'
-import type { PassThroughs } from '@pro-laico/ap-types'
-import type { ChildBlocks, StaticDataAttributes } from '@pro-laico/ap-types/schema'
+import type { PassThroughs } from '@pro-laico/ap-child-blocks'
+import type { ChildBlocks } from '@pro-laico/ap-child-blocks/schema'
+import type { StaticDataAttributes } from '@pro-laico/ap-actions/schema'
 import { postHogPropertyApplicator } from '@pro-laico/ap-tracking'
 
 type PassThrough = { p: Record<string, unknown>; da: Record<string, string> }

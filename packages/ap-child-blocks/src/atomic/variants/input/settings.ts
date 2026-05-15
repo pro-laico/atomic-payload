@@ -5,8 +5,7 @@ import { TextSettingsTab } from './variants/text/settings'
 import { RadioSettingsTab } from './variants/radio/settings'
 import { NumberSettingsTab } from './variants/number/settings'
 import { CheckboxSettingsTab } from './variants/checkBox/settings'
-import { AtomicInputTypes } from '@pro-laico/ap-types/schema'
-
+import { AtomicInputTypes } from '@pro-laico/ap-actions/schema'
 const allowed: AtomicInputTypes[] = ['text', 'textarea', 'email', 'number']
 
 export const InputSettingsTab: GroupField = {

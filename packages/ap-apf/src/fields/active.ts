@@ -1,7 +1,6 @@
 import { APField } from './index'
 import deepMerge from '../utilities/deepMerge'
-import type { APArgs, APFieldWrapper } from '@pro-laico/ap-types'
-
+import type { APArgs, APFieldWrapper } from '@pro-laico/ap-apf'
 /**
  * Reusable Atomic Payload `active` checkbox field. Wires the `active` APF flag
  * and ships with sensible admin defaults.
