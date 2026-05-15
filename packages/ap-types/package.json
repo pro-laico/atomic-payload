@@ -9,6 +9,9 @@
   },
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "bin": {
+    "ap-augment-types": "./scripts/appendPayloadAugment.mjs"
+  },
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -26,6 +29,7 @@
   "files": [
     "dist",
     "src",
+    "scripts",
     "README.md"
   ],
   "scripts": {
