@@ -1,9 +1,13 @@
 import { Users } from './users'
-import { Images, Favicons } from '@pro-laico/ap-images'
-import { MuxVideo } from '@pro-laico/ap-mux-video'
 
-// Pages, Header, Footer are registered by `sitePlugin` (see `@/plugins`).
-// PostHogProperty is registered by `trackingPlugin` (see `@/plugins`).
-const collections = [Users, Images, Favicons, MuxVideo]
+// All Atomic Payload collections come from plugins (see `@/plugins`):
+// - Pages, Header, Footer        → sitePlugin
+// - PostHogProperty              → trackingPlugin
+// - Images, Favicons             → imagesPlugin
+// - MuxVideo                     → muxVideoPlugin
+// - Icon, IconSet                → iconsPlugin
+// - DesignSet, ShortcutSet       → designSetsPlugin
+// - Font                         → fontsPlugin
+const collections = [Users]
 
 export default collections

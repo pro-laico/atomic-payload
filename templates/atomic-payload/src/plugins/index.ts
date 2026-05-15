@@ -18,6 +18,7 @@ import { seedPlugin } from '@pro-laico/ap-seed'
 import { sitePlugin } from '@pro-laico/ap-site'
 import { fontsPluginConfig } from './fonts'
 import { iconsPluginConfig } from './icons'
+import { imagesPluginConfig } from './images'
 import { designSetsPluginConfig } from './designSets'
 import { jsonSchemaPluginConfig } from './jsonSchema'
 
@@ -33,10 +34,11 @@ import { jsonSchemaPluginConfig } from './jsonSchema'
 // - `sitePlugin` registers the Pages, Header, Footer collections plus the
 //   SiteMetaData, Settings, draftStorage, publishedStorage globals — the
 //   opinionated "site shape" that used to live in the template.
-// - Other collections owned by atomic-payload-* packages (Images, Favicons,
-//   MuxVideo) are still registered through the template's `@/collections` array;
-//   their `imagesPlugin` factories are intentionally not invoked here to avoid
-//   double-registration.
+// - `imagesPlugin` registers the Images and Favicons collections.
+//   `blurDataUrlsPluginConfig` (see `./blurDataUrls`) is applied separately
+//   *after* it so blur fields land on the registered Images collection.
+// - `muxVideoPlugin` registers the MuxVideo extension collection and applies
+//   `@oversightstudio/mux-video`'s upstream plugin to it.
 // - `formsPlugin` prepends default submit-form blocks; pass `formBlocks: […]` for more.
 // - `actionsPlugin` prepends default action blocks; pass `actionBlocks: […]` for more.
 // - `revalidationPlugin` attaches beforeChange / afterDelete revalidation hooks
@@ -53,6 +55,7 @@ export const plugins: Plugin[] = [
   seedPlugin({ enabled: process.env.INCLUDE_SEED === 'true' }),
   fontsPluginConfig,
   iconsPluginConfig,
+  imagesPluginConfig,
   designSetsPluginConfig,
   revalidationPlugin({
     enabled: true,

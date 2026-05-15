@@ -11,51 +11,36 @@ export interface ImagesPluginOptions {
   imagesOverride?: Partial<CollectionConfig>
   /** Shallow override for the Favicons collection. */
   faviconsOverride?: Partial<CollectionConfig>
-  /**
-   * When true (default) the plugin will attempt to register the
-   * `@oversightstudio/blur-data-urls` plugin on the Images collection. Set to
-   * false if you wire it externally (or don't want blur data URLs).
-   */
-  blurDataUrls?: boolean
-  /** Options for the blur data urls plugin. */
-  blurOptions?: { blur?: number; width?: number; height?: number | 'auto' }
 }
 
+/**
+ * Registers the bundled `Images` and `Favicons` upload collections.
+ *
+ * Notes on `@oversightstudio/blur-data-urls`: that plugin lives in the
+ * consumer because pnpm doesn't hoist optional peers next to this package, so
+ * a `require()` from here would silently fail. Wire it yourself after this
+ * plugin runs:
+ *
+ * ```ts
+ * import { Images } from '@pro-laico/ap-images'
+ * import { blurDataUrlsPlugin } from '@oversightstudio/blur-data-urls'
+ *
+ * plugins: [
+ *   imagesPlugin({ enabled: true }),
+ *   blurDataUrlsPlugin({ enabled: true, collections: [Images], blurOptions: {...} }),
+ * ]
+ * ```
+ */
 export const imagesPlugin =
   (opts: ImagesPluginOptions = {}): Plugin =>
   (config: Config): Config => {
-    const {
-      enabled = true,
-      includeFavicons = true,
-      imagesOverride,
-      faviconsOverride,
-      blurDataUrls = true,
-      blurOptions = { blur: 18, width: 32, height: 'auto' },
-    } = opts
+    const { enabled = true, includeFavicons = true, imagesOverride, faviconsOverride } = opts
     if (!enabled) return config
 
     const images: CollectionConfig = imagesOverride ? { ...Images, ...imagesOverride } : Images
     const favicons: CollectionConfig = faviconsOverride ? { ...Favicons, ...faviconsOverride } : Favicons
 
-    let next: Config = { ...config, collections: [...(config.collections ?? []), images, ...(includeFavicons ? [favicons] : [])] }
-
-    if (blurDataUrls) {
-      try {
-        // eslint-disable-next-line @typescript-eslint/no-require-imports
-        const mod = require('@oversightstudio/blur-data-urls') as { blurDataUrlsPlugin: (o: unknown) => Plugin }
-        const blurPlugin = mod.blurDataUrlsPlugin({ enabled: true, collections: [images], blurOptions })
-        const result = blurPlugin(next)
-        if (result instanceof Promise) {
-          console.warn('[ap-images] blurDataUrlsPlugin returned a Promise; skipping (plugin must be applied synchronously).')
-        } else {
-          next = result
-        }
-      } catch {
-        // @oversightstudio/blur-data-urls not installed; skip silently.
-      }
-    }
-
-    return next
+    return { ...config, collections: [...(config.collections ?? []), images, ...(includeFavicons ? [favicons] : [])] }
   }
 
 export default imagesPlugin

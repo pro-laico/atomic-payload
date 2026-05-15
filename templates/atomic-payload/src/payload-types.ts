@@ -644,8 +644,6 @@ export interface Config {
   };
   collections: {
     users: User;
-    images: Image;
-    favicons: Favicon;
     pages: Page;
     header: Header;
     footer: Footer;
@@ -653,6 +651,8 @@ export interface Config {
     font: Font;
     icon: Icon;
     iconSet: IconSet;
+    images: Image;
+    favicons: Favicon;
     designSet: DesignSet;
     shortcutSet: ShortcutSet;
     'mux-video': MuxVideo;
@@ -667,8 +667,6 @@ export interface Config {
   collectionsJoins: {};
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
-    images: ImagesSelect<false> | ImagesSelect<true>;
-    favicons: FaviconsSelect<false> | FaviconsSelect<true>;
     pages: PagesSelect<false> | PagesSelect<true>;
     header: HeaderSelect<false> | HeaderSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
@@ -676,6 +674,8 @@ export interface Config {
     font: FontSelect<false> | FontSelect<true>;
     icon: IconSelect<false> | IconSelect<true>;
     iconSet: IconSetSelect<false> | IconSetSelect<true>;
+    images: ImagesSelect<false> | ImagesSelect<true>;
+    favicons: FaviconsSelect<false> | FaviconsSelect<true>;
     designSet: DesignSetSelect<false> | DesignSetSelect<true>;
     shortcutSet: ShortcutSetSelect<false> | ShortcutSetSelect<true>;
     'mux-video': MuxVideoSelect<false> | MuxVideoSelect<true>;
@@ -2527,14 +2527,6 @@ export interface PayloadLockedDocument {
         value: string | User;
       } | null)
     | ({
-        relationTo: 'images';
-        value: string | Image;
-      } | null)
-    | ({
-        relationTo: 'favicons';
-        value: string | Favicon;
-      } | null)
-    | ({
         relationTo: 'pages';
         value: string | Page;
       } | null)
@@ -2561,6 +2553,14 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'iconSet';
         value: string | IconSet;
+      } | null)
+    | ({
+        relationTo: 'images';
+        value: string | Image;
+      } | null)
+    | ({
+        relationTo: 'favicons';
+        value: string | Favicon;
       } | null)
     | ({
         relationTo: 'designSet';
@@ -2645,116 +2645,6 @@ export interface UsersSelect<T extends boolean = true> {
         createdAt?: T;
         expiresAt?: T;
       };
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "images_select".
- */
-export interface ImagesSelect<T extends boolean = true> {
-  alt?: T;
-  blurDataUrl?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  url?: T;
-  thumbnailURL?: T;
-  filename?: T;
-  mimeType?: T;
-  filesize?: T;
-  width?: T;
-  height?: T;
-  focalX?: T;
-  focalY?: T;
-  sizes?:
-    | T
-    | {
-        thumbnail?:
-          | T
-          | {
-              url?: T;
-              width?: T;
-              height?: T;
-              mimeType?: T;
-              filesize?: T;
-              filename?: T;
-            };
-        square?:
-          | T
-          | {
-              url?: T;
-              width?: T;
-              height?: T;
-              mimeType?: T;
-              filesize?: T;
-              filename?: T;
-            };
-        small?:
-          | T
-          | {
-              url?: T;
-              width?: T;
-              height?: T;
-              mimeType?: T;
-              filesize?: T;
-              filename?: T;
-            };
-        medium?:
-          | T
-          | {
-              url?: T;
-              width?: T;
-              height?: T;
-              mimeType?: T;
-              filesize?: T;
-              filename?: T;
-            };
-        large?:
-          | T
-          | {
-              url?: T;
-              width?: T;
-              height?: T;
-              mimeType?: T;
-              filesize?: T;
-              filename?: T;
-            };
-        xlarge?:
-          | T
-          | {
-              url?: T;
-              width?: T;
-              height?: T;
-              mimeType?: T;
-              filesize?: T;
-              filename?: T;
-            };
-        og?:
-          | T
-          | {
-              url?: T;
-              width?: T;
-              height?: T;
-              mimeType?: T;
-              filesize?: T;
-              filename?: T;
-            };
-      };
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "favicons_select".
- */
-export interface FaviconsSelect<T extends boolean = true> {
-  updatedAt?: T;
-  createdAt?: T;
-  url?: T;
-  thumbnailURL?: T;
-  filename?: T;
-  mimeType?: T;
-  filesize?: T;
-  width?: T;
-  height?: T;
-  focalX?: T;
-  focalY?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -2925,6 +2815,116 @@ export interface IconSetSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "images_select".
+ */
+export interface ImagesSelect<T extends boolean = true> {
+  alt?: T;
+  blurDataUrl?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  url?: T;
+  thumbnailURL?: T;
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
+  focalX?: T;
+  focalY?: T;
+  sizes?:
+    | T
+    | {
+        thumbnail?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+        square?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+        small?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+        medium?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+        large?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+        xlarge?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+        og?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+      };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "favicons_select".
+ */
+export interface FaviconsSelect<T extends boolean = true> {
+  updatedAt?: T;
+  createdAt?: T;
+  url?: T;
+  thumbnailURL?: T;
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
+  focalX?: T;
+  focalY?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
