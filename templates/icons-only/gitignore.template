@@ -1,0 +1,16 @@
+node_modules
+.next
+.vercel
+.DS_Store
+
+# TypeScript
+tsconfig.tsbuildinfo
+
+# Payload
+public/media
+src/payload-types.ts
+src/payload-types.augment.d.ts
+
+# Env
+.env
+.env*.local

@@ -1,0 +1,42 @@
+{
+  "name": "icons-only",
+  "version": "0.1.0",
+  "description": "Minimal Atomic Payload template demonstrating @pro-laico/ap-icons in isolation. Includes seed data and a demo page that renders the seeded icons.",
+  "license": "MIT",
+  "type": "module",
+  "exports": {},
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "pnpm exec eslint .",
+    "payload": "payload",
+    "generate:types": "cross-env NODE_OPTIONS=\"--conditions=react-server\" payload generate:types && ap-augment-types",
+    "generate:importmap": "cross-env NODE_OPTIONS=\"--conditions=react-server\" payload generate:importmap"
+  },
+  "dependencies": {
+    "@pro-laico/ap-apf": "workspace:*",
+    "@pro-laico/ap-icons": "workspace:*",
+    "@pro-laico/ap-types": "workspace:*",
+    "@pro-laico/ap-utils": "workspace:*",
+    "@payloadcms/db-mongodb": "^3.79.0",
+    "@payloadcms/next": "^3.79.0",
+    "@payloadcms/ui": "^3.79.0",
+    "cross-env": "^10.1.0",
+    "dotenv": "^17.3.1",
+    "next": "^16.1.6",
+    "payload": "^3.79.0",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "sharp": "^0.32.6"
+  },
+  "devDependencies": {
+    "@types/node": "^22.19.15",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "typescript": "5.8.3"
+  },
+  "engines": {
+    "node": "24.x"
+  }
+}
