@@ -2,7 +2,7 @@
 import { draftMode } from 'next/headers'
 import Warning from '../components/admin/warningIcon'
 
-import getCached from '@pro-laico/ap-utils/cache/auto'
+import getCached from '@pro-laico/ap-core/cache/auto'
 
 import type { RenderChild } from '@pro-laico/ap-child-blocks'
 import type { IconChild as IconChildType } from '@pro-laico/ap-child-blocks/schema'

@@ -1,4 +1,4 @@
-import { APField } from '@pro-laico/ap-apf'
+import { APField } from '@pro-laico/ap-core'
 import { ArrayField, TextField, SelectField, TabAsField, GroupField } from 'payload'
 
 export const typographySupportedTags = [

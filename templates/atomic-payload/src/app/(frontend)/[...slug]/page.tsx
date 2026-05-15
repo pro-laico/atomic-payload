@@ -3,10 +3,10 @@ import React from 'react'
 import type { Metadata } from 'next'
 import { draftMode } from 'next/headers'
 import { notFound } from 'next/navigation'
-import getCached from '@pro-laico/ap-utils/cache/auto'
-import { GenerateMetaData } from '@pro-laico/ap-utils'
+import getCached from '@pro-laico/ap-core/cache/auto'
+import { GenerateMetaData } from '@pro-laico/ap-core'
 import { RenderChildren } from '@pro-laico/ap-child-blocks/render'
-import LivePreviewListener from '@pro-laico/ap-utils/components/frontend/LivePreviewListener'
+import LivePreviewListener from '@pro-laico/ap-core/components/frontend/LivePreviewListener'
 
 type Props = { params: Promise<{ slug?: string[] }> }
 

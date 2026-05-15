@@ -9,7 +9,7 @@ import { Users } from '@/collections/users'
 import { defaultLexical } from '@pro-laico/ap-child-blocks/default-lexical'
 //import { resendAdapter } from '@payloadcms/email-resend'
 import { mongooseAdapter } from '@payloadcms/db-mongodb'
-import { getServerSideURL } from '@pro-laico/ap-utils'
+import { getServerSideURL } from '@pro-laico/ap-core'
 import { IconPath, LogoPath, SiteTriggersPath } from '@/ui'
 
 const filename = fileURLToPath(import.meta.url)

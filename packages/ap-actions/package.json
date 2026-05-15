@@ -62,12 +62,11 @@
     "lint": "node -e \"process.exit(0)\""
   },
   "dependencies": {
-    "@pro-laico/ap-apf": "workspace:*",
     "@pro-laico/ap-atomic-hook": "workspace:*",
     "@pro-laico/ap-child-blocks": "workspace:*",
     "@pro-laico/ap-forms": "workspace:*",
-    "@pro-laico/ap-types": "workspace:*",
-    "@pro-laico/ap-zap": "workspace:*"
+    "@pro-laico/ap-zap": "workspace:*",
+    "@pro-laico/ap-core": "workspace:*"
   },
   "peerDependencies": {
     "next-themes": ">=0.4.0",
@@ -75,8 +74,12 @@
     "react": ">=19.0.0"
   },
   "peerDependenciesMeta": {
-    "next-themes": { "optional": true },
-    "react": { "optional": true }
+    "next-themes": {
+      "optional": true
+    },
+    "react": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "@types/react": "^19.2.14",

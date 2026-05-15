@@ -1,5 +1,5 @@
 import { type Tab } from 'payload'
-import { APField, onArraySetAPFShallow } from '@pro-laico/ap-apf'
+import { APField, onArraySetAPFShallow } from '@pro-laico/ap-core'
 import { DesignTokenLabelPath } from '../../paths'
 import { TokenValueArrayField } from '../../fields/value'
 

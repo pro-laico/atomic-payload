@@ -2,8 +2,8 @@
 import { z } from '@pro-laico/ap-zap'
 import { type Tab } from 'payload'
 import { ColorLabelPath } from '../../paths'
-import { APField } from '@pro-laico/ap-apf'
-import { onArraySetAPFShallow } from '@pro-laico/ap-apf'
+import { APField } from '@pro-laico/ap-core'
+import { onArraySetAPFShallow } from '@pro-laico/ap-core'
 
 export const UnoColors = z.ap.add(z.record(z.string(), z.string().or(z.record(z.string(), z.string()))), { id: 'UnoColors' })
 export const designSetColors = z.ap.add(z.array(z.object({ name: z.string(), light: z.string(), dark: z.string() })), { id: 'DesignSetColors' })

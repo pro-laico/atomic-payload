@@ -9,9 +9,7 @@ Payload plugin that registers submit-form blocks (rate limiting, sanitation, val
 Other `@pro-laico/*` packages this package depends on:
 
 - [`ap-actions`](../ap-actions)
-- [`ap-apf`](../ap-apf)
-- [`ap-types`](../ap-types)
-- [`ap-utils`](../ap-utils)
+- [`ap-core`](../ap-core)
 - [`ap-zap`](../ap-zap)
 
 Other `@pro-laico/*` packages that depend on this one:
@@ -19,7 +17,7 @@ Other `@pro-laico/*` packages that depend on this one:
 - [`ap-actions`](../ap-actions)
 - [`ap-atomic-hook`](../ap-atomic-hook)
 - [`ap-child-blocks`](../ap-child-blocks)
+- [`ap-core`](../ap-core)
 - [`ap-seed`](../ap-seed)
-- [`ap-utils`](../ap-utils)
 
 <!-- workspace-deps:end -->

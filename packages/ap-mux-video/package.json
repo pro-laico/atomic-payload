@@ -31,7 +31,7 @@
     "lint": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@pro-laico/ap-types": "workspace:*"
+    "@pro-laico/ap-core": "workspace:*"
   },
   "peerDependencies": {
     "@oversightstudio/mux-video": ">=1.0.0",

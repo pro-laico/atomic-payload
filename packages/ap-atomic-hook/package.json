@@ -44,14 +44,12 @@
   },
   "dependencies": {
     "@pro-laico/ap-actions": "workspace:*",
-    "@pro-laico/ap-apf": "workspace:*",
     "@pro-laico/ap-design-sets": "workspace:*",
-    "@pro-laico/ap-utils": "workspace:*",
-    "@pro-laico/ap-types": "workspace:*",
     "@pro-laico/ap-zap": "workspace:*",
     "traverse": "^0.6.11",
     "@pro-laico/ap-forms": "workspace:*",
-    "@pro-laico/ap-site": "workspace:*"
+    "@pro-laico/ap-site": "workspace:*",
+    "@pro-laico/ap-core": "workspace:*"
   },
   "peerDependencies": {
     "payload": ">=3.0.0",

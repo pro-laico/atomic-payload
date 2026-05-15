@@ -1,8 +1,8 @@
 import type { CollectionConfig, CollectionBeforeChangeHook, Field, PayloadRequest } from 'payload'
 import { authd } from '../access/authenticated'
-import type { APFunction } from '@pro-laico/ap-apf'
-import { APField, ActiveField, generateAPFFields, APFControlsPath } from '@pro-laico/ap-apf'
-import { revalidateCacheOnDelete } from '@pro-laico/ap-utils'
+import type { APFunction } from '@pro-laico/ap-core'
+import { APField, ActiveField, generateAPFFields, APFControlsPath } from '@pro-laico/ap-core'
+import { revalidateCacheOnDelete } from '@pro-laico/ap-core'
 
 const APFunctions: APFunction[] = ['active']
 

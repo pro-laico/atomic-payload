@@ -9,7 +9,7 @@ import { blurDataUrlsPluginConfig } from './blurDataUrls'
 import { vercelBlobStoragePluginConfig } from './vercelBlobStorage'
 
 // Atomic Payload package plugins
-import { revalidationPlugin } from '@pro-laico/ap-utils'
+import { revalidationPlugin } from '@pro-laico/ap-core'
 import { formsPlugin } from '@pro-laico/ap-forms'
 import { actionsPlugin } from '@pro-laico/ap-actions'
 import { childBlocksPlugin } from '@pro-laico/ap-child-blocks'

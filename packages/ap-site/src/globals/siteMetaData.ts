@@ -1,6 +1,6 @@
-import { APField, generateAPFFields, onUploadSetAPF } from '@pro-laico/ap-apf'
+import { APField, generateAPFFields, onUploadSetAPF } from '@pro-laico/ap-core'
 import type { GlobalConfig } from 'payload'
-import { revalidateCacheGlobal as revalidateCache } from '@pro-laico/ap-utils'
+import { revalidateCacheGlobal as revalidateCache } from '@pro-laico/ap-core'
 import { authd } from '../access'
 import { FaviconField } from '@pro-laico/ap-images'
 

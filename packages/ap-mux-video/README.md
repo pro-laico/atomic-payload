@@ -14,7 +14,7 @@ export default buildConfig({ plugins: [muxVideoPlugin()] })
 
 Other `@pro-laico/*` packages this package depends on:
 
-- [`ap-types`](../ap-types)
+- [`ap-core`](../ap-core)
 
 Other `@pro-laico/*` packages that depend on this one:
 

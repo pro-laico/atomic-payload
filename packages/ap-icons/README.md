@@ -38,9 +38,7 @@ Optional icon-name presets for seeding or docs: `@pro-laico/ap-icons/iconSet/def
 
 Other `@pro-laico/*` packages this package depends on:
 
-- [`ap-apf`](../ap-apf)
-- [`ap-types`](../ap-types)
-- [`ap-utils`](../ap-utils)
+- [`ap-core`](../ap-core)
 
 Other `@pro-laico/*` packages that depend on this one:
 

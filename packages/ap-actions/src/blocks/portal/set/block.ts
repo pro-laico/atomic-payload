@@ -1,6 +1,6 @@
 import type { Block } from 'payload'
 import { SetDataField } from '@pro-laico/ap-actions/fields'
-import { APField } from '@pro-laico/ap-apf'
+import { APField } from '@pro-laico/ap-core'
 
 export const ActSetPortalOpen: Block = {
   slug: 'ActSetPortalOpen',

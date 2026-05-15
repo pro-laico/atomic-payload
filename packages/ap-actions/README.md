@@ -21,11 +21,10 @@ The 12 action block definitions, their filters/options/processor, and the `useAc
 
 Other `@pro-laico/*` packages this package depends on:
 
-- [`ap-apf`](../ap-apf)
 - [`ap-atomic-hook`](../ap-atomic-hook)
 - [`ap-child-blocks`](../ap-child-blocks)
+- [`ap-core`](../ap-core)
 - [`ap-forms`](../ap-forms)
-- [`ap-types`](../ap-types)
 - [`ap-zap`](../ap-zap)
 
 Other `@pro-laico/*` packages that depend on this one:

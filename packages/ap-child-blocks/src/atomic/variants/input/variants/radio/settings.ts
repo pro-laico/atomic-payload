@@ -1,4 +1,4 @@
-import { APField } from '@pro-laico/ap-apf'
+import { APField } from '@pro-laico/ap-core'
 import type { GroupField } from 'payload'
 
 export const RadioSettingsTab: GroupField = {

@@ -1,6 +1,6 @@
 import type { CollectionConfig, ImageUploadFormatOptions } from 'payload'
 import { anyone, authd } from '../access'
-import { revalidateCacheCollection } from '@pro-laico/ap-utils'
+import { revalidateCacheCollection } from '@pro-laico/ap-core'
 
 const formatOptions: ImageUploadFormatOptions = { format: 'webp', options: { nearLossless: true, quality: 75 } }
 

@@ -1,7 +1,7 @@
 import { type Tab } from 'payload'
-import { APField } from '@pro-laico/ap-apf'
-import { ActiveField } from '@pro-laico/ap-apf'
-import { TestPathField, ClassNameField, UniqueTitleField } from '@pro-laico/ap-utils'
+import { APField } from '@pro-laico/ap-core'
+import { ActiveField } from '@pro-laico/ap-core'
+import { TestPathField, ClassNameField, UniqueTitleField } from '@pro-laico/ap-core'
 
 const d = {
   htmlClassName:

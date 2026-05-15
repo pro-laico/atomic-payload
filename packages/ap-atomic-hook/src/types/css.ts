@@ -3,7 +3,7 @@
  * processor implementation lives here (see `src/cssProcessor.ts`).
  */
 import type { RequestContext, PayloadRequest } from 'payload'
-import type { Config } from '@pro-laico/ap-types'
+import type { Config } from '@pro-laico/ap-core'
 import type { CollectionThatUsesCSSProcessorSlug, CollectionWithStoredAtomicClassesSlug } from './payload-augment'
 
 /** Document types from collections that include storedAtomicClasses property. E.g., Page | Footer | Header */

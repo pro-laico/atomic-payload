@@ -1,5 +1,5 @@
 import type { Access, GlobalConfig } from 'payload'
-import { revalidateCacheGlobal } from '@pro-laico/ap-utils'
+import { revalidateCacheGlobal } from '@pro-laico/ap-core'
 import { postHogTabField } from './postHogTab'
 import { googleTagManagerTabField } from './gtmTab'
 

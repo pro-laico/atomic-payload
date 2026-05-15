@@ -1,5 +1,5 @@
 import { CheckboxField } from 'payload'
-import { deepMerge } from '@pro-laico/ap-utils'
+import { deepMerge } from '@pro-laico/ap-core'
 
 type KeepMountedFieldType = (args?: Partial<CheckboxField>) => CheckboxField
 

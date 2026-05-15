@@ -1,7 +1,7 @@
 import { authd } from '../access/authenticated'
 import type { CollectionConfig } from 'payload'
 import { formatSVGHook } from '../hooks/formatSVG'
-import { revalidateCacheCollection } from '@pro-laico/ap-utils'
+import { revalidateCacheCollection } from '@pro-laico/ap-core'
 
 export const Icon: CollectionConfig = {
   slug: 'icon',

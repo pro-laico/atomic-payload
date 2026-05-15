@@ -1,6 +1,6 @@
 import type { Tab } from 'payload'
-import { ActiveField } from '@pro-laico/ap-apf'
-import { TestPathField, UniqueTitleField } from '@pro-laico/ap-utils'
+import { ActiveField } from '@pro-laico/ap-core'
+import { TestPathField, UniqueTitleField } from '@pro-laico/ap-core'
 
 export const ShortcutSettingsTab = (): Tab => ({
   label: 'Settings',

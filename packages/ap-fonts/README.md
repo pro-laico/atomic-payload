@@ -24,7 +24,7 @@ Optional paths: `ATOMIC_FONTS_OUTPUT_DIR`, `ATOMIC_FONTS_DEFINITION_FILE`, `ATOM
 
 Other `@pro-laico/*` packages this package depends on:
 
-- [`ap-types`](../ap-types)
+- [`ap-core`](../ap-core)
 
 Other `@pro-laico/*` packages that depend on this one:
 

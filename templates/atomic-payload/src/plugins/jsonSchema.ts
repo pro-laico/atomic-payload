@@ -1,5 +1,5 @@
 import { generateBlocksType, toJSONSchemaExtensions } from '@pro-laico/ap-zap'
-import { jsonSchemaPlugin } from '@pro-laico/ap-utils'
+import { jsonSchemaPlugin } from '@pro-laico/ap-core'
 import CollectionSchemas from '@pro-laico/ap-site/zap'
 import { ActionBlockType } from '@pro-laico/ap-actions/zap'
 import { Runner, Attributer } from '@pro-laico/ap-child-blocks/useActions/zap'

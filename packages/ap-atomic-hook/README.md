@@ -27,19 +27,17 @@ The orchestrating hook implementation currently lives in the consuming template 
 Other `@pro-laico/*` packages this package depends on:
 
 - [`ap-actions`](../ap-actions)
-- [`ap-apf`](../ap-apf)
+- [`ap-core`](../ap-core)
 - [`ap-design-sets`](../ap-design-sets)
 - [`ap-forms`](../ap-forms)
 - [`ap-site`](../ap-site)
-- [`ap-types`](../ap-types)
-- [`ap-utils`](../ap-utils)
 - [`ap-zap`](../ap-zap)
 
 Other `@pro-laico/*` packages that depend on this one:
 
 - [`ap-actions`](../ap-actions)
 - [`ap-child-blocks`](../ap-child-blocks)
+- [`ap-core`](../ap-core)
 - [`ap-site`](../ap-site)
-- [`ap-utils`](../ap-utils)
 
 <!-- workspace-deps:end -->

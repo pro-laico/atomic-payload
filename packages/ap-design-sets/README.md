@@ -27,16 +27,14 @@ Row-label / admin component paths still use the template `@/ui/...` strings reso
 
 Other `@pro-laico/*` packages this package depends on:
 
-- [`ap-apf`](../ap-apf)
+- [`ap-core`](../ap-core)
 - [`ap-site`](../ap-site)
-- [`ap-types`](../ap-types)
-- [`ap-utils`](../ap-utils)
 - [`ap-zap`](../ap-zap)
 
 Other `@pro-laico/*` packages that depend on this one:
 
 - [`ap-atomic-hook`](../ap-atomic-hook)
+- [`ap-core`](../ap-core)
 - [`ap-seed`](../ap-seed)
-- [`ap-utils`](../ap-utils)
 
 <!-- workspace-deps:end -->

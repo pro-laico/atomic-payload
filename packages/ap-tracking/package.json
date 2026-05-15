@@ -39,8 +39,7 @@
     "lint": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@pro-laico/ap-types": "workspace:*",
-    "@pro-laico/ap-utils": "workspace:*"
+    "@pro-laico/ap-core": "workspace:*"
   },
   "peerDependencies": {
     "@next/third-parties": ">=15.0.0",

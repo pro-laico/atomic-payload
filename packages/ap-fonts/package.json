@@ -42,7 +42,7 @@
     "lint": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@pro-laico/ap-types": "workspace:*"
+    "@pro-laico/ap-core": "workspace:*"
   },
   "peerDependencies": {
     "@payloadcms/sdk": ">=3.0.0",

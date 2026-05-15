@@ -1,5 +1,5 @@
 import type { Block } from 'payload'
-import { APField } from '@pro-laico/ap-apf'
+import { APField } from '@pro-laico/ap-core'
 
 const description = 'The name of the front end form to check the status of.'
 

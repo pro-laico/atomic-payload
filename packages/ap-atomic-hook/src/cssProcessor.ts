@@ -1,4 +1,4 @@
-import { deepMerge } from '@pro-laico/ap-apf'
+import { deepMerge } from '@pro-laico/ap-core'
 import manualLogger from './utilities/manualLogger'
 import type { CollectionsWithStoredAtomicClasses, cssProcessorType } from '@pro-laico/ap-atomic-hook'
 import type { DesignSet } from '@pro-laico/ap-design-sets/schema'

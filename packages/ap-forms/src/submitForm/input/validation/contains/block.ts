@@ -1,5 +1,5 @@
 import type { Block } from 'payload'
-import { APField } from '@pro-laico/ap-apf'
+import { APField } from '@pro-laico/ap-core'
 import { ValidationMessageField } from '@pro-laico/ap-forms/fields/validationMessage'
 
 export const IvContains: Block = {

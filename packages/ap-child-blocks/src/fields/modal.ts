@@ -1,5 +1,5 @@
 import { SelectField } from 'payload'
-import { deepMerge } from '@pro-laico/ap-utils'
+import { deepMerge } from '@pro-laico/ap-core'
 
 type ModalFieldType = (args?: Partial<SelectField>) => SelectField
 

@@ -35,9 +35,7 @@
     "lint": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@pro-laico/ap-types": "workspace:*",
-    "@pro-laico/ap-utils": "workspace:*",
-    "@pro-laico/ap-apf": "workspace:*"
+    "@pro-laico/ap-core": "workspace:*"
   },
   "peerDependencies": {
     "@oversightstudio/blur-data-urls": ">=1.0.0",

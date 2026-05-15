@@ -60,11 +60,9 @@
   },
   "dependencies": {
     "@pro-laico/ap-actions": "workspace:*",
-    "@pro-laico/ap-utils": "workspace:*",
-    "@pro-laico/ap-apf": "workspace:*",
-    "@pro-laico/ap-types": "workspace:*",
     "@pro-laico/ap-zap": "workspace:*",
-    "dayjs": "^1.11.19"
+    "dayjs": "^1.11.19",
+    "@pro-laico/ap-core": "workspace:*"
   },
   "peerDependencies": {
     "atomic-payload": "workspace:*",

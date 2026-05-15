@@ -1,6 +1,6 @@
 import { type Tab } from 'payload'
-import { APField } from '@pro-laico/ap-apf'
-import { onUploadSetAPF } from '@pro-laico/ap-apf'
+import { APField } from '@pro-laico/ap-core'
+import { onUploadSetAPF } from '@pro-laico/ap-core'
 import { FaviconField } from '@pro-laico/ap-images'
 
 const d = {

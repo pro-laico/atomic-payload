@@ -1,5 +1,5 @@
 import { GroupField } from 'payload'
-import { ClassNameField } from '@pro-laico/ap-utils'
+import { ClassNameField } from '@pro-laico/ap-core'
 import { BackdropChildren } from '../blocks/backdropChildren'
 
 const d = {

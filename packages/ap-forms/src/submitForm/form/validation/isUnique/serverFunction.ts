@@ -1,6 +1,6 @@
 'use server'
 
-import getCached from '@pro-laico/ap-utils/cache/auto'
+import getCached from '@pro-laico/ap-core/cache/auto'
 import type { FvIsUnique as FvIsUniqueType } from '@pro-laico/ap-forms/schema'
 import { FilterSubmissionsByFieldAndValue, FormFunction } from '@pro-laico/ap-forms'
 /** Filters form submissions based on field and value inputs. */

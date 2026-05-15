@@ -36,13 +36,11 @@
     "lint": "node -e \"process.exit(0)\""
   },
   "dependencies": {
-    "@pro-laico/ap-apf": "workspace:*",
     "@pro-laico/ap-atomic-hook": "workspace:*",
     "@pro-laico/ap-child-blocks": "workspace:*",
     "@pro-laico/ap-images": "workspace:*",
-    "@pro-laico/ap-types": "workspace:*",
-    "@pro-laico/ap-utils": "workspace:*",
-    "@pro-laico/ap-zap": "workspace:*"
+    "@pro-laico/ap-zap": "workspace:*",
+    "@pro-laico/ap-core": "workspace:*"
   },
   "peerDependencies": {
     "@payloadcms/plugin-nested-docs": ">=3.0.0",

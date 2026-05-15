@@ -1,5 +1,5 @@
-import { APField, APFControlsPath } from '@pro-laico/ap-apf'
-import { type APFunction } from '@pro-laico/ap-apf'
+import { APField, APFControlsPath } from '@pro-laico/ap-core'
+import { type APFunction } from '@pro-laico/ap-core'
 import type { CollectionConfig } from 'payload'
 import {
   slugField,
@@ -10,7 +10,7 @@ import {
   updatePublishedAtHook,
   revalidateCacheOnDelete,
   generateLivePreviewPath,
-} from '@pro-laico/ap-utils'
+} from '@pro-laico/ap-core'
 import { authd, authenticatedOrPublished } from '../../access'
 import { SEOTab } from './tabs/SEO'
 import { ChildrenBlocksField as ChildrenBlocks } from '@pro-laico/ap-child-blocks'

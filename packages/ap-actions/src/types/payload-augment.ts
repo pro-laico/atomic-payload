@@ -1,9 +1,9 @@
-/**
+﻿/**
  * Schema stubs owned by `@pro-laico/ap-actions`. Each entry resolves to the
  * consumer project's concrete type when `PayloadAugment` is augmented; falls
- * back to a permissive default otherwise. See `@pro-laico/ap-types` README.
+ * back to a permissive default otherwise. See `@pro-laico/ap-core` README.
  */
-import type { Get, DefaultRecord, DefaultBlock, DefaultActionFn } from '@pro-laico/ap-types'
+import type { Get, DefaultRecord, DefaultBlock, DefaultActionFn } from '@pro-laico/ap-core'
 
 // /////////////////////////////////////
 // Block / function shapes

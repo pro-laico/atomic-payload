@@ -1,5 +1,5 @@
-import { APField, deepMerge } from '@pro-laico/ap-apf'
-import type { APArgs, APFieldWrapper } from '@pro-laico/ap-apf'
+import { APField, deepMerge } from '@pro-laico/ap-core'
+import type { APArgs, APFieldWrapper } from '@pro-laico/ap-core'
 import { StrictSet, strictSelectRegistry } from './registry'
 
 type PresetFields = 'type' | 'typescriptSchema' | 'apf' | 'name' | 'options' | 'required'

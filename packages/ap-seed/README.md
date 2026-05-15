@@ -32,11 +32,11 @@ If you're upgrading from a template that hand-wired the seed flow itself (a `Bef
 
 Other `@pro-laico/*` packages this package depends on:
 
+- [`ap-core`](../ap-core)
 - [`ap-design-sets`](../ap-design-sets)
 - [`ap-forms`](../ap-forms)
 - [`ap-icons`](../ap-icons)
 - [`ap-site`](../ap-site)
-- [`ap-types`](../ap-types)
 
 Other `@pro-laico/*` packages that depend on this one:
 

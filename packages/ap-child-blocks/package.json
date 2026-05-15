@@ -74,16 +74,14 @@
   "dependencies": {
     "@base-ui-components/react": "1.0.0-rc.0",
     "@mux/mux-video-react": "^0.25.3",
-    "@pro-laico/ap-utils": "workspace:*",
-    "@pro-laico/ap-types": "workspace:*",
     "@pro-laico/ap-zap": "workspace:*",
-    "@pro-laico/ap-apf": "workspace:*",
     "@pro-laico/ap-icons": "workspace:*",
     "@pro-laico/ap-actions": "workspace:*",
     "@pro-laico/ap-forms": "workspace:*",
     "@pro-laico/ap-atomic-hook": "workspace:*",
     "next-themes": "^0.4.6",
-    "@pro-laico/ap-images": "workspace:*"
+    "@pro-laico/ap-images": "workspace:*",
+    "@pro-laico/ap-core": "workspace:*"
   },
   "peerDependencies": {
     "@mux/blurup": ">=1.0.0",

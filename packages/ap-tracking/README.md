@@ -16,12 +16,11 @@ Use `postHogTabField()` inside your Tracking global's tabs array. Frontend provi
 
 Other `@pro-laico/*` packages this package depends on:
 
-- [`ap-types`](../ap-types)
-- [`ap-utils`](../ap-utils)
+- [`ap-core`](../ap-core)
 
 Other `@pro-laico/*` packages that depend on this one:
 
-- [`ap-utils`](../ap-utils)
+- [`ap-core`](../ap-core)
 - [`ap-child-blocks`](../ap-child-blocks) _(peer)_
 
 <!-- workspace-deps:end -->

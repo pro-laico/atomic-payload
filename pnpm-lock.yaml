@@ -10,21 +10,18 @@ importers:
 
   packages/ap-actions:
     dependencies:
-      '@pro-laico/ap-apf':
-        specifier: workspace:*
-        version: link:../ap-apf
       '@pro-laico/ap-atomic-hook':
         specifier: workspace:*
         version: link:../ap-atomic-hook
       '@pro-laico/ap-child-blocks':
         specifier: workspace:*
         version: link:../ap-child-blocks
+      '@pro-laico/ap-core':
+        specifier: workspace:*
+        version: link:../ap-core
       '@pro-laico/ap-forms':
         specifier: workspace:*
         version: link:../ap-forms
-      '@pro-laico/ap-types':
-        specifier: workspace:*
-        version: link:../ap-types
       '@pro-laico/ap-zap':
         specifier: workspace:*
         version: link:../ap-zap
@@ -45,39 +42,14 @@ importers:
         specifier: 5.8.3
         version: 5.8.3
 
-  packages/ap-apf:
-    dependencies:
-      '@pro-laico/ap-types':
-        specifier: workspace:*
-        version: link:../ap-types
-    devDependencies:
-      '@payloadcms/ui':
-        specifier: ^3.79.0
-        version: 3.79.0(@types/react@19.2.14)(monaco-editor@0.52.2)(next@16.1.6(@babel/core@7.29.0)(@opentelemetry/api@1.9.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(sass@1.77.4))(payload@3.79.0(graphql@16.11.0)(typescript@5.8.3))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(typescript@5.8.3)
-      '@types/react':
-        specifier: ^19.2.14
-        version: 19.2.14
-      next:
-        specifier: ^16.1.6
-        version: 16.1.6(@babel/core@7.29.0)(@opentelemetry/api@1.9.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(sass@1.77.4)
-      payload:
-        specifier: ^3.79.0
-        version: 3.79.0(graphql@16.11.0)(typescript@5.8.3)
-      react:
-        specifier: ^19.2.4
-        version: 19.2.4
-      typescript:
-        specifier: 5.8.3
-        version: 5.8.3
-
   packages/ap-atomic-hook:
     dependencies:
       '@pro-laico/ap-actions':
         specifier: workspace:*
         version: link:../ap-actions
-      '@pro-laico/ap-apf':
+      '@pro-laico/ap-core':
         specifier: workspace:*
-        version: link:../ap-apf
+        version: link:../ap-core
       '@pro-laico/ap-design-sets':
         specifier: workspace:*
         version: link:../ap-design-sets
@@ -87,12 +59,6 @@ importers:
       '@pro-laico/ap-site':
         specifier: workspace:*
         version: link:../ap-site
-      '@pro-laico/ap-types':
-        specifier: workspace:*
-        version: link:../ap-types
-      '@pro-laico/ap-utils':
-        specifier: workspace:*
-        version: link:../ap-utils
       '@pro-laico/ap-zap':
         specifier: workspace:*
         version: link:../ap-zap
@@ -133,12 +99,12 @@ importers:
       '@pro-laico/ap-actions':
         specifier: workspace:*
         version: link:../ap-actions
-      '@pro-laico/ap-apf':
-        specifier: workspace:*
-        version: link:../ap-apf
       '@pro-laico/ap-atomic-hook':
         specifier: workspace:*
         version: link:../ap-atomic-hook
+      '@pro-laico/ap-core':
+        specifier: workspace:*
+        version: link:../ap-core
       '@pro-laico/ap-forms':
         specifier: workspace:*
         version: link:../ap-forms
@@ -148,12 +114,6 @@ importers:
       '@pro-laico/ap-images':
         specifier: workspace:*
         version: link:../ap-images
-      '@pro-laico/ap-types':
-        specifier: workspace:*
-        version: link:../ap-types
-      '@pro-laico/ap-utils':
-        specifier: workspace:*
-        version: link:../ap-utils
       '@pro-laico/ap-zap':
         specifier: workspace:*
         version: link:../ap-zap
@@ -198,292 +158,8 @@ importers:
         specifier: 5.8.3
         version: 5.8.3
 
-  packages/ap-design-sets:
+  packages/ap-core:
     dependencies:
-      '@pro-laico/ap-apf':
-        specifier: workspace:*
-        version: link:../ap-apf
-      '@pro-laico/ap-site':
-        specifier: workspace:*
-        version: link:../ap-site
-      '@pro-laico/ap-types':
-        specifier: workspace:*
-        version: link:../ap-types
-      '@pro-laico/ap-utils':
-        specifier: workspace:*
-        version: link:../ap-utils
-      '@pro-laico/ap-zap':
-        specifier: workspace:*
-        version: link:../ap-zap
-    devDependencies:
-      '@payloadcms/ui':
-        specifier: ^3.79.0
-        version: 3.79.0(@types/react@19.2.14)(monaco-editor@0.52.2)(next@16.1.6(@babel/core@7.29.0)(@opentelemetry/api@1.9.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(sass@1.77.4))(payload@3.79.0(graphql@16.11.0)(typescript@5.8.3))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(typescript@5.8.3)
-      '@types/react':
-        specifier: ^19.2.14
-        version: 19.2.14
-      payload:
-        specifier: ^3.79.0
-        version: 3.79.0(graphql@16.11.0)(typescript@5.8.3)
-      react:
-        specifier: ^19.2.4
-        version: 19.2.4
-      typescript:
-        specifier: 5.8.3
-        version: 5.8.3
-
-  packages/ap-fonts:
-    dependencies:
-      '@pro-laico/ap-types':
-        specifier: workspace:*
-        version: link:../ap-types
-    devDependencies:
-      '@payloadcms/sdk':
-        specifier: ^3.79.0
-        version: 3.79.0(graphql@16.11.0)(typescript@5.8.3)
-      dotenv:
-        specifier: ^17.3.1
-        version: 17.3.1
-      payload:
-        specifier: ^3.79.0
-        version: 3.79.0(graphql@16.11.0)(typescript@5.8.3)
-      typescript:
-        specifier: 5.8.3
-        version: 5.8.3
-
-  packages/ap-forms:
-    dependencies:
-      '@pro-laico/ap-actions':
-        specifier: workspace:*
-        version: link:../ap-actions
-      '@pro-laico/ap-apf':
-        specifier: workspace:*
-        version: link:../ap-apf
-      '@pro-laico/ap-types':
-        specifier: workspace:*
-        version: link:../ap-types
-      '@pro-laico/ap-utils':
-        specifier: workspace:*
-        version: link:../ap-utils
-      '@pro-laico/ap-zap':
-        specifier: workspace:*
-        version: link:../ap-zap
-      atomic-payload:
-        specifier: workspace:*
-        version: link:../../templates/atomic-payload
-      dayjs:
-        specifier: ^1.11.19
-        version: 1.11.19
-      next:
-        specifier: '>=15.0.0'
-        version: 16.1.6(@babel/core@7.29.0)(@opentelemetry/api@1.9.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(sass@1.77.4)
-      payload:
-        specifier: '>=3.0.0'
-        version: 3.79.0(graphql@16.11.0)(typescript@5.8.3)
-
-  packages/ap-icons:
-    dependencies:
-      '@pro-laico/ap-apf':
-        specifier: workspace:*
-        version: link:../ap-apf
-      '@pro-laico/ap-types':
-        specifier: workspace:*
-        version: link:../ap-types
-      '@pro-laico/ap-utils':
-        specifier: workspace:*
-        version: link:../ap-utils
-    devDependencies:
-      '@payloadcms/ui':
-        specifier: ^3.79.0
-        version: 3.79.0(@types/react@19.2.14)(monaco-editor@0.52.2)(next@16.1.6(@babel/core@7.29.0)(@opentelemetry/api@1.9.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(sass@1.77.4))(payload@3.79.0(graphql@16.11.0)(typescript@5.8.3))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(typescript@5.8.3)
-      '@types/react':
-        specifier: ^19.2.14
-        version: 19.2.14
-      payload:
-        specifier: ^3.79.0
-        version: 3.79.0(graphql@16.11.0)(typescript@5.8.3)
-      react:
-        specifier: ^19.2.4
-        version: 19.2.4
-      svg-path-bbox:
-        specifier: ^2.1.0
-        version: 2.1.0
-      svgo:
-        specifier: ^3.3.3
-        version: 3.3.3
-      typescript:
-        specifier: 5.8.3
-        version: 5.8.3
-
-  packages/ap-images:
-    dependencies:
-      '@pro-laico/ap-apf':
-        specifier: workspace:*
-        version: link:../ap-apf
-      '@pro-laico/ap-types':
-        specifier: workspace:*
-        version: link:../ap-types
-      '@pro-laico/ap-utils':
-        specifier: workspace:*
-        version: link:../ap-utils
-    devDependencies:
-      '@oversightstudio/blur-data-urls':
-        specifier: ^1.0.4
-        version: 1.0.4(payload@3.79.0(graphql@16.11.0)(typescript@5.8.3))(sharp@0.34.5)
-      payload:
-        specifier: ^3.79.0
-        version: 3.79.0(graphql@16.11.0)(typescript@5.8.3)
-      typescript:
-        specifier: 5.8.3
-        version: 5.8.3
-
-  packages/ap-mux-video:
-    dependencies:
-      '@pro-laico/ap-types':
-        specifier: workspace:*
-        version: link:../ap-types
-    devDependencies:
-      '@oversightstudio/mux-video':
-        specifier: ^1.4.0
-        version: 1.4.0(@mux/mux-player-react@3.7.0(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(@payloadcms/ui@3.79.0(@types/react@19.2.14)(monaco-editor@0.52.2)(next@16.1.6(@babel/core@7.29.0)(@opentelemetry/api@1.9.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(sass@1.77.4))(payload@3.79.0(graphql@16.11.0)(typescript@5.8.3))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(typescript@5.8.3))(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(payload@3.79.0(graphql@16.11.0)(typescript@5.8.3))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
-      payload:
-        specifier: ^3.79.0
-        version: 3.79.0(graphql@16.11.0)(typescript@5.8.3)
-      typescript:
-        specifier: 5.8.3
-        version: 5.8.3
-
-  packages/ap-seed:
-    dependencies:
-      '@pro-laico/ap-design-sets':
-        specifier: workspace:*
-        version: link:../ap-design-sets
-      '@pro-laico/ap-forms':
-        specifier: workspace:*
-        version: link:../ap-forms
-      '@pro-laico/ap-icons':
-        specifier: workspace:*
-        version: link:../ap-icons
-      '@pro-laico/ap-site':
-        specifier: workspace:*
-        version: link:../ap-site
-      '@pro-laico/ap-types':
-        specifier: workspace:*
-        version: link:../ap-types
-    devDependencies:
-      '@payloadcms/ui':
-        specifier: ^3.79.0
-        version: 3.79.0(@types/react@19.2.14)(monaco-editor@0.52.2)(next@16.1.6(@babel/core@7.29.0)(@opentelemetry/api@1.9.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(sass@1.77.4))(payload@3.79.0(graphql@16.11.0)(typescript@5.8.3))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(typescript@5.8.3)
-      '@types/react':
-        specifier: ^19.2.14
-        version: 19.2.14
-      next:
-        specifier: ^16.1.6
-        version: 16.1.6(@babel/core@7.29.0)(@opentelemetry/api@1.9.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(sass@1.77.4)
-      payload:
-        specifier: ^3.79.0
-        version: 3.79.0(graphql@16.11.0)(typescript@5.8.3)
-      react:
-        specifier: ^19.2.4
-        version: 19.2.4
-      typescript:
-        specifier: 5.8.3
-        version: 5.8.3
-
-  packages/ap-site:
-    dependencies:
-      '@pro-laico/ap-apf':
-        specifier: workspace:*
-        version: link:../ap-apf
-      '@pro-laico/ap-atomic-hook':
-        specifier: workspace:*
-        version: link:../ap-atomic-hook
-      '@pro-laico/ap-child-blocks':
-        specifier: workspace:*
-        version: link:../ap-child-blocks
-      '@pro-laico/ap-images':
-        specifier: workspace:*
-        version: link:../ap-images
-      '@pro-laico/ap-types':
-        specifier: workspace:*
-        version: link:../ap-types
-      '@pro-laico/ap-utils':
-        specifier: workspace:*
-        version: link:../ap-utils
-      '@pro-laico/ap-zap':
-        specifier: workspace:*
-        version: link:../ap-zap
-    devDependencies:
-      '@payloadcms/plugin-nested-docs':
-        specifier: ^3.79.0
-        version: 3.79.0(payload@3.79.0(graphql@16.11.0)(typescript@5.8.3))
-      '@payloadcms/ui':
-        specifier: ^3.79.0
-        version: 3.79.0(@types/react@19.2.14)(monaco-editor@0.52.2)(next@16.1.6(@babel/core@7.29.0)(@opentelemetry/api@1.9.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(sass@1.77.4))(payload@3.79.0(graphql@16.11.0)(typescript@5.8.3))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(typescript@5.8.3)
-      '@types/react':
-        specifier: ^19.2.14
-        version: 19.2.14
-      next:
-        specifier: ^16.1.6
-        version: 16.1.6(@babel/core@7.29.0)(@opentelemetry/api@1.9.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(sass@1.77.4)
-      payload:
-        specifier: ^3.79.0
-        version: 3.79.0(graphql@16.11.0)(typescript@5.8.3)
-      react:
-        specifier: ^19.2.4
-        version: 19.2.4
-      typescript:
-        specifier: 5.8.3
-        version: 5.8.3
-
-  packages/ap-tracking:
-    dependencies:
-      '@pro-laico/ap-types':
-        specifier: workspace:*
-        version: link:../ap-types
-      '@pro-laico/ap-utils':
-        specifier: workspace:*
-        version: link:../ap-utils
-    devDependencies:
-      '@next/third-parties':
-        specifier: ^16.1.6
-        version: 16.1.6(next@16.1.6(@babel/core@7.29.0)(@opentelemetry/api@1.9.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(sass@1.77.4))(react@19.2.4)
-      '@types/react':
-        specifier: ^19.2.14
-        version: 19.2.14
-      '@vercel/analytics':
-        specifier: ^1.6.1
-        version: 1.6.1(next@16.1.6(@babel/core@7.29.0)(@opentelemetry/api@1.9.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(sass@1.77.4))(react@19.2.4)
-      next:
-        specifier: ^16.1.6
-        version: 16.1.6(@babel/core@7.29.0)(@opentelemetry/api@1.9.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(sass@1.77.4)
-      payload:
-        specifier: ^3.79.0
-        version: 3.79.0(graphql@16.11.0)(typescript@5.8.3)
-      posthog-js:
-        specifier: ^1.360.0
-        version: 1.360.0
-      react:
-        specifier: ^19.2.4
-        version: 19.2.4
-      typescript:
-        specifier: 5.8.3
-        version: 5.8.3
-
-  packages/ap-types:
-    devDependencies:
-      payload:
-        specifier: ^3.79.0
-        version: 3.79.0(graphql@16.11.0)(typescript@5.8.3)
-      typescript:
-        specifier: 5.8.3
-        version: 5.8.3
-
-  packages/ap-utils:
-    dependencies:
-      '@pro-laico/ap-apf':
-        specifier: workspace:*
-        version: link:../ap-apf
       '@pro-laico/ap-atomic-hook':
         specifier: workspace:*
         version: link:../ap-atomic-hook
@@ -505,9 +181,6 @@ importers:
       '@pro-laico/ap-tracking':
         specifier: workspace:*
         version: link:../ap-tracking
-      '@pro-laico/ap-types':
-        specifier: workspace:*
-        version: link:../ap-types
       '@types/json-schema':
         specifier: ^7.0.15
         version: 7.0.15
@@ -543,11 +216,250 @@ importers:
         specifier: 5.8.3
         version: 5.8.3
 
+  packages/ap-design-sets:
+    dependencies:
+      '@pro-laico/ap-core':
+        specifier: workspace:*
+        version: link:../ap-core
+      '@pro-laico/ap-site':
+        specifier: workspace:*
+        version: link:../ap-site
+      '@pro-laico/ap-zap':
+        specifier: workspace:*
+        version: link:../ap-zap
+    devDependencies:
+      '@payloadcms/ui':
+        specifier: ^3.79.0
+        version: 3.79.0(@types/react@19.2.14)(monaco-editor@0.52.2)(next@16.1.6(@babel/core@7.29.0)(@opentelemetry/api@1.9.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(sass@1.77.4))(payload@3.79.0(graphql@16.11.0)(typescript@5.8.3))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(typescript@5.8.3)
+      '@types/react':
+        specifier: ^19.2.14
+        version: 19.2.14
+      payload:
+        specifier: ^3.79.0
+        version: 3.79.0(graphql@16.11.0)(typescript@5.8.3)
+      react:
+        specifier: ^19.2.4
+        version: 19.2.4
+      typescript:
+        specifier: 5.8.3
+        version: 5.8.3
+
+  packages/ap-fonts:
+    dependencies:
+      '@pro-laico/ap-core':
+        specifier: workspace:*
+        version: link:../ap-core
+    devDependencies:
+      '@payloadcms/sdk':
+        specifier: ^3.79.0
+        version: 3.79.0(graphql@16.11.0)(typescript@5.8.3)
+      dotenv:
+        specifier: ^17.3.1
+        version: 17.3.1
+      payload:
+        specifier: ^3.79.0
+        version: 3.79.0(graphql@16.11.0)(typescript@5.8.3)
+      typescript:
+        specifier: 5.8.3
+        version: 5.8.3
+
+  packages/ap-forms:
+    dependencies:
+      '@pro-laico/ap-actions':
+        specifier: workspace:*
+        version: link:../ap-actions
+      '@pro-laico/ap-core':
+        specifier: workspace:*
+        version: link:../ap-core
+      '@pro-laico/ap-zap':
+        specifier: workspace:*
+        version: link:../ap-zap
+      atomic-payload:
+        specifier: workspace:*
+        version: link:../../templates/atomic-payload
+      dayjs:
+        specifier: ^1.11.19
+        version: 1.11.19
+      next:
+        specifier: '>=15.0.0'
+        version: 16.1.6(@babel/core@7.29.0)(@opentelemetry/api@1.9.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(sass@1.77.4)
+      payload:
+        specifier: '>=3.0.0'
+        version: 3.79.0(graphql@16.11.0)(typescript@5.8.3)
+
+  packages/ap-icons:
+    dependencies:
+      '@pro-laico/ap-core':
+        specifier: workspace:*
+        version: link:../ap-core
+    devDependencies:
+      '@payloadcms/ui':
+        specifier: ^3.79.0
+        version: 3.79.0(@types/react@19.2.14)(monaco-editor@0.52.2)(next@16.1.6(@babel/core@7.29.0)(@opentelemetry/api@1.9.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(sass@1.77.4))(payload@3.79.0(graphql@16.11.0)(typescript@5.8.3))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(typescript@5.8.3)
+      '@types/react':
+        specifier: ^19.2.14
+        version: 19.2.14
+      payload:
+        specifier: ^3.79.0
+        version: 3.79.0(graphql@16.11.0)(typescript@5.8.3)
+      react:
+        specifier: ^19.2.4
+        version: 19.2.4
+      svg-path-bbox:
+        specifier: ^2.1.0
+        version: 2.1.0
+      svgo:
+        specifier: ^3.3.3
+        version: 3.3.3
+      typescript:
+        specifier: 5.8.3
+        version: 5.8.3
+
+  packages/ap-images:
+    dependencies:
+      '@pro-laico/ap-core':
+        specifier: workspace:*
+        version: link:../ap-core
+    devDependencies:
+      '@oversightstudio/blur-data-urls':
+        specifier: ^1.0.4
+        version: 1.0.4(payload@3.79.0(graphql@16.11.0)(typescript@5.8.3))(sharp@0.34.5)
+      payload:
+        specifier: ^3.79.0
+        version: 3.79.0(graphql@16.11.0)(typescript@5.8.3)
+      typescript:
+        specifier: 5.8.3
+        version: 5.8.3
+
+  packages/ap-mux-video:
+    dependencies:
+      '@pro-laico/ap-core':
+        specifier: workspace:*
+        version: link:../ap-core
+    devDependencies:
+      '@oversightstudio/mux-video':
+        specifier: ^1.4.0
+        version: 1.4.0(@mux/mux-player-react@3.7.0(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(@payloadcms/ui@3.79.0(@types/react@19.2.14)(monaco-editor@0.52.2)(next@16.1.6(@babel/core@7.29.0)(@opentelemetry/api@1.9.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(sass@1.77.4))(payload@3.79.0(graphql@16.11.0)(typescript@5.8.3))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(typescript@5.8.3))(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(payload@3.79.0(graphql@16.11.0)(typescript@5.8.3))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      payload:
+        specifier: ^3.79.0
+        version: 3.79.0(graphql@16.11.0)(typescript@5.8.3)
+      typescript:
+        specifier: 5.8.3
+        version: 5.8.3
+
+  packages/ap-seed:
+    dependencies:
+      '@pro-laico/ap-core':
+        specifier: workspace:*
+        version: link:../ap-core
+      '@pro-laico/ap-design-sets':
+        specifier: workspace:*
+        version: link:../ap-design-sets
+      '@pro-laico/ap-forms':
+        specifier: workspace:*
+        version: link:../ap-forms
+      '@pro-laico/ap-icons':
+        specifier: workspace:*
+        version: link:../ap-icons
+      '@pro-laico/ap-site':
+        specifier: workspace:*
+        version: link:../ap-site
+    devDependencies:
+      '@payloadcms/ui':
+        specifier: ^3.79.0
+        version: 3.79.0(@types/react@19.2.14)(monaco-editor@0.52.2)(next@16.1.6(@babel/core@7.29.0)(@opentelemetry/api@1.9.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(sass@1.77.4))(payload@3.79.0(graphql@16.11.0)(typescript@5.8.3))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(typescript@5.8.3)
+      '@types/react':
+        specifier: ^19.2.14
+        version: 19.2.14
+      next:
+        specifier: ^16.1.6
+        version: 16.1.6(@babel/core@7.29.0)(@opentelemetry/api@1.9.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(sass@1.77.4)
+      payload:
+        specifier: ^3.79.0
+        version: 3.79.0(graphql@16.11.0)(typescript@5.8.3)
+      react:
+        specifier: ^19.2.4
+        version: 19.2.4
+      typescript:
+        specifier: 5.8.3
+        version: 5.8.3
+
+  packages/ap-site:
+    dependencies:
+      '@pro-laico/ap-atomic-hook':
+        specifier: workspace:*
+        version: link:../ap-atomic-hook
+      '@pro-laico/ap-child-blocks':
+        specifier: workspace:*
+        version: link:../ap-child-blocks
+      '@pro-laico/ap-core':
+        specifier: workspace:*
+        version: link:../ap-core
+      '@pro-laico/ap-images':
+        specifier: workspace:*
+        version: link:../ap-images
+      '@pro-laico/ap-zap':
+        specifier: workspace:*
+        version: link:../ap-zap
+    devDependencies:
+      '@payloadcms/plugin-nested-docs':
+        specifier: ^3.79.0
+        version: 3.79.0(payload@3.79.0(graphql@16.11.0)(typescript@5.8.3))
+      '@payloadcms/ui':
+        specifier: ^3.79.0
+        version: 3.79.0(@types/react@19.2.14)(monaco-editor@0.52.2)(next@16.1.6(@babel/core@7.29.0)(@opentelemetry/api@1.9.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(sass@1.77.4))(payload@3.79.0(graphql@16.11.0)(typescript@5.8.3))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(typescript@5.8.3)
+      '@types/react':
+        specifier: ^19.2.14
+        version: 19.2.14
+      next:
+        specifier: ^16.1.6
+        version: 16.1.6(@babel/core@7.29.0)(@opentelemetry/api@1.9.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(sass@1.77.4)
+      payload:
+        specifier: ^3.79.0
+        version: 3.79.0(graphql@16.11.0)(typescript@5.8.3)
+      react:
+        specifier: ^19.2.4
+        version: 19.2.4
+      typescript:
+        specifier: 5.8.3
+        version: 5.8.3
+
+  packages/ap-tracking:
+    dependencies:
+      '@pro-laico/ap-core':
+        specifier: workspace:*
+        version: link:../ap-core
+    devDependencies:
+      '@next/third-parties':
+        specifier: ^16.1.6
+        version: 16.1.6(next@16.1.6(@babel/core@7.29.0)(@opentelemetry/api@1.9.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(sass@1.77.4))(react@19.2.4)
+      '@types/react':
+        specifier: ^19.2.14
+        version: 19.2.14
+      '@vercel/analytics':
+        specifier: ^1.6.1
+        version: 1.6.1(next@16.1.6(@babel/core@7.29.0)(@opentelemetry/api@1.9.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(sass@1.77.4))(react@19.2.4)
+      next:
+        specifier: ^16.1.6
+        version: 16.1.6(@babel/core@7.29.0)(@opentelemetry/api@1.9.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(sass@1.77.4)
+      payload:
+        specifier: ^3.79.0
+        version: 3.79.0(graphql@16.11.0)(typescript@5.8.3)
+      posthog-js:
+        specifier: ^1.360.0
+        version: 1.360.0
+      react:
+        specifier: ^19.2.4
+        version: 19.2.4
+      typescript:
+        specifier: 5.8.3
+        version: 5.8.3
+
   packages/ap-zap:
     dependencies:
-      '@pro-laico/ap-types':
+      '@pro-laico/ap-core':
         specifier: workspace:*
-        version: link:../ap-types
+        version: link:../ap-core
       server-only:
         specifier: ^0.0.1
         version: 0.0.1
@@ -636,15 +548,15 @@ importers:
       '@pro-laico/ap-actions':
         specifier: workspace:*
         version: link:../../packages/ap-actions
-      '@pro-laico/ap-apf':
-        specifier: workspace:*
-        version: link:../../packages/ap-apf
       '@pro-laico/ap-atomic-hook':
         specifier: workspace:*
         version: link:../../packages/ap-atomic-hook
       '@pro-laico/ap-child-blocks':
         specifier: workspace:*
         version: link:../../packages/ap-child-blocks
+      '@pro-laico/ap-core':
+        specifier: workspace:*
+        version: link:../../packages/ap-core
       '@pro-laico/ap-design-sets':
         specifier: workspace:*
         version: link:../../packages/ap-design-sets
@@ -672,12 +584,6 @@ importers:
       '@pro-laico/ap-tracking':
         specifier: workspace:*
         version: link:../../packages/ap-tracking
-      '@pro-laico/ap-types':
-        specifier: workspace:*
-        version: link:../../packages/ap-types
-      '@pro-laico/ap-utils':
-        specifier: workspace:*
-        version: link:../../packages/ap-utils
       '@pro-laico/ap-zap':
         specifier: workspace:*
         version: link:../../packages/ap-zap
@@ -778,18 +684,12 @@ importers:
       '@payloadcms/ui':
         specifier: ^3.79.0
         version: 3.79.0(@types/react@19.2.14)(monaco-editor@0.52.2)(next@16.1.6(@babel/core@7.29.0)(@opentelemetry/api@1.9.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(sass@1.77.4))(payload@3.79.0(graphql@16.11.0)(typescript@5.8.3))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(typescript@5.8.3)
-      '@pro-laico/ap-apf':
+      '@pro-laico/ap-core':
         specifier: workspace:*
-        version: link:../../packages/ap-apf
+        version: link:../../packages/ap-core
       '@pro-laico/ap-icons':
         specifier: workspace:*
         version: link:../../packages/ap-icons
-      '@pro-laico/ap-types':
-        specifier: workspace:*
-        version: link:../../packages/ap-types
-      '@pro-laico/ap-utils':
-        specifier: workspace:*
-        version: link:../../packages/ap-utils
       cross-env:
         specifier: ^10.1.0
         version: 10.1.0
