@@ -77,3 +77,31 @@ Without an augmentation, every reference falls back to `any` / `string` / `any[]
 ## Why module augmentation?
 
 The hand-written types in this package reference shapes that only exist after Payload generates types for a specific config. Augmentation lets one package serve any number of Payload projects without templating or generics.
+
+<!-- workspace-deps:start (auto-generated, do not edit) -->
+
+## Workspace dependencies
+
+Other `@pro-laico/*` packages this package depends on:
+
+- _(none — this is a leaf package)_
+
+Other `@pro-laico/*` packages that depend on this one:
+
+- [`ap-actions`](../ap-actions)
+- [`ap-apf`](../ap-apf)
+- [`ap-atomic-hook`](../ap-atomic-hook)
+- [`ap-child-blocks`](../ap-child-blocks)
+- [`ap-design-sets`](../ap-design-sets)
+- [`ap-fonts`](../ap-fonts)
+- [`ap-forms`](../ap-forms)
+- [`ap-icons`](../ap-icons)
+- [`ap-images`](../ap-images)
+- [`ap-mux-video`](../ap-mux-video)
+- [`ap-seed`](../ap-seed)
+- [`ap-site`](../ap-site)
+- [`ap-tracking`](../ap-tracking)
+- [`ap-utils`](../ap-utils)
+- [`ap-zap`](../ap-zap)
+
+<!-- workspace-deps:end -->

@@ -9,3 +9,21 @@ export default buildConfig({
   plugins: [imagesPlugin({ enabled: true })],
 })
 ```
+
+<!-- workspace-deps:start (auto-generated, do not edit) -->
+
+## Workspace dependencies
+
+Other `@pro-laico/*` packages this package depends on:
+
+- [`ap-apf`](../ap-apf)
+- [`ap-types`](../ap-types)
+- [`ap-utils`](../ap-utils)
+
+Other `@pro-laico/*` packages that depend on this one:
+
+- [`ap-child-blocks`](../ap-child-blocks)
+- [`ap-site`](../ap-site)
+- [`ap-utils`](../ap-utils)
+
+<!-- workspace-deps:end -->

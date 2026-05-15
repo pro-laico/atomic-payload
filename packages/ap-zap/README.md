@@ -11,3 +11,22 @@ export const MySlug = z.ap.add(z.enum(['a', 'b']), { id: 'MySlug' })
 The `AtomicRegistry` shape is pulled from `@pro-laico/ap-types`. Augment it via `declare module '@pro-laico/ap-types'` in your project so `z.ap.get('MySlug')` and `z.ap.Type<'MySlug'>` resolve to concrete types.
 
 Pinned to `zod@4.1.11` because of a known regression past that version.
+
+<!-- workspace-deps:start (auto-generated, do not edit) -->
+
+## Workspace dependencies
+
+Other `@pro-laico/*` packages this package depends on:
+
+- [`ap-types`](../ap-types)
+
+Other `@pro-laico/*` packages that depend on this one:
+
+- [`ap-actions`](../ap-actions)
+- [`ap-atomic-hook`](../ap-atomic-hook)
+- [`ap-child-blocks`](../ap-child-blocks)
+- [`ap-design-sets`](../ap-design-sets)
+- [`ap-forms`](../ap-forms)
+- [`ap-site`](../ap-site)
+
+<!-- workspace-deps:end -->

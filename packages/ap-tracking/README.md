@@ -9,3 +9,19 @@ export default buildConfig({ plugins: [posthogPlugin()] })
 ```
 
 Use `postHogTabField()` inside your Tracking global's tabs array. Frontend provider is available at `@pro-laico/ap-tracking/provider`.
+
+<!-- workspace-deps:start (auto-generated, do not edit) -->
+
+## Workspace dependencies
+
+Other `@pro-laico/*` packages this package depends on:
+
+- [`ap-types`](../ap-types)
+- [`ap-utils`](../ap-utils)
+
+Other `@pro-laico/*` packages that depend on this one:
+
+- [`ap-utils`](../ap-utils)
+- [`ap-child-blocks`](../ap-child-blocks) _(peer)_
+
+<!-- workspace-deps:end -->

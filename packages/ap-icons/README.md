@@ -31,3 +31,20 @@ export default createIconSelect(getCached as unknown as IconSelectGetCached)
 `createIconSelect` is not re-exported from the package root so importing `IconLabelPath` / `AtomicIcon` from `@pro-laico/ap-icons` does not pull admin code into client bundles.
 
 Optional icon-name presets for seeding or docs: `@pro-laico/ap-icons/iconSet/defaults`.
+
+<!-- workspace-deps:start (auto-generated, do not edit) -->
+
+## Workspace dependencies
+
+Other `@pro-laico/*` packages this package depends on:
+
+- [`ap-apf`](../ap-apf)
+- [`ap-types`](../ap-types)
+- [`ap-utils`](../ap-utils)
+
+Other `@pro-laico/*` packages that depend on this one:
+
+- [`ap-child-blocks`](../ap-child-blocks)
+- [`ap-seed`](../ap-seed)
+
+<!-- workspace-deps:end -->

@@ -19,3 +19,27 @@ export default buildConfig({
 ### Roadmap
 
 The orchestrating hook implementation currently lives in the consuming template because it imports template-only processors (`ActionBlockStorageProcessor`, `cssProcessor`, `processDesignSet`). A subsequent release will fold the hook and its processors into this package once the action and design-set extractions are complete.
+
+<!-- workspace-deps:start (auto-generated, do not edit) -->
+
+## Workspace dependencies
+
+Other `@pro-laico/*` packages this package depends on:
+
+- [`ap-actions`](../ap-actions)
+- [`ap-apf`](../ap-apf)
+- [`ap-design-sets`](../ap-design-sets)
+- [`ap-forms`](../ap-forms)
+- [`ap-site`](../ap-site)
+- [`ap-types`](../ap-types)
+- [`ap-utils`](../ap-utils)
+- [`ap-zap`](../ap-zap)
+
+Other `@pro-laico/*` packages that depend on this one:
+
+- [`ap-actions`](../ap-actions)
+- [`ap-child-blocks`](../ap-child-blocks)
+- [`ap-site`](../ap-site)
+- [`ap-utils`](../ap-utils)
+
+<!-- workspace-deps:end -->

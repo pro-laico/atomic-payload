@@ -20,3 +20,23 @@ designSetsPlugin({
 ```
 
 Row-label / admin component paths still use the template `@/ui/...` strings resolved via the app `importMap`.
+
+<!-- workspace-deps:start (auto-generated, do not edit) -->
+
+## Workspace dependencies
+
+Other `@pro-laico/*` packages this package depends on:
+
+- [`ap-apf`](../ap-apf)
+- [`ap-site`](../ap-site)
+- [`ap-types`](../ap-types)
+- [`ap-utils`](../ap-utils)
+- [`ap-zap`](../ap-zap)
+
+Other `@pro-laico/*` packages that depend on this one:
+
+- [`ap-atomic-hook`](../ap-atomic-hook)
+- [`ap-seed`](../ap-seed)
+- [`ap-utils`](../ap-utils)
+
+<!-- workspace-deps:end -->

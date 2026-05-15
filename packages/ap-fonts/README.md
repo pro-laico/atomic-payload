@@ -17,3 +17,17 @@ export default buildConfig({ plugins: [fontsPlugin()] })
 Environment variables: `LIVE_SITE_URL`, `BLOB_READ_WRITE_TOKEN`, `SCRIPT_USER_EMAIL`, `SCRIPT_USER_PASSWORD`.
 
 Optional paths: `ATOMIC_FONTS_OUTPUT_DIR`, `ATOMIC_FONTS_DEFINITION_FILE`, `ATOMIC_FONTS_ENV_FILE`, `ATOMIC_FONTS_SRC_PREFIX` (path segments in the generated `localFont({ src })` URLs, relative to the definition file). You can override the same via `runDownloadFonts({ ... })`.
+
+<!-- workspace-deps:start (auto-generated, do not edit) -->
+
+## Workspace dependencies
+
+Other `@pro-laico/*` packages this package depends on:
+
+- [`ap-types`](../ap-types)
+
+Other `@pro-laico/*` packages that depend on this one:
+
+- _(none)_
+
+<!-- workspace-deps:end -->

@@ -70,3 +70,17 @@ Run `pnpm download:fonts` in your project directory.
 ---
 
 > While this project utilizes Payload CMS, Atomic Payload is not affiliated with Payload CMS.
+
+<!-- workspace-deps:start (auto-generated, do not edit) -->
+
+## Workspace dependencies
+
+Other `@pro-laico/*` packages this package depends on:
+
+- _(none — this is a leaf package)_
+
+Other `@pro-laico/*` packages that depend on this one:
+
+- _(none)_
+
+<!-- workspace-deps:end -->

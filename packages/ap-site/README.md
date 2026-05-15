@@ -1,6 +1,4 @@
-# @pro-laico/ap-forms
-
-Payload plugin that registers submit-form blocks (rate limiting, sanitation, validation), plus `submitForm` / `getSubmitFormProcessor` for the server runtime. Use `formsPlugin({ enabled: true, formBlocks: [...] })` before `actionsPlugin` and `childBlocksPlugin` in the plugin list.
+# @pro-laico/ap-site
 
 <!-- workspace-deps:start (auto-generated, do not edit) -->
 
@@ -8,17 +6,18 @@ Payload plugin that registers submit-form blocks (rate limiting, sanitation, val
 
 Other `@pro-laico/*` packages this package depends on:
 
-- [`ap-actions`](../ap-actions)
 - [`ap-apf`](../ap-apf)
+- [`ap-atomic-hook`](../ap-atomic-hook)
+- [`ap-child-blocks`](../ap-child-blocks)
+- [`ap-images`](../ap-images)
 - [`ap-types`](../ap-types)
 - [`ap-utils`](../ap-utils)
 - [`ap-zap`](../ap-zap)
 
 Other `@pro-laico/*` packages that depend on this one:
 
-- [`ap-actions`](../ap-actions)
 - [`ap-atomic-hook`](../ap-atomic-hook)
-- [`ap-child-blocks`](../ap-child-blocks)
+- [`ap-design-sets`](../ap-design-sets)
 - [`ap-seed`](../ap-seed)
 - [`ap-utils`](../ap-utils)
 

@@ -32,3 +32,32 @@ import { revalidateTag } from '@pro-laico/ap-utils'
 
 await revalidateTag('pages', true) // revalidate draft pages (cascades to sitemap)
 ```
+
+<!-- workspace-deps:start (auto-generated, do not edit) -->
+
+## Workspace dependencies
+
+Other `@pro-laico/*` packages this package depends on:
+
+- [`ap-apf`](../ap-apf)
+- [`ap-atomic-hook`](../ap-atomic-hook)
+- [`ap-child-blocks`](../ap-child-blocks)
+- [`ap-design-sets`](../ap-design-sets)
+- [`ap-forms`](../ap-forms)
+- [`ap-images`](../ap-images)
+- [`ap-site`](../ap-site)
+- [`ap-tracking`](../ap-tracking)
+- [`ap-types`](../ap-types)
+
+Other `@pro-laico/*` packages that depend on this one:
+
+- [`ap-atomic-hook`](../ap-atomic-hook)
+- [`ap-child-blocks`](../ap-child-blocks)
+- [`ap-design-sets`](../ap-design-sets)
+- [`ap-forms`](../ap-forms)
+- [`ap-icons`](../ap-icons)
+- [`ap-images`](../ap-images)
+- [`ap-site`](../ap-site)
+- [`ap-tracking`](../ap-tracking)
+
+<!-- workspace-deps:end -->
