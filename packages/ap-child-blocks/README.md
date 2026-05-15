@@ -1,4 +1,4 @@
-# @pro-laico/ap-child-blocks
+﻿# @pro-laico/ap-child-blocks
 
 <!-- workspace-deps:start (auto-generated, do not edit) -->
 
@@ -12,7 +12,7 @@ Other `@pro-laico/*` packages this package depends on:
 - [`ap-forms`](../ap-forms)
 - [`ap-icons`](../ap-icons)
 - [`ap-images`](../ap-images)
-- [`ap-zap`](../ap-zap)
+- [`zap`](../zap)
 - [`ap-tracking`](../ap-tracking) _(optional peer)_
 
 Other `@pro-laico/*` packages that depend on this one:

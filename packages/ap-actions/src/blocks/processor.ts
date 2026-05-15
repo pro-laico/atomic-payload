@@ -1,4 +1,4 @@
-//Action Options
+﻿//Action Options
 import { ActSetTheme } from './theme/set/options'
 import { ActResetForm } from './form/reset/options'
 import { ActSubmitForm } from './form/submit/options'
@@ -13,7 +13,7 @@ import { ActDSCycleText } from './dynamicStore/text/cycle/options'
 import { ActDSBoolToDA } from './dynamicStore/boolean/toDA/options'
 
 //Other
-import { z } from '@pro-laico/ap-zap'
+import { z } from '@pro-laico/zap'
 import { ActionFilters } from './filters'
 import type { AllActions, StoredAtomicActions } from '@pro-laico/ap-actions/schema'
 import type { ChildBlocks } from '@pro-laico/ap-child-blocks/schema'

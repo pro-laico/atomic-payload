@@ -1,5 +1,5 @@
-/**
- * Schema stubs owned by `@pro-laico/ap-zap`.
+﻿/**
+ * Schema stubs owned by `@pro-laico/zap`.
  */
 import type { Get, DefaultRecord } from '@pro-laico/ap-core'
 

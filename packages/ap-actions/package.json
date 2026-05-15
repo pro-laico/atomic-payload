@@ -1,4 +1,4 @@
-{
+﻿{
   "name": "@pro-laico/ap-actions",
   "version": "0.1.0",
   "description": "Atomic Payload action blocks, shared action fields, and Payload plugin. Ships TypeScript source; the app transpiles it.",
@@ -65,7 +65,7 @@
     "@pro-laico/ap-atomic-hook": "workspace:*",
     "@pro-laico/ap-child-blocks": "workspace:*",
     "@pro-laico/ap-forms": "workspace:*",
-    "@pro-laico/ap-zap": "workspace:*",
+    "@pro-laico/zap": "workspace:*",
     "@pro-laico/ap-core": "workspace:*"
   },
   "peerDependencies": {

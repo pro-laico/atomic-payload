@@ -1,4 +1,4 @@
-# @pro-laico/ap-design-sets
+﻿# @pro-laico/ap-design-sets
 
 `designSet` and `shortcutSet` collections plus **`designSetsPlugin`**.
 
@@ -14,7 +14,7 @@ designSetsPlugin({
   shortcutSet: {
     // optional: false to omit shortcutSet entirely
     // defaultShortcuts: [...],  // read-only rows shown in admin for defaultShortcuts field
-    // access, collection — same pattern as designSet
+    // access, collection â€” same pattern as designSet
   },
 })
 ```
@@ -29,7 +29,7 @@ Other `@pro-laico/*` packages this package depends on:
 
 - [`ap-core`](../ap-core)
 - [`ap-site`](../ap-site)
-- [`ap-zap`](../ap-zap)
+- [`zap`](../zap)
 
 Other `@pro-laico/*` packages that depend on this one:
 

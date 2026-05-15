@@ -1,10 +1,10 @@
-# @pro-laico/ap-core
+﻿# @pro-laico/ap-core
 
 Foundational Atomic Payload package. Replaces the legacy trio:
 
-- `@pro-laico/ap-types` — kernel: `PayloadAugment` interface, `Get<>` helper, default fallbacks, `Config` stub, generic helpers.
-- `@pro-laico/ap-apf` — Atomic Payload Functions: field generator, runAPF runtime, hooks, admin UI components.
-- `@pro-laico/ap-utils` — revalidation plugin, getCached cache helpers, JSON-schema plugin, slug field, UI components, frontend providers, fields, hooks.
+- `@pro-laico/ap-types` â€” kernel: `PayloadAugment` interface, `Get<>` helper, default fallbacks, `Config` stub, generic helpers.
+- `@pro-laico/ap-apf` â€” Atomic Payload Functions: field generator, runAPF runtime, hooks, admin UI components.
+- `@pro-laico/ap-utils` â€” revalidation plugin, getCached cache helpers, JSON-schema plugin, slug field, UI components, frontend providers, fields, hooks.
 
 The flat subpath shape is preserved from the old packages, just under `@pro-laico/ap-core/...`. Path constants (`APFControlsPath`, `APFieldPath`, `APFieldLabelPath`, `SiteTriggersPath`, `SlugPath`) target the new package.
 
@@ -40,6 +40,6 @@ Other `@pro-laico/*` packages that depend on this one:
 - [`ap-seed`](../ap-seed)
 - [`ap-site`](../ap-site)
 - [`ap-tracking`](../ap-tracking)
-- [`ap-zap`](../ap-zap)
+- [`zap`](../zap)
 
 <!-- workspace-deps:end -->

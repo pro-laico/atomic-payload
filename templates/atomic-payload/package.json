@@ -1,4 +1,4 @@
-{
+﻿{
   "name": "atomic-payload",
   "version": "0.2.0",
   "description": "The Payload CMS Starter Where All You Need To Know Is Tailwind.",
@@ -17,7 +17,7 @@
     "generate:importmap": "cross-env NODE_OPTIONS=\"--conditions=react-server\" payload generate:importmap"
   },
   "dependencies": {
-    "@pro-laico/ap-zap": "workspace:*",
+    "@pro-laico/zap": "workspace:*",
     "@pro-laico/ap-icons": "workspace:*",
     "@pro-laico/ap-images": "workspace:*",
     "@pro-laico/ap-fonts": "workspace:*",

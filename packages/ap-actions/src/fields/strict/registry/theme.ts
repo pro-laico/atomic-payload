@@ -1,4 +1,4 @@
-import { z } from '@pro-laico/ap-zap'
+﻿import { z } from '@pro-laico/zap'
 
 export const themeKeys = z.ap.add(z.enum(['mode']), { id: 'ThemeKeys' })
 export const themeListen = z.ap.add(z.enum(['mode']), { id: 'ThemeListen' })

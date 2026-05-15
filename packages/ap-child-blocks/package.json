@@ -1,4 +1,4 @@
-{
+﻿{
   "name": "@pro-laico/ap-child-blocks",
   "version": "0.1.0",
   "description": "Atomic Payload child content blocks with a Payload plugin factory. Ships TypeScript source; the app (Next.js) transpiles it.",
@@ -74,7 +74,7 @@
   "dependencies": {
     "@base-ui-components/react": "1.0.0-rc.0",
     "@mux/mux-video-react": "^0.25.3",
-    "@pro-laico/ap-zap": "workspace:*",
+    "@pro-laico/zap": "workspace:*",
     "@pro-laico/ap-icons": "workspace:*",
     "@pro-laico/ap-actions": "workspace:*",
     "@pro-laico/ap-forms": "workspace:*",

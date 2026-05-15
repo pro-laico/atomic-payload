@@ -1,4 +1,4 @@
-import { z } from '@pro-laico/ap-zap'
+﻿import { z } from '@pro-laico/zap'
 import { SetCCSchema } from './setCCs/zap'
 import { SetThemeSchema } from './setThemes/zap'
 import { ResetFormSchema } from './resetForm/zap'

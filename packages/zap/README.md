@@ -1,9 +1,9 @@
-# @pro-laico/ap-zap
+﻿# @pro-laico/zap
 
 Zod with Atomic Payload extensions. Re-exports zod and adds the `z.ap` helper for registering and retrieving schemas typed against `AtomicRegistry`.
 
 ```ts
-import { z } from '@pro-laico/ap-zap'
+import { z } from '@pro-laico/zap'
 
 export const MySlug = z.ap.add(z.enum(['a', 'b']), { id: 'MySlug' })
 ```

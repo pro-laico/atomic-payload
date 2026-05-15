@@ -1,4 +1,4 @@
-# @pro-laico/ap-site
+﻿# @pro-laico/ap-site
 
 <!-- workspace-deps:start (auto-generated, do not edit) -->
 
@@ -10,7 +10,7 @@ Other `@pro-laico/*` packages this package depends on:
 - [`ap-child-blocks`](../ap-child-blocks)
 - [`ap-core`](../ap-core)
 - [`ap-images`](../ap-images)
-- [`ap-zap`](../ap-zap)
+- [`zap`](../zap)
 
 Other `@pro-laico/*` packages that depend on this one:
 

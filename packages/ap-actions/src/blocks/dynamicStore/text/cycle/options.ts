@@ -1,4 +1,4 @@
-import { z } from '@pro-laico/ap-zap'
+﻿import { z } from '@pro-laico/zap'
 import type { ActionProcessFunction, ActionSetKeyInitialByAction } from '@pro-laico/ap-actions'
 const setKeyInitialByAction: ActionSetKeyInitialByAction<'ActDSCycleText'> = (props) => {
   const { key, persisted, textArray } = props.actionBlock

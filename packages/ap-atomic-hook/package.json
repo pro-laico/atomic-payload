@@ -1,4 +1,4 @@
-{
+﻿{
   "name": "@pro-laico/ap-atomic-hook",
   "version": "0.1.0",
   "description": "Atomic Payload atomicHook implementation (beforeChange orchestration, CSS/design-set processing, zustand atomic store) and a plugin factory that attaches the hook to listed collections.",
@@ -45,7 +45,7 @@
   "dependencies": {
     "@pro-laico/ap-actions": "workspace:*",
     "@pro-laico/ap-design-sets": "workspace:*",
-    "@pro-laico/ap-zap": "workspace:*",
+    "@pro-laico/zap": "workspace:*",
     "traverse": "^0.6.11",
     "@pro-laico/ap-forms": "workspace:*",
     "@pro-laico/ap-site": "workspace:*",

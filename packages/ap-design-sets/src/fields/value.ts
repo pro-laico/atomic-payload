@@ -1,4 +1,4 @@
-import { z } from '@pro-laico/ap-zap'
+﻿import { z } from '@pro-laico/zap'
 import { APField } from '@pro-laico/ap-core'
 import type { TextField } from 'payload'
 import type { ArrayField } from 'payload'

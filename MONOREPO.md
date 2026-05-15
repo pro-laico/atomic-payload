@@ -1,30 +1,30 @@
-# Monorepo Development
+﻿# Monorepo Development
 
-This document is for contributors and maintainers working on the Atomic Payload monorepo—structure, local development, publishing the CLI, and adding plugins.
+This document is for contributors and maintainers working on the Atomic Payload monorepoâ€”structure, local development, publishing the CLI, and adding plugins.
 
 ## Structure
 
 ```
 atomic-payload/
-├── packages/
-│   ├── create-atomic-payload/         # CLI to scaffold new projects
-│   ├── ap-types/          # Shared TypeScript types
-│   ├── ap-zap/            # zod + AtomicRegistry helper
-│   ├── ap-utils/                      # revalidateTag + hooks + getCached factory + plugin
-│   ├── ap-apf/            # APF runtime, fields, admin UI
-│   ├── ap-icons/          # iconsPlugin: Icon + iconSet; AtomicIcon; iconSelect factory
-│   ├── ap-images/         # Images + Favicons + FaviconField
-│   ├── ap-fonts/          # fontsPlugin + Font collection + download CLI
-│   ├── ap-mux-video/      # MuxVideo wrapper plugin
-│   ├── ap-tracking/                   # Tracking plugin: Tracking global + PostHogProperty + GTM/PostHog/Vercel providers
-│   ├── ap-actions/        # actionsPlugin + action blocks
-│   ├── ap-forms/            # formsPlugin + submit-form blocks + processor
-│   ├── ap-child-blocks/   # childBlocksPlugin + child blocks
-│   ├── ap-design-sets/    # designSetsPlugin: designSet + shortcutSet
-│   └── ap-atomic-hook/    # atomicHookPlugin + sanitizeData/log
-├── templates/
-│   └── atomic-payload/                # Full Atomic Payload starter template
-└── package.json                       # Workspace root
+â”œâ”€â”€ packages/
+â”‚   â”œâ”€â”€ create-atomic-payload/         # CLI to scaffold new projects
+â”‚   â”œâ”€â”€ ap-types/          # Shared TypeScript types
+â”‚   â”œâ”€â”€ zap/            # zod + AtomicRegistry helper
+â”‚   â”œâ”€â”€ ap-utils/                      # revalidateTag + hooks + getCached factory + plugin
+â”‚   â”œâ”€â”€ ap-apf/            # APF runtime, fields, admin UI
+â”‚   â”œâ”€â”€ ap-icons/          # iconsPlugin: Icon + iconSet; AtomicIcon; iconSelect factory
+â”‚   â”œâ”€â”€ ap-images/         # Images + Favicons + FaviconField
+â”‚   â”œâ”€â”€ ap-fonts/          # fontsPlugin + Font collection + download CLI
+â”‚   â”œâ”€â”€ ap-mux-video/      # MuxVideo wrapper plugin
+â”‚   â”œâ”€â”€ ap-tracking/                   # Tracking plugin: Tracking global + PostHogProperty + GTM/PostHog/Vercel providers
+â”‚   â”œâ”€â”€ ap-actions/        # actionsPlugin + action blocks
+â”‚   â”œâ”€â”€ ap-forms/            # formsPlugin + submit-form blocks + processor
+â”‚   â”œâ”€â”€ ap-child-blocks/   # childBlocksPlugin + child blocks
+â”‚   â”œâ”€â”€ ap-design-sets/    # designSetsPlugin: designSet + shortcutSet
+â”‚   â””â”€â”€ ap-atomic-hook/    # atomicHookPlugin + sanitizeData/log
+â”œâ”€â”€ templates/
+â”‚   â””â”€â”€ atomic-payload/                # Full Atomic Payload starter template
+â””â”€â”€ package.json                       # Workspace root
 ```
 
 ## Packages
@@ -33,7 +33,7 @@ atomic-payload/
 | ---------------------------------------- | --------------------------------------------------------------- |
 | `@pro-laico/create-atomic-payload`       | CLI to scaffold new Atomic Payload projects                     |
 | `@pro-laico/ap-types`        | Shared TypeScript types (decoupled via PayloadAugment)          |
-| `@pro-laico/ap-zap`          | zod + AtomicRegistry helper                                     |
+| `@pro-laico/zap`          | zod + AtomicRegistry helper                                     |
 | `@pro-laico/ap-utils` | revalidateTag + collection/global hooks + plugin                |
 | `@pro-laico/ap-apf`          | Atomic Payload Functions: runtime, fields, admin UI             |
 | `@pro-laico/ap-icons`        | iconsPlugin (Icon + iconSet), formatSVG, AtomicIcon, createIconSelect       |

@@ -1,4 +1,4 @@
-import { z } from '@pro-laico/ap-zap'
+﻿import { z } from '@pro-laico/zap'
 import { cookieConsentKeys } from '@pro-laico/ap-actions/fields/strict/registry/cookieConsent'
 
 export const SetCCSchema = z.ap.add(

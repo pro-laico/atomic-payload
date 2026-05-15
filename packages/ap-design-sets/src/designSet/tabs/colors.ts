@@ -1,5 +1,5 @@
-// TODO: Make Color Picker Component
-import { z } from '@pro-laico/ap-zap'
+﻿// TODO: Make Color Picker Component
+import { z } from '@pro-laico/zap'
 import { type Tab } from 'payload'
 import { ColorLabelPath } from '../../paths'
 import { APField } from '@pro-laico/ap-core'

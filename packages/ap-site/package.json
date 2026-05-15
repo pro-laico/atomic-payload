@@ -1,7 +1,7 @@
-{
+﻿{
   "name": "@pro-laico/ap-site",
   "version": "0.1.0",
-  "description": "Opinionated site shape for Atomic Payload — Pages, Header, Footer collections + SiteMetaData, Settings, draft/published Storage globals, paired with a single `sitePlugin()` that registers them all.",
+  "description": "Opinionated site shape for Atomic Payload â€” Pages, Header, Footer collections + SiteMetaData, Settings, draft/published Storage globals, paired with a single `sitePlugin()` that registers them all.",
   "license": "MIT",
   "type": "module",
   "publishConfig": {
@@ -39,7 +39,7 @@
     "@pro-laico/ap-atomic-hook": "workspace:*",
     "@pro-laico/ap-child-blocks": "workspace:*",
     "@pro-laico/ap-images": "workspace:*",
-    "@pro-laico/ap-zap": "workspace:*",
+    "@pro-laico/zap": "workspace:*",
     "@pro-laico/ap-core": "workspace:*"
   },
   "peerDependencies": {

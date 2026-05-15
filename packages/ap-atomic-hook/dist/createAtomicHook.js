@@ -1,4 +1,4 @@
-import { z } from '@pro-laico/ap-zap';
+﻿import { z } from '@pro-laico/zap';
 import traverse from 'traverse';
 import { runAPF } from '@pro-laico/ap-apf';
 import manualLogger from './utilities/manualLogger';

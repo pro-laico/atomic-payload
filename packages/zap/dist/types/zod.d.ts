@@ -1,5 +1,5 @@
-/**
- * Augments zod's `GlobalMeta` with the discriminator fields ap-zap places on
+﻿/**
+ * Augments zod's `GlobalMeta` with the discriminator fields zap places on
  * registered schemas (action/runner/attributer kinds for actions, block kinds
  * for child/form blocks). Side-effect imported from `src/index.ts`.
  */

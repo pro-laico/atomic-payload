@@ -1,6 +1,6 @@
-import 'server-only';
+﻿import 'server-only';
 import z from 'zod';
-import type { AtomicRegistry } from '@pro-laico/ap-zap/schema'
+import type { AtomicRegistry } from '@pro-laico/zap/schema'
 type ZapSchemaRegistry = {
     id: string;
     description?: string;
@@ -27,7 +27,7 @@ declare class AtomicPayloadZodClass {
      * @returns A type that TypeScript can infer from AtomicRegistry.
      */
     type<T extends keyof AtomicRegistry>(id: T): AtomicRegistry[T];
-    /** Converts the ZOD global registry to a JSON Schema. Idempotent — callers
+    /** Converts the ZOD global registry to a JSON Schema. Idempotent â€” callers
      *  (e.g. Payload's `typescript.schema`) may invoke this more than once per
      *  process, so we only register the aggregate `AtomicRegistry` entry if it
      *  isn't already present in the global registry. */

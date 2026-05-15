@@ -1,4 +1,4 @@
-import { generateBlocksType, toJSONSchemaExtensions } from '@pro-laico/ap-zap'
+﻿import { generateBlocksType, toJSONSchemaExtensions } from '@pro-laico/zap'
 import { jsonSchemaPlugin } from '@pro-laico/ap-core'
 import CollectionSchemas from '@pro-laico/ap-site/zap'
 import { ActionBlockType } from '@pro-laico/ap-actions/zap'

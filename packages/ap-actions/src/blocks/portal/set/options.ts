@@ -1,4 +1,4 @@
-import { z } from '@pro-laico/ap-zap'
+﻿import { z } from '@pro-laico/zap'
 import { ActionDefaultFunction, ActionProcessFunction, ActionSetKeyInitialByBlock } from '@pro-laico/ap-actions'
 const setKeyInitialByBlock: ActionSetKeyInitialByBlock = ({ block }) => {
   if (block.blockType === 'AtomicChild' && block.buttonType === 'portal' && block.portalName) {

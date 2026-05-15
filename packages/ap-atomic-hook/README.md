@@ -1,4 +1,4 @@
-# @pro-laico/ap-atomic-hook
+﻿# @pro-laico/ap-atomic-hook
 
 Atomic Payload atomic-hook plugin factory. Attaches a caller-supplied `atomicHook` (orchestrating beforeChange hook) to a list of collection slugs. Also exports the shared `sanitizeData` and `manualLogger` utilities used by the hook.
 
@@ -31,7 +31,7 @@ Other `@pro-laico/*` packages this package depends on:
 - [`ap-design-sets`](../ap-design-sets)
 - [`ap-forms`](../ap-forms)
 - [`ap-site`](../ap-site)
-- [`ap-zap`](../ap-zap)
+- [`zap`](../zap)
 
 Other `@pro-laico/*` packages that depend on this one:
 

@@ -1,4 +1,4 @@
-import { z } from '@pro-laico/ap-zap'
+﻿import { z } from '@pro-laico/zap'
 
 export const CycleTextSchema = z.ap.add(
   z.object({

@@ -1,4 +1,4 @@
-# @pro-laico/ap-actions
+﻿# @pro-laico/ap-actions
 
 Atomic Payload action-block plugin. Re-exports the action type surface from `@pro-laico/ap-types` and provides a Payload plugin factory for registering action blocks.
 
@@ -25,7 +25,7 @@ Other `@pro-laico/*` packages this package depends on:
 - [`ap-child-blocks`](../ap-child-blocks)
 - [`ap-core`](../ap-core)
 - [`ap-forms`](../ap-forms)
-- [`ap-zap`](../ap-zap)
+- [`zap`](../zap)
 
 Other `@pro-laico/*` packages that depend on this one:
 

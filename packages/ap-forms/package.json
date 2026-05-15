@@ -1,4 +1,4 @@
-{
+﻿{
   "name": "@pro-laico/ap-forms",
   "version": "0.1.0",
   "description": "Atomic Payload form submission blocks (rate limit, sanitation, validation) and server processor. Ships TypeScript source; the app transpiles it.",
@@ -60,7 +60,7 @@
   },
   "dependencies": {
     "@pro-laico/ap-actions": "workspace:*",
-    "@pro-laico/ap-zap": "workspace:*",
+    "@pro-laico/zap": "workspace:*",
     "dayjs": "^1.11.19",
     "@pro-laico/ap-core": "workspace:*"
   },

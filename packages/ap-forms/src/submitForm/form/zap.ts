@@ -1,4 +1,4 @@
-import { z } from '@pro-laico/ap-zap'
+﻿import { z } from '@pro-laico/zap'
 import sanitationBlocks from './sanitation/blocks'
 import validationBlocks from './validation/blocks'
 import rateLimitBlocks from './rateLimiting/blocks'

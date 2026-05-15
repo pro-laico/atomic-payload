@@ -1,5 +1,5 @@
 {
-  "name": "@pro-laico/ap-zap",
+  "name": "@pro-laico/zap",
   "version": "0.1.0",
   "description": "Zod with Atomic Payload extensions - a registry-aware schema layer used across the Atomic Payload packages and templates. Re-exports zod and adds the `z.ap` helper class for registering and retrieving schemas typed against AtomicRegistry.",
   "license": "MIT",

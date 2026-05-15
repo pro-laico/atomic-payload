@@ -1,4 +1,4 @@
-import { z } from '@pro-laico/ap-zap'
+﻿import { z } from '@pro-laico/zap'
 import { CCtoDASchema } from './cCToDA/zap'
 import { BoolToDASchema } from './boolToDA/zap'
 import { TextToDASchema } from './textToDA/zap'

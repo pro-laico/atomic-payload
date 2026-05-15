@@ -22,9 +22,9 @@ importers:
       '@pro-laico/ap-forms':
         specifier: workspace:*
         version: link:../ap-forms
-      '@pro-laico/ap-zap':
+      '@pro-laico/zap':
         specifier: workspace:*
-        version: link:../ap-zap
+        version: link:../zap
     devDependencies:
       '@types/react':
         specifier: ^19.2.14
@@ -59,9 +59,9 @@ importers:
       '@pro-laico/ap-site':
         specifier: workspace:*
         version: link:../ap-site
-      '@pro-laico/ap-zap':
+      '@pro-laico/zap':
         specifier: workspace:*
-        version: link:../ap-zap
+        version: link:../zap
       traverse:
         specifier: ^0.6.11
         version: 0.6.11
@@ -114,9 +114,9 @@ importers:
       '@pro-laico/ap-images':
         specifier: workspace:*
         version: link:../ap-images
-      '@pro-laico/ap-zap':
+      '@pro-laico/zap':
         specifier: workspace:*
-        version: link:../ap-zap
+        version: link:../zap
       next-themes:
         specifier: ^0.4.6
         version: 0.4.6(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
@@ -224,9 +224,9 @@ importers:
       '@pro-laico/ap-site':
         specifier: workspace:*
         version: link:../ap-site
-      '@pro-laico/ap-zap':
+      '@pro-laico/zap':
         specifier: workspace:*
-        version: link:../ap-zap
+        version: link:../zap
     devDependencies:
       '@payloadcms/ui':
         specifier: ^3.79.0
@@ -271,9 +271,9 @@ importers:
       '@pro-laico/ap-core':
         specifier: workspace:*
         version: link:../ap-core
-      '@pro-laico/ap-zap':
+      '@pro-laico/zap':
         specifier: workspace:*
-        version: link:../ap-zap
+        version: link:../zap
       atomic-payload:
         specifier: workspace:*
         version: link:../../templates/atomic-payload
@@ -398,9 +398,9 @@ importers:
       '@pro-laico/ap-images':
         specifier: workspace:*
         version: link:../ap-images
-      '@pro-laico/ap-zap':
+      '@pro-laico/zap':
         specifier: workspace:*
-        version: link:../ap-zap
+        version: link:../zap
     devDependencies:
       '@payloadcms/plugin-nested-docs':
         specifier: ^3.79.0
@@ -455,7 +455,19 @@ importers:
         specifier: 5.8.3
         version: 5.8.3
 
-  packages/ap-zap:
+  packages/create-atomic-payload:
+    dependencies:
+      chalk:
+        specifier: ^5.3.0
+        version: 5.6.2
+      execa:
+        specifier: ^9.5.2
+        version: 9.6.1
+      ora:
+        specifier: ^8.1.1
+        version: 8.2.0
+
+  packages/zap:
     dependencies:
       '@pro-laico/ap-core':
         specifier: workspace:*
@@ -479,18 +491,6 @@ importers:
       typescript:
         specifier: 5.8.3
         version: 5.8.3
-
-  packages/create-atomic-payload:
-    dependencies:
-      chalk:
-        specifier: ^5.3.0
-        version: 5.6.2
-      execa:
-        specifier: ^9.5.2
-        version: 9.6.1
-      ora:
-        specifier: ^8.1.1
-        version: 8.2.0
 
   templates/atomic-payload:
     dependencies:
@@ -584,9 +584,9 @@ importers:
       '@pro-laico/ap-tracking':
         specifier: workspace:*
         version: link:../../packages/ap-tracking
-      '@pro-laico/ap-zap':
+      '@pro-laico/zap':
         specifier: workspace:*
-        version: link:../../packages/ap-zap
+        version: link:../../packages/zap
       '@vercel/analytics':
         specifier: ^1.6.1
         version: 1.6.1(next@16.1.6(@babel/core@7.29.0)(@opentelemetry/api@1.9.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(sass@1.77.4))(react@19.2.4)

@@ -1,4 +1,4 @@
-import { z } from '@pro-laico/ap-zap'
+﻿import { z } from '@pro-laico/zap'
 import { type Tab } from 'payload'
 import { APField, onArraySetAPFShallow } from '@pro-laico/ap-core'
 import { AnimationLabelPath } from '../../paths'
