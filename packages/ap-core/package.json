@@ -1,4 +1,4 @@
-﻿{
+{
   "name": "@pro-laico/ap-core",
   "version": "0.1.0",
   "description": "Atomic Payload core: kernel types (PayloadAugment / Get<>), APF (Atomic Payload Functions), shared utilities, cache helpers, revalidation plugin, JSON-schema plugin, and admin / frontend UI primitives. Replaces the older ap-types + ap-apf + ap-utils trio.",
@@ -95,15 +95,13 @@
     "lint": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@pro-laico/ap-atomic-hook": "workspace:*",
-    "@pro-laico/children": "workspace:*",
     "@pro-laico/ap-design-sets": "workspace:*",
-    "@pro-laico/ap-forms": "workspace:*",
     "@pro-laico/ap-images": "workspace:*",
     "@pro-laico/ap-site": "workspace:*",
     "@pro-laico/ap-tracking": "workspace:*",
     "@types/json-schema": "^7.0.15",
-    "dayjs": "^1.11.13"
+    "dayjs": "^1.11.13",
+    "@pro-laico/atomic": "workspace:*"
   },
   "peerDependencies": {
     "@base-ui-components/react": ">=1.0.0-rc.0",
@@ -117,6 +115,7 @@
   "devDependencies": {
     "@base-ui-components/react": "1.0.0-rc.0",
     "@payloadcms/live-preview-react": "^3.79.0",
+    "@payloadcms/translations": "^3.79.0",
     "@payloadcms/ui": "^3.79.0",
     "@types/react": "^19.2.14",
     "next": "^16.1.6",

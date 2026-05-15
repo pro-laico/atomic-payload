@@ -1,6 +1,6 @@
 /**
  * JSON-schema plugin used by Atomic Payload templates to extend
- * `payload generate:types`. Lives in `@pro-laico/ap-utils` because the helper
+ * `payload generate:types`. Lives in `@pro-laico/ap-core` because the helper
  * factories and the Payload `Plugin` wrapper are foundational utilities used
  * during config build.
  */

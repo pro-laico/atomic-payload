@@ -11,8 +11,8 @@ import {
   generateLivePreviewPath,
 } from '@pro-laico/ap-core'
 import { authd } from '../../access'
-import { ChildrenBlocksField as ChildrenBlocks } from '@pro-laico/children'
-import { atomicHook } from '@pro-laico/ap-atomic-hook'
+import { ChildrenBlocksField as ChildrenBlocks } from '@pro-laico/atomic/children'
+import { atomicHook } from '@pro-laico/atomic/hook'
 
 const APFunctions: APFunction[] = ['form', 'actions', 'classes', 'active']
 

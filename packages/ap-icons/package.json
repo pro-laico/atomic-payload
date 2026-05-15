@@ -64,10 +64,11 @@
   },
   "dependencies": {
     "@pro-laico/ap-core": "workspace:*",
-    "@pro-laico/children": "workspace:*"
+    "@pro-laico/atomic": "workspace:*"
   },
   "peerDependencies": {
     "@payloadcms/ui": ">=3.0.0",
+    "next": ">=15.0.0",
     "payload": ">=3.0.0",
     "react": ">=19.0.0",
     "svg-path-bbox": ">=2.0.0",
@@ -84,6 +85,7 @@
   "devDependencies": {
     "@payloadcms/ui": "^3.79.0",
     "@types/react": "^19.2.14",
+    "next": "^16.1.6",
     "payload": "^3.79.0",
     "react": "^19.2.4",
     "svg-path-bbox": "^2.1.0",

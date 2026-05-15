@@ -24,6 +24,13 @@
       "esbuild",
       "sharp",
       "unrs-resolver"
-    ]
+    ],
+    "packageExtensions": {
+      "next": {
+        "dependencies": {
+          "@babel/core": "7.29.0"
+        }
+      }
+    }
   }
 }

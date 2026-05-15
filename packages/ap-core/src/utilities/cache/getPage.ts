@@ -2,7 +2,7 @@
 import 'server-only' //DO NOT REMOVE
 import { getPayload, Where } from 'payload'
 import type { GCFunction } from '../../types/cache'
-import { manualLogger, sanitizeData } from '@pro-laico/ap-atomic-hook/light'
+import { manualLogger, sanitizeData } from '@pro-laico/atomic/hook/light'
 import cacheLogger from '../cacheLogger'
 
 /** Gets a page by its href. */

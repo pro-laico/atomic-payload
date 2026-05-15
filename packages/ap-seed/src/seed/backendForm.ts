@@ -1,4 +1,4 @@
-import type { Form } from '@pro-laico/ap-forms/schema'
+﻿import type { Form } from '@pro-laico/atomic/forms/schema'
 export const backendForm: Omit<Form, 'createdAt' | 'id' | 'updatedAt'> = {
   title: 'Contact',
   emails: [

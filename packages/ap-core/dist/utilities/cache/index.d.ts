@@ -17,7 +17,7 @@ import { getCachedAtomicActions } from './getAtomicActions';
 import { getCachedFormSubmissions } from './getFormSubmissions';
 import { getCachedIconByName, getCachedIconSet, getCachedIconOptions } from './getIcon';
 import { getCachedAllForms, getCachedAtomicForms, getCachedBackendForms } from './getForms';
-/** The registry of stock getter functions shipped by `@pro-laico/ap-utils`.
+/** The registry of stock getter functions shipped by `@pro-laico/ap-core`.
  *  Consumers can pass this directly to `createGetCached` to get the standard
  *  Atomic Payload caching behavior, or compose a partial set with their own
  *  getters for project-specific tags. */

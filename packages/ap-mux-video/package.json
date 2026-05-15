@@ -40,16 +40,21 @@
   },
   "dependencies": {
     "@pro-laico/ap-core": "workspace:*",
-    "@pro-laico/children": "workspace:*",
-    "@mux/mux-video-react": "^0.25.3"
+    "@mux/mux-video-react": "^0.25.3",
+    "@pro-laico/atomic": "workspace:*"
   },
   "peerDependencies": {
     "@oversightstudio/mux-video": ">=1.0.0",
-    "payload": ">=3.0.0"
+    "next": ">=15.0.0",
+    "payload": ">=3.0.0",
+    "react": ">=19.0.0"
   },
   "devDependencies": {
     "@oversightstudio/mux-video": "^1.4.0",
+    "@types/react": "^19.2.14",
+    "next": "^16.1.6",
     "payload": "^3.79.0",
+    "react": "^19.2.4",
     "typescript": "5.8.3"
   },
   "engines": {

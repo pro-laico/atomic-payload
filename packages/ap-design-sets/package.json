@@ -1,4 +1,4 @@
-﻿{
+{
   "name": "@pro-laico/ap-design-sets",
   "version": "0.1.0",
   "description": "Atomic Payload designSet collection (tabs, token fields, CSS preflight pipeline inputs) and designSetsPlugin. Ships TypeScript source; the app transpiles it.",

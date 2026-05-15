@@ -2,7 +2,7 @@
 import 'server-only' //DO NOT REMOVE
 import { getPayload, Where } from 'payload'
 import type { GCFunction } from '../../types/cache'
-import type { Form, StoredAtomicForm } from '@pro-laico/ap-forms/schema'
+import type { Form, StoredAtomicForm } from '@pro-laico/atomic/forms/schema'
 import cacheLogger from '../cacheLogger'
 
 /** Gets all backend forms stored in the forms collection. */

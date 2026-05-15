@@ -1,9 +1,9 @@
 ﻿'use server'
 import Image from 'next/image'
-import type { RenderChild } from '@pro-laico/children'
+import type { RenderChild } from '@pro-laico/atomic/children'
 import getCached from '@pro-laico/ap-core/cache/auto'
 
-import type { ImageChild as ImageChildType } from '@pro-laico/children/schema'
+import type { ImageChild as ImageChildType } from '@pro-laico/atomic/children/schema'
 export const ImageChild: React.FC<RenderChild<ImageChildType>> = async (props) => {
   const { block, pt } = props
   const { alt = '', src: srcFromProps, ...restP } = pt?.c?.p || {}

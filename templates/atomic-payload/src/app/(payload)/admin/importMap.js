@@ -1,4 +1,4 @@
-﻿import { default as default_5215e20aeb25b2cd792c90e539cc211e } from '@pro-laico/ap-core/admin/label'
+import { default as default_5215e20aeb25b2cd792c90e539cc211e } from '@pro-laico/ap-core/admin/label'
 import { default as default_3432e309cb098c6dc23ba06154c73a10 } from '@pro-laico/ap-core/admin/field'
 import { default as default_4697e1edc3c37e2e6d715e8ea4d6e6f0 } from '@pro-laico/ap-core/ui/fields/slug'
 import { default as default_bc02c4b9cabf46008afea6892e369c49 } from '@pro-laico/ap-core/admin/controls'
@@ -28,12 +28,12 @@ import { StrikethroughFeatureClient as StrikethroughFeatureClient_e70f5e05f09f93
 import { UnderlineFeatureClient as UnderlineFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { BoldFeatureClient as BoldFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { ItalicFeatureClient as ItalicFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
-import { default as default_f9a980e5f09195a507545fcbf364ab62 } from '@pro-laico/children/admin/actionBlock'
-import { default as default_ca33d6b8fda95a85941d0ad162fa128f } from '@pro-laico/children/admin/inputBlock'
-import { default as default_f1623d61309e7ea586ea048540fb4f2e } from '@pro-laico/children/admin/coloredEnd'
-import { default as default_11e44c4db17a66dc0778576de90d1471 } from '@pro-laico/children/admin/atomicRowLabel'
-import { default as default_ee010fa216096ee95ea96fd84622ecc4 } from '@pro-laico/children/admin/simpleTextRowLabel'
-import { default as default_5c35c10ab81c7b511e33e0359fb66f18 } from '@pro-laico/children/admin/iconSelect'
+import { default as default_43998a5142c7a86afa662eea14f61a90 } from '@pro-laico/atomic/children/admin/actionBlock'
+import { default as default_69fe033a6b2e3f12152ab53b9eaa0201 } from '@pro-laico/atomic/children/admin/inputBlock'
+import { default as default_21c0e1ee0403b3b52219b3a0e96bcb0b } from '@pro-laico/atomic/children/admin/coloredEnd'
+import { default as default_3c625db04a316070f486ca31016b45d4 } from '@pro-laico/atomic/children/admin/atomicRowLabel'
+import { default as default_0c40a4f95e0f986a8447b28878625f9d } from '@pro-laico/atomic/children/admin/simpleTextRowLabel'
+import { default as default_457074a5ec488aebf77fc4c416cf2256 } from '@pro-laico/atomic/children/admin/iconSelect'
 import { default as default_31e7983ad92c1ad30fcfef2a2c92e0de } from '@/ui/assets/Icon'
 import { default as default_0b906f3c09bdf05f31dac97d0009f13f } from '@/ui/assets/Logo'
 import { default as default_88fe4416561ddefdd63d9d2d572613f7 } from '@pro-laico/ap-seed/admin/beforeDashboard'
@@ -72,12 +72,12 @@ export const importMap = {
   "@payloadcms/richtext-lexical/client#UnderlineFeatureClient": UnderlineFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "@payloadcms/richtext-lexical/client#BoldFeatureClient": BoldFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "@payloadcms/richtext-lexical/client#ItalicFeatureClient": ItalicFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
-  "@pro-laico/children/admin/actionBlock#default": default_f9a980e5f09195a507545fcbf364ab62,
-  "@pro-laico/children/admin/inputBlock#default": default_ca33d6b8fda95a85941d0ad162fa128f,
-  "@pro-laico/children/admin/coloredEnd#default": default_f1623d61309e7ea586ea048540fb4f2e,
-  "@pro-laico/children/admin/atomicRowLabel#default": default_11e44c4db17a66dc0778576de90d1471,
-  "@pro-laico/children/admin/simpleTextRowLabel#default": default_ee010fa216096ee95ea96fd84622ecc4,
-  "@pro-laico/children/admin/iconSelect#default": default_5c35c10ab81c7b511e33e0359fb66f18,
+  "@pro-laico/atomic/children/admin/actionBlock#default": default_43998a5142c7a86afa662eea14f61a90,
+  "@pro-laico/atomic/children/admin/inputBlock#default": default_69fe033a6b2e3f12152ab53b9eaa0201,
+  "@pro-laico/atomic/children/admin/coloredEnd#default": default_21c0e1ee0403b3b52219b3a0e96bcb0b,
+  "@pro-laico/atomic/children/admin/atomicRowLabel#default": default_3c625db04a316070f486ca31016b45d4,
+  "@pro-laico/atomic/children/admin/simpleTextRowLabel#default": default_0c40a4f95e0f986a8447b28878625f9d,
+  "@pro-laico/atomic/children/admin/iconSelect#default": default_457074a5ec488aebf77fc4c416cf2256,
   "@/ui/assets/Icon#default": default_31e7983ad92c1ad30fcfef2a2c92e0de,
   "@/ui/assets/Logo#default": default_0b906f3c09bdf05f31dac97d0009f13f,
   "@pro-laico/ap-seed/admin/beforeDashboard#default": default_88fe4416561ddefdd63d9d2d572613f7,

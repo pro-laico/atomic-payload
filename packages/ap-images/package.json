@@ -44,11 +44,13 @@
   },
   "dependencies": {
     "@pro-laico/ap-core": "workspace:*",
-    "@pro-laico/children": "workspace:*"
+    "@pro-laico/atomic": "workspace:*"
   },
   "peerDependencies": {
     "@oversightstudio/blur-data-urls": ">=1.0.0",
-    "payload": ">=3.0.0"
+    "next": ">=15.0.0",
+    "payload": ">=3.0.0",
+    "react": ">=19.0.0"
   },
   "peerDependenciesMeta": {
     "@oversightstudio/blur-data-urls": {
@@ -57,7 +59,10 @@
   },
   "devDependencies": {
     "@oversightstudio/blur-data-urls": "^1.0.4",
+    "@types/react": "^19.2.14",
+    "next": "^16.1.6",
     "payload": "^3.79.0",
+    "react": "^19.2.4",
     "typescript": "5.8.3"
   },
   "engines": {

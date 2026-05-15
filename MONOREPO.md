@@ -41,11 +41,11 @@ atomic-payload/
 | `@pro-laico/ap-fonts`        | fontsPlugin + Font collection + font download CLI / API            |
 | `@pro-laico/ap-mux-video`    | MuxVideo extension collection + plugin wrapper                  |
 | `@pro-laico/ap-tracking`                 | Tracking plugin: Tracking global (GTM + PostHog tabs + toggles) + PostHogProperty collection + GTM/PostHog/Vercel/composite providers |
-| `@pro-laico/ap-actions`    | actionsPlugin + action blocks + type re-exports                 |
-| `@pro-laico/ap-forms`      | formsPlugin + submit-form SVR blocks + server processor         |
-| `@pro-laico/children` | childBlocksPlugin + default child blocks                      |
+| `@pro-laico/atomic/actions`    | actionsPlugin + action blocks + type re-exports                 |
+| `@pro-laico/atomic/forms`      | formsPlugin + submit-form SVR blocks + server processor         |
+| `@pro-laico/atomic/children` | childBlocksPlugin + default child blocks                      |
 | `@pro-laico/ap-design-sets`  | designSetsPlugin: `designSet` + `shortcutSet` collections + token fields |
-| `@pro-laico/ap-atomic-hook`  | atomicHookPlugin + sanitizeData + manualLogger                  |
+| `@pro-laico/atomic/hook`  | atomicHookPlugin + sanitizeData + manualLogger                  |
 
 ## Templates
 

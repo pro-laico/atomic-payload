@@ -1,4 +1,4 @@
-﻿{
+{
   "name": "atomic-payload",
   "version": "0.2.0",
   "description": "The Payload CMS Starter Where All You Need To Know Is Tailwind.",
@@ -25,11 +25,7 @@
     "@pro-laico/ap-richtext": "workspace:*",
     "@pro-laico/ap-tracking": "workspace:*",
     "@pro-laico/ap-seed": "workspace:*",
-    "@pro-laico/ap-actions": "workspace:*",
-    "@pro-laico/ap-forms": "workspace:*",
     "@pro-laico/ap-design-sets": "workspace:*",
-    "@pro-laico/ap-atomic-hook": "workspace:*",
-    "@pro-laico/children": "workspace:*",
     "@pro-laico/ap-site": "workspace:*",
     "@base-ui-components/react": "1.0.0-rc.0",
     "@mux/blurup": "^1.0.2",
@@ -65,7 +61,8 @@
     "traverse": "^0.6.11",
     "zod": "4.1.11",
     "zustand": "^5.0.11",
-    "@pro-laico/ap-core": "workspace:*"
+    "@pro-laico/ap-core": "workspace:*",
+    "@pro-laico/atomic": "workspace:*"
   },
   "devDependencies": {
     "@types/json-schema": "^7.0.15",

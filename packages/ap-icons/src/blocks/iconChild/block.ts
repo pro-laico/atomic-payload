@@ -1,9 +1,9 @@
-import type { Block } from 'payload'
-import { TrackingTab } from '@pro-laico/children/fields/trackingTab'
-import { IconSelectPath } from '@pro-laico/children/admin'
+﻿import type { Block } from 'payload'
+import { TrackingTab } from '@pro-laico/atomic/children/fields/trackingTab'
+import { IconSelectPath } from '@pro-laico/atomic/children/admin'
 import { ClassNameField } from '@pro-laico/ap-core'
-import { ColoredEnd } from '@pro-laico/children/fields/coloredEnd'
-import { ChildsSettingsTab } from '@pro-laico/children/fields/tabs/settings'
+import { ColoredEnd } from '@pro-laico/atomic/children/fields/coloredEnd'
+import { ChildsSettingsTab } from '@pro-laico/atomic/children/fields/tabs/settings'
 
 const d = {
   icon: 'Select an icon to display.',

@@ -33,7 +33,7 @@
   },
   "dependencies": {
     "@pro-laico/ap-core": "workspace:*",
-    "@pro-laico/children": "workspace:*"
+    "@pro-laico/atomic": "workspace:*"
   },
   "peerDependencies": {
     "@payloadcms/richtext-lexical": ">=3.0.0",

@@ -1,1 +1,1 @@
-{"version":3,"file":"sanitize.js","sourceRoot":"","sources":["../../../src/hooks/collection/sanitize.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,YAAY,EAAE,MAAM,iCAAiC,CAAA;AAG9D,mKAAmK;AACnK,MAAM,CAAC,MAAM,iBAAiB,GAA4B,KAAK,EAAE,EAAE,GAAG,EAAE,EAAE,EAAE,CAAC,YAAY,CAAC,GAAG,CAAC,CAAA"}
+{"version":3,"file":"sanitize.js","sourceRoot":"","sources":["../../../src/hooks/collection/sanitize.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,YAAY,EAAE,MAAM,8BAA8B,CAAA;AAG3D,mKAAmK;AACnK,MAAM,CAAC,MAAM,iBAAiB,GAA4B,KAAK,EAAE,EAAE,GAAG,EAAE,EAAE,EAAE,CAAC,YAAY,CAAC,GAAG,CAAC,CAAA"}

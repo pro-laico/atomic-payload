@@ -1,5 +1,5 @@
 /**
- * Hand-written types owned by `@pro-laico/ap-apf`.
+ * Hand-written types owned by `@pro-laico/ap-core`.
  */
 import type { NumberFieldClientProps, RequestContext } from 'payload';
 import type { TextField, SelectField, NumberField, TextareaField, CheckboxField, TextFieldClientProps, SelectFieldClientProps, TextareaFieldClientProps, CheckboxFieldClientProps } from 'payload';

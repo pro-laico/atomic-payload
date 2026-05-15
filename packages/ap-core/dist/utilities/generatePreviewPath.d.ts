@@ -7,7 +7,7 @@ type Props = {
  *  pages-with-href (uses the latest breadcrumb), pages-with-testPath (looks up
  *  the target page), and falls back to `/testing`. The host project must
  *  provide a `/next/preview` route handler (see
- *  `@pro-laico/ap-utils/next/preview`). */
+ *  `@pro-laico/ap-core/next/preview`). */
 export declare const generateLivePreviewPath: ({ data, req: { payload } }: Props) => Promise<string>;
 export {};
 //# sourceMappingURL=generatePreviewPath.d.ts.map

@@ -4,13 +4,13 @@
  */
 import type { SanitizedConfig } from 'payload';
 import type { MergeTuples } from '../kernel';
-import type { Form, FormSubmission, StoredAtomicForm } from '@pro-laico/ap-forms/schema';
-import type { ModifiedStoredAtomicForm } from '@pro-laico/ap-forms';
-import type { ImageChild } from '@pro-laico/children/schema';
+import type { Form, FormSubmission, StoredAtomicForm } from '@pro-laico/atomic/forms/schema';
+import type { ModifiedStoredAtomicForm } from '@pro-laico/atomic/forms';
+import type { ImageChild } from '@pro-laico/atomic/children/schema';
 import type { Page, Header, Footer, ShortcutSet, SiteMetaDatum } from '@pro-laico/ap-site/schema';
 import type { Tracking } from '@pro-laico/ap-tracking/schema';
 import type { DesignSet } from '@pro-laico/ap-design-sets/schema';
-import type { AtomicStoreInitialState } from '@pro-laico/ap-atomic-hook';
+import type { AtomicStoreInitialState } from '@pro-laico/atomic/hook';
 /** The Payload config (or its resolution promise) that getter functions need to instantiate a Payload local-API client. */
 export type PayloadConfigPromise = SanitizedConfig | Promise<SanitizedConfig>;
 /** Array elements data returned by the getCached<'sitemap'> function. */

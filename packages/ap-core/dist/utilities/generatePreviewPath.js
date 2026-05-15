@@ -3,7 +3,7 @@ import { getClientSideURL } from './getURL';
  *  pages-with-href (uses the latest breadcrumb), pages-with-testPath (looks up
  *  the target page), and falls back to `/testing`. The host project must
  *  provide a `/next/preview` route handler (see
- *  `@pro-laico/ap-utils/next/preview`). */
+ *  `@pro-laico/ap-core/next/preview`). */
 export const generateLivePreviewPath = async ({ data, req: { payload } }) => {
     try {
         let slug = typeof data?.title === 'string' ? data.title : 'testing';

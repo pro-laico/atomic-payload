@@ -1,9 +1,9 @@
-import type { Block } from 'payload'
-import { TagTypeField } from '@pro-laico/children/fields/tagType'
-import { TrackingTab } from '@pro-laico/children/fields/trackingTab'
+﻿import type { Block } from 'payload'
+import { TagTypeField } from '@pro-laico/atomic/children/fields/tagType'
+import { TrackingTab } from '@pro-laico/atomic/children/fields/trackingTab'
 import { ClassNameField } from '@pro-laico/ap-core'
-import { ColoredEnd } from '@pro-laico/children/fields/coloredEnd'
-import { ChildsSettingsTab } from '@pro-laico/children/fields/tabs/settings'
+import { ColoredEnd } from '@pro-laico/atomic/children/fields/coloredEnd'
+import { ChildsSettingsTab } from '@pro-laico/atomic/children/fields/tabs/settings'
 
 const d = {
   video: 'Select the video to be displayed.',
