@@ -1,6 +1,6 @@
-﻿'use server'
+'use server'
 
-import getCached from '@pro-laico/ap-core/cache/auto'
+import getCached from '@pro-laico/core/cache/auto'
 import { SubmitFormFunction } from '@pro-laico/atomic/forms'
 import { getSubmitFormProcessor } from './formProcessor'
 import { getServerSideURL } from '../utilities/getServerSideURL'

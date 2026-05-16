@@ -1,12 +1,12 @@
-﻿'use server'
+'use server'
 import React from 'react'
 import type { Metadata } from 'next'
 import { draftMode } from 'next/headers'
 import { notFound } from 'next/navigation'
-import getCached from '@pro-laico/ap-core/cache/auto'
-import { GenerateMetaData } from '@pro-laico/ap-core'
+import getCached from '@pro-laico/core/cache/auto'
+import { GenerateMetaData } from '@pro-laico/core'
 import { RenderChildren } from '@pro-laico/atomic/children/render'
-import LivePreviewListener from '@pro-laico/ap-core/components/frontend/LivePreviewListener'
+import LivePreviewListener from '@pro-laico/core/components/frontend/LivePreviewListener'
 
 type Props = { params: Promise<{ slug?: string[] }> }
 

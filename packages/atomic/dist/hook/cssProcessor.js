@@ -1,6 +1,6 @@
 import { deepMerge } from '@pro-laico/ap-apf';
 import manualLogger from './utilities/manualLogger';
-import { defaultAtomicClasses } from '@pro-laico/ap-design-sets/designSet/defaults';
+import { defaultAtomicClasses } from '@pro-laico/design-sets/designSet/defaults';
 import { createGenerator, presetWind4, presetAttributify, presetTypography } from 'unocss';
 export function createCssProcessor(getCached) {
     return async ({ slug, context, draft, req }) => {

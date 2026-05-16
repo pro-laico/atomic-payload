@@ -1,4 +1,4 @@
-﻿//Plugin Imports
+//Plugin Imports
 import { Plugin } from 'payload'
 
 //Plugin Configurations
@@ -9,13 +9,13 @@ import { blurDataUrlsPluginConfig } from './blurDataUrls'
 import { vercelBlobStoragePluginConfig } from './vercelBlobStorage'
 
 // Atomic Payload package plugins
-import { revalidationPlugin } from '@pro-laico/ap-core'
+import { revalidationPlugin } from '@pro-laico/core'
 import { formsPlugin } from '@pro-laico/atomic/forms'
 import { actionsPlugin } from '@pro-laico/atomic/actions'
 import { childBlocksPlugin } from '@pro-laico/atomic/children'
-import { trackingPlugin } from '@pro-laico/ap-tracking'
-import { seedPlugin } from '@pro-laico/ap-seed'
-import { sitePlugin } from '@pro-laico/ap-site'
+import { trackingPlugin } from '@pro-laico/tracking'
+import { seedPlugin } from '@pro-laico/seed'
+import { sitePlugin } from '@pro-laico/site'
 import { fontsPluginConfig } from './fonts'
 import { iconsPluginConfig } from './icons'
 import { imagesPluginConfig } from './images'

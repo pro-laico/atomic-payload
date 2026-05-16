@@ -1,5 +1,5 @@
 import { TextField } from 'payload'
-import { APField } from '@pro-laico/ap-core'
+import { APField } from '@pro-laico/core'
 
 const backendFormField: TextField = APField({
   type: 'text',

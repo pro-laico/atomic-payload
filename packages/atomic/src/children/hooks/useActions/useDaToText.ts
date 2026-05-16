@@ -1,6 +1,6 @@
 'use client'
 import { useMemo } from 'react'
-import { toKebabCase } from '@pro-laico/ap-core'
+import { toKebabCase } from '@pro-laico/core'
 
 export type UseDaToTextProps = {
   text: string

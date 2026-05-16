@@ -1,6 +1,6 @@
 'use server'
 import type { MetadataRoute } from 'next'
-import getCached from '@pro-laico/ap-core/cache/auto'
+import getCached from '@pro-laico/core/cache/auto'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   try {

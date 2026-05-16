@@ -198,13 +198,13 @@
   },
   "dependencies": {
     "@base-ui-components/react": "1.0.0-rc.0",
-    "@pro-laico/ap-core": "workspace:*",
-    "@pro-laico/ap-design-sets": "workspace:*",
-    "@pro-laico/ap-icons": "workspace:*",
-    "@pro-laico/ap-images": "workspace:*",
-    "@pro-laico/ap-mux-video": "workspace:*",
-    "@pro-laico/ap-richtext": "workspace:*",
-    "@pro-laico/ap-site": "workspace:*",
+    "@pro-laico/core": "workspace:*",
+    "@pro-laico/design-sets": "workspace:*",
+    "@pro-laico/icons": "workspace:*",
+    "@pro-laico/images": "workspace:*",
+    "@pro-laico/mux-video": "workspace:*",
+    "@pro-laico/richtext": "workspace:*",
+    "@pro-laico/site": "workspace:*",
     "@pro-laico/zap": "workspace:*",
     "dayjs": "^1.11.19",
     "next-themes": "^0.4.6",
@@ -214,7 +214,7 @@
     "@mux/blurup": ">=1.0.0",
     "@payloadcms/richtext-lexical": ">=3.0.0",
     "@payloadcms/ui": ">=3.0.0",
-    "@pro-laico/ap-tracking": "workspace:*",
+    "@pro-laico/tracking": "workspace:*",
     "next": ">=15.0.0",
     "payload": ">=3.0.0",
     "react": ">=19.0.0",
@@ -227,7 +227,7 @@
     "@mux/blurup": {
       "optional": true
     },
-    "@pro-laico/ap-tracking": {
+    "@pro-laico/tracking": {
       "optional": true
     },
     "unocss": {
@@ -241,7 +241,7 @@
     "@mux/blurup": "^1.0.2",
     "@payloadcms/richtext-lexical": "^3.79.0",
     "@payloadcms/ui": "^3.79.0",
-    "@pro-laico/ap-tracking": "workspace:*",
+    "@pro-laico/tracking": "workspace:*",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@types/traverse": "^0.6.37",

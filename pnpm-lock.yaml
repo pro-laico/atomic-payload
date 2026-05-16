@@ -10,23 +10,108 @@ importers:
 
   .: {}
 
-  packages/ap-core:
+  packages/atomic:
     dependencies:
-      '@pro-laico/ap-design-sets':
+      '@base-ui-components/react':
+        specifier: 1.0.0-rc.0
+        version: 1.0.0-rc.0(@types/react@19.2.14)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      '@pro-laico/core':
         specifier: workspace:*
-        version: link:../ap-design-sets
-      '@pro-laico/ap-images':
+        version: link:../core
+      '@pro-laico/design-sets':
         specifier: workspace:*
-        version: link:../ap-images
-      '@pro-laico/ap-site':
+        version: link:../design-sets
+      '@pro-laico/icons':
         specifier: workspace:*
-        version: link:../ap-site
-      '@pro-laico/ap-tracking':
+        version: link:../icons
+      '@pro-laico/images':
         specifier: workspace:*
-        version: link:../ap-tracking
+        version: link:../images
+      '@pro-laico/mux-video':
+        specifier: workspace:*
+        version: link:../mux-video
+      '@pro-laico/richtext':
+        specifier: workspace:*
+        version: link:../richtext
+      '@pro-laico/site':
+        specifier: workspace:*
+        version: link:../site
+      '@pro-laico/zap':
+        specifier: workspace:*
+        version: link:../zap
+      dayjs:
+        specifier: ^1.11.19
+        version: 1.11.19
+      next-themes:
+        specifier: ^0.4.6
+        version: 0.4.6(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      traverse:
+        specifier: ^0.6.11
+        version: 0.6.11
+    devDependencies:
+      '@mux/blurup':
+        specifier: ^1.0.2
+        version: 1.0.2
+      '@payloadcms/richtext-lexical':
+        specifier: ^3.79.0
+        version: 3.79.0(@faceless-ui/modal@3.0.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(@faceless-ui/scroll-info@2.0.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(@payloadcms/next@3.79.0(@types/react@19.2.14)(graphql@16.11.0)(monaco-editor@0.52.2)(next@16.1.6(@opentelemetry/api@1.9.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(sass@1.77.4))(payload@3.79.0(graphql@16.11.0)(typescript@5.8.3))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(typescript@5.8.3))(@types/react@19.2.14)(monaco-editor@0.52.2)(next@16.1.6(@opentelemetry/api@1.9.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(sass@1.77.4))(payload@3.79.0(graphql@16.11.0)(typescript@5.8.3))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(typescript@5.8.3)(yjs@13.6.27)
+      '@payloadcms/ui':
+        specifier: ^3.79.0
+        version: 3.79.0(@types/react@19.2.14)(monaco-editor@0.52.2)(next@16.1.6(@opentelemetry/api@1.9.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(sass@1.77.4))(payload@3.79.0(graphql@16.11.0)(typescript@5.8.3))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(typescript@5.8.3)
+      '@pro-laico/tracking':
+        specifier: workspace:*
+        version: link:../tracking
+      '@types/react':
+        specifier: ^19.2.14
+        version: 19.2.14
+      '@types/react-dom':
+        specifier: ^19.2.3
+        version: 19.2.3(@types/react@19.2.14)
+      '@types/traverse':
+        specifier: ^0.6.37
+        version: 0.6.37
+      next:
+        specifier: ^16.1.6
+        version: 16.1.6(@opentelemetry/api@1.9.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(sass@1.77.4)
+      payload:
+        specifier: ^3.79.0
+        version: 3.79.0(graphql@16.11.0)(typescript@5.8.3)
+      react:
+        specifier: ^19.2.4
+        version: 19.2.4
+      react-dom:
+        specifier: ^19.2.4
+        version: 19.2.4(react@19.2.4)
+      server-only:
+        specifier: ^0.0.1
+        version: 0.0.1
+      typescript:
+        specifier: 5.8.3
+        version: 5.8.3
+      unocss:
+        specifier: ^66.6.6
+        version: 66.6.6(vite@7.1.3(@types/node@22.19.15)(jiti@2.6.1)(sass@1.77.4)(tsx@4.21.0))
+      zustand:
+        specifier: ^5.0.11
+        version: 5.0.11(@types/react@19.2.14)(react@19.2.4)(use-sync-external-store@1.6.0(react@19.2.4))
+
+  packages/core:
+    dependencies:
       '@pro-laico/atomic':
         specifier: workspace:*
         version: link:../atomic
+      '@pro-laico/design-sets':
+        specifier: workspace:*
+        version: link:../design-sets
+      '@pro-laico/images':
+        specifier: workspace:*
+        version: link:../images
+      '@pro-laico/site':
+        specifier: workspace:*
+        version: link:../site
+      '@pro-laico/tracking':
+        specifier: workspace:*
+        version: link:../tracking
       '@types/json-schema':
         specifier: ^7.0.15
         version: 7.0.15
@@ -65,14 +150,26 @@ importers:
         specifier: 5.8.3
         version: 5.8.3
 
-  packages/ap-design-sets:
+  packages/create-atomic-payload:
     dependencies:
-      '@pro-laico/ap-core':
+      chalk:
+        specifier: ^5.3.0
+        version: 5.6.2
+      execa:
+        specifier: ^9.5.2
+        version: 9.6.1
+      ora:
+        specifier: ^8.1.1
+        version: 8.2.0
+
+  packages/design-sets:
+    dependencies:
+      '@pro-laico/core':
         specifier: workspace:*
-        version: link:../ap-core
-      '@pro-laico/ap-site':
+        version: link:../core
+      '@pro-laico/site':
         specifier: workspace:*
-        version: link:../ap-site
+        version: link:../site
       '@pro-laico/zap':
         specifier: workspace:*
         version: link:../zap
@@ -93,11 +190,11 @@ importers:
         specifier: 5.8.3
         version: 5.8.3
 
-  packages/ap-fonts:
+  packages/fonts:
     dependencies:
-      '@pro-laico/ap-core':
+      '@pro-laico/core':
         specifier: workspace:*
-        version: link:../ap-core
+        version: link:../core
     devDependencies:
       '@payloadcms/sdk':
         specifier: ^3.79.0
@@ -112,14 +209,14 @@ importers:
         specifier: 5.8.3
         version: 5.8.3
 
-  packages/ap-icons:
+  packages/icons:
     dependencies:
-      '@pro-laico/ap-core':
-        specifier: workspace:*
-        version: link:../ap-core
       '@pro-laico/atomic':
         specifier: workspace:*
         version: link:../atomic
+      '@pro-laico/core':
+        specifier: workspace:*
+        version: link:../core
     devDependencies:
       '@payloadcms/ui':
         specifier: ^3.79.0
@@ -146,14 +243,14 @@ importers:
         specifier: 5.8.3
         version: 5.8.3
 
-  packages/ap-images:
+  packages/images:
     dependencies:
-      '@pro-laico/ap-core':
-        specifier: workspace:*
-        version: link:../ap-core
       '@pro-laico/atomic':
         specifier: workspace:*
         version: link:../atomic
+      '@pro-laico/core':
+        specifier: workspace:*
+        version: link:../core
     devDependencies:
       '@oversightstudio/blur-data-urls':
         specifier: ^1.0.4
@@ -174,17 +271,17 @@ importers:
         specifier: 5.8.3
         version: 5.8.3
 
-  packages/ap-mux-video:
+  packages/mux-video:
     dependencies:
       '@mux/mux-video-react':
         specifier: ^0.25.3
         version: 0.25.3(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
-      '@pro-laico/ap-core':
-        specifier: workspace:*
-        version: link:../ap-core
       '@pro-laico/atomic':
         specifier: workspace:*
         version: link:../atomic
+      '@pro-laico/core':
+        specifier: workspace:*
+        version: link:../core
     devDependencies:
       '@oversightstudio/mux-video':
         specifier: ^1.4.0
@@ -205,14 +302,14 @@ importers:
         specifier: 5.8.3
         version: 5.8.3
 
-  packages/ap-richtext:
+  packages/richtext:
     dependencies:
-      '@pro-laico/ap-core':
-        specifier: workspace:*
-        version: link:../ap-core
       '@pro-laico/atomic':
         specifier: workspace:*
         version: link:../atomic
+      '@pro-laico/core':
+        specifier: workspace:*
+        version: link:../core
     devDependencies:
       '@payloadcms/richtext-lexical':
         specifier: ^3.79.0
@@ -230,23 +327,23 @@ importers:
         specifier: 5.8.3
         version: 5.8.3
 
-  packages/ap-seed:
+  packages/seed:
     dependencies:
-      '@pro-laico/ap-core':
-        specifier: workspace:*
-        version: link:../ap-core
-      '@pro-laico/ap-design-sets':
-        specifier: workspace:*
-        version: link:../ap-design-sets
-      '@pro-laico/ap-icons':
-        specifier: workspace:*
-        version: link:../ap-icons
-      '@pro-laico/ap-site':
-        specifier: workspace:*
-        version: link:../ap-site
       '@pro-laico/atomic':
         specifier: workspace:*
         version: link:../atomic
+      '@pro-laico/core':
+        specifier: workspace:*
+        version: link:../core
+      '@pro-laico/design-sets':
+        specifier: workspace:*
+        version: link:../design-sets
+      '@pro-laico/icons':
+        specifier: workspace:*
+        version: link:../icons
+      '@pro-laico/site':
+        specifier: workspace:*
+        version: link:../site
     devDependencies:
       '@payloadcms/ui':
         specifier: ^3.79.0
@@ -267,17 +364,17 @@ importers:
         specifier: 5.8.3
         version: 5.8.3
 
-  packages/ap-site:
+  packages/site:
     dependencies:
-      '@pro-laico/ap-core':
-        specifier: workspace:*
-        version: link:../ap-core
-      '@pro-laico/ap-images':
-        specifier: workspace:*
-        version: link:../ap-images
       '@pro-laico/atomic':
         specifier: workspace:*
         version: link:../atomic
+      '@pro-laico/core':
+        specifier: workspace:*
+        version: link:../core
+      '@pro-laico/images':
+        specifier: workspace:*
+        version: link:../images
       '@pro-laico/zap':
         specifier: workspace:*
         version: link:../zap
@@ -304,11 +401,11 @@ importers:
         specifier: 5.8.3
         version: 5.8.3
 
-  packages/ap-tracking:
+  packages/tracking:
     dependencies:
-      '@pro-laico/ap-core':
+      '@pro-laico/core':
         specifier: workspace:*
-        version: link:../ap-core
+        version: link:../core
     devDependencies:
       '@next/third-parties':
         specifier: ^16.1.6
@@ -335,108 +432,11 @@ importers:
         specifier: 5.8.3
         version: 5.8.3
 
-  packages/atomic:
-    dependencies:
-      '@base-ui-components/react':
-        specifier: 1.0.0-rc.0
-        version: 1.0.0-rc.0(@types/react@19.2.14)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
-      '@pro-laico/ap-core':
-        specifier: workspace:*
-        version: link:../ap-core
-      '@pro-laico/ap-design-sets':
-        specifier: workspace:*
-        version: link:../ap-design-sets
-      '@pro-laico/ap-icons':
-        specifier: workspace:*
-        version: link:../ap-icons
-      '@pro-laico/ap-images':
-        specifier: workspace:*
-        version: link:../ap-images
-      '@pro-laico/ap-mux-video':
-        specifier: workspace:*
-        version: link:../ap-mux-video
-      '@pro-laico/ap-richtext':
-        specifier: workspace:*
-        version: link:../ap-richtext
-      '@pro-laico/ap-site':
-        specifier: workspace:*
-        version: link:../ap-site
-      '@pro-laico/zap':
-        specifier: workspace:*
-        version: link:../zap
-      dayjs:
-        specifier: ^1.11.19
-        version: 1.11.19
-      next-themes:
-        specifier: ^0.4.6
-        version: 0.4.6(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
-      traverse:
-        specifier: ^0.6.11
-        version: 0.6.11
-    devDependencies:
-      '@mux/blurup':
-        specifier: ^1.0.2
-        version: 1.0.2
-      '@payloadcms/richtext-lexical':
-        specifier: ^3.79.0
-        version: 3.79.0(@faceless-ui/modal@3.0.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(@faceless-ui/scroll-info@2.0.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(@payloadcms/next@3.79.0(@types/react@19.2.14)(graphql@16.11.0)(monaco-editor@0.52.2)(next@16.1.6(@opentelemetry/api@1.9.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(sass@1.77.4))(payload@3.79.0(graphql@16.11.0)(typescript@5.8.3))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(typescript@5.8.3))(@types/react@19.2.14)(monaco-editor@0.52.2)(next@16.1.6(@opentelemetry/api@1.9.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(sass@1.77.4))(payload@3.79.0(graphql@16.11.0)(typescript@5.8.3))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(typescript@5.8.3)(yjs@13.6.27)
-      '@payloadcms/ui':
-        specifier: ^3.79.0
-        version: 3.79.0(@types/react@19.2.14)(monaco-editor@0.52.2)(next@16.1.6(@opentelemetry/api@1.9.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(sass@1.77.4))(payload@3.79.0(graphql@16.11.0)(typescript@5.8.3))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(typescript@5.8.3)
-      '@pro-laico/ap-tracking':
-        specifier: workspace:*
-        version: link:../ap-tracking
-      '@types/react':
-        specifier: ^19.2.14
-        version: 19.2.14
-      '@types/react-dom':
-        specifier: ^19.2.3
-        version: 19.2.3(@types/react@19.2.14)
-      '@types/traverse':
-        specifier: ^0.6.37
-        version: 0.6.37
-      next:
-        specifier: ^16.1.6
-        version: 16.1.6(@opentelemetry/api@1.9.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(sass@1.77.4)
-      payload:
-        specifier: ^3.79.0
-        version: 3.79.0(graphql@16.11.0)(typescript@5.8.3)
-      react:
-        specifier: ^19.2.4
-        version: 19.2.4
-      react-dom:
-        specifier: ^19.2.4
-        version: 19.2.4(react@19.2.4)
-      server-only:
-        specifier: ^0.0.1
-        version: 0.0.1
-      typescript:
-        specifier: 5.8.3
-        version: 5.8.3
-      unocss:
-        specifier: ^66.6.6
-        version: 66.6.6(vite@7.1.3(@types/node@22.19.15)(jiti@2.6.1)(sass@1.77.4)(tsx@4.21.0))
-      zustand:
-        specifier: ^5.0.11
-        version: 5.0.11(@types/react@19.2.14)(react@19.2.4)(use-sync-external-store@1.6.0(react@19.2.4))
-
-  packages/create-atomic-payload:
-    dependencies:
-      chalk:
-        specifier: ^5.3.0
-        version: 5.6.2
-      execa:
-        specifier: ^9.5.2
-        version: 9.6.1
-      ora:
-        specifier: ^8.1.1
-        version: 8.2.0
-
   packages/zap:
     dependencies:
-      '@pro-laico/ap-core':
+      '@pro-laico/core':
         specifier: workspace:*
-        version: link:../ap-core
+        version: link:../core
       server-only:
         specifier: ^0.0.1
         version: 0.0.1
@@ -510,39 +510,39 @@ importers:
       '@payloadcms/ui':
         specifier: ^3.79.0
         version: 3.79.0(@types/react@19.2.14)(monaco-editor@0.52.2)(next@16.1.6(@opentelemetry/api@1.9.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(sass@1.77.4))(payload@3.79.0(graphql@16.11.0)(typescript@5.8.3))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(typescript@5.8.3)
-      '@pro-laico/ap-core':
-        specifier: workspace:*
-        version: link:../../packages/ap-core
-      '@pro-laico/ap-design-sets':
-        specifier: workspace:*
-        version: link:../../packages/ap-design-sets
-      '@pro-laico/ap-fonts':
-        specifier: workspace:*
-        version: link:../../packages/ap-fonts
-      '@pro-laico/ap-icons':
-        specifier: workspace:*
-        version: link:../../packages/ap-icons
-      '@pro-laico/ap-images':
-        specifier: workspace:*
-        version: link:../../packages/ap-images
-      '@pro-laico/ap-mux-video':
-        specifier: workspace:*
-        version: link:../../packages/ap-mux-video
-      '@pro-laico/ap-richtext':
-        specifier: workspace:*
-        version: link:../../packages/ap-richtext
-      '@pro-laico/ap-seed':
-        specifier: workspace:*
-        version: link:../../packages/ap-seed
-      '@pro-laico/ap-site':
-        specifier: workspace:*
-        version: link:../../packages/ap-site
-      '@pro-laico/ap-tracking':
-        specifier: workspace:*
-        version: link:../../packages/ap-tracking
       '@pro-laico/atomic':
         specifier: workspace:*
         version: link:../../packages/atomic
+      '@pro-laico/core':
+        specifier: workspace:*
+        version: link:../../packages/core
+      '@pro-laico/design-sets':
+        specifier: workspace:*
+        version: link:../../packages/design-sets
+      '@pro-laico/fonts':
+        specifier: workspace:*
+        version: link:../../packages/fonts
+      '@pro-laico/icons':
+        specifier: workspace:*
+        version: link:../../packages/icons
+      '@pro-laico/images':
+        specifier: workspace:*
+        version: link:../../packages/images
+      '@pro-laico/mux-video':
+        specifier: workspace:*
+        version: link:../../packages/mux-video
+      '@pro-laico/richtext':
+        specifier: workspace:*
+        version: link:../../packages/richtext
+      '@pro-laico/seed':
+        specifier: workspace:*
+        version: link:../../packages/seed
+      '@pro-laico/site':
+        specifier: workspace:*
+        version: link:../../packages/site
+      '@pro-laico/tracking':
+        specifier: workspace:*
+        version: link:../../packages/tracking
       '@pro-laico/zap':
         specifier: workspace:*
         version: link:../../packages/zap
@@ -643,12 +643,12 @@ importers:
       '@payloadcms/ui':
         specifier: ^3.79.0
         version: 3.79.0(@types/react@19.2.14)(monaco-editor@0.52.2)(next@16.1.6(@opentelemetry/api@1.9.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(sass@1.77.4))(payload@3.79.0(graphql@16.11.0)(typescript@5.8.3))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(typescript@5.8.3)
-      '@pro-laico/ap-core':
+      '@pro-laico/core':
         specifier: workspace:*
-        version: link:../../packages/ap-core
-      '@pro-laico/ap-icons':
+        version: link:../../packages/core
+      '@pro-laico/icons':
         specifier: workspace:*
-        version: link:../../packages/ap-icons
+        version: link:../../packages/icons
       cross-env:
         specifier: ^10.1.0
         version: 10.1.0

@@ -1,4 +1,4 @@
-﻿# Monorepo Development
+# Monorepo Development
 
 This document is for contributors and maintainers working on the Atomic Payload monorepoâ€”structure, local development, publishing the CLI, and adding plugins.
 
@@ -36,15 +36,15 @@ atomic-payload/
 | `@pro-laico/zap`          | zod + AtomicRegistry helper                                     |
 | `@pro-laico/ap-utils` | revalidateTag + collection/global hooks + plugin                |
 | `@pro-laico/ap-apf`          | Atomic Payload Functions: runtime, fields, admin UI             |
-| `@pro-laico/ap-icons`        | iconsPlugin (Icon + iconSet), formatSVG, AtomicIcon, createIconSelect       |
-| `@pro-laico/ap-images`       | Images + Favicons collections + FaviconField + blur integration |
-| `@pro-laico/ap-fonts`        | fontsPlugin + Font collection + font download CLI / API            |
-| `@pro-laico/ap-mux-video`    | MuxVideo extension collection + plugin wrapper                  |
-| `@pro-laico/ap-tracking`                 | Tracking plugin: Tracking global (GTM + PostHog tabs + toggles) + PostHogProperty collection + GTM/PostHog/Vercel/composite providers |
+| `@pro-laico/icons`        | iconsPlugin (Icon + iconSet), formatSVG, AtomicIcon, createIconSelect       |
+| `@pro-laico/images`       | Images + Favicons collections + FaviconField + blur integration |
+| `@pro-laico/fonts`        | fontsPlugin + Font collection + font download CLI / API            |
+| `@pro-laico/mux-video`    | MuxVideo extension collection + plugin wrapper                  |
+| `@pro-laico/tracking`                 | Tracking plugin: Tracking global (GTM + PostHog tabs + toggles) + PostHogProperty collection + GTM/PostHog/Vercel/composite providers |
 | `@pro-laico/atomic/actions`    | actionsPlugin + action blocks + type re-exports                 |
 | `@pro-laico/atomic/forms`      | formsPlugin + submit-form SVR blocks + server processor         |
 | `@pro-laico/atomic/children` | childBlocksPlugin + default child blocks                      |
-| `@pro-laico/ap-design-sets`  | designSetsPlugin: `designSet` + `shortcutSet` collections + token fields |
+| `@pro-laico/design-sets`  | designSetsPlugin: `designSet` + `shortcutSet` collections + token fields |
 | `@pro-laico/atomic/hook`  | atomicHookPlugin + sanitizeData + manualLogger                  |
 
 ## Templates

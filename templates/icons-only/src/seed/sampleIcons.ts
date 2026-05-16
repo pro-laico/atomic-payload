@@ -1,6 +1,6 @@
 /**
  * Hand-rolled sample icons used by the `/api/seed` endpoint to demonstrate
- * `@pro-laico/ap-icons`. Each icon is a 24×24 viewBox SVG with `currentColor`
+ * `@pro-laico/icons`. Each icon is a 24×24 viewBox SVG with `currentColor`
  * fill so it inherits the surrounding text color.
  */
 export type SampleIcon = { filename: string; svg: string }

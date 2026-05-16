@@ -32,7 +32,7 @@
     "tailwind.config.js",
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
-    "../../packages/ap-tracking/src/utilities/propertyApplicatorUtility.ts"
+    "../../packages/tracking/src/utilities/propertyApplicatorUtility.ts"
   ],
   "exclude": ["node_modules"]
 }

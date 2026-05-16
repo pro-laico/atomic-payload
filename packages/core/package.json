@@ -1,0 +1,130 @@
+{
+  "name": "@pro-laico/core",
+  "version": "0.1.0",
+  "description": "Atomic Payload core: kernel types (PayloadAugment / Get<>), APF (Atomic Payload Functions), shared utilities, cache helpers, revalidation plugin, JSON-schema plugin, and admin / frontend UI primitives. Replaces the older ap-types + ap-apf + ap-utils trio.",
+  "license": "MIT",
+  "type": "module",
+  "publishConfig": {
+    "access": "public"
+  },
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "bin": {
+    "core-augment-types": "./scripts/appendPayloadAugment.mjs"
+  },
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
+    },
+    "./kernel": {
+      "types": "./src/kernel.ts",
+      "default": "./src/kernel.ts"
+    },
+    "./logger": {
+      "types": "./dist/utilities/log.d.ts",
+      "import": "./dist/utilities/log.js"
+    },
+    "./cache": {
+      "types": "./dist/utilities/cache/index.d.ts",
+      "import": "./dist/utilities/cache/index.js"
+    },
+    "./cache/react": {
+      "types": "./dist/utilities/cache/react.d.ts",
+      "import": "./dist/utilities/cache/react.js"
+    },
+    "./cache/auto": {
+      "types": "./dist/utilities/cache/auto.d.ts",
+      "import": "./dist/utilities/cache/auto.js"
+    },
+    "./ui/root/siteTriggers": {
+      "types": "./dist/ui/root/siteTriggers/index.d.ts",
+      "import": "./dist/ui/root/siteTriggers/index.js"
+    },
+    "./ui/fields/slug": {
+      "types": "./dist/ui/fields/slug/index.d.ts",
+      "import": "./dist/ui/fields/slug/index.js"
+    },
+    "./components/frontend/Toaster": {
+      "types": "./dist/components/frontend/Toaster.d.ts",
+      "import": "./dist/components/frontend/Toaster.js"
+    },
+    "./components/frontend/LivePreviewListener": {
+      "types": "./dist/components/frontend/LivePreviewListener.d.ts",
+      "import": "./dist/components/frontend/LivePreviewListener.js"
+    },
+    "./next/preview": {
+      "types": "./dist/next/previewRouteHandler.d.ts",
+      "import": "./dist/next/previewRouteHandler.js"
+    },
+    "./next/exit-preview": {
+      "types": "./dist/next/exitPreviewRouteHandler.d.ts",
+      "import": "./dist/next/exitPreviewRouteHandler.js"
+    },
+    "./auth/getMeUser": {
+      "types": "./dist/utilities/getMeUser.d.ts",
+      "import": "./dist/utilities/getMeUser.js"
+    },
+    "./admin/controls": {
+      "types": "./dist/apf/components/admin/controls.d.ts",
+      "import": "./dist/apf/components/admin/controls.js"
+    },
+    "./admin/field": {
+      "types": "./dist/apf/components/admin/field.d.ts",
+      "import": "./dist/apf/components/admin/field.js"
+    },
+    "./admin/label": {
+      "types": "./dist/apf/components/admin/label.d.ts",
+      "import": "./dist/apf/components/admin/label.js"
+    },
+    "./src": {
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
+    }
+  },
+  "files": [
+    "dist",
+    "src",
+    "scripts",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json --noCheck && node -e \"require('fs').cpSync('src/ui/root/siteTriggers/index.scss','dist/ui/root/siteTriggers/index.scss')\" && node -e \"require('fs').cpSync('src/components/frontend/Toaster.module.css','dist/components/frontend/Toaster.module.css')\" && node -e \"require('fs').cpSync('src/ui/fields/slug/index.scss','dist/ui/fields/slug/index.scss')\" && node -e \"require('fs').cpSync('src/apf/components/admin/index.scss','dist/apf/components/admin/index.scss')\"",
+    "clean": "node -e \"require('fs').rmSync('dist',{recursive:true,force:true})\"",
+    "prepack": "pnpm clean && pnpm build",
+    "lint": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@pro-laico/design-sets": "workspace:*",
+    "@pro-laico/images": "workspace:*",
+    "@pro-laico/site": "workspace:*",
+    "@pro-laico/tracking": "workspace:*",
+    "@types/json-schema": "^7.0.15",
+    "dayjs": "^1.11.13",
+    "@pro-laico/atomic": "workspace:*"
+  },
+  "peerDependencies": {
+    "@base-ui-components/react": ">=1.0.0-rc.0",
+    "@payloadcms/live-preview-react": ">=3.0.0",
+    "@payloadcms/ui": ">=3.0.0",
+    "next": ">=15.0.0",
+    "payload": ">=3.0.0",
+    "react": ">=19.0.0",
+    "server-only": ">=0.0.1"
+  },
+  "devDependencies": {
+    "@base-ui-components/react": "1.0.0-rc.0",
+    "@payloadcms/live-preview-react": "^3.79.0",
+    "@payloadcms/translations": "^3.79.0",
+    "@payloadcms/ui": "^3.79.0",
+    "@types/react": "^19.2.14",
+    "next": "^16.1.6",
+    "payload": "^3.79.0",
+    "react": "^19.2.4",
+    "server-only": "^0.0.1",
+    "typescript": "5.8.3"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

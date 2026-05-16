@@ -4,7 +4,7 @@ export const dynamic = 'force-dynamic'
 
 export const metadata = {
   title: 'Atomic Payload Icons Demo',
-  description: 'A minimal showcase of the @pro-laico/ap-icons plugin.',
+  description: 'A minimal showcase of the @pro-laico/icons plugin.',
 }
 
 const styles = `

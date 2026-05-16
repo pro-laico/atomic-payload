@@ -1,4 +1,4 @@
-﻿import path from 'path'
+import path from 'path'
 import sharp from 'sharp'
 import type { SharpDependency } from 'payload'
 import { plugins } from '@/plugins'
@@ -6,10 +6,10 @@ import { buildConfig } from 'payload'
 import Collections from '@/collections'
 import { fileURLToPath } from 'node:url'
 import { Users } from '@/collections/users'
-import { defaultLexical } from '@pro-laico/ap-richtext/default-lexical'
+import { defaultLexical } from '@pro-laico/richtext/default-lexical'
 //import { resendAdapter } from '@payloadcms/email-resend'
 import { mongooseAdapter } from '@payloadcms/db-mongodb'
-import { getServerSideURL } from '@pro-laico/ap-core'
+import { getServerSideURL } from '@pro-laico/core'
 import { IconPath, LogoPath, SiteTriggersPath } from '@/ui'
 
 const filename = fileURLToPath(import.meta.url)

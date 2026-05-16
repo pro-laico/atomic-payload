@@ -1,6 +1,6 @@
-﻿import { iconsPlugin } from '@pro-laico/ap-icons'
+import { iconsPlugin } from '@pro-laico/icons'
 import { atomicHook } from '@pro-laico/atomic/hook'
-import { generateLivePreviewPath, TestPathField } from '@pro-laico/ap-core'
+import { generateLivePreviewPath, TestPathField } from '@pro-laico/core'
 
 export const iconsPluginConfig = iconsPlugin({
   iconSetOptions: {

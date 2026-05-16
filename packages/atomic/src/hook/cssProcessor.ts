@@ -1,9 +1,9 @@
-﻿import { deepMerge } from '@pro-laico/ap-core'
+import { deepMerge } from '@pro-laico/core'
 import manualLogger from './utilities/manualLogger'
 import type { CollectionsWithStoredAtomicClasses, cssProcessorType } from '@pro-laico/atomic/hook'
-import type { DesignSet } from '@pro-laico/ap-design-sets/schema'
-import type { ShortcutSet } from '@pro-laico/ap-site/schema'
-import { defaultAtomicClasses } from '@pro-laico/ap-design-sets/designSet/defaults'
+import type { DesignSet } from '@pro-laico/design-sets/schema'
+import type { ShortcutSet } from '@pro-laico/site/schema'
+import { defaultAtomicClasses } from '@pro-laico/design-sets/designSet/defaults'
 import { createGenerator, PresetWind4Theme, presetWind4, presetAttributify, presetTypography } from 'unocss'
 import type { AtomicHookGetCached } from './atomicHookTypes'
 type CssDocDesignSet = DesignSet & {

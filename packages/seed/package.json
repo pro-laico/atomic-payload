@@ -1,0 +1,54 @@
+{
+  "name": "@pro-laico/seed",
+  "version": "0.1.0",
+  "description": "Atomic Payload seed integration. Provides a Payload plugin that wires up a `POST /api/seed` endpoint and a `BeforeDashboard` admin banner with a SEED DATABASE button. Ships an opinionated default seed for atomic-payload templates; consumers may override by passing `seed: â€¦`.",
+  "license": "MIT",
+  "type": "module",
+  "publishConfig": {
+    "access": "public"
+  },
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
+    },
+    "./admin/beforeDashboard": {
+      "types": "./src/components/admin/BeforeDashboard.tsx",
+      "default": "./src/components/admin/BeforeDashboard.tsx"
+    }
+  },
+  "files": [
+    "src",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "node -e \"process.exit(0)\"",
+    "lint": "node -e \"process.exit(0)\""
+  },
+  "dependencies": {
+    "@pro-laico/design-sets": "workspace:*",
+    "@pro-laico/icons": "workspace:*",
+    "@pro-laico/site": "workspace:*",
+    "@pro-laico/core": "workspace:*",
+    "@pro-laico/atomic": "workspace:*"
+  },
+  "peerDependencies": {
+    "@payloadcms/ui": ">=3.0.0",
+    "next": ">=15.0.0",
+    "payload": ">=3.0.0",
+    "react": ">=19.0.0"
+  },
+  "devDependencies": {
+    "@payloadcms/ui": "^3.79.0",
+    "@types/react": "^19.2.14",
+    "next": "^16.1.6",
+    "payload": "^3.79.0",
+    "react": "^19.2.4",
+    "typescript": "5.8.3"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

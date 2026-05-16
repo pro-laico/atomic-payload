@@ -1,7 +1,7 @@
-﻿/**
+/**
  * Schema stubs owned by `@pro-laico/atomic/children`.
  */
-import type { Get, DefaultBlock } from '@pro-laico/ap-core'
+import type { Get, DefaultBlock } from '@pro-laico/core'
 
 // /////////////////////////////////////
 // Block shapes

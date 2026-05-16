@@ -1,0 +1,63 @@
+{
+  "name": "@pro-laico/mux-video",
+  "version": "0.1.0",
+  "description": "Atomic Payload mux-video plugin. Thin wrapper around @oversightstudio/mux-video that adds a local MuxVideo extension collection with Atomic Payload defaults.",
+  "license": "MIT",
+  "type": "module",
+  "publishConfig": {
+    "access": "public"
+  },
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
+    },
+    "./src": {
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
+    },
+    "./blocks/videoChild": {
+      "types": "./src/blocks/videoChild/block.ts",
+      "default": "./src/blocks/videoChild/block.ts"
+    },
+    "./blocks/videoChild/component": {
+      "types": "./src/blocks/videoChild/component.tsx",
+      "default": "./src/blocks/videoChild/component.tsx"
+    }
+  },
+  "files": [
+    "dist",
+    "src",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "clean": "node -e \"require('fs').rmSync('dist',{recursive:true,force:true})\"",
+    "prepack": "pnpm clean && pnpm build",
+    "lint": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@pro-laico/core": "workspace:*",
+    "@mux/mux-video-react": "^0.25.3",
+    "@pro-laico/atomic": "workspace:*"
+  },
+  "peerDependencies": {
+    "@oversightstudio/mux-video": ">=1.0.0",
+    "next": ">=15.0.0",
+    "payload": ">=3.0.0",
+    "react": ">=19.0.0"
+  },
+  "devDependencies": {
+    "@oversightstudio/mux-video": "^1.4.0",
+    "@types/react": "^19.2.14",
+    "next": "^16.1.6",
+    "payload": "^3.79.0",
+    "react": "^19.2.4",
+    "typescript": "5.8.3"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

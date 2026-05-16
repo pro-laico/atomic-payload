@@ -44,7 +44,7 @@ export default async function HomePage() {
     <main>
       <h1>Atomic Payload — Icons Demo</h1>
       <p className="lead">
-        Minimal template showcasing <code>@pro-laico/ap-icons</code>. Visit <a href="/admin">/admin</a> to manage uploads,
+        Minimal template showcasing <code>@pro-laico/icons</code>. Visit <a href="/admin">/admin</a> to manage uploads,
         then come back here to see the rendered SVGs. The seed button creates {sampleIcons.length} sample icons and one
         Demo Icon Set if they don&apos;t already exist.
       </p>

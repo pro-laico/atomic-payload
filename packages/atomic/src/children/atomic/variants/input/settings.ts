@@ -1,4 +1,4 @@
-﻿import { APField } from '@pro-laico/ap-core'
+import { APField } from '@pro-laico/core'
 import type { GroupField } from 'payload'
 import autocompleteOptions from './autoCompleteOptions'
 import { TextSettingsTab } from './variants/text/settings'

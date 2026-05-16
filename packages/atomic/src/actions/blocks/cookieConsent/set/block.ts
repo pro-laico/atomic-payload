@@ -1,5 +1,5 @@
-﻿import type { Block } from 'payload'
-import { APField } from '@pro-laico/ap-core'
+import type { Block } from 'payload'
+import { APField } from '@pro-laico/core'
 import { KeySelectField, ChangeKeyField, SetDataField, PerformSelectField } from '@pro-laico/atomic/actions/fields'
 
 export const ActSetCC: Block = {

@@ -1,6 +1,6 @@
 import manualLogger from '../utilities/manualLogger'
 import generatePreflights from './generatePreflights'
-import type { DesignSet } from '@pro-laico/ap-design-sets/schema'
+import type { DesignSet } from '@pro-laico/design-sets/schema'
 type RSS = Record<string, string>
 type RSSOSA = Record<string, string | string[]>
 type UnoColorsType = Record<string, string>

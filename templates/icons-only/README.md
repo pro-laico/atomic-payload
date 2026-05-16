@@ -1,6 +1,6 @@
 # icons-only
 
-Minimal Atomic Payload template that demonstrates the `@pro-laico/ap-icons`
+Minimal Atomic Payload template that demonstrates the `@pro-laico/icons`
 plugin in isolation. No design sets, child blocks, forms, tracking, or other
 Atomic Payload framework — just the Icon and IconSet collections plus a
 small Next.js page that renders them.
@@ -65,7 +65,7 @@ src/
 - The page uses `dangerouslySetInnerHTML` to inline each icon's `svgString`
   field. Because the icons are uploaded SVGs that pass through `formatSVGHook`,
   the strings are already optimized and stripped of script tags by SVGO.
-- Workspace dependency direction: this template depends on `@pro-laico/ap-icons`,
+- Workspace dependency direction: this template depends on `@pro-laico/icons`,
   which transitively pulls in `@pro-laico/ap-utils` (for revalidation hooks),
   `@pro-laico/ap-apf` (for the IconSet's APField wiring), and `@pro-laico/ap-types`
   (kernel).

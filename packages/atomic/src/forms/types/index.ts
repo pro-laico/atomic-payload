@@ -1,5 +1,5 @@
-﻿import type { BlocksFieldClientProps } from 'payload'
-import type { Config } from '@pro-laico/ap-core'
+import type { BlocksFieldClientProps } from 'payload'
+import type { Config } from '@pro-laico/core'
 import type { CookiePreferences } from '@pro-laico/atomic/actions'
 import type {
   FormSubmission,

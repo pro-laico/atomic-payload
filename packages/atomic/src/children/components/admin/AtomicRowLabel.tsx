@@ -1,8 +1,8 @@
-﻿'use client'
+'use client'
 import './AtomicRowLabel.scss'
 import React from 'react'
 import type { AtomicChild } from '@pro-laico/atomic/children/schema'
-import { AtomicIcon } from '@pro-laico/ap-icons'
+import { AtomicIcon } from '@pro-laico/icons'
 import { RowLabel, useRowLabel, SectionTitle } from '@payloadcms/ui'
 
 const AtomicRowLabel = () => {

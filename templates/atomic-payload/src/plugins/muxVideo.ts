@@ -1,3 +1,3 @@
-import { muxVideoPlugin } from '@pro-laico/ap-mux-video'
+import { muxVideoPlugin } from '@pro-laico/mux-video'
 
 export const muxVideoPluginConfig = muxVideoPlugin()

@@ -38,7 +38,7 @@
     "server-only": "^0.0.1",
     "traverse": "^0.6.11",
     "zod": "4.1.11",
-    "@pro-laico/ap-core": "workspace:*"
+    "@pro-laico/core": "workspace:*"
   },
   "devDependencies": {
     "@types/json-schema": "^7.0.15",

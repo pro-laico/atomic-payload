@@ -1,4 +1,4 @@
-import { APField } from '@pro-laico/ap-core'
+import { APField } from '@pro-laico/core'
 
 import type { CheckboxField, SelectField, TextField } from 'payload'
 

@@ -1,12 +1,12 @@
-﻿import React from 'react'
+import React from 'react'
 import fonts from '@/app/definition'
 import { draftMode } from 'next/headers'
 import { ThemeProvider } from 'next-themes'
-import { Toaster } from '@pro-laico/ap-core/components/frontend/Toaster'
-import getCached from '@pro-laico/ap-core/cache/auto'
-import { Header, Footer } from '@pro-laico/ap-site/components/frontend'
+import { Toaster } from '@pro-laico/core/components/frontend/Toaster'
+import getCached from '@pro-laico/core/cache/auto'
+import { Header, Footer } from '@pro-laico/site/components/frontend'
 import { AtomicStoreProvider } from '@pro-laico/atomic/hook/client'
-import { TrackingProvider } from '@pro-laico/ap-tracking/provider'
+import { TrackingProvider } from '@pro-laico/tracking/provider'
 
 /** Payload-backed layouts need a live DB; avoid static prerender at `next build` when Mongo is unavailable. */
 export const dynamic = 'force-dynamic'

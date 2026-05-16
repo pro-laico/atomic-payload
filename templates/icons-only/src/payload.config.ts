@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url'
 import { mongooseAdapter } from '@payloadcms/db-mongodb'
 
 import { Users } from '@/collections/users'
-import { iconsPlugin } from '@pro-laico/ap-icons'
+import { iconsPlugin } from '@pro-laico/icons'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -30,7 +30,7 @@ export default buildConfig({
     importMap: { baseDir: path.resolve(dirname) },
     meta: {
       titleSuffix: ' - Atomic Payload Icons Demo',
-      description: 'A minimal showcase of @pro-laico/ap-icons.',
+      description: 'A minimal showcase of @pro-laico/icons.',
     },
   },
 })

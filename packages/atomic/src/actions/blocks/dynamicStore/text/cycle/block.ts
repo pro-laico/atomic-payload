@@ -1,5 +1,5 @@
-﻿import type { Block } from 'payload'
-import { APField } from '@pro-laico/ap-core'
+import type { Block } from 'payload'
+import { APField } from '@pro-laico/core'
 import { KeyTextField } from '@pro-laico/atomic/actions/fields'
 import { InitialValueCheckboxField, PersistedField, SetDataField } from '@pro-laico/atomic/actions/fields'
 

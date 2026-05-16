@@ -1,4 +1,4 @@
-﻿'use server'
+'use server'
 
 import type { CollectionBeforeChangeHook } from 'payload'
 import type { AtomicHookGetCached } from './atomicHookTypes'
@@ -16,7 +16,7 @@ export const atomicHook: CollectionBeforeChangeHook = async (args) => {
     const [hookMod, procMod, cacheMod] = await Promise.all([
       import('./createAtomicHook'),
       import('@pro-laico/atomic/actions/processor'),
-      import('@pro-laico/ap-core/cache/auto'),
+      import('@pro-laico/core/cache/auto'),
     ])
     inner = hookMod.createAtomicHook({
       getCached: cacheMod.default as AtomicHookGetCached,

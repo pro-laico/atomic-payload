@@ -1,9 +1,9 @@
-﻿import 'server-only' //DO NOT REMOVE
+import 'server-only' //DO NOT REMOVE
 import { createBlurUp } from '@mux/blurup'
 import type { PassThroughs } from '@pro-laico/atomic/children'
 import type { ChildBlocks } from '@pro-laico/atomic/children/schema'
 import type { StaticDataAttributes } from '@pro-laico/atomic/actions/schema'
-import { postHogPropertyApplicator } from '@pro-laico/ap-tracking'
+import { postHogPropertyApplicator } from '@pro-laico/tracking'
 
 type PassThrough = { p: Record<string, unknown>; da: Record<string, string> }
 

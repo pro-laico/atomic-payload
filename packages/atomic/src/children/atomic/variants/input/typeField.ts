@@ -1,5 +1,5 @@
 import { SelectField } from 'payload'
-import { APField } from '@pro-laico/ap-core'
+import { APField } from '@pro-laico/core'
 
 export const inputTypeOptions = [
   { label: 'Text', value: 'text', type: 'string' },

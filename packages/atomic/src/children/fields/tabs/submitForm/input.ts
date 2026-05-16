@@ -1,5 +1,5 @@
 import { GroupField } from 'payload'
-import { APField } from '@pro-laico/ap-core'
+import { APField } from '@pro-laico/core'
 import { inputFunctionsBlockTemplate } from '../../blocks/submitForm/input'
 
 export const inputTab: GroupField = {
