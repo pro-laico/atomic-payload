@@ -119,11 +119,13 @@ export type RArgs<T extends AllTags | 'all'> = T extends AllTags ? Extract<Reval
 export type RReturns<T extends AllTags | 'all'> = Promise<T extends AllTags ? Extract<RevalidateTagType, {
     args: Tag<T>;
 }>['return'] : RevalidateTagType['return']>;
-/** Data returned by the getCached<'iconSet'> function. */
+/** Data returned by the getCached<'iconSet'> function. The `icon` ref is
+ *  string for adapters like Mongo (ObjectId) and number for adapters like
+ *  SQLite / Postgres-serial — narrow at use sites if you need a specific shape. */
 export type IconSetReturn = {
     iconsArray: {
         name: string;
-        icon: string;
+        icon: string | number;
     }[];
 };
 /** Data returned by the getCached<'page'> function. */

@@ -16,7 +16,8 @@
   },
   "dependencies": {
     "@pro-laico/icons": "workspace:*",
-    "@payloadcms/db-mongodb": "^3.79.0",
+    "@payloadcms/db-sqlite": "3.79.0",
+    "@payloadcms/live-preview-react": "^3.79.0",
     "@payloadcms/next": "^3.79.0",
     "@payloadcms/ui": "^3.79.0",
     "cross-env": "^10.1.0",

@@ -104,8 +104,10 @@ export type RReturns<T extends AllTags | 'all'> = Promise<
 // /////////////////////////////////////
 // Get Cache Function Types
 // /////////////////////////////////////
-/** Data returned by the getCached<'iconSet'> function. */
-export type IconSetReturn = { iconsArray: { name: string; icon: string }[] }
+/** Data returned by the getCached<'iconSet'> function. The `icon` ref is
+ *  string for adapters like Mongo (ObjectId) and number for adapters like
+ *  SQLite / Postgres-serial — narrow at use sites if you need a specific shape. */
+export type IconSetReturn = { iconsArray: { name: string; icon: string | number }[] }
 /** Data returned by the getCached<'page'> function. */
 export type PageReturn = Pick<Page, 'children' | 'mainClassName' | 'meta' | 'id'>
 export type StoredAtomicActionsReturn = AtomicStoreInitialState

@@ -1,10 +1,11 @@
-import { headers as nextHeaders } from 'next/headers'
+import { headers as nextHeaders, draftMode } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { getPayload } from 'payload'
 import config from '@payload-config'
 
 import { extractSvgContent, extractSvgProps } from '@pro-laico/icons'
 import { Icon } from '@pro-laico/icons/Icon'
+import LivePreviewListener from '@pro-laico/core/components/frontend/LivePreviewListener'
 
 import { sampleIconSets } from '@/seed/sampleIcons'
 import { CodeBlock } from './CodeBlock'
@@ -65,12 +66,14 @@ export default async function HomePage() {
   const reqHeaders = await nextHeaders()
   const { user } = await payload.auth({ headers: reqHeaders })
   const isLoggedIn = Boolean(user)
+  const { isEnabled: draft } = await draftMode()
 
   const icons = (await payload.find({ collection: 'icon', limit: 100, depth: 0, overrideAccess: true })).docs as IconDoc[]
   const sets = (await payload.find({ collection: 'iconSet', limit: 25, depth: 1, sort: 'createdAt', overrideAccess: true })).docs as IconSetDoc[]
 
   return (
     <main>
+      {draft && <LivePreviewListener />}
       <h1>Atomic Payload — Icons Demo</h1>
       <p className="lead">
         Minimal template showcasing <code>@pro-laico/icons</code>. The seed button wipes the <code>icon</code> and <code>iconSet</code> collections,
@@ -163,6 +166,9 @@ export default async function HomePage() {
         It is best to keep icon sets set icon names identical, that way they can be used interchangeably by name in the front end. Otherwise when you
         change the active icon set, the icons will not be found and the warning icon will be rendered.
       </p>
+      <p className="lead" style={{ marginBottom: 12 }}>
+        You will need to reload the page to see the new icons.
+      </p>
       <div className="grid" style={{ gridTemplateColumns: 'repeat(6, 1fr)' }}>
         <IconChildTile name="arrow-right" />
         <IconChildTile name="check" />
@@ -172,18 +178,27 @@ export default async function HomePage() {
         <IconChildTile name="y" />
       </div>
 
-      <h2>Intended usage</h2>
+      <h2>Live preview</h2>
       <p className="lead" style={{ marginBottom: 12 }}>
-        Render icons by <strong>name</strong> from inside a server component. <code>getCached</code> is bound to the
-        currently active <code>iconSet</code>, so swapping the active set in the admin re-routes every consumer to the
-        new visuals without changing a single line of frontend code.
+        Edits propagate to this page in real time. Open the active set at{' '}
+        <a href="/admin/collections/iconSet/1">/admin/collections/iconSet/1</a>, rename the <code>x</code> icon to <code>y</code>, and press{' '}
+        <code>Ctrl + S</code> to save a draft — the warning tile above turns into the actual icon as soon as the draft is saved.
       </p>
 
-      <h3 style={{ margin: '24px 0 8px', fontSize: '1rem' }}>1 — The bundled <code>&lt;Icon&gt;</code> component</h3>
+      <h2>Intended usage</h2>
       <p className="lead" style={{ marginBottom: 12 }}>
-        Same path the tiles above use — exactly what this page does. Import the server component from the{' '}
-        <code>./Icon</code> subpath and pass the icon&apos;s name from the active set. JSX props you pass win over the
-        SVG source&apos;s intrinsic attributes, so <code>className</code>, <code>style</code>, etc. all work.
+        Render icons by <strong>name</strong> from inside a server component. <code>getCached</code> is bound to the currently active{' '}
+        <code>iconSet</code>, so swapping the active set in the admin re-routes every consumer to the new visuals without changing a single line of
+        frontend code.
+      </p>
+
+      <h3 style={{ margin: '24px 0 8px', fontSize: '1rem' }}>
+        1 — The bundled <code>&lt;Icon&gt;</code> component
+      </h3>
+      <p className="lead" style={{ marginBottom: 12 }}>
+        Same path the tiles above use — exactly what this page does. Import the server component from the <code>./Icon</code> subpath and pass the
+        icon&apos;s name from the active set. JSX props you pass win over the SVG source&apos;s intrinsic attributes, so <code>className</code>,{' '}
+        <code>style</code>, etc. all work.
       </p>
       <CodeBlock lang="tsx">{`import { Icon } from '@pro-laico/icons/Icon'
 
@@ -192,8 +207,8 @@ export default async function HomePage() {
 <Icon name="check" className="size-6 text-primary" />
 <Icon name="logo" fallback={myCustomSvgString} />`}</CodeBlock>
       <p className="lead" style={{ margin: '12px 0' }}>
-        Under the hood it&apos;s the same manual ceremony the older versions of this template ran inline — kept here for
-        reference so you can see exactly what the component encapsulates:
+        Under the hood it&apos;s the same manual ceremony the older versions of this template ran inline — kept here for reference so you can see
+        exactly what the component encapsulates:
       </p>
       <CodeBlock lang="tsx">{`import { draftMode } from 'next/headers'
 import getCached from '@pro-laico/core/cache/auto'
@@ -214,9 +229,8 @@ async function IconByHand({ name }: { name: string }) {
 
       <h3 style={{ margin: '24px 0 8px', fontSize: '1rem' }}>2 — Editor-driven via the IconChild block</h3>
       <p className="lead" style={{ marginBottom: 12 }}>
-        In a project that uses <code>@pro-laico/atomic</code>&apos;s children system, register{' '}
-        <code>IconChild</code> on a blocks field. Editors then pick an icon by name from the active set in the admin UI,
-        and the block renders with the same caching + warning-fallback behavior shown above.
+        In a project that uses <code>@pro-laico/atomic</code>&apos;s children system, register <code>IconChild</code> on a blocks field. Editors then
+        pick an icon by name from the active set in the admin UI, and the block renders with the same caching + warning-fallback behavior shown above.
       </p>
       <CodeBlock lang="tsx">{`import { Icon as IconChildBlock } from '@pro-laico/icons/blocks/iconChild/block'
 import { IconChild } from '@pro-laico/icons/blocks/iconChild/component'
@@ -231,33 +245,32 @@ import { IconChild } from '@pro-laico/icons/blocks/iconChild/component'
 // Render path — IconChild is an async server component:
 <IconChild block={childData} pt={passThroughProps} />`}</CodeBlock>
 
-      <h3 style={{ margin: '24px 0 8px', fontSize: '1rem' }}>3 — Why <code>getCached</code> over a direct{' '}<code>payload.find</code></h3>
+      <h3 style={{ margin: '24px 0 8px', fontSize: '1rem' }}>
+        3 — Why <code>getCached</code> over a direct <code>payload.find</code>
+      </h3>
       <p className="lead" style={{ marginBottom: 12 }}>
-        Each <code>getCached</code> call is wrapped in <code>unstable_cache</code> with a tag derived from what it
-        returns — the active <code>iconSet</code> sits behind the <code>iconSet</code> tag, and each individual{' '}
-        <code>icon</code> sits behind <code>icon:&lt;id&gt;</code>. The icons plugin emits the matching{' '}
-        <code>revalidateTag</code> calls on the relevant Payload collection hooks, so:
+        Each <code>getCached</code> call is wrapped in <code>unstable_cache</code> with a tag derived from what it returns — the active{' '}
+        <code>iconSet</code> sits behind the <code>iconSet</code> tag, and each individual <code>icon</code> sits behind <code>icon:&lt;id&gt;</code>.
+        The icons plugin emits the matching <code>revalidateTag</code> calls on the relevant Payload collection hooks, so:
       </p>
       <ul className="lead" style={{ marginTop: 0, marginBottom: 12, paddingLeft: 20 }}>
         <li>
-          Editing the active <code>iconSet</code> (re-ordering its array, swapping which icon a name points at, marking
-          a different set active) invalidates only the <code>iconSet</code> tag. Pages re-render with the new mapping,
-          but every individual icon&apos;s SVG payload stays cached.
+          Editing the active <code>iconSet</code> (re-ordering its array, swapping which icon a name points at, marking a different set active)
+          invalidates only the <code>iconSet</code> tag. Pages re-render with the new mapping, but every individual icon&apos;s SVG payload stays
+          cached.
         </li>
         <li>
-          Editing one <code>icon</code> doc (uploading a new SVG) invalidates only that icon&apos;s tag. Pages that
-          don&apos;t reference that name stay fully cached; pages that do re-render just the affected{' '}
-          <code>&lt;Icon&gt;</code> tile, not the surrounding tree.
+          Editing one <code>icon</code> doc (uploading a new SVG) invalidates only that icon&apos;s tag. Pages that don&apos;t reference that name
+          stay fully cached; pages that do re-render just the affected <code>&lt;Icon&gt;</code> tile, not the surrounding tree.
         </li>
         <li>
-          Editing an <em>inactive</em> iconSet or an <em>unused</em> icon invalidates nothing user-facing — the active
-          tag set is unaffected, so cache hits stay maximized.
+          Editing an <em>inactive</em> iconSet or an <em>unused</em> icon invalidates nothing user-facing — the active tag set is unaffected, so cache
+          hits stay maximized.
         </li>
       </ul>
       <p className="lead" style={{ marginBottom: 12 }}>
-        Reaching for <code>payload.find</code> directly works, but every consumer pays the full Mongo round-trip on
-        every render. <code>getCached</code> trades that for a tag-scoped <code>unstable_cache</code> entry that the
-        plugin keeps in sync for you.
+        Reaching for <code>payload.find</code> directly works, but every consumer pays the full DB round-trip on every render. <code>getCached</code>{' '}
+        trades that for a tag-scoped <code>unstable_cache</code> entry that the plugin keeps in sync for you.
       </p>
     </main>
   )

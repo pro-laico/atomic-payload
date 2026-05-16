@@ -3,9 +3,15 @@ import 'server-only'; //DO NOT REMOVE
 import { getPayload } from 'payload';
 import cacheLogger from '../cacheLogger';
 import { toTitleCase } from '../toTitleCase';
-/** Type guard to check if icon is a string (when depth: 0, icon is always a string ID). */
-const isIconString = (item) => {
-    return typeof item.icon === 'string' && item.icon.length > 0;
+/** Type guard to check if `icon` is a usable reference (string or numeric ID).
+ *  With `depth: 0`, Payload returns the relationship as the ID — that ID is a
+ *  string under Mongo (ObjectId) and a number under SQLite / Postgres-serial. */
+const isIconRef = (item) => {
+    if (typeof item.icon === 'string')
+        return item.icon.length > 0;
+    if (typeof item.icon === 'number')
+        return true;
+    return false;
 };
 /** Gets the active icon sets icons array. Specifically only the name and icon reference id of each icon. */
 export const getCachedIconSet = async (configPromise, tag, draft) => {
@@ -13,7 +19,7 @@ export const getCachedIconSet = async (configPromise, tag, draft) => {
     const results = (await payload
         .find({ collection: 'iconSet', depth: 0, limit: 1, draft, pagination: false, select: { iconsArray: true }, where: { active: { equals: true } } })
         .then((res) => res.docs[0] || null));
-    const filteredResults = results?.iconsArray?.filter(isIconString).map(({ id, ...item }) => ({ name: item.name, icon: item.icon })) || [];
+    const filteredResults = results?.iconsArray?.filter(isIconRef).map(({ id, ...item }) => ({ name: item.name, icon: item.icon })) || [];
     cacheLogger({ tag, draft });
     return { iconsArray: filteredResults };
 };
@@ -22,7 +28,9 @@ export const getCachedIconByName = async (configPromise, tag, tid, draft, iconSe
     if (!iconSet?.iconsArray)
         return;
     const iconItem = iconSet.iconsArray.find((item) => item.name === tid);
-    if (!iconItem?.icon || typeof iconItem.icon !== 'string')
+    if (iconItem?.icon == null)
+        return;
+    if (typeof iconItem.icon !== 'string' && typeof iconItem.icon !== 'number')
         return;
     const payload = await getPayload({ config: configPromise });
     const icon = await payload

@@ -3,6 +3,7 @@ import { headers as nextHeaders } from 'next/headers'
 import { getPayload } from 'payload'
 import config from '@payload-config'
 
+import { revalidateTag } from '@pro-laico/core'
 import { sampleIconSets } from '@/seed/sampleIcons'
 
 /**
@@ -67,6 +68,7 @@ export async function POST() {
           title: set.title,
           active: set.defaultActive,
           iconsArray,
+          _status: 'published',
         } as Parameters<typeof payload.create>[0]['data'],
       })
       iconSetStatus = 'created'
@@ -74,6 +76,8 @@ export async function POST() {
 
     sets.push({ key: set.key, title: set.title, created, skipped, iconSet: iconSetStatus })
   }
+
+  await revalidateTag('iconSet', false)
 
   return NextResponse.json({ ok: true, sets })
 }

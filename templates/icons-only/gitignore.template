@@ -14,6 +14,12 @@ src/payload-types.augment.d.ts
 # Seed assets (regenerated locally, not committed)
 icon/
 
+# SQLite (default DB adapter — file created at runtime)
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+
 # Env
 .env
 .env*.local

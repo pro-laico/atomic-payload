@@ -13,17 +13,26 @@ small Next.js page that renders them.
   them. Auth-gated to logged-in admins. Idempotent.
 - `/` renders every `Icon` doc inline by inlining its `svgString` field, and
   renders each `IconSet` as a labelled grid.
+- Live preview is wired for `iconSet` edits: open any iconSet in the admin,
+  click the "Live Preview" tab, and edits propagate to the home page in real
+  time via `<LivePreviewListener>` + the `/next/preview` route handler.
 
 ## Quick start
 
 ```bash
-cp .env.example .env       # set MONGODB_URI + a long PAYLOAD_SECRET
+cp .env.example .env       # set a long PAYLOAD_SECRET (DATABASE_URI is optional)
 cp gitignore.template .gitignore
 pnpm install
 pnpm generate:types        # generates src/payload-types.ts + augment
 pnpm generate:importmap    # populates src/app/(payload)/admin/importMap.js
 pnpm dev
 ```
+
+The demo ships with the SQLite adapter (`@payloadcms/db-sqlite`) wired to a
+local file at `./icons-only.db` — no database server required. Payload supports
+multiple DB adapters; swap to Postgres or MongoDB by changing the import + `db:`
+call in `src/payload.config.ts` and installing the matching `@payloadcms/db-*`
+package.
 
 Then:
 

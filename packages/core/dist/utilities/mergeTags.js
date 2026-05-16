@@ -4,7 +4,7 @@ export function mt(stringArray) {
     if (stringArray.length === 0)
         return returnString;
     else
-        returnString = stringArray.filter((part) => part).join(':');
+        returnString = stringArray.filter((part) => part != null && part !== '').join(':');
     return returnString;
 }
 //# sourceMappingURL=mergeTags.js.map

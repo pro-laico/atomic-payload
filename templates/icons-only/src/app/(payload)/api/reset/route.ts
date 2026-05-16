@@ -3,6 +3,8 @@ import { headers as nextHeaders } from 'next/headers'
 import { getPayload } from 'payload'
 import config from '@payload-config'
 
+import { revalidateTag } from '@pro-laico/core'
+
 /**
  * Wipes every `icon` and `iconSet` doc. Auth-gated to logged-in admins.
  * `iconSet` is deleted first so it doesn't briefly hold dangling references
@@ -16,6 +18,8 @@ export async function POST() {
 
   const iconSets = await payload.delete({ collection: 'iconSet', where: { id: { exists: true } } })
   const icons = await payload.delete({ collection: 'icon', where: { id: { exists: true } } })
+
+  await revalidateTag('iconSet', false)
 
   return NextResponse.json({
     ok: true,

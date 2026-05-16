@@ -5,13 +5,17 @@ import type { GCFunction } from '../../types/cache'
 import cacheLogger from '../cacheLogger'
 import { toTitleCase } from '../toTitleCase'
 
-/** Type guard to check if icon is a string (when depth: 0, icon is always a string ID). */
-const isIconString = (item: {
+/** Type guard to check if `icon` is a usable reference (string or numeric ID).
+ *  With `depth: 0`, Payload returns the relationship as the ID — that ID is a
+ *  string under Mongo (ObjectId) and a number under SQLite / Postgres-serial. */
+const isIconRef = (item: {
   name: string
-  icon?: (string | null) | { id: string } | null
-  id?: string | null
-}): item is { name: string; icon: string; id?: string | null } => {
-  return typeof item.icon === 'string' && item.icon.length > 0
+  icon?: string | number | { id: string | number } | null
+  id?: string | number | null
+}): item is { name: string; icon: string | number; id?: string | number | null } => {
+  if (typeof item.icon === 'string') return item.icon.length > 0
+  if (typeof item.icon === 'number') return true
+  return false
 }
 
 /** Gets the active icon sets icons array. Specifically only the name and icon reference id of each icon. */
@@ -19,9 +23,9 @@ export const getCachedIconSet: GCFunction<'iconSet'> = async (configPromise, tag
   const payload = await getPayload({ config: configPromise })
   const results = (await payload
     .find({ collection: 'iconSet', depth: 0, limit: 1, draft, pagination: false, select: { iconsArray: true }, where: { active: { equals: true } } })
-    .then((res) => res.docs[0] || null)) as { iconsArray?: Array<{ name: string; icon?: (string | null) | { id: string } | null; id?: string | null }> } | null
+    .then((res) => res.docs[0] || null)) as { iconsArray?: Array<{ name: string; icon?: string | number | { id: string | number } | null; id?: string | number | null }> } | null
 
-  const filteredResults = results?.iconsArray?.filter(isIconString).map(({ id, ...item }) => ({ name: item.name, icon: item.icon })) || []
+  const filteredResults = results?.iconsArray?.filter(isIconRef).map(({ id, ...item }) => ({ name: item.name, icon: item.icon })) || []
   cacheLogger({ tag, draft })
   return { iconsArray: filteredResults }
 }
@@ -30,7 +34,8 @@ export const getCachedIconSet: GCFunction<'iconSet'> = async (configPromise, tag
 export const getCachedIconByName: GCFunction<'icon'> = async (configPromise, tag, tid, draft, iconSet) => {
   if (!iconSet?.iconsArray) return
   const iconItem = iconSet.iconsArray.find((item) => item.name === tid)
-  if (!iconItem?.icon || typeof iconItem.icon !== 'string') return
+  if (iconItem?.icon == null) return
+  if (typeof iconItem.icon !== 'string' && typeof iconItem.icon !== 'number') return
   const payload = await getPayload({ config: configPromise })
   const icon = await payload
     .find({ collection: 'icon', limit: 1, draft, where: { id: { equals: iconItem.icon } } })
