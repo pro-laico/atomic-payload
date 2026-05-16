@@ -8,7 +8,6 @@ import { type IconSetCollectionOptions } from './collections/iconSet';
  * @example
  * ```ts
  * import { iconsPlugin } from '@pro-laico/icons'
- * import { atomicHook } from '@pro-laico/atomic/hook'
  *
  * iconsPlugin({
  *   iconOptions: {
@@ -16,7 +15,6 @@ import { type IconSetCollectionOptions } from './collections/iconSet';
  *     hooks: { afterChange: [myHook] },
  *   },
  *   iconSetOptions: {
- *     atomicHook,
  *     livePreviewUrl,
  *     iconRowFields: [{ name: 'aliases', type: 'text', hasMany: true }],
  *   },
@@ -46,9 +44,9 @@ export interface IconsPluginOptions {
      */
     includeIconSet?: boolean;
     /**
-     * Extension points for the `IconSet` collection — atomicHook + live
-     * preview wiring, additive hooks, set-level fields, per-icon-row fields,
-     * and admin label overrides.
+     * Extension points for the `IconSet` collection — live preview wiring,
+     * additive hooks, set-level fields, per-icon-row fields, and admin label
+     * overrides.
      *
      * See {@link IconSetCollectionOptions} for the full surface.
      */
@@ -78,7 +76,11 @@ export interface IconsPluginOptions {
  *   tightening) on `beforeChange`, plus the standard cache-revalidation hooks
  *   on save and delete.
  * - **`IconSet`** — named buckets of icons, with versions/drafts, APF
- *   `active` toggle, and optional atomicHook + live preview wiring.
+ *   `active` toggle, and optional live preview wiring.
+ *
+ * Both collections wire cache revalidation through `@pro-laico/core` hooks
+ * only — no runtime dependency on `@pro-laico/atomic`. For atomicHook
+ * snapshot behavior, attach it yourself via `iconSetOptions.hooks.beforeChange`.
  *
  * Both collections support additive extension — see
  * {@link IconCollectionOptions} and {@link IconSetCollectionOptions}. User
@@ -94,7 +96,6 @@ export interface IconsPluginOptions {
  *   plugins: [
  *     iconsPlugin({
  *       iconSetOptions: {
- *         atomicHook,
  *         livePreviewUrl,
  *         fields: [{ name: 'description', type: 'textarea' }],
  *       },

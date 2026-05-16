@@ -1,6 +1,6 @@
 import { authd } from '../access/authenticated';
 import { APField, ActiveField, generateAPFFields, APFControlsPath, mergeHooks } from '@pro-laico/core';
-import { revalidateCacheOnDelete } from '@pro-laico/core';
+import { revalidateCacheCollection, revalidateCacheOnDelete } from '@pro-laico/core';
 const APFunctions = ['active'];
 const d = {
     icon: 'Select an icon',
@@ -16,24 +16,26 @@ const titleField = (defaultValue = 'New Icon Set') => ({
 });
 /**
  * Builds the `IconSet` collection — a versioned, draft-enabled grouping of
- * `Icon` documents with APF `active` toggle, optional live preview, and
- * optional atomicHook wiring.
+ * `Icon` documents with APF `active` toggle and optional live preview.
  *
- * Use this factory directly when you need to wire `atomicHook` /
- * `livePreviewUrl` for a specific project; for a no-arg default that omits
- * both, import the exported {@link IconSet} const instead.
+ * Revalidation is wired via `@pro-laico/core` hooks
+ * (`revalidateCacheCollection` on `beforeChange`, `revalidateCacheOnDelete`
+ * on `afterDelete`); no dependency on `@pro-laico/atomic`. To opt into
+ * atomicHook snapshot behavior, attach it via {@link IconSetCollectionOptions.hooks}.
+ *
+ * Use this factory directly when you need to wire `livePreviewUrl` for a
+ * specific project; for the no-arg default, import {@link IconSet} instead.
  *
  * @example
  * ```ts
  * createIconSetCollection({
- *   atomicHook,
  *   livePreviewUrl: ({ data, req }) => generateLivePreviewPath({ data, req }),
  *   fields: [{ name: 'description', type: 'textarea' }],
  * })
  * ```
  */
 export const createIconSetCollection = (opts = {}) => {
-    const { atomicHook, livePreviewUrl, extraSettingsFields = [], useAsTitle = 'title', group = 'Sets', hooks: extraHooks, fields: extraFields = [], iconRowFields = [], } = opts;
+    const { livePreviewUrl, extraSettingsFields = [], useAsTitle = 'title', group = 'Sets', hooks: extraHooks, fields: extraFields = [], iconRowFields = [], } = opts;
     return {
         slug: 'iconSet',
         access: { create: authd, delete: authd, read: authd, update: authd },
@@ -96,18 +98,18 @@ export const createIconSetCollection = (opts = {}) => {
             ...generateAPFFields(APFunctions),
         ],
         hooks: mergeHooks({
-            beforeChange: atomicHook ? [atomicHook] : [],
+            beforeChange: [revalidateCacheCollection],
             afterDelete: [revalidateCacheOnDelete],
         }, extraHooks),
         versions: { drafts: { schedulePublish: true, validate: true }, maxPerDoc: 50 },
     };
 };
 /**
- * Default `IconSet` collection with no atomicHook and no live preview wired.
- * Equivalent to `createIconSetCollection()`. Import this when you don't need
- * project-specific wiring.
+ * Default `IconSet` collection with no live preview wired. Equivalent to
+ * `createIconSetCollection()`. Built-in revalidation hooks from
+ * `@pro-laico/core` are always attached.
  *
- * For atomicHook / live preview / additive extensions, use
+ * For live preview, additive hooks, or extra fields, use
  * {@link createIconSetCollection}; for plugin-level wiring, use `iconsPlugin`
  * with `iconSetOptions`.
  */

@@ -22,6 +22,10 @@
       "types": "./src/index.ts",
       "default": "./src/index.ts"
     },
+    "./Icon": {
+      "types": "./src/components/frontend/Icon.tsx",
+      "default": "./src/components/frontend/Icon.tsx"
+    },
     "./admin/iconRowLabel": {
       "types": "./dist/components/admin/iconRowLabel.d.ts",
       "import": "./dist/components/admin/iconRowLabel.js"

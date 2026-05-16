@@ -26,7 +26,6 @@ export default buildConfig({
   plugins: [
     iconsPlugin({
       iconSetOptions: {
-        atomicHook: yourHook,         // from @pro-laico/atomic/hook
         livePreviewUrl: yourPreview,
         extraSettingsFields: [
           // e.g. a test path relationship
@@ -34,6 +33,18 @@ export default buildConfig({
       },
     }),
   ],
+})
+```
+
+Cache revalidation comes from `@pro-laico/core` hooks (`revalidateCacheCollection` on save, `revalidateCacheOnDelete` on delete) — no runtime dependency on `@pro-laico/atomic`. If you want the atomicHook snapshot behavior on `IconSet`, attach it explicitly through the additive `hooks` option:
+
+```ts
+import { atomicHook } from '@pro-laico/atomic/hook'
+
+iconsPlugin({
+  iconSetOptions: {
+    hooks: { beforeChange: [atomicHook] },
+  },
 })
 ```
 
@@ -52,7 +63,6 @@ iconsPlugin({
     },
   },
   iconSetOptions: {
-    atomicHook,
     livePreviewUrl,
 
     // Compact, in-row injection next to title/active.
@@ -71,6 +81,22 @@ iconsPlugin({
   },
 })
 ```
+
+### Rendering an icon by name
+
+For the common case of "look up an icon by name from the active set and render it inline", import the `<Icon>` server component:
+
+```tsx
+import { Icon } from '@pro-laico/icons/Icon'
+
+<Icon name="arrow-right" />
+<Icon name="arrow-right" className="size-6 text-primary" />
+<Icon name="logo" fallback={myCustomSvgString} />
+```
+
+Resolution happens server-side via `@pro-laico/core`'s cached `iconSet` + `icon` getters, so revalidating either tag invalidates just the rendered `<svg>`, not the surrounding page. JSX props always win over the SVG source's intrinsic attributes.
+
+The component lives at the `./Icon` subpath rather than the root barrel so client-bundle imports of the lighter helpers (`extractSvgProps`, `IconLabelPath`, `AtomicIcon`) don't drag a `server-only` import along.
 
 ### The icon select widget
 
@@ -96,7 +122,8 @@ The narrow cast is a deliberate workaround for the overload typing.
 | `collections/iconSet.ts` | The `IconSet` collection + `createIconSetCollection` factory. |
 | `hooks/formatSVG.ts` | `formatSvg` + `formatSVGHook` (svgo + viewBox tightening). |
 | `utilities/extractSVG.ts` | `extractSvgContent`, `extractSvgProps` — pull `<path>` data and attrs out of a serialized SVG. |
-| `components/frontend/AtomicIcon.tsx` | The frontend renderer. |
+| `components/frontend/Icon.tsx` | The `<Icon name="..." />` server component — resolves by name from the active IconSet. |
+| `components/frontend/AtomicIcon.tsx` | Admin marker glyph for atomic block types (tag/form/input/button/portal). |
 | `components/admin/iconRowLabel.tsx` | Admin row label (referenced via `IconLabelPath`). |
 | `components/admin/iconSelect.tsx` | Server component for the select widget. |
 | `iconSet/defaults.ts` | Optional name presets for seeding or docs. |
@@ -109,6 +136,7 @@ The narrow cast is a deliberate workaround for the overload typing.
 | Subpath | What's there |
 | --- | --- |
 | `./schema` | `zap` registry augmentations |
+| `./Icon` | `<Icon name="..." />` server component (resolves from the active IconSet) |
 | `./admin/iconRowLabel` | Admin row label (loaded via import map) |
 | `./admin/iconSelect` | `createIconSelect` factory |
 | `./iconSet/defaults` | Name presets for seeding/docs |

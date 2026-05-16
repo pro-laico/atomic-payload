@@ -1,11 +1,10 @@
-import { headers as nextHeaders, draftMode } from 'next/headers'
+import { headers as nextHeaders } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { getPayload } from 'payload'
 import config from '@payload-config'
 
-import getCached from '@pro-laico/core/cache/auto'
-import type { IconSetReturn } from '@pro-laico/core'
 import { extractSvgContent, extractSvgProps } from '@pro-laico/icons'
+import { Icon } from '@pro-laico/icons/Icon'
 
 import { sampleIconSets } from '@/seed/sampleIcons'
 import { CodeBlock } from './CodeBlock'
@@ -19,10 +18,6 @@ type IconSetDoc = {
   active?: boolean | null
   iconsArray?: { id?: string | null; name?: string | null; icon?: IconDoc | string | number | null }[] | null
 }
-
-/** Local fallback SVG so the demo doesn't pull in @pro-laico/atomic just for the
- *  warning icon — the production IconChild block uses the one from that package. */
-const WARNING_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="10.7 10.7 106.6 106.6" fill="currentColor" stroke="currentColor"><path d="M64 37.3a5.3 5.3 0 015.3 5.4v26.6a5.3 5.3 0 11-10.6 0V42.7a5.3 5.3 0 015.3-5.4m0 53.4A5.3 5.3 0 0064 80a5.3 5.3 0 000 10.7"/><path fill-rule="evenodd" d="M10.7 64a53.3 53.3 0 11106.6 0 53.3 53.3 0 01-106.6 0M64 21.3a42.7 42.7 0 100 85.4 42.7 42.7 0 000-85.4"/></svg>`
 
 async function postTo(path: string): Promise<void> {
   const reqHeaders = await nextHeaders()
@@ -53,14 +48,13 @@ function SvgFromString({ svg }: { svg: string }) {
   return <svg {...extractSvgProps(svg)} dangerouslySetInnerHTML={{ __html: extractSvgContent(svg) }} />
 }
 
-/** Mirrors @pro-laico/icons' IconChild: look up an icon by name within the
- *  active iconSet via the cached getter so revalidation on the `icon` or
- *  `iconSet` tags invalidates just this tile, not the whole page. */
-async function IconChildTile({ name, draft, iconSet }: { name: string; draft: boolean; iconSet: IconSetReturn }) {
-  const svg = await getCached('icon', name, draft, iconSet)
+/** Tile wrapper around the bundled `<Icon>` server component, which handles
+ *  active-iconSet lookup, draft mode, fallback, and per-icon cache invalidation
+ *  internally. */
+function IconChildTile({ name }: { name: string }) {
   return (
     <div className="icon-tile">
-      <SvgFromString svg={svg || WARNING_SVG} />
+      <Icon name={name} />
       <small>{name}</small>
     </div>
   )
@@ -70,21 +64,18 @@ export default async function HomePage() {
   const payload = await getPayload({ config })
   const reqHeaders = await nextHeaders()
   const { user } = await payload.auth({ headers: reqHeaders })
-  const { isEnabled: draft } = await draftMode()
   const isLoggedIn = Boolean(user)
 
-  const iconSet = await getCached('iconSet', draft)
   const icons = (await payload.find({ collection: 'icon', limit: 100, depth: 0, overrideAccess: true })).docs as IconDoc[]
-  const sets = (await payload.find({ collection: 'iconSet', limit: 25, depth: 1, overrideAccess: true })).docs as IconSetDoc[]
+  const sets = (await payload.find({ collection: 'iconSet', limit: 25, depth: 1, sort: 'createdAt', overrideAccess: true })).docs as IconSetDoc[]
 
   return (
     <main>
       <h1>Atomic Payload — Icons Demo</h1>
       <p className="lead">
         Minimal template showcasing <code>@pro-laico/icons</code>. The seed button wipes the <code>icon</code> and <code>iconSet</code> collections,
-        then re-creates one IconSet per folder under <code>src/seed/</code>. Below, the active set is rendered using the same pattern as the{' '}
-        <code>IconChild</code> block — <code>getCached(&apos;icon&apos;, name, draft, iconSet)</code> plus <code>extractSvgProps</code> /{' '}
-        <code>extractSvgContent</code> from <code>@pro-laico/icons</code>.
+        then re-creates one IconSet per folder under <code>src/seed/</code>. Below, the active set is rendered via the bundled{' '}
+        <code>&lt;Icon name=&quot;...&quot; /&gt;</code> server component from <code>@pro-laico/icons/Icon</code>.
       </p>
 
       <div className="card">
@@ -173,12 +164,12 @@ export default async function HomePage() {
         change the active icon set, the icons will not be found and the warning icon will be rendered.
       </p>
       <div className="grid" style={{ gridTemplateColumns: 'repeat(6, 1fr)' }}>
-        <IconChildTile name="arrow-right" draft={draft} iconSet={iconSet} />
-        <IconChildTile name="check" draft={draft} iconSet={iconSet} />
-        <IconChildTile name="cog" draft={draft} iconSet={iconSet} />
-        <IconChildTile name="heart" draft={draft} iconSet={iconSet} />
-        <IconChildTile name="star" draft={draft} iconSet={iconSet} />
-        <IconChildTile name="y" draft={draft} iconSet={iconSet} />
+        <IconChildTile name="arrow-right" />
+        <IconChildTile name="check" />
+        <IconChildTile name="cog" />
+        <IconChildTile name="heart" />
+        <IconChildTile name="star" />
+        <IconChildTile name="y" />
       </div>
 
       <h2>Intended usage</h2>
@@ -188,15 +179,27 @@ export default async function HomePage() {
         new visuals without changing a single line of frontend code.
       </p>
 
-      <h3 style={{ margin: '24px 0 8px', fontSize: '1rem' }}>1 — Inline lookup in any server component</h3>
+      <h3 style={{ margin: '24px 0 8px', fontSize: '1rem' }}>1 — The bundled <code>&lt;Icon&gt;</code> component</h3>
       <p className="lead" style={{ marginBottom: 12 }}>
-        Same call path the tiles above use — fetch the active set once per render, then look up each name against it.
+        Same path the tiles above use — exactly what this page does. Import the server component from the{' '}
+        <code>./Icon</code> subpath and pass the icon&apos;s name from the active set. JSX props you pass win over the
+        SVG source&apos;s intrinsic attributes, so <code>className</code>, <code>style</code>, etc. all work.
+      </p>
+      <CodeBlock lang="tsx">{`import { Icon } from '@pro-laico/icons/Icon'
+
+// Anywhere in a server tree:
+<Icon name="check" />
+<Icon name="check" className="size-6 text-primary" />
+<Icon name="logo" fallback={myCustomSvgString} />`}</CodeBlock>
+      <p className="lead" style={{ margin: '12px 0' }}>
+        Under the hood it&apos;s the same manual ceremony the older versions of this template ran inline — kept here for
+        reference so you can see exactly what the component encapsulates:
       </p>
       <CodeBlock lang="tsx">{`import { draftMode } from 'next/headers'
 import getCached from '@pro-laico/core/cache/auto'
 import { extractSvgContent, extractSvgProps } from '@pro-laico/icons'
 
-async function Icon({ name }: { name: string }) {
+async function IconByHand({ name }: { name: string }) {
   const { isEnabled: draft } = await draftMode()
   const iconSet = await getCached('iconSet', draft)
   const svg = await getCached('icon', name, draft, iconSet)
@@ -207,10 +210,7 @@ async function Icon({ name }: { name: string }) {
       dangerouslySetInnerHTML={{ __html: extractSvgContent(svg) }}
     />
   )
-}
-
-// Anywhere in a server tree:
-<Icon name="check" />`}</CodeBlock>
+}`}</CodeBlock>
 
       <h3 style={{ margin: '24px 0 8px', fontSize: '1rem' }}>2 — Editor-driven via the IconChild block</h3>
       <p className="lead" style={{ marginBottom: 12 }}>

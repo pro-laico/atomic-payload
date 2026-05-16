@@ -1,8 +1,14 @@
-import type { CollectionConfig, CollectionBeforeChangeHook, Field, PayloadRequest } from 'payload';
+import type { CollectionConfig, Field, PayloadRequest } from 'payload';
 /**
  * Options for {@link createIconSetCollection} — the `IconSet` collection that
  * groups Icons under a named bucket with versions, drafts, APF `active`
- * support, and optional live preview / atomicHook wiring.
+ * support, and optional live preview wiring.
+ *
+ * Built-in revalidation hooks come from `@pro-laico/core`
+ * (`revalidateCacheCollection` on `beforeChange`, `revalidateCacheOnDelete`
+ * on `afterDelete`); the icons package has no runtime dependency on
+ * `@pro-laico/atomic`. If you need the atomicHook snapshot behavior, attach
+ * it yourself via {@link hooks}.
  *
  * Field-injection options land at different locations in the admin UI; pick
  * the one that matches the field's natural shape:
@@ -14,7 +20,6 @@ import type { CollectionConfig, CollectionBeforeChangeHook, Field, PayloadReques
  * @example
  * ```ts
  * createIconSetCollection({
- *   atomicHook,
  *   livePreviewUrl,
  *   fields: [{ name: 'description', type: 'textarea' }],
  *   iconRowFields: [{ name: 'aliases', type: 'text', hasMany: true }],
@@ -22,21 +27,6 @@ import type { CollectionConfig, CollectionBeforeChangeHook, Field, PayloadReques
  * ```
  */
 export interface IconSetCollectionOptions {
-    /**
-     * Project atomicHook attached to `beforeChange`. Wire this when the icon
-     * set should participate in your project's atomic-data snapshot (so its
-     * data travels with the active design set).
-     *
-     * When omitted, no atomicHook runs from this factory — you can also attach
-     * one externally via `@pro-laico/atomic/hook`'s plugin factory.
-     *
-     * @example
-     * ```ts
-     * import { atomicHook } from '@pro-laico/atomic/hook'
-     * createIconSetCollection({ atomicHook })
-     * ```
-     */
-    atomicHook?: CollectionBeforeChangeHook;
     /**
      * Live preview URL generator. When supplied, wires both `admin.preview`
      * (legacy iframe preview) and `admin.livePreview.url` (Payload 3 live
@@ -82,14 +72,19 @@ export interface IconSetCollectionOptions {
      * Additional Payload hooks merged ADDITIVELY into the built-ins — user
      * hooks run AFTER the defaults within their phase:
      *
-     * - `beforeChange`: `[atomicHook (if provided), ...yours]`
+     * - `beforeChange`: `[revalidateCacheCollection, ...yours]`
      * - `afterDelete`: `[revalidateCacheOnDelete, ...yours]`
      * - Any other phase (`afterChange`, `beforeRead`, `afterRead`, …): just
      *   your hooks, no built-ins.
      *
+     * This is also the opt-in point for `@pro-laico/atomic`'s `atomicHook` —
+     * attach it via `hooks.beforeChange` if you want this collection in the
+     * atomic-data snapshot.
+     *
      * @example
      * ```ts
-     * hooks: { afterRead: [({ doc }) => doc] }
+     * import { atomicHook } from '@pro-laico/atomic/hook'
+     * createIconSetCollection({ hooks: { beforeChange: [atomicHook] } })
      * ```
      */
     hooks?: CollectionConfig['hooks'];
@@ -128,17 +123,19 @@ export interface IconSetCollectionOptions {
 }
 /**
  * Builds the `IconSet` collection — a versioned, draft-enabled grouping of
- * `Icon` documents with APF `active` toggle, optional live preview, and
- * optional atomicHook wiring.
+ * `Icon` documents with APF `active` toggle and optional live preview.
  *
- * Use this factory directly when you need to wire `atomicHook` /
- * `livePreviewUrl` for a specific project; for a no-arg default that omits
- * both, import the exported {@link IconSet} const instead.
+ * Revalidation is wired via `@pro-laico/core` hooks
+ * (`revalidateCacheCollection` on `beforeChange`, `revalidateCacheOnDelete`
+ * on `afterDelete`); no dependency on `@pro-laico/atomic`. To opt into
+ * atomicHook snapshot behavior, attach it via {@link IconSetCollectionOptions.hooks}.
+ *
+ * Use this factory directly when you need to wire `livePreviewUrl` for a
+ * specific project; for the no-arg default, import {@link IconSet} instead.
  *
  * @example
  * ```ts
  * createIconSetCollection({
- *   atomicHook,
  *   livePreviewUrl: ({ data, req }) => generateLivePreviewPath({ data, req }),
  *   fields: [{ name: 'description', type: 'textarea' }],
  * })
@@ -146,11 +143,11 @@ export interface IconSetCollectionOptions {
  */
 export declare const createIconSetCollection: (opts?: IconSetCollectionOptions) => CollectionConfig;
 /**
- * Default `IconSet` collection with no atomicHook and no live preview wired.
- * Equivalent to `createIconSetCollection()`. Import this when you don't need
- * project-specific wiring.
+ * Default `IconSet` collection with no live preview wired. Equivalent to
+ * `createIconSetCollection()`. Built-in revalidation hooks from
+ * `@pro-laico/core` are always attached.
  *
- * For atomicHook / live preview / additive extensions, use
+ * For live preview, additive hooks, or extra fields, use
  * {@link createIconSetCollection}; for plugin-level wiring, use `iconsPlugin`
  * with `iconSetOptions`.
  */
