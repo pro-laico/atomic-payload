@@ -97,6 +97,11 @@ export { getImageUrl } from './utilities/getImageURL'
 export { generateLivePreviewPath } from './utilities/generatePreviewPath'
 
 // /////////////////////////////////////
+// Hook composition
+// /////////////////////////////////////
+export { mergeHooks } from './utilities/mergeHooks'
+
+// /////////////////////////////////////
 // Field-level hooks
 // /////////////////////////////////////
 export { formatSlug, formatSlugHook } from './hooks/field/formatSlug'

@@ -1,7 +1,7 @@
 /**
  * Kernel of the per-package PayloadAugment system.
  *
- * Domain packages (ap-actions, ap-icons, ap-site, …) define their own schema
+ * Domain packages (ap-actions, ap-icons, ap-site, â€¦) define their own schema
  * stubs as `export type X = Get<'X', Default>` against the single `PayloadAugment`
  * interface declared here. Consumer projects fill the interface in once via
  * module augmentation, and every package's stubs resolve to the project's
@@ -9,7 +9,7 @@
  */
 /**
  * Index interface that consumer projects extend via `declare module
- * '@pro-laico/ap-types'` to supply concrete shapes from their generated
+ * '@pro-laico/core'` to supply concrete shapes from their generated
  * `payload-types.ts`.
  */
 export interface PayloadAugment {

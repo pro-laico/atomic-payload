@@ -45,6 +45,7 @@ export { GenerateMetaData } from './utilities/generateMetaData';
 export { getServerSideURL, getClientSideURL } from './utilities/getURL';
 export { getImageUrl } from './utilities/getImageURL';
 export { generateLivePreviewPath } from './utilities/generatePreviewPath';
+export { mergeHooks } from './utilities/mergeHooks';
 export { formatSlug, formatSlugHook } from './hooks/field/formatSlug';
 export { updateHrefHook } from './hooks/field/href';
 export { updatePublishedAtHook } from './hooks/field/publishedAt';

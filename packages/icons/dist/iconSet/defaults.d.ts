@@ -149,7 +149,7 @@ export declare const BRAND_ICON_VARIANTS: readonly [{
 }];
 export type IconName = (typeof GENERAL_ICON_VARIANTS)[number]['value'] | (typeof INTERFACE_ICON_VARIANTS)[number]['value'] | (typeof SOCIAL_ICON_VARIANTS)[number]['value'] | (typeof SHAPES_ICON_VARIANTS)[number]['value'] | (typeof BRAND_ICON_VARIANTS)[number]['value'];
 export declare const defaultIconNameList: {
-    name: "search" | "text" | "link" | "select" | "close" | "copy" | "menu" | "day" | "night" | "person" | "people" | "photo" | "video" | "music" | "quote" | "checkmark" | "home" | "back" | "forward" | "settings" | "ellipsis" | "alignRight" | "alignLeft" | "chevronDown" | "chevronUp" | "chevronLeft" | "chevronRight" | "play" | "pause" | "stop" | "plus" | "minus" | "facebook" | "twitter" | "instagram" | "linkedin" | "reddit" | "youtube" | "bluesky" | "tiktok" | "twitch" | "discord" | "github" | "circle" | "square" | "triangle" | "diamond" | "logo";
+    name: "search" | "text" | "link" | "select" | "close" | "copy" | "menu" | "video" | "settings" | "home" | "day" | "night" | "person" | "people" | "photo" | "music" | "quote" | "checkmark" | "back" | "forward" | "ellipsis" | "alignRight" | "alignLeft" | "chevronDown" | "chevronUp" | "chevronLeft" | "chevronRight" | "play" | "pause" | "stop" | "plus" | "minus" | "facebook" | "twitter" | "instagram" | "linkedin" | "reddit" | "youtube" | "bluesky" | "tiktok" | "twitch" | "discord" | "github" | "circle" | "square" | "triangle" | "diamond" | "logo";
 }[];
 export default defaultIconNameList;
 //# sourceMappingURL=defaults.d.ts.map

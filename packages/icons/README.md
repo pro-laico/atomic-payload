@@ -37,6 +37,41 @@ export default buildConfig({
 })
 ```
 
+### Extending the collections
+
+Both collections accept additive hooks and fields. User hooks always run **after** the built-ins (so `formatSVGHook` and the revalidation hooks always run first).
+
+```ts
+iconsPlugin({
+  iconOptions: {
+    // Append to top-level Icon fields, after `optimized` + `svgString`.
+    fields: [{ name: 'note', type: 'text' }],
+    // Merged additively with built-in hooks.
+    hooks: {
+      afterChange: [({ doc }) => { /* … */ return doc }],
+    },
+  },
+  iconSetOptions: {
+    atomicHook,
+    livePreviewUrl,
+
+    // Compact, in-row injection next to title/active.
+    extraSettingsFields: [TestPathField],
+
+    // Full-width set-level fields, appended below the title/active row.
+    fields: [{ name: 'description', type: 'textarea' }],
+
+    // Per-icon metadata appended to each row inside `iconsArray`.
+    iconRowFields: [{ name: 'aliases', type: 'text', hasMany: true }],
+
+    // Additional hooks (afterChange, afterRead, etc.) merged with the built-ins.
+    hooks: {
+      afterRead: [({ doc }) => doc],
+    },
+  },
+})
+```
+
 ### The icon select widget
 
 The Payload select field component lives behind a factory so you can pass in your app's cached fetcher. In the template, it's wired like this:
