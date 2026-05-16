@@ -1,38 +1,59 @@
 # Packages
 
-This directory contains publishable packages for the Atomic Payload monorepo.
+This directory contains the publishable packages that make up Atomic Payload. Each one is its own scope of responsibility and has its own README — start there if you're new to a package. This file is the map.
 
-## Current packages
+## Reading order for newcomers
 
-- **create-atomic-payload** – CLI to scaffold new Atomic Payload projects (`npx create-atomic-payload`)
+If you've never touched this repo before, read the READMEs in roughly this order:
 
-## Future packages
+1. **[`zap`](./zap)** — the shared Zod-based schema registry. Everything else types itself against it.
+2. **[`core`](./core)** — the kernel: shared types, APF runtime, cache helpers, JSON-schema generation, common fields.
+3. **[`design-sets`](./design-sets)** — the theme-as-data layer (colors, tokens, shortcuts).
+4. **[`site`](./site)** — the canonical site shape (Pages, Header, Footer, globals).
+5. **[`atomic`](./atomic)** — the runtime (action blocks, beforeChange hook, forms, child blocks). The integration layer.
+6. The rest — feature plugins (images, icons, fonts, mux-video, richtext, tracking, seed) and the CLI (`create-atomic-payload`).
 
-Add Payload plugins here. Each plugin can be:
+## Package index
 
-- Used independently: `pnpm add @your-scope/payload-plugin-name`
-- Used via the Atomic Payload template (which depends on all plugins)
+| Package | Purpose |
+| --- | --- |
+| [`atomic`](./atomic) | Runtime: actions, hook + CSS processor, forms, child blocks |
+| [`core`](./core) | Kernel types, APF, cache helpers, revalidation + JSON-schema plugins |
+| [`create-atomic-payload`](./create-atomic-payload) | `npx` scaffolder for new projects |
+| [`design-sets`](./design-sets) | `designSet` + `shortcutSet` collections (theme-as-data) |
+| [`fonts`](./fonts) | `Font` collection + build-time font download CLI |
+| [`icons`](./icons) | `Icon` + `IconSet` collections, SVG optimization, `AtomicIcon` |
+| [`images`](./images) | `Images` + `Favicons` collections, blur-data-URL integration |
+| [`mux-video`](./mux-video) | Mux video upload + playback wrapper |
+| [`richtext`](./richtext) | Lexical rich-text block + renderer + default editor preset |
+| [`seed`](./seed) | `/api/seed` endpoint + admin SEED DATABASE button |
+| [`site`](./site) | Pages/Header/Footer collections + SiteMetaData/Settings/Storage globals |
+| [`tracking`](./tracking) | PostHog/GTM/Vercel Analytics integration + Tracking global |
+| [`zap`](./zap) | Zod + registry-aware schema layer used by every other package |
 
-### Plugin structure
+## Standard package shape
+
+Every plugin package follows the same conventions:
+
+- A `(opts) => (config) => config` plugin factory as both **default** and **named** export.
+- Raw collections, hooks, fields, and components exported as named imports for advanced consumers.
+- A `schema` subpath exporting `payload-augment` types so `zap` knows about the package's block shapes.
+- An `index.ts` barrel that's safe to import from `payload.config.ts` (no client-only code).
+- Client components and server-only utilities live behind subpaths to keep bundles clean.
+
+See any existing package for the concrete pattern, or [`MONOREPO.md`](../MONOREPO.md) at the repo root for monorepo-level details (publishing, workspace deps, dev flow).
+
+## Adding a new package
 
 ```
-packages/
-  @your-scope/
-    payload-plugin-example/
-      package.json
-      src/
-        index.ts
-        plugin.ts
-      tsconfig.json
+packages/your-package/
+  package.json
+  src/
+    index.ts
+    plugin.ts
+    types/payload-augment.ts
+  tsconfig.json
+  README.md
 ```
 
-Or unscoped:
-
-```
-packages/
-  payload-plugin-example/
-    package.json
-    ...
-```
-
-The template in `templates/atomic-payload` will reference plugins via `workspace:*` for local development, and published versions for scaffolded projects.
+Then add it to the workspace via `pnpm-workspace.yaml` (already covers `packages/*`) and reference it from the template with `workspace:*` for local dev.

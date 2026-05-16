@@ -1,6 +1,22 @@
 # @pro-laico/icons
 
-Atomic Payload icons plugin. Provides the `Icon` upload collection (SVG optimization via `svgo` + viewBox tightening via `svg-path-bbox`), `IconSet`, `formatSVGHook`, SVG helpers, `AtomicIcon`, admin row labels, and **`createIconSelect(getCached)`** for the Payload select field server component.
+> Custom SVG icons in Payload, optimized on upload and surfaced as a child block. Includes an `IconSet` collection for grouping icons, a select widget for the admin, and the `AtomicIcon` component for the frontend.
+
+## What this package is
+
+A Payload plugin that turns icons into first-class CMS content:
+
+- **`Icon`** upload collection — accepts SVG files. On upload, the `formatSVGHook` runs the file through `svgo` (cleanup) and `svg-path-bbox` (tightens `viewBox`), so what's stored is the smallest correct version of the original.
+- **`IconSet`** collection — groups icons under a named bucket (e.g. "Social", "Nav"). The active design set can reference icon sets so icons travel with the theme.
+- **`AtomicIcon`** — a React component that renders any stored icon by ID.
+- **`createIconSelect`** — a factory that returns a Payload select field server component for picking icons in the admin. Requires you to pass your React-cached getter so it doesn't re-fetch on every render.
+- **Child blocks** — `iconChild` (picks from the `Icon` collection) and `svgChild` (pastes raw SVG). Both render via the frontend renderer in `@pro-laico/atomic/children`.
+
+## Why it exists
+
+Icon sets are part of brand and often change with the design. Putting icons in the CMS means non-developers can swap them per design set without code changes. Doing the SVG cleanup on upload (instead of at render time) means the stored asset is always optimized and `viewBox` is correct — no per-render cost, no manual cleanup.
+
+## Quick start
 
 ```ts
 import { buildConfig } from 'payload'
@@ -10,16 +26,20 @@ export default buildConfig({
   plugins: [
     iconsPlugin({
       iconSetOptions: {
-        atomicHook: yourHook,
+        atomicHook: yourHook,         // from @pro-laico/atomic/hook
         livePreviewUrl: yourPreview,
-        extraSettingsFields: [/* e.g. test path relationship */],
+        extraSettingsFields: [
+          // e.g. a test path relationship
+        ],
       },
     }),
   ],
 })
 ```
 
-In the starter template, `Icon` + `iconSet` are registered via `iconsPlugin` in `src/plugins/icons.ts`. The admin **Icon select** field uses a short app file that wires your React-cached getter (overload typing requires a narrow cast):
+### The icon select widget
+
+The Payload select field component lives behind a factory so you can pass in your app's cached fetcher. In the template, it's wired like this:
 
 ```ts
 import { createIconSelect, type IconSelectGetCached } from '@pro-laico/icons/admin/iconSelect'
@@ -28,21 +48,44 @@ import getCached from '@/utilities/get/cache/react'
 export default createIconSelect(getCached as unknown as IconSelectGetCached)
 ```
 
-`createIconSelect` is not re-exported from the package root so importing `IconLabelPath` / `AtomicIcon` from `@pro-laico/icons` does not pull admin code into client bundles.
+The narrow cast is a deliberate workaround for the overload typing.
 
-Optional icon-name presets for seeding or docs: `@pro-laico/icons/iconSet/defaults`.
+`createIconSelect` is **intentionally not** re-exported from the package root — that keeps client-bundle imports of `IconLabelPath` / `AtomicIcon` from dragging admin code along.
 
-<!-- workspace-deps:start (auto-generated, do not edit) -->
+## What lives in `src/`
 
-## Workspace dependencies
+| Path | What's there |
+| --- | --- |
+| `plugin.ts` | `iconsPlugin` — registers `Icon` + `IconSet`. |
+| `collections/icon.ts` | The `Icon` upload collection with `formatSVGHook` wired in. |
+| `collections/iconSet.ts` | The `IconSet` collection + `createIconSetCollection` factory. |
+| `hooks/formatSVG.ts` | `formatSvg` + `formatSVGHook` (svgo + viewBox tightening). |
+| `utilities/extractSVG.ts` | `extractSvgContent`, `extractSvgProps` — pull `<path>` data and attrs out of a serialized SVG. |
+| `components/frontend/AtomicIcon.tsx` | The frontend renderer. |
+| `components/admin/iconRowLabel.tsx` | Admin row label (referenced via `IconLabelPath`). |
+| `components/admin/iconSelect.tsx` | Server component for the select widget. |
+| `iconSet/defaults.ts` | Optional name presets for seeding or docs. |
+| `blocks/iconChild/` | The `iconChild` block (component + block config). |
+| `blocks/svgChild/` | The `svgChild` block (paste-in raw SVG). |
+| `access/` | Default access predicates. |
 
-Other `@pro-laico/*` packages this package depends on:
+## Subpath imports
 
-- [`ap-core`](../core)
+| Subpath | What's there |
+| --- | --- |
+| `./schema` | `zap` registry augmentations |
+| `./admin/iconRowLabel` | Admin row label (loaded via import map) |
+| `./admin/iconSelect` | `createIconSelect` factory |
+| `./iconSet/defaults` | Name presets for seeding/docs |
+| `./blocks/iconChild` | Child block config |
+| `./blocks/iconChild/component` | Child block renderer |
+| `./blocks/svgChild` | Child block config |
+| `./blocks/svgChild/component` | Child block renderer |
 
-Other `@pro-laico/*` packages that depend on this one:
+## Peer dependencies
 
-- [`children`](../children)
-- [`ap-seed`](../seed)
+`svgo` and `svg-path-bbox` are optional peers — installed in the template but only needed if you actually upload SVGs through the hook.
 
-<!-- workspace-deps:end -->
+## Where it sits in the monorepo
+
+Depends on `core` and `atomic`. Used by `children` (renders iconChild/svgChild) and `seed` (writes default icon sets).

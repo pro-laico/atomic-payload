@@ -1,15 +1,26 @@
-# create-atomic-payload
+# @pro-laico/create-atomic-payload
 
-Scaffold a new [Atomic Payload](https://atomicpayload.com) project — the Payload CMS starter where all you need to know is Tailwind.
+> The `npx` scaffolder for new [Atomic Payload](https://atomicpayload.com) projects. Copies the starter template, installs dependencies, builds sharp, and downloads fonts so the user lands on a working dev server.
 
-> Atomic Payload creates a hard separation between front-end development and the backend. Build your website directly in Payload CMS's dashboard, without ever having to touch real code.
+## What this package is
 
-## Prerequisites
+A small Node CLI (`bin/cli.js`) that bootstraps a new Atomic Payload project. It's the front door for anyone who isn't contributing to the monorepo — they `npx` this, answer a path, and get a runnable template.
 
-- **Node.js** 18 or later
-- **pnpm** (recommended) — install with `npm install -g pnpm`
+Unlike the rest of the monorepo, this package has **no `src/`**:
 
-## Quick Start
+- `bin/cli.js` — the CLI entrypoint (Node ESM, no transpile step).
+- `scripts/copy-template.js` — a `prepack` step that copies `templates/atomic-payload/` from the repo root into this package's `template/` folder so the published tarball is self-contained.
+- `template/` — populated at pack time; the published tarball ships this verbatim.
+
+## Why it exists separately
+
+It's the only published artifact that's a CLI rather than a library. Keeping it in its own package means:
+
+- The user-facing `npx` flow is decoupled from how the monorepo organizes plugins.
+- Releases of the template don't force version bumps on every plugin.
+- We can rev the scaffolder UX (prompts, post-install steps) without touching runtime code.
+
+## Quick start (for end users)
 
 ```bash
 npx @pro-laico/create-atomic-payload my-project
@@ -19,68 +30,34 @@ cp .env.example .env
 pnpm dev
 ```
 
-To create in the current directory instead of a subfolder:
+To scaffold into the current directory:
 
 ```bash
 npx @pro-laico/create-atomic-payload .
-cp .env.example .env
-pnpm dev
 ```
 
-## What It Does
+## What the CLI does
 
-The CLI will:
+1. Copies `template/` (i.e. `templates/atomic-payload/`) into the target directory.
+2. Installs dependencies with `pnpm`.
+3. Rebuilds `sharp` for the local platform.
+4. Downloads fonts via the template's `download:fonts` script.
 
-1. Copy the Atomic Payload template to your project folder
-2. Install dependencies with pnpm
-3. Build sharp (image processing)
-4. Download fonts
+After that the user edits `.env` and runs `pnpm dev`.
 
-Then you configure `.env` and run `pnpm dev`.
+## Maintaining this package
 
-## Options
+- The `prepack` script (`scripts/copy-template.js`) is what makes `template/` real. Don't commit `template/` — it's regenerated on every publish.
+- The version of this package is the version end users see. Bump it when:
+  - The template gains breaking changes.
+  - The CLI flow itself changes (new prompts, new post-install steps).
+- See `MONOREPO.md` at the repo root for the publish flow.
 
-| Option | Description |
-|-------|-------------|
-| `--help`, `-h` | Show help message |
+## Prerequisites for end users
 
-## Next Steps
+- Node.js 18+
+- pnpm (recommended): `npm install -g pnpm`
 
-After creating your project, see the project's `README.md` for:
+## Where it sits in the monorepo
 
-- MongoDB setup
-- Vercel Blob (file storage)
-- Deployment
-- Optional integrations (Mux, Resend)
-
-## Troubleshooting
-
-**Sharp / image errors on Windows?**  
-Run `pnpm rebuild sharp` in your project directory.
-
-**Fonts not loading?**  
-Run `pnpm download:fonts` in your project directory.
-
-## Links
-
-- [Atomic Payload Documentation](https://atomicpayload.com)
-- [Discord](https://discord.gg/EPHgjrQBxY)
-- [Payload CMS](https://payloadcms.com)
-
----
-
-> While this project utilizes Payload CMS, Atomic Payload is not affiliated with Payload CMS.
-
-<!-- workspace-deps:start (auto-generated, do not edit) -->
-
-## Workspace dependencies
-
-Other `@pro-laico/*` packages this package depends on:
-
-- _(none — this is a leaf package)_
-
-Other `@pro-laico/*` packages that depend on this one:
-
-- _(none)_
-
-<!-- workspace-deps:end -->
+Leaf package — depends on no `@pro-laico/*` packages. The template it ships (`templates/atomic-payload/`) is the consumer of every other plugin in this repo.
