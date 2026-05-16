@@ -65,7 +65,7 @@ export default async function HomePage() {
       </div>
 
       <h2>
-        Icons <small style={{ color: '#9aa3b2', fontWeight: 400 }}>({icons.length})</small>
+        Icons <small style={{ color: 'var(--muted)', fontWeight: 400 }}>({icons.length})</small>
       </h2>
       {icons.length === 0 ? (
         <p className="empty">No icons yet. Seed sample data above, or upload your own at <a href="/admin/collections/icon">/admin/collections/icon</a>.</p>
@@ -81,7 +81,7 @@ export default async function HomePage() {
       )}
 
       <h2>
-        Icon Sets <small style={{ color: '#9aa3b2', fontWeight: 400 }}>({sets.length})</small>
+        Icon Sets <small style={{ color: 'var(--muted)', fontWeight: 400 }}>({sets.length})</small>
       </h2>
       {sets.length === 0 ? (
         <p className="empty">
@@ -92,7 +92,7 @@ export default async function HomePage() {
           <div className="card" key={String(set.id)}>
             <div className="row" style={{ justifyContent: 'space-between' }}>
               <strong>{set.title ?? '(untitled)'}</strong>
-              <small style={{ color: set.active ? '#86efac' : '#9aa3b2' }}>{set.active ? 'active' : 'inactive'}</small>
+              <small style={{ color: set.active ? 'var(--brand)' : 'var(--muted)' }}>{set.active ? 'active' : 'inactive'}</small>
             </div>
             <div className="grid" style={{ marginTop: 12 }}>
               {(set.iconsArray ?? []).map((entry, idx) => {
