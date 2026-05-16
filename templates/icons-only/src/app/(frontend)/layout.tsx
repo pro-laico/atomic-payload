@@ -31,7 +31,7 @@ const styles = `
   main { max-width: 880px; margin: 0 auto; padding: 48px 24px 96px; }
   h1 { font-size: 2rem; font-weight: 700; letter-spacing: -0.02em; margin: 0 0 8px; }
   h2 { font-size: 1.25rem; font-weight: 600; letter-spacing: -0.01em; margin: 32px 0 12px; }
-  p.lead { color: var(--muted); margin: 0 0 32px; max-width: 60ch; }
+  p.lead { color: var(--muted); margin: 0 0 32px; }
   .card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-bottom: 16px; }
   .empty { color: var(--muted); font-style: italic; }
   .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 12px; }
@@ -44,7 +44,17 @@ const styles = `
     padding: 10px 16px; font-weight: 600; cursor: pointer; font-size: 0.95rem;
   }
   button.seed-btn:hover { filter: brightness(1.1); }
+  button.seed-btn--danger { background: transparent; color: var(--fg); border: 1px solid var(--border); }
+  button.seed-btn--danger:hover { background: var(--card); filter: none; }
   code { background: var(--card); border: 1px solid var(--border); padding: 2px 6px; border-radius: 4px; font-size: 0.9em; }
+  .code-block { margin: 0 0 16px; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+  .code-block pre.shiki {
+    background-color: var(--card) !important;
+    margin: 0; padding: 16px; overflow-x: auto;
+    font-size: 0.85rem; line-height: 1.55;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  }
+  .code-block pre.shiki code { background: transparent; border: 0; padding: 0; font-size: inherit; font-family: inherit; }
   .row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
 `
 
