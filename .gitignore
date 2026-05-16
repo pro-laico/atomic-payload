@@ -19,6 +19,9 @@ public/sitemap*.xml
 templates/atomic-payload/src/app/definition.ts
 templates/atomic-payload/public/fonts
 
+# icons-only seed assets are populated locally by the seed script
+templates/icons-only/icon/
+
 
 # CLI packed template (generated during prepack)
 packages/create-atomic-payload/template

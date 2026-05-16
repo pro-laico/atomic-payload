@@ -3,20 +3,23 @@ import path from 'node:path'
 
 /**
  * Sample icons used by the `/api/seed` endpoint to demonstrate
- * `@pro-laico/icons`. SVG content is read from `src/seed/icons/*.svg` so the
- * on-disk files are the source of truth — drop new SVGs in that folder and
- * add their filenames below to extend the demo.
+ * `@pro-laico/icons`. Reads every `.svg` in `src/seed/icons/` at request
+ * time — that folder is gitignored, so drop your own SVGs in to seed them.
  */
 export type SampleIcon = { filename: string; svg: string }
 
 const iconsDir = path.join(process.cwd(), 'src', 'seed', 'icons')
 
-const iconFilenames = ['check.svg', 'x.svg', 'heart.svg', 'star.svg', 'arrow-right.svg', 'cog.svg']
+function loadSampleIcons(): SampleIcon[] {
+  if (!fs.existsSync(iconsDir)) return []
+  return fs
+    .readdirSync(iconsDir)
+    .filter((f) => f.toLowerCase().endsWith('.svg'))
+    .sort()
+    .map((filename) => ({ filename, svg: fs.readFileSync(path.join(iconsDir, filename), 'utf8') }))
+}
 
-export const sampleIcons: SampleIcon[] = iconFilenames.map((filename) => ({
-  filename,
-  svg: fs.readFileSync(path.join(iconsDir, filename), 'utf8'),
-}))
+export const sampleIcons: SampleIcon[] = loadSampleIcons()
 
 /** The icons get bundled into an example IconSet, exposing the IconSet collection too. */
 export const sampleIconSetTitle = 'Demo Icon Set'

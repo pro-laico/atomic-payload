@@ -11,6 +11,9 @@ public/media
 src/payload-types.ts
 src/payload-types.augment.d.ts
 
+# Seed assets (regenerated locally, not committed)
+icon/
+
 # Env
 .env
 .env*.local
