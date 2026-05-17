@@ -12,7 +12,7 @@ const ShortcutRowLabel = () => {
     if (!name) return null
     const namePieces = name.split('-')
 
-    return namePieces.map((piece, index) => {
+    return namePieces.map((piece: string, index: number) => {
       return (
         <Pill className="shortcut-pill color-cycle" key={index} pillStyle="white" size="small">
           {piece}

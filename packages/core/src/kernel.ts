@@ -18,6 +18,13 @@ export interface PayloadAugment {}
 /** Look up `K` in the augmented `PayloadAugment` interface; fall back to `F` when absent. */
 export type Get<K extends string, F> = PayloadAugment extends Record<K, infer T> ? T : F
 
+/**
+ * Like `Extract<U, V>`, but when `Extract` collapses to `never` (e.g. because `U`
+ * is an un-augmented default like `DefaultBlock` whose discriminant is `string`),
+ * fall back to `U & V` so the discriminant literal is preserved.
+ */
+export type ExtractOrDefault<U, V> = [Extract<U, V>] extends [never] ? U & V : Extract<U, V>
+
 // /////////////////////////////////////
 // Default fallbacks. Picked so each domain package compiles cleanly without
 // augmentation â€” `Config['collections']` indexes by `string`, blocks have a

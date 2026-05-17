@@ -12,7 +12,7 @@ const AttributerRegistry = { AttCCToDA, AttBoolToDA, AttTextToDA, AttFormStatusT
 export const handleAttributerActions: AttFunction<AttributerType[]> = ({ actions, context }) => {
   if (!actions) return
   const result = actions.reduce((acc: Record<string, string>, action) => {
-    const attributer = AttributerRegistry[action.type] as AttFunction<typeof action.type>
+    const attributer = AttributerRegistry[action.type as keyof typeof AttributerRegistry] as AttFunction<typeof action.type>
     return { ...acc, ...(attributer({ ...action, context }) || {}) }
   }, {})
   return Object.keys(result).length === 0 ? undefined : result

@@ -11,7 +11,7 @@ export const AttCCToDA: AttFunction<'AttCCToDA'> = ({
   switch (listen.listen) {
     case 'preference':
       if (!listen.key) return
-      const checked = preferences?.[listen.key]
+      const checked = preferences?.[listen.key as keyof typeof preferences]
       if (checked) returns = { [`data-${changeKey || listen.key}`]: '' }
       break
     case 'accept':

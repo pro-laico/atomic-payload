@@ -13,7 +13,7 @@ export const handleRunnerActions: RunFunction<RunnerType[]> = async ({ actions, 
   const result: ReturnType<RunFunction<RunnerType[]>> = { success: true }
   if (!actions) return { success: false, message: 'No actions to run' }
   for (const action of actions) {
-    const runner = RunnerRegistry[action.type] as RunFunction<typeof action.type>
+    const runner = RunnerRegistry[action.type as keyof typeof RunnerRegistry] as RunFunction<typeof action.type>
     const result = await runner({ ...action, context })
     if (!result.success) return { success: false, message: result.message }
   }

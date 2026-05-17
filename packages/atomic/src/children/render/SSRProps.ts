@@ -13,7 +13,7 @@ function formatStaticDataAttributes(staticDataAttributes: StaticDataAttributes):
     .filter((item) => item?.key && typeof item.key === 'string' && item.key.trim() !== '')
     .reduce(
       (acc, item) => {
-        acc[`data-${item.key}`] = item.value === 'true' ? '' : item.value
+        acc[`data-${item.key}`] = item.value === 'true' ? '' : (item.value ?? '')
         return acc
       },
       {} as Record<string, string>,

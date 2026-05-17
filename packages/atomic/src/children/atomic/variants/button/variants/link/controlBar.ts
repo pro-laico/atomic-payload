@@ -1,4 +1,4 @@
-import type { RelationshipField, RowField, SelectField, TextField, UploadField, EmailField as EmailFieldType } from 'payload'
+import type { CollectionSlug, RelationshipField, RowField, SelectField, TextField, UploadField, EmailField as EmailFieldType } from 'payload'
 
 const linkTypeField: SelectField = {
   name: 'linkType',
@@ -43,10 +43,11 @@ const ExternalLinkField: TextField = {
   required: true,
   admin: { width: '25%', condition: (_, sd) => Boolean(sd?.linkType === 'externalLink') },
 }
-const InternalLinkField: RelationshipField = {
+
+const buildInternalLinkField = (pagesSlug: string): RelationshipField => ({
   name: 'internalLink',
   type: 'relationship',
-  relationTo: 'pages',
+  relationTo: pagesSlug as CollectionSlug,
   required: true,
   admin: {
     width: '25%',
@@ -54,7 +55,7 @@ const InternalLinkField: RelationshipField = {
     allowCreate: false,
     condition: (_, sd) => Boolean(sd?.linkType && sd?.linkType === 'internalLink'),
   },
-}
+})
 
 const PhoneField: TextField = {
   name: 'phone',
@@ -66,8 +67,14 @@ const PhoneField: TextField = {
   },
 }
 
-export const LinkControlBarFields: RowField = {
+/** Factory: builds the link-button control bar with the consumer's pages collection slug
+ *  bound to the `internalLink` relationship. Defaults to `'pages'`. */
+export const createLinkControlBarFields = (pagesSlug: string = 'pages'): RowField => ({
   type: 'row',
   admin: { condition: (_, sd) => Boolean(sd?.buttonType === 'link') },
-  fields: [linkTypeField, InternalLinkField, ExternalLinkField, DownloadField, EmailField, PhoneField],
-}
+  fields: [linkTypeField, buildInternalLinkField(pagesSlug), ExternalLinkField, DownloadField, EmailField, PhoneField],
+})
+
+/** Default link-button control bar bound to `pagesSlug = 'pages'`. Use
+ *  `createLinkControlBarFields(slug)` to bind a different slug. */
+export const LinkControlBarFields: RowField = createLinkControlBarFields()

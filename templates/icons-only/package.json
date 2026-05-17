@@ -10,6 +10,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "pnpm exec eslint .",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
     "payload": "payload",
     "generate:types": "cross-env NODE_OPTIONS=\"--conditions=react-server\" payload generate:types && core-augment-types",
     "generate:importmap": "cross-env NODE_OPTIONS=\"--conditions=react-server\" payload generate:importmap"

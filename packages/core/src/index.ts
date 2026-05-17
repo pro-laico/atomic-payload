@@ -67,7 +67,20 @@ export type {
 export { revalidateTag } from './utilities/revalidateTag'
 export { mt } from './utilities/mergeTags'
 
-export { revalidateCache as revalidateCacheCollection, revalidateCacheOnDelete } from './hooks/collection/revalidate'
+export {
+  revalidateCache as revalidateCacheCollection,
+  revalidateCacheOnDelete,
+  createRevalidateCache,
+  createRevalidateCacheOnDelete,
+  DEFAULT_REVALIDATION_HANDLERS,
+  DEFAULT_DELETE_REVALIDATION_HANDLERS,
+} from './hooks/collection/revalidate'
+export type {
+  CollectionRevalidationHandlers,
+  CollectionDeleteRevalidationHandlers,
+  RevalidationContext,
+  DeleteRevalidationContext,
+} from './hooks/collection/revalidate'
 export { revalidateCache as revalidateCacheGlobal } from './hooks/global/revalidate'
 export { sanitizeAfterRead } from './hooks/collection/sanitize'
 
@@ -115,5 +128,5 @@ export { slugField } from './fields/slug'
 export { StorageTab } from './fields/storageTab'
 export { ClassNameField } from './fields/className'
 export { DevModeField } from './fields/devMode'
-export { TestPathField } from './fields/testPath'
+export { TestPathField, createTestPathField } from './fields/testPath'
 export { UniqueTitleField } from './fields/uniqueTitle'

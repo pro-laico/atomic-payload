@@ -15,7 +15,7 @@ import { ActDSBoolToDA } from './dynamicStore/boolean/toDA/options'
 //Other
 import { z } from '@pro-laico/zap'
 import { ActionFilters } from './filters'
-import type { AllActions, StoredAtomicActions } from '@pro-laico/atomic/actions/schema'
+import type { ActionBlocks, ActionBlockType, AllActions, StoredAtomicActions } from '@pro-laico/atomic/actions/schema'
 import type { ChildBlocks } from '@pro-laico/atomic/children/schema'
 import type { InitialValue, ActionProcessFunction, ActionBlockDefaultReturns, ActionSetKeyInitialByAction } from '@pro-laico/atomic/actions'
 /** Makes an object and all its properties non-nullable */
@@ -93,8 +93,8 @@ export class ActionBlockStorageProcessor {
     // Get Trigger Action Initial Values
     if ('triggerActions' in block && block?.triggerActions && block.triggerActions.actionBlocks) {
       if (Array.isArray(block.triggerActions.actionBlocks) && block.triggerActions.actionBlocks?.length > 0) {
-        block.triggerActions.actionBlocks?.forEach((actionBlock) => {
-          const AO = ActionOptions[actionBlock.blockType]
+        block.triggerActions.actionBlocks?.forEach((actionBlock: ActionBlocks[number]) => {
+          const AO = ActionOptions[actionBlock.blockType as keyof typeof ActionOptions]
           if ('setKeyInitialByAction' in AO) {
             const setter = AO.setKeyInitialByAction as ActionSetKeyInitialByAction<typeof actionBlock.blockType>
             const value = setter({ block, initialValuesMap: this.initialValuesMap, actionBlock })
@@ -107,8 +107,8 @@ export class ActionBlockStorageProcessor {
     // Get Content Action Initial Values
     if ('contentActions' in block && block?.contentActions && block.contentActions.actionBlocks) {
       if (Array.isArray(block.contentActions.actionBlocks) && block.contentActions.actionBlocks?.length > 0) {
-        block.contentActions.actionBlocks?.forEach((actionBlock) => {
-          const AO = ActionOptions[actionBlock.blockType]
+        block.contentActions.actionBlocks?.forEach((actionBlock: ActionBlocks[number]) => {
+          const AO = ActionOptions[actionBlock.blockType as keyof typeof ActionOptions]
           if ('setKeyInitialByAction' in AO) {
             const setter = AO.setKeyInitialByAction as ActionSetKeyInitialByAction<typeof actionBlock.blockType>
             const value = setter({ block, initialValuesMap: this.initialValuesMap, actionBlock })
@@ -179,9 +179,7 @@ export class ActionBlockStorageProcessor {
       Object.values(ActionOptions).forEach((option) => {
         if ('triggerDefaults' in option) {
           option.triggerDefaults({ block, data: this.triggerStore, initialValuesMap: this.initialValuesMap })
-          //TODO: Fix typing here.
-          //@ts-expect-error zod ensures proper usage.
-          if (this.triggerStore.actions.length > 0) block['triggerActions'] = this.triggerStore
+          if (this.triggerStore.actions.length > 0) (block as unknown as Record<string, unknown>)['triggerActions'] = this.triggerStore
         }
       })
     }
@@ -189,8 +187,7 @@ export class ActionBlockStorageProcessor {
       Object.values(ActionOptions).forEach((option) => {
         if ('contentDefaults' in option) {
           option.contentDefaults({ block, data: this.contentStore, initialValuesMap: this.initialValuesMap })
-          //@ts-expect-error zod ensures proper usage.
-          if (this.contentStore.actions.length > 0) block['contentActions'] = this.contentStore
+          if (this.contentStore.actions.length > 0) (block as unknown as Record<string, unknown>)['contentActions'] = this.contentStore
         }
       })
     }
@@ -207,13 +204,13 @@ export class ActionBlockStorageProcessor {
     block: ChildBlocks[number]
     path: string[]
   }) {
-    AllActions.actions.push(...AllActions.actionBlocks.map((actionBlock) => actionBlock.blockType))
-    AllActions.actionBlocks.forEach((actionBlock) => {
-      if (ActionFilters[actionBlock.blockType]({ placement, ...block })) {
+    AllActions.actions.push(...AllActions.actionBlocks.map((actionBlock: ActionBlocks[number]) => actionBlock.blockType as ActionBlockType))
+    AllActions.actionBlocks.forEach((actionBlock: ActionBlocks[number]) => {
+      if (ActionFilters[actionBlock.blockType as keyof typeof ActionFilters]({ placement, ...block })) {
         const { blockType } = actionBlock
         const closestFormName = this.formNameMap.get(this.findClosestParent(path, this.formNameMap.keys()) || '')
         const closestPortalName = this.portalNameMap.get(this.findClosestParent(path, this.portalNameMap.keys()) || '')
-        const PF = ActionOptions[blockType].processFunction as ActionProcessFunction<typeof blockType>
+        const PF = ActionOptions[blockType as keyof typeof ActionOptions].processFunction as ActionProcessFunction<typeof blockType>
         PF({
           ...actionBlock,
           block,

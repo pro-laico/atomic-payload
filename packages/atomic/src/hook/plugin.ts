@@ -8,7 +8,7 @@ export interface AtomicHookPluginOptions {
   collectionSlugs: string[]
 }
 
-/** Attaches the provided `atomicHook` to `beforeChange` for each slug (use `createAtomicHook` from this package). */
+/** Attaches the provided `atomicHook` to `beforeChange` for each slug. Build the hook via `createAtomicHook` or by calling `atomicHook(slugConfig)`. */
 export const atomicHookPlugin =
   (opts: AtomicHookPluginOptions): Plugin =>
   (config: Config): Config => {

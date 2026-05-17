@@ -22,13 +22,26 @@ type CssDocDesignSet = DesignSet & {
   minify?: boolean
 }
 
-export function createCssProcessor(getCached: AtomicHookGetCached): cssProcessorType {
+export type CssProcessorOptions = {
+  /** Map of slug → cached-tag key used by `getCached`. Keys must include `header`, `footer`, `designSet`, `shortcutSet`. */
+  cssCacheTagBySlug: Record<string, string>
+  /** Global slugs that the generated CSS is written to. */
+  cssStorageGlobals: { draft: string; published: string }
+}
+
+export function createCssProcessor(getCached: AtomicHookGetCached, options: CssProcessorOptions): cssProcessorType {
+  const { cssCacheTagBySlug, cssStorageGlobals } = options
+  const headerSlug = cssCacheTagBySlug.header ?? 'header'
+  const footerSlug = cssCacheTagBySlug.footer ?? 'footer'
+  const designSetSlug = cssCacheTagBySlug.designSet ?? 'designSet'
+  const shortcutSetSlug = cssCacheTagBySlug.shortcutSet ?? 'shortcutSet'
+
   return async ({ slug, context, draft, req }) => {
     const pagesAtomicClasses = (await getCached('atomic-classes', draft)) as string[] | undefined
-    const header = (slug !== 'header' ? await getCached('header', draft) : context?.header) as CollectionsWithStoredAtomicClasses | undefined
-    const footer = (slug !== 'footer' ? await getCached('footer', draft) : context?.footer) as CollectionsWithStoredAtomicClasses | undefined
-    const ds = (slug !== 'designSet' ? await getCached('designSet', draft) : context?.designSet) as CssDocDesignSet | undefined
-    const shortcutSet = (slug !== 'shortcutSet' ? await getCached('shortcutSet', draft) : context?.shortcutSet) as ShortcutSet | undefined
+    const header = (slug !== headerSlug ? await getCached(headerSlug, draft) : context?.header) as CollectionsWithStoredAtomicClasses | undefined
+    const footer = (slug !== footerSlug ? await getCached(footerSlug, draft) : context?.footer) as CollectionsWithStoredAtomicClasses | undefined
+    const ds = (slug !== designSetSlug ? await getCached(designSetSlug, draft) : context?.designSet) as CssDocDesignSet | undefined
+    const shortcutSet = (slug !== shortcutSetSlug ? await getCached(shortcutSetSlug, draft) : context?.shortcutSet) as ShortcutSet | undefined
 
     const shortcuts = [...(shortcutSet?.shortcuts || []), ...(shortcutSet?.defaultShortcuts || [])].reduce(
       (acc: Record<string, string>, shortcut) => {
@@ -75,9 +88,9 @@ export function createCssProcessor(getCached: AtomicHookGetCached): cssProcessor
 
     await req.payload.updateGlobal({
       req,
-      slug: `${draft ? 'draft' : 'published'}Storage`,
+      slug: (draft ? cssStorageGlobals.draft : cssStorageGlobals.published),
       data: { layoutCSS: css, cssSize: css.length, updatedAt },
-    })
+    } as unknown as Parameters<typeof req.payload.updateGlobal>[0])
     manualLogger(`[UPDATE] (Global) - ${draft ? 'Draft' : 'Published'} CSS Storage - ${css.length} bytes`)
 
     return css

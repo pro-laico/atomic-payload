@@ -19,7 +19,7 @@ const d = {
   unoptimized: 'Default false. If true, will not optimize the image for the web. Best for tiny images like logos.',
 }
 
-const sizeOptions: { label: string; value: keyof NonNullable<ImageType['sizes']> }[] = [
+const sizeOptions: { label: string; value: Extract<keyof NonNullable<ImageType['sizes']>, string> }[] = [
   { label: 'Thumbnail', value: 'thumbnail' },
   { label: 'Square', value: 'square' },
   { label: 'Small', value: 'small' },

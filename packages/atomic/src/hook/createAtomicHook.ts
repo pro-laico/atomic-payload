@@ -12,7 +12,7 @@ import type { StoredAtomicForm, StoredAtomicFormInput } from '@pro-laico/atomic/
 import { unsetActive } from './unsetActive'
 import { createCssProcessor } from './cssProcessor'
 import processDesignSet from './processDesignSet/index'
-import type { CreateAtomicHookOptions } from './atomicHookTypes'
+import { DEFAULT_ATOMIC_HOOK_SLUG_CONFIG, type CreateAtomicHookOptions } from './atomicHookTypes'
 
 function findClosestParent(inputPath: string[], parentPaths: MapIterator<string>): string | null {
   const inputPathString = inputPath.join('.')
@@ -24,8 +24,16 @@ function findClosestParent(inputPath: string[], parentPaths: MapIterator<string>
   return bestMatch.path || null
 }
 
-export function createAtomicHook({ getCached, ActionBlockStorageProcessor }: CreateAtomicHookOptions): CollectionBeforeChangeHook {
-  const cssProcessor = createCssProcessor(getCached)
+export function createAtomicHook(opts: CreateAtomicHookOptions): CollectionBeforeChangeHook {
+  const { getCached, ActionBlockStorageProcessor } = opts
+  const pagesSlug = opts.pagesSlug ?? DEFAULT_ATOMIC_HOOK_SLUG_CONFIG.pagesSlug
+  const designSetSlug = opts.designSetSlug ?? DEFAULT_ATOMIC_HOOK_SLUG_CONFIG.designSetSlug
+  const unsetActiveCleanup = opts.unsetActiveCleanup ?? DEFAULT_ATOMIC_HOOK_SLUG_CONFIG.unsetActiveCleanup
+  const cssProcessorSkipSlugs = new Set(opts.cssProcessorSkipSlugs ?? DEFAULT_ATOMIC_HOOK_SLUG_CONFIG.cssProcessorSkipSlugs)
+  const cssProcessor = createCssProcessor(getCached, {
+    cssCacheTagBySlug: opts.cssCacheTagBySlug ?? DEFAULT_ATOMIC_HOOK_SLUG_CONFIG.cssCacheTagBySlug,
+    cssStorageGlobals: opts.cssStorageGlobals ?? DEFAULT_ATOMIC_HOOK_SLUG_CONFIG.cssStorageGlobals,
+  })
 
   return async ({ collection, context, data, originalDoc, operation, req }) => {
     if (context.isSeed) return
@@ -37,7 +45,7 @@ export function createAtomicHook({ getCached, ActionBlockStorageProcessor }: Cre
 
     let href: string | undefined
     let runSlug = false
-    if (slug === 'pages') {
+    if (slug === pagesSlug) {
       const previousHref = data?.href
       href =
         data?.breadcrumbs && data?.breadcrumbs?.length > 0
@@ -76,19 +84,11 @@ export function createAtomicHook({ getCached, ActionBlockStorageProcessor }: Cre
     if (r.active) {
       const unsetSlug = await unsetActive({ id: id as string, draft, req, slug: slug as CollectionSlug })
       if (unsetSlug) {
-        switch (unsetSlug) {
-          case 'header':
-          case 'footer':
-            r.forms = true
-            r.classes = true
-            r.actions = true
-            break
-          case 'designSet':
-          case 'shortcutSet':
-            r.classes = true
-            break
-          default:
-            break
+        const cleanup = unsetActiveCleanup[unsetSlug as string]
+        if (cleanup) {
+          if (cleanup.forms) r.forms = true
+          if (cleanup.classes) r.classes = true
+          if (cleanup.actions) r.actions = true
         }
       }
     }
@@ -166,7 +166,7 @@ export function createAtomicHook({ getCached, ActionBlockStorageProcessor }: Cre
         if (classesArray.length > 0)
           manualLogger(`[STORE] - Atomic Classes - ${data?.title || originalDoc?.id} - ${classesArray.length} Classes Stored`)
       }
-      if (slug === 'designSet') processDesignSet(data as CollectionBySlug<'designSet'>)
+      if ((slug as string) === designSetSlug) processDesignSet(data as CollectionBySlug<CollectionSlug>)
       context[slug] = data as Extract<CollectionThatUsesCSSProcessor, { slug: typeof slug }>
     }
 
@@ -192,15 +192,16 @@ export function createAtomicHook({ getCached, ActionBlockStorageProcessor }: Cre
     if (r.forms) await revalidateTag('atomic-forms', draft)
     if (r.actions) await revalidateTag('atomic-actions', draft)
     if (r.siteMetadata) await revalidateTag('site-metadata', draft)
-    if (slug !== 'pages' && r.active) await revalidateTag(slug, draft)
-    if (slug === 'pages' && r.classes) await revalidateTag('atomic-classes', draft)
+    if (slug !== pagesSlug && r.active) await revalidateTag(slug, draft)
+    if (slug === pagesSlug && r.classes) await revalidateTag('atomic-classes', draft)
 
     if (r.pages) await revalidateTag('pages', draft)
     if (r.page && href) await revalidateTag('page', href, draft)
 
-    if (r.classes && slug !== 'iconSet') {
-      await cssProcessor({ slug, context, draft: true, req })
-      if (!draft) await cssProcessor({ slug, context, draft: false, req })
+    if (r.classes && !cssProcessorSkipSlugs.has(slug)) {
+      const cssSlug = slug as Parameters<typeof cssProcessor>[0]['slug']
+      await cssProcessor({ slug: cssSlug, context, draft: true, req })
+      if (!draft) await cssProcessor({ slug: cssSlug, context, draft: false, req })
     }
     return data
   }

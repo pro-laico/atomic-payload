@@ -7,7 +7,7 @@ export const RunSetCC: RunFunction<'RunSetCC'> = ({
 }) => {
   switch (values.perform) {
     case 'preference':
-      if (values.key) setPreference(values.key, !preferences?.[values.key])
+      if (values.key) setPreference(values.key, !preferences?.[values.key as keyof typeof preferences])
       break
     case 'accept':
       acceptCookies(

@@ -25,7 +25,8 @@
   ],
   "scripts": {
     "build": "node -e \"process.exit(0)\"",
-    "lint": "node -e \"process.exit(0)\""
+    "lint": "node -e \"process.exit(0)\"",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
     "@pro-laico/design-sets": "workspace:*",

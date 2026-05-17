@@ -32,7 +32,7 @@ const ActionBlocksField: React.FC<ActionBlocksFieldProps> = (props) => {
   }, [placement, type, blockType, inputType, buttonType, portalType])
 
   const filteredField = useMemo(() => {
-    const blockRefs = field?.blockReferences?.filter((slug) => ActionFilters[slug as ActionBlockType](block))
+    const blockRefs = field?.blockReferences?.filter((slug) => ActionFilters[slug as keyof typeof ActionFilters](block))
     return { ...field, blocks: [], blockReferences: blockRefs }
   }, [field, block])
 

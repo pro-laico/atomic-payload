@@ -69,8 +69,8 @@ export async function POST() {
           active: set.defaultActive,
           iconsArray,
           _status: 'published',
-        } as Parameters<typeof payload.create>[0]['data'],
-      })
+        },
+      } as Parameters<typeof payload.create>[0])
       iconSetStatus = 'created'
     }
 

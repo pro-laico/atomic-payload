@@ -2,6 +2,7 @@
 // Hand-written types for the actions surface.
 // /////////////////////////////////////
 import type { UseThemeProps } from 'next-themes'
+import type { ExtractOrDefault } from '@pro-laico/core'
 import type { AtomicStore } from '@pro-laico/atomic/hook'
 import type { FormResponse } from '@pro-laico/atomic/forms'
 import type {
@@ -78,8 +79,8 @@ export type AttFunctionReturns = Record<string, string> | undefined
 
 /** Returns attributer function type or array of function types. Pass function type or array of function types*/
 export type GetBaseAtt<T extends AttributerType | AttributerType[]> = T extends AttributerType[]
-  ? { [K in keyof T]: Extract<Attributer, { type: T[K] }> }
-  : Extract<Attributer, { type: T }>
+  ? { [K in keyof T]: ExtractOrDefault<Attributer, { type: T[K] }> }
+  : ExtractOrDefault<Attributer, { type: T }>
 
 /** Returns attributer function type with the dispatcher context added. Pass function type or array of function types*/
 export type GetFullAtt<T extends AttributerType | AttributerType[]> = T extends AttributerType[]
@@ -98,8 +99,8 @@ export type RunFunctionReturns = Promise<RunFunctionReturnsBase> | RunFunctionRe
 
 /** Returns runner function type. Pass function type or array of function types*/
 export type GetBaseRun<T extends RunnerType | RunnerType[]> = T extends RunnerType[]
-  ? { [K in keyof T]: Extract<Runners[number], { type: T[K] }> }
-  : Extract<Runners[number], { type: T }>
+  ? { [K in keyof T]: ExtractOrDefault<Runners[number], { type: T[K] }> }
+  : ExtractOrDefault<Runners[number], { type: T }>
 
 /** Returns runner function type with the dispatcher context added. Pass function type or array of function types*/
 export type GetFullRun<T extends RunnerType | RunnerType[]> = T extends RunnerType[]
@@ -131,8 +132,8 @@ type WithProcessFunctionContext<T> = T extends unknown[]
 
 //Establish Base Types
 type GetBaseAction<T extends ActionBlockType | ActionBlockType[]> = T extends ActionBlockType[]
-  ? { [K in keyof T]: Extract<ActionBlocks[number], { blockType: T[K] }> }
-  : Extract<ActionBlocks[number], { blockType: T }>
+  ? { [K in keyof T]: ExtractOrDefault<ActionBlocks[number], { blockType: T[K] }> }
+  : ExtractOrDefault<ActionBlocks[number], { blockType: T }>
 
 type GetActionsProcessFunction<T extends ActionBlockType | ActionBlockType[]> = T extends ActionBlockType[]
   ? { actionBlock: GetBaseAction<T>; context: ProcessFunctionContext }

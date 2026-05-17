@@ -1,14 +1,18 @@
-﻿import { z } from '@pro-laico/zap'
+import { z } from '@pro-laico/zap'
 import type { ActionProcessFunction, ActionSetKeyInitialByAction } from '@pro-laico/atomic/actions'
+type TextArrayItem = { id?: string | null; value: string; initialValue?: boolean | null }
+
 const setKeyInitialByAction: ActionSetKeyInitialByAction<'ActDSCycleText'> = (props) => {
-  const { key, persisted, textArray } = props.actionBlock
-  const initialValue = textArray.find((item) => item.initialValue)?.value || textArray[0]?.value
+  const { key, persisted, textArray } = props.actionBlock as unknown as { key: string; persisted?: boolean | null; textArray: TextArrayItem[] }
+  const initialValue = textArray.find((item: TextArrayItem) => item.initialValue)?.value || textArray[0]?.value
   return { key, initialValue, persisted }
 }
 
-const processFunction: ActionProcessFunction<'ActDSCycleText'> = ({ key, persisted, textArray, setDA, data }) => {
-  const initialValue = textArray.find((item) => item.initialValue)?.value || textArray[0]?.value
-  const cleanTextArray = textArray.map(({ id, ...rest }) => rest)
+const processFunction: ActionProcessFunction<'ActDSCycleText'> = (args) => {
+  const { key, persisted, setDA, data } = args
+  const textArray = (args as unknown as { textArray: TextArrayItem[] }).textArray
+  const initialValue = textArray.find((item: TextArrayItem) => item.initialValue)?.value || textArray[0]?.value
+  const cleanTextArray = textArray.map(({ id, ...rest }: TextArrayItem) => rest)
 
   const Run: z.ap.Type<'RunCycleText'> = { type: 'RunCycleText', key, persisted, initialValue, textArray: cleanTextArray }
   data.runners.push(Run)
