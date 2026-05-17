@@ -7,7 +7,8 @@ export type { AtomicHookPluginOptions } from './plugin'
 export { default as sanitizeData } from './utilities/sanitizeData'
 export { default as manualLogger } from './utilities/manualLogger'
 export { createAtomicHook } from './createAtomicHook'
-export { atomicHook, atomicHookWith } from './lazyAtomicHook'
+export { atomicHook } from './lazyAtomicHook'
+export { atomicHookWith } from './atomicHookFactory'
 export { DEFAULT_ATOMIC_HOOK_SLUG_CONFIG } from './atomicHookTypes'
 export type {
   AtomicHookGetCached,
