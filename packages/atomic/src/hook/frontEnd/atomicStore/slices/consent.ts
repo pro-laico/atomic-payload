@@ -20,6 +20,7 @@ const DEFAULT_PREFERENCES: ConsentPreferences = {
 const setCookie = (name: string, value: string, expiryYears: number = COOKIE_EXPIRY_YEARS) => {
   const date = new Date()
   date.setFullYear(date.getFullYear() + expiryYears)
+  // biome-ignore lint/suspicious/noDocumentCookie: Cookie Store API has limited browser support; document.cookie is the portable choice for consent cookies.
   document.cookie = `${name}=${value}; expires=${date.toUTCString()}; path=/; SameSite=Lax; Secure`
 }
 

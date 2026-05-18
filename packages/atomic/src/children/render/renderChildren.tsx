@@ -122,14 +122,18 @@ export const RenderChildren: RenderChildrenProps = async ({ blocks }) => {
           }
           if (!Component) return null
 
-          // Pre-render children conditionally to avoid creating elements unnecessarily
+          const blockKey = ('id' in block && typeof block.id === 'string' ? block.id : undefined) ?? `block-${index}`
+
+          // Pre-render children conditionally to avoid creating elements unnecessarily.
+          // biome-ignore-start lint/correctness/useJsxKeyInIterable: these elements are passed as single props, not rendered as siblings in an iterable.
           const contentChildren = hasChildren(block, 'children') ? <RenderChildren blocks={block.children} /> : undefined
           const triggerChildren = hasChildren(block, 'trigger') ? <RenderChildren blocks={block.triggerChildren} /> : undefined
           const backdropChildren = hasChildren(block, 'backdrop') ? <RenderChildren blocks={block.backdropChildren} /> : undefined
+          // biome-ignore-end lint/correctness/useJsxKeyInIterable: see above.
 
           return (
             <Component
-              key={index}
+              key={blockKey}
               block={block}
               pt={passThroughs}
               contentChildren={contentChildren}

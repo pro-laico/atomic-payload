@@ -10,9 +10,9 @@
  * corresponding `packages/<name>` directory will fail loudly so we don't ship
  * a broken tarball.
  */
-import { cpSync, existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'fs'
-import path from 'path'
-import { fileURLToPath } from 'url'
+import { cpSync, existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const monorepoRoot = path.join(__dirname, '..', '..', '..')
@@ -79,7 +79,7 @@ if (unresolved.length > 0) {
   process.exit(1)
 }
 
-writeFileSync(destPkgPath, JSON.stringify(destPkg, null, 2) + '\n')
+writeFileSync(destPkgPath, `${JSON.stringify(destPkg, null, 2)}\n`)
 
 // Write a self-contained biome.json into the scaffolded template. The monorepo's
 // root biome.json governs the whole workspace, so we don't keep nested copies in
@@ -166,6 +166,6 @@ const templateBiomeConfig = {
     },
   ],
 }
-writeFileSync(path.join(templateDest, 'biome.json'), JSON.stringify(templateBiomeConfig, null, 2) + '\n')
+writeFileSync(path.join(templateDest, 'biome.json'), `${JSON.stringify(templateBiomeConfig, null, 2)}\n`)
 
 console.log(`Template copied to package/template (${workspaceVersions.size} workspace deps inspected)`)

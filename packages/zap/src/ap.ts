@@ -76,7 +76,6 @@ export const ap = new AtomicPayloadZodClass()
  * Namespace for type-level helpers that merge with the runtime `ap` instance.
  * This allows `z.ap.Type<'SchemaId'>` to work as a type helper.
  */
-// eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace ap {
   /**
    * Type helper to get the TypeScript type for a schema ID from AtomicRegistry.

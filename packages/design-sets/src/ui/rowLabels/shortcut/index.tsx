@@ -14,13 +14,13 @@ const ShortcutRowLabel = () => {
 
     return namePieces.map((piece: string, index: number) => {
       return (
-        <Pill className="shortcut-pill color-cycle" key={index} pillStyle="white" size="small">
+        // biome-ignore lint/suspicious/noArrayIndexKey: pieces can repeat (e.g. "foo-foo"); index disambiguates, and this label list never reorders.
+        <Pill className="shortcut-pill color-cycle" key={`${index}-${piece}`} pillStyle="white" size="small">
           {piece}
         </Pill>
       )
     })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [name, rowNumber])
+  }, [name])
 
   return <RowLabel path={path} rowNumber={rowNumber} label={namePills} />
 }

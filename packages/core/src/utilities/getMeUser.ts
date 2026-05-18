@@ -20,6 +20,6 @@ export const getMeUser = async <U = unknown>(args?: MeUserArgs): Promise<{ token
   if (validUserRedirect && meUserReq.ok && user) redirect(validUserRedirect)
   if (nullUserRedirect && (!meUserReq.ok || !user)) redirect(nullUserRedirect)
 
-  // Token will exist here because if it doesn't the user will be redirected
-  return { token: token!, user }
+  if (!token) throw new Error('Missing payload-token cookie — caller should have provided nullUserRedirect to handle this case')
+  return { token, user }
 }

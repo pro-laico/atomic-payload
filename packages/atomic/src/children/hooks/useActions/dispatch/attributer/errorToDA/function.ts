@@ -18,5 +18,5 @@ export const AttFormErrorToDA: AttFunction<'AttFormErrorToDA'> = ({ key, inputNa
 
   const errorMessage = storedValue[inputKey]
   if (!errorMessage) return
-  return { [`data-error`]: errorMessage || '' }
+  return { 'data-error': errorMessage || '' }
 }

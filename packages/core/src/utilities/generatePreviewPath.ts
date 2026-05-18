@@ -33,8 +33,7 @@ export const generateLivePreviewPath = async ({ data, req: { payload } }: Props,
           select: { href: true } as Parameters<typeof payload.findByID>[0]['select'],
         })) as { href?: string } | null
         if (page?.href) path = page.href
-        //eslint-disable-next-line @typescript-eslint/no-unused-vars
-      } catch (error) {
+      } catch (_error) {
         payload.logger.info('No Page Found. Loading /testing instead.')
       }
     }
@@ -49,8 +48,7 @@ export const generateLivePreviewPath = async ({ data, req: { payload } }: Props,
     const url = `/next/preview?${encodedParams.toString()}`
 
     return getClientSideURL() + url
-    //eslint-disable-next-line @typescript-eslint/no-unused-vars
-  } catch (error) {
+  } catch (_error) {
     payload.logger.error('Error generating live preview path')
     return '/testing'
   }

@@ -26,7 +26,7 @@ export const createPreviewRouteHandler =
     if (!path || !collection || !slug) return new Response('Insufficient search params', { status: 404 })
     if (!path.startsWith('/')) return new Response('This endpoint can only be used for relative previews', { status: 500 })
 
-    let user
+    let user: Awaited<ReturnType<typeof payload.auth>> | undefined
 
     try {
       user = await payload.auth({ req: req as unknown as PayloadRequest, headers: req.headers })

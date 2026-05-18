@@ -18,6 +18,7 @@ export function APField(args: APFieldType['args']): APFieldType['return'] {
   const { type, name, apf, docLink, ...baseArgs } = args
 
   const possiblyUndefinedProps = definedProps({ docLink })
+  const fieldClientProps: Record<string, unknown> = { type, apf, ...possiblyUndefinedProps }
 
   const baseField = {
     name,
@@ -25,7 +26,7 @@ export function APField(args: APFieldType['args']): APFieldType['return'] {
       components: {
         Field: {
           path: APFieldPath,
-          clientProps: { type, apf, ...possiblyUndefinedProps },
+          clientProps: fieldClientProps,
         },
         Label: {
           path: APFieldLabelPath,
@@ -39,14 +40,14 @@ export function APField(args: APFieldType['args']): APFieldType['return'] {
     case 'text': {
       const { kebab, ...rest } = baseArgs as APArgs<'text'>
 
-      if (kebab) Object.assign(baseField.admin.components.Field.clientProps!, { kebab: args.kebab })
+      if (kebab) Object.assign(fieldClientProps, { kebab: args.kebab })
 
       return deepMerge({ type: 'text', ...baseField }, rest)
     }
     case 'textarea': {
       const { kebab, ...rest } = baseArgs as APArgs<'textarea'>
 
-      if (kebab) Object.assign(baseField.admin.components.Field.clientProps!, { kebab: args.kebab })
+      if (kebab) Object.assign(fieldClientProps, { kebab: args.kebab })
 
       return deepMerge({ type: 'textarea', ...baseField }, rest)
     }

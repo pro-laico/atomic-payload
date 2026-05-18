@@ -25,7 +25,9 @@ const RunControls: React.FC<RunControlsProps> = ({ APFunctions = Object.keys(apf
   const runValues = useFormFields(([fields]) => {
     const values = {} as Record<APFunction, boolean>
 
-    Object.entries(apfRegistry).forEach(([apFunction, path]) => (values[apFunction as APFunction] = Boolean(fields[path]?.value)))
+    Object.entries(apfRegistry).forEach(([apFunction, path]) => {
+      values[apFunction as APFunction] = Boolean(fields[path]?.value)
+    })
 
     return values
   })

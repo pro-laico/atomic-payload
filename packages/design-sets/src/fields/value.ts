@@ -44,7 +44,7 @@ export const TokenValueArrayField = (name: string, extras?: TokenValueArrayField
     typescriptSchema: [() => ({ $ref: `#/definitions/TokenString` })],
   }
 
-  if (extras?.description) valueField.admin!.description = extras.description
+  if (extras?.description && valueField.admin) valueField.admin.description = extras.description
   if (extras?.defaultValue) valueField.defaultValue = extras.defaultValue
 
   return valueField
@@ -71,7 +71,7 @@ export const TokenValuesArrayField = (name: string, extras?: TokenValuesArrayFie
     typescriptSchema: [() => ({ $ref: `#/definitions/TokenStringArray` })],
   }
 
-  if (extras?.description) valueField.admin!.description = extras.description
+  if (extras?.description && valueField.admin) valueField.admin.description = extras.description
   if (extras?.defaultValue) valueField.defaultValue = extras.defaultValue
 
   return valueField

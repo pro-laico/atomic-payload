@@ -28,7 +28,7 @@ function mergeApfFieldStyles(
   const style = admin?.style
   return {
     ...(style ?? {}),
-    ...(admin?.width ? { ['--field-width']: `${admin.width}` } : { flex: '1 1 auto' }),
+    ...(admin?.width ? { '--field-width': `${admin.width}` } : { flex: '1 1 auto' }),
     ...(style?.flex !== undefined ? { flex: style.flex } : {}),
   } as React.CSSProperties
 }
@@ -52,13 +52,15 @@ export const APFieldComponent: APFFieldComponentType = (props) => {
   }, [apf])
 
   const setTargetValues = useFormFields(([, dispatch]) => (value: boolean) => {
-    targetPaths?.forEach((targetPath) => dispatch({ type: 'UPDATE', path: targetPath, value }))
+    targetPaths?.forEach((targetPath) => {
+      dispatch({ type: 'UPDATE', path: targetPath, value })
+    })
   })
 
   const selectFormattedOptions = useMemo(() => {
     if (type !== 'select') return []
     return formatOptions((field as Extract<typeof props, { type: 'select' }>['field']).options ?? [])
-  }, [field, props, type])
+  }, [field, type])
 
   const placeholderNumber = useMemo(() => {
     if (type !== 'number') return undefined

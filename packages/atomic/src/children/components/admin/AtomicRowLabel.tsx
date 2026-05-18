@@ -3,7 +3,6 @@ import './AtomicRowLabel.scss'
 import { RowLabel, SectionTitle, useRowLabel } from '@payloadcms/ui'
 import type { AtomicChild } from '@pro-laico/atomic/children/schema'
 import { AtomicIcon } from '@pro-laico/icons'
-import React from 'react'
 
 const AtomicRowLabel = () => {
   const { data, path, rowNumber } = useRowLabel<AtomicChild>()
@@ -12,9 +11,9 @@ const AtomicRowLabel = () => {
 
   let typePill = type
   const typePillStyle = 'atomic-row-pill pill-default'
-  let elaborationPill
+  let elaborationPill: string | null | undefined
   let elaborationPillStyle = 'atomic-row-pill pill-default'
-  let namePill
+  let namePill: string | null | undefined
   const namePillStyle = 'atomic-row-pill pill-name nocap'
   switch (type) {
     case 'tag': {

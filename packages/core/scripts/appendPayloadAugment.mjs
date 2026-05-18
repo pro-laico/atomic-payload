@@ -59,7 +59,7 @@ const SENTINEL_START = '// ===== BEGIN @pro-laico/core augmentation (auto-genera
 const SENTINEL_END = '// ===== END @pro-laico/core augmentation ====='
 if (generatedContent.includes(SENTINEL_START)) {
   const cleaned = generatedContent.replace(new RegExp(`\\n${SENTINEL_START}[\\s\\S]*?${SENTINEL_END}\\n?`, 'g'), '')
-  fs.writeFileSync(generatedPath, cleaned.trimEnd() + '\n')
+  fs.writeFileSync(generatedPath, `${cleaned.trimEnd()}\n`)
 }
 
 const mappable = Array.from(stubNames)

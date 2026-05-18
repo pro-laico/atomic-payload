@@ -1,6 +1,5 @@
 ﻿import { FieldLabel } from '@payloadcms/ui'
 import NextLink from 'next/link'
-import React from 'react'
 import type { APFFieldComponentType } from '../../types'
 
 const APFieldLabelServer: APFFieldComponentType = (props) => {

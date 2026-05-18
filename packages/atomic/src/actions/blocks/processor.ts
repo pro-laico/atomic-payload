@@ -64,8 +64,6 @@ export class ActionBlockStorageProcessor {
   //New storage for all block actions
   allBlockActions: StoredAtomicActions = {}
 
-  constructor() {}
-
   /**
    * @note Stores values in the class instance.
    * @description Grabs All Form/Portal Names and stores a blocks actions initial values for later use.
@@ -145,8 +143,8 @@ export class ActionBlockStorageProcessor {
     this.runNodeDefaults({ block })
 
     if ('triggerActions' in block) {
-      if (block?.triggerActions?.actionBlocks) {
-        this.triggerStore.actionBlocks.push(...block?.triggerActions?.actionBlocks)
+      if (block.triggerActions?.actionBlocks) {
+        this.triggerStore.actionBlocks.push(...block.triggerActions.actionBlocks)
         this.processActionBlocks({ placement: 'trigger', AllActions: this.triggerStore, block, path })
         block.triggerActions = this.triggerStore
 
@@ -156,8 +154,8 @@ export class ActionBlockStorageProcessor {
     }
 
     if ('contentActions' in block) {
-      if (block?.contentActions?.actionBlocks) {
-        this.contentStore.actionBlocks.push(...block?.contentActions?.actionBlocks)
+      if (block.contentActions?.actionBlocks) {
+        this.contentStore.actionBlocks.push(...block.contentActions.actionBlocks)
         this.processActionBlocks({ placement: 'content', AllActions: this.contentStore, block, path })
         block.contentActions = this.contentStore
 
@@ -179,7 +177,7 @@ export class ActionBlockStorageProcessor {
       Object.values(ActionOptions).forEach((option) => {
         if ('triggerDefaults' in option) {
           option.triggerDefaults({ block, data: this.triggerStore, initialValuesMap: this.initialValuesMap })
-          if (this.triggerStore.actions.length > 0) (block as unknown as Record<string, unknown>)['triggerActions'] = this.triggerStore
+          if (this.triggerStore.actions.length > 0) (block as unknown as Record<string, unknown>).triggerActions = this.triggerStore
         }
       })
     }
@@ -187,7 +185,7 @@ export class ActionBlockStorageProcessor {
       Object.values(ActionOptions).forEach((option) => {
         if ('contentDefaults' in option) {
           option.contentDefaults({ block, data: this.contentStore, initialValuesMap: this.initialValuesMap })
-          if (this.contentStore.actions.length > 0) (block as unknown as Record<string, unknown>)['contentActions'] = this.contentStore
+          if (this.contentStore.actions.length > 0) (block as unknown as Record<string, unknown>).contentActions = this.contentStore
         }
       })
     }

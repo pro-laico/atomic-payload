@@ -34,7 +34,7 @@ export function useForm(props: UseFormProps): UseFormReturns {
   const [submissionId, setSubmissionId] = useState<string | null>(null)
   const [formResponse, setFormResponse] = useState<FormResponse | null>(null)
 
-  const fullFormContext: FullFormContext = useMemo(() => ({ formRef, formResponse, submissionId }), [formRef, formResponse, submissionId])
+  const fullFormContext: FullFormContext = useMemo(() => ({ formRef, formResponse, submissionId }), [formResponse, submissionId])
   const context = useActionContext({ fullFormContext })
 
   useEffect(() => {
@@ -44,16 +44,10 @@ export function useForm(props: UseFormProps): UseFormReturns {
   }, [formName, context])
 
   function setStatus(status: 'pending' | 'success' | 'error' | 'reset', response?: FormResponse) {
-    switch (status) {
-      case 'reset':
-        setSubmissionId(null)
-      case 'pending':
-        setFormResponse(null)
-      case 'error':
-      case 'success':
-        if (formName) context.atomicStore.setValue(formName, status, false)
-        if (response) context.atomicStore.setValue(`${formName}-response`, { form: response.fm, ...response.im }, false)
-    }
+    if (status === 'reset') setSubmissionId(null)
+    if (status === 'reset' || status === 'pending') setFormResponse(null)
+    if (formName) context.atomicStore.setValue(formName, status, false)
+    if (response) context.atomicStore.setValue(`${formName}-response`, { form: response.fm, ...response.im }, false)
   }
 
   useEffect(() => {
@@ -74,8 +68,8 @@ export function useForm(props: UseFormProps): UseFormReturns {
       }
     }
     //KNOWN ISSUE: Need to update to next 16+ to properly remove setStatus as a dep with useEffectEvent.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [formName, formStatus])
+    // biome-ignore lint/correctness/useExhaustiveDependencies: setStatus is unstable but intentionally listed; revisit with useEffectEvent on Next 16+.
+  }, [formName, formStatus, setStatus])
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -100,8 +94,7 @@ export function useForm(props: UseFormProps): UseFormReturns {
     }
 
     try {
-      let toastID
-      if (block.formToastEnabled) toastID = toastManager.add({ type: 'loading', description: block.lm || 'Submitting form...' })
+      const toastID = block.formToastEnabled ? toastManager.add({ type: 'loading', description: block.lm || 'Submitting form...' }) : undefined
 
       const submitFormSF = await loadSubmitForm()
       const response = await submitFormSF({ blockID: block.id, formData, submissionID, clientData })

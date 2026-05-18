@@ -30,10 +30,10 @@ export const AtomicButtonPortalPopover: React.FC<RenderChild<AtomicChild>> = (pr
         {triggerChildren}
         {block?.screenReaderText && <span className="sr-only">{block?.screenReaderText}</span>}
       </Trigger>
-      <Portal {...popPortal!}>
+      <Portal {...(popPortal ?? {})}>
         <Backdrop {...pt?.po?.b?.p}>{backdropChildren}</Backdrop>
-        <Positioner {...popPositioner!}>
-          {hasArrow! && <Arrow />}
+        <Positioner {...(popPositioner ?? {})}>
+          {Boolean(hasArrow) && <Arrow />}
           <Popup {...pt?.c?.p} {...pt?.c?.da} {...cda}>
             {contentChildren}
           </Popup>

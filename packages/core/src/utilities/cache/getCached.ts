@@ -56,7 +56,7 @@ export function createGetCached(configPromise: PayloadConfigPromise, getRegistry
         const iconSet = args[args.length - 1] as IconSetReturn
         dependencyTags.push(mt(['iconSet', draftTag]))
         const iconItem = iconSet.iconsArray?.find((item) => item.name === tid)
-        if (iconItem && iconItem.icon) dependencyTags.push(mt(['icon', iconItem.icon]))
+        if (iconItem?.icon) dependencyTags.push(mt(['icon', iconItem.icon]))
         break
       }
       case 'icon-options': {

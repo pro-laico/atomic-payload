@@ -6,11 +6,10 @@ import LivePreviewListener from '@pro-laico/core/components/frontend/LivePreview
 import type { Metadata } from 'next'
 import { draftMode } from 'next/headers'
 import { notFound } from 'next/navigation'
-import React from 'react'
 
 type Props = { params: Promise<{ slug?: string[] }> }
 
-const slugJoin = (slug: string[] | undefined) => '/' + (slug?.join('/') || '')
+const slugJoin = (slug: string[] | undefined) => `/${slug?.join('/') || ''}`
 
 export async function generateStaticParams() {
   try {

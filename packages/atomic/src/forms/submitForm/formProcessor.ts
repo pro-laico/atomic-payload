@@ -185,7 +185,7 @@ class SubmitFormProcessor {
     }
 
     // Process Form & Input Messages
-    let fm
+    let fm: string
     if (response.fm) fm = response.fm
     else if (this.success) fm = storedForm.sm || 'Form submitted successfully!'
     else fm = storedForm.em || 'Failed to submit form.'

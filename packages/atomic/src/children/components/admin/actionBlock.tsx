@@ -3,7 +3,6 @@ import { BlocksField, useFormFields } from '@payloadcms/ui'
 import type { ActionBlockFilter, ActionBlockPrefix } from '@pro-laico/atomic/actions'
 import { ActionFilters } from '@pro-laico/atomic/actions/filters'
 import type {
-  ActionBlockType,
   AtomicButtonPortalTypes,
   AtomicButtonTypes,
   AtomicChildVariants,

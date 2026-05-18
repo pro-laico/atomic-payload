@@ -94,8 +94,8 @@ export type APReturn<Type extends SupportedAPFFields['type']> = Extract<APFieldT
 export type APFieldWrapper<
   T extends SupportedAPFFields['type'],
   Defaults extends keyof APArgs<T>,
-  AdditionalArgs extends Record<string, unknown> | void = void,
-> = AdditionalArgs extends void
+  AdditionalArgs extends Record<string, unknown> | undefined = undefined,
+> = AdditionalArgs extends undefined
   ? (args?: Omit<APArgs<T>, Defaults>) => Extract<APFieldType, { args: { type: T } }>['return']
   : (args: Omit<APArgs<T>, Defaults> & AdditionalArgs) => Extract<APFieldType, { args: { type: T } }>['return']
 

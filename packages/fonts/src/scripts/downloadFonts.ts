@@ -1,9 +1,9 @@
 import { PayloadSDK } from '@payloadcms/sdk'
 import type { Font } from '@pro-laico/fonts/schema'
 import dotenv from 'dotenv'
-import fs from 'fs'
-import https from 'https'
-import path from 'path'
+import fs from 'node:fs'
+import https from 'node:https'
+import path from 'node:path'
 
 const colors = {
   blue: (t: string) => `\x1b[34m${t}\x1b[0m`,
@@ -126,9 +126,15 @@ export default fonts
     })
   }
 
-  async function downloadFont(font: Font | string | null, fontType: GenericFontFamily, baseUrl: string): Promise<string | undefined | void> {
-    if (typeof font === 'string') return warn(colors.orange(`The ${fontType} font is a string reference`))
-    if (!font?.filename) return warn(colors.orange(`No ${fontType} font found`))
+  async function downloadFont(font: Font | string | null, fontType: GenericFontFamily, baseUrl: string): Promise<string | undefined> {
+    if (typeof font === 'string') {
+      warn(colors.orange(`The ${fontType} font is a string reference`))
+      return
+    }
+    if (!font?.filename) {
+      warn(colors.orange(`No ${fontType} font found`))
+      return
+    }
 
     try {
       const extension = font.filename.split('.').pop()?.toLowerCase() || 'ttf'
@@ -149,17 +155,17 @@ export default fonts
     return
   }
 
-  const blobToken = process.env.BLOB_READ_WRITE_TOKEN!
+  const blobToken = process.env.BLOB_READ_WRITE_TOKEN as string
   const accountId = blobToken.split('_').slice(-2, -1)[0]
   const baseUrl = `https://${accountId}.public.blob.vercel-storage.com`
 
-  let user
+  let user: Awaited<ReturnType<typeof sdk.login>> | undefined
   try {
     user = await sdk.login({
       collection: 'users',
       data: {
-        email: process.env.SCRIPT_USER_EMAIL!,
-        password: process.env.SCRIPT_USER_PASSWORD!,
+        email: process.env.SCRIPT_USER_EMAIL as string,
+        password: process.env.SCRIPT_USER_PASSWORD as string,
       },
     })
   } catch (err) {
@@ -169,7 +175,7 @@ export default fonts
 
   const token = (user as { token: string }).token
 
-  let designSet
+  let designSet: Awaited<ReturnType<typeof sdk.find>> | undefined
   try {
     designSet = await sdk.find(
       { collection: 'designSet', where: { active: { equals: true } }, limit: 1 },

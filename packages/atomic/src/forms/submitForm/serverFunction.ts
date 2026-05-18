@@ -20,7 +20,7 @@ export const submitForm: SubmitFormFunction = async (submissionData) => {
     const allForms = await getCached('all-forms', draft, atomicForms, backendForms)
     if (!allForms) return { success: false, formData, submissionID, fm: 'No all forms found.', im: {} }
     const storedForm = allForms.find((form) => form.id === blockID)
-    if (!storedForm || !storedForm.id) return { success: false, formData, submissionID, fm: 'No backend form found for this atomic form.', im: {} }
+    if (!storedForm?.id) return { success: false, formData, submissionID, fm: 'No backend form found for this atomic form.', im: {} }
 
     const formProcessor = await getSubmitFormProcessor()
     const { response, submitToPayload } = await formProcessor.process({ submissionData, headers, storedForm })

@@ -83,7 +83,7 @@ export const formatSvg = async (icon: Partial<Icon>, svgData: Buffer): Promise<P
       const coords = viewBox
         .split(' ')
         .map((coord: string) => {
-          return isNaN(parseFloat(coord)) ? coord : parseFloat(coord).toFixed(1)
+          return Number.isNaN(parseFloat(coord)) ? coord : parseFloat(coord).toFixed(1)
         })
         .join(' ')
       return `viewBox="${coords}"`

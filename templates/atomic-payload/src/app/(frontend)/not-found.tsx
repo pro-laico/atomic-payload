@@ -3,7 +3,6 @@ import { RenderChildren } from '@pro-laico/atomic/children/render'
 import getCached from '@pro-laico/core/cache/auto'
 import { draftMode } from 'next/headers'
 import Link from 'next/link'
-import React from 'react'
 
 //KNOWN ISSUE: 404 Page Does not display in production environment when directly viewing the /404 route.
 //Works in dev though, and works correctly when someone navigates to a non-existent page.

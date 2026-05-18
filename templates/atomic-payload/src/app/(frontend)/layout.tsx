@@ -35,7 +35,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           <ThemeProvider enableSystem attribute="class" disableTransitionOnChange defaultTheme={ds?.defaultTheme}>
             <TrackingProvider tracking={tracking}>
               <Toaster>
-                <div className={ds?.wrapperClassName + ' isolate' || 'isolate'}>
+                <div className={`${ds?.wrapperClassName} isolate` || 'isolate'}>
                   <Header header={header} />
                   {children}
                   <Footer footer={footer} />

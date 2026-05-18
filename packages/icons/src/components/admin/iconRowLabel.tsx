@@ -1,7 +1,6 @@
 'use client'
 import { Pill, RowLabel, useRowLabel } from '@payloadcms/ui'
 import type { Icon } from '@pro-laico/icons/schema'
-import React from 'react'
 
 interface IconData {
   name: string

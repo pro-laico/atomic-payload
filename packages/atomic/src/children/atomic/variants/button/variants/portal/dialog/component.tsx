@@ -28,7 +28,7 @@ export const AtomicButtonPortalDialog: React.FC<RenderChild<AtomicChild>> = (pro
         {triggerChildren}
         {block?.screenReaderText && <span className="sr-only">{block?.screenReaderText}</span>}
       </Trigger>
-      <Portal {...dialogPortal!}>
+      <Portal {...(dialogPortal ?? {})}>
         <Backdrop {...pt?.po?.b?.p}>{backdropChildren}</Backdrop>
         <Popup {...pt?.c?.p} {...pt?.c?.da} {...cda}>
           {contentChildren}

@@ -46,8 +46,8 @@ export function createAtomicHook(opts: CreateAtomicHookOptions): CollectionBefor
     if (slug === pagesSlug) {
       const previousHref = data?.href
       href = data?.breadcrumbs && data?.breadcrumbs?.length > 0 ? data?.breadcrumbs[data?.breadcrumbs?.length - 1]?.url : undefined
-      runSlug = operation !== 'create' ? (data?.slug !== originalDoc?.slug ? true : false) : Boolean(data?.live)
-      if (operation !== 'create' && (previousHref !== href ? true : false)) await revalidateTag('page', previousHref!, draft)
+      runSlug = operation !== 'create' ? (data?.slug  !== originalDoc?.slug) : Boolean(data?.live)
+      if (operation !== 'create' && previousHref && previousHref !== href) await revalidateTag('page', previousHref, draft)
     }
 
     const runSEO = runAPF({ context, id, apf: 'seo', data })
@@ -101,7 +101,10 @@ export function createAtomicHook(opts: CreateAtomicHookOptions): CollectionBefor
 
     if (hasChildren) {
       traverse(sd).forEach(function (node) {
-        if (r.classes && this?.key?.endsWith('ClassName') && node) (node as string).split(/\s+/).forEach((cls: string) => classes.add(cls.trim()))
+        if (r.classes && this?.key?.endsWith('ClassName') && node)
+          (node as string).split(/\s+/).forEach((cls: string) => {
+            classes.add(cls.trim())
+          })
 
         if (
           r.forms &&

@@ -7,8 +7,7 @@ import { jsonSchemaPlugin } from '@pro-laico/core'
 import CollectionSchemas from '@pro-laico/site/zap'
 import { generateBlocksType, toJSONSchemaExtensions } from '@pro-laico/zap'
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const instantiate = [Runner, Attributer, CollectionSchemas] //Ensure the nested schemas are added to global registry before type generation
+const _instantiate = [Runner, Attributer, CollectionSchemas] //Ensure the nested schemas are added to global registry before type generation
 
 export const jsonSchemaPluginConfig = jsonSchemaPlugin({
   enabled: true,

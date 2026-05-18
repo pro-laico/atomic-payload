@@ -28,7 +28,11 @@ export const TrackingProvider = ({ tracking, children }: { tracking?: Tracking; 
 
   return validProviders.reduceRight<ReactNode>((acc, type) => {
     const Provider = providerRegistry[type]
-    return <Provider tracking={tracking}>{acc}</Provider>
+    return (
+      <Provider key={type} tracking={tracking}>
+        {acc}
+      </Provider>
+    )
   }, children)
 }
 

@@ -21,7 +21,7 @@ export const StaticDataAttributesField = (location: 'trigger' | 'content') => {
 
   if (location === 'trigger') {
     sda.name = 'triggerStaticDataAttributes'
-    sda.admin!.condition = (_, sd) => Boolean(sd?.type === 'button')
+    if (sda.admin) sda.admin.condition = (_, sd) => Boolean(sd?.type === 'button')
   }
 
   return sda

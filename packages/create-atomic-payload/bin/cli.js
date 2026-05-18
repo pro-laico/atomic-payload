@@ -4,8 +4,8 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import chalk from 'chalk'
 import { execa } from 'execa'
-import fs from 'fs'
-import fsp from 'fs/promises'
+import fs from 'node:fs'
+import fsp from 'node:fs/promises'
 import ora from 'ora'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
@@ -75,13 +75,13 @@ function printNextSteps(projectName) {
   console.log(chalk.green.bold('  ✓ Created ') + chalk.green(isCurrentDir(projectName) ? 'in current directory' : projectName))
   console.log()
   console.log(chalk.gray('  Next steps:'))
-  console.log(chalk.cyan('  ╭' + line + '╮'))
+  console.log(chalk.cyan(`  ╭${line}╮`))
   for (const step of steps) {
     const padding = ' '.repeat(Math.max(0, maxLen - step.length))
     const styled = step.startsWith('#') ? chalk.gray(step) : chalk.cyan(step)
     console.log(chalk.cyan('  │ ') + styled + padding + chalk.cyan(' │'))
   }
-  console.log(chalk.cyan('  ╰' + line + '╯'))
+  console.log(chalk.cyan(`  ╰${line}╯`))
   console.log()
 }
 
@@ -160,7 +160,7 @@ async function main() {
   try {
     await execa('pnpm', ['rebuild', 'sharp'], { cwd: targetDir, stdio: 'pipe' })
     sharpSpinner.succeed('Sharp ready')
-  } catch (err) {
+  } catch (_err) {
     sharpSpinner.warn('Sharp rebuild skipped (run "pnpm rebuild sharp" if images fail)')
   }
 
@@ -177,6 +177,6 @@ async function main() {
 }
 
 main().catch((err) => {
-  console.error(chalk.red('\n  ✗ ' + err.message))
+  console.error(chalk.red(`\n  ✗ ${err.message}`))
   process.exit(1)
 })

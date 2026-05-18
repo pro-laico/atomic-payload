@@ -74,7 +74,7 @@ export const SeedButton: React.FC<SeedButtonProps> = ({ endpoint = '/api/seed' }
 
   return (
     <Fragment>
-      <button className="seedButton" onClick={handleClick}>
+      <button type="button" className="seedButton" onClick={handleClick}>
         SEED DATABASE
       </button>
       {message}

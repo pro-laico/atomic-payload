@@ -21,10 +21,11 @@ export function usePortalActions(props: UsePortalActionsProps): UsePortalActions
   const [open, setOpen] = useState(false)
 
   useEffect(() => {
-    const storedOpen = context.atomicStore.getValue(block.portalName!, block.persisted)
+    if (!block.portalName) return
+    const storedOpen = context.atomicStore.getValue(block.portalName, block.persisted)
     const next = typeof storedOpen === 'boolean' ? storedOpen : defaultOpen
     startTransition(() => setOpen(next))
-  }, [block.blockType, block.portalName, block.persisted, context, defaultOpen])
+  }, [block.portalName, block.persisted, context, defaultOpen])
 
   const onOpenChange = async () => {
     await handleRunnerActions({ actions: block.triggerActions?.runners, context })
