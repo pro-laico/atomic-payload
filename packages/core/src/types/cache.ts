@@ -2,15 +2,16 @@
  * Cache / revalidate-tag types â€” owned by `@pro-laico/core` because the
  * cache helpers (`getCached`, `revalidateTag`, etc.) live in this package.
  */
+
+import type { ImageChild } from '@pro-laico/atomic/children/schema'
+import type { ModifiedStoredAtomicForm } from '@pro-laico/atomic/forms'
+import type { Form, FormSubmission, StoredAtomicForm } from '@pro-laico/atomic/forms/schema'
+import type { AtomicStoreInitialState } from '@pro-laico/atomic/hook'
+import type { DesignSet } from '@pro-laico/design-sets/schema'
+import type { Footer, Header, Page, ShortcutSet, SiteMetaDatum } from '@pro-laico/site/schema'
+import type { Tracking } from '@pro-laico/tracking/schema'
 import type { SanitizedConfig } from 'payload'
 import type { MergeTuples } from '../kernel'
-import type { Form, FormSubmission, StoredAtomicForm } from '@pro-laico/atomic/forms/schema'
-import type { ModifiedStoredAtomicForm } from '@pro-laico/atomic/forms'
-import type { ImageChild } from '@pro-laico/atomic/children/schema'
-import type { Page, Header, Footer, ShortcutSet, SiteMetaDatum } from '@pro-laico/site/schema'
-import type { Tracking } from '@pro-laico/tracking/schema'
-import type { DesignSet } from '@pro-laico/design-sets/schema'
-import type { AtomicStoreInitialState } from '@pro-laico/atomic/hook'
 
 /** The Payload config (or its resolution promise) that getter functions need to instantiate a Payload local-API client. */
 export type PayloadConfigPromise = SanitizedConfig | Promise<SanitizedConfig>

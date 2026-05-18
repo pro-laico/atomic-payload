@@ -1,3 +1,3 @@
-export { fontsPlugin, default } from './plugin'
-export type { FontsPluginOptions } from './plugin'
 export { Font } from './collections/font'
+export type { FontsPluginOptions } from './plugin'
+export { default, fontsPlugin } from './plugin'

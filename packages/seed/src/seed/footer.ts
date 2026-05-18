@@ -1,4 +1,5 @@
 import type { Footer, Page } from '@pro-laico/site/schema'
+
 type FooterArgs = { page: Page }
 
 export const footer: (args: FooterArgs) => Omit<Footer, 'createdAt' | 'updatedAt' | 'id'> = ({ page }) => {

@@ -10,7 +10,7 @@
  * corresponding `packages/<name>` directory will fail loudly so we don't ship
  * a broken tarball.
  */
-import { cpSync, mkdirSync, existsSync, rmSync, readFileSync, writeFileSync, readdirSync } from 'fs'
+import { cpSync, existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
 
@@ -80,5 +80,92 @@ if (unresolved.length > 0) {
 }
 
 writeFileSync(destPkgPath, JSON.stringify(destPkg, null, 2) + '\n')
+
+// Write a self-contained biome.json into the scaffolded template. The monorepo's
+// root biome.json governs the whole workspace, so we don't keep nested copies in
+// `templates/*` (Biome 2.4 disallows multiple roots in one project). End users who
+// scaffold a new project DO need their own biome.json, so synthesize one here.
+const templateBiomeConfig = {
+  $schema: 'https://biomejs.dev/schemas/2.4.15/schema.json',
+  vcs: { enabled: true, clientKind: 'git', useIgnoreFile: true, defaultBranch: 'main' },
+  files: {
+    includes: [
+      '**',
+      '!**/node_modules',
+      '!**/.next',
+      '!**/out',
+      '!**/build',
+      '!**/dist',
+      '!**/.turbo',
+      '!**/.vercel',
+      '!**/next-env.d.ts',
+      '!**/pnpm-lock.yaml',
+      '!**/*.generated.*',
+      '!**/payload-types.ts',
+      '!**/importMap.js',
+      '!**/*.tsbuildinfo',
+    ],
+  },
+  formatter: {
+    enabled: true,
+    formatWithErrors: false,
+    indentStyle: 'space',
+    indentWidth: 2,
+    lineWidth: 150,
+    lineEnding: 'lf',
+  },
+  javascript: {
+    formatter: {
+      quoteStyle: 'single',
+      jsxQuoteStyle: 'double',
+      trailingCommas: 'all',
+      semicolons: 'asNeeded',
+      arrowParentheses: 'always',
+      bracketSpacing: true,
+      bracketSameLine: false,
+      quoteProperties: 'asNeeded',
+    },
+  },
+  json: {
+    formatter: { enabled: true, trailingCommas: 'none' },
+    parser: { allowComments: true, allowTrailingCommas: true },
+  },
+  css: { formatter: { enabled: true, quoteStyle: 'double' } },
+  assist: { enabled: true, actions: { source: { organizeImports: 'on' } } },
+  linter: {
+    enabled: true,
+    rules: {
+      recommended: true,
+      suspicious: {
+        noExplicitAny: 'off',
+        noTsIgnore: 'warn',
+        noEmptyInterface: 'off',
+        noImplicitAnyLet: 'warn',
+        noFallthroughSwitchClause: 'warn',
+        noArrayIndexKey: 'warn',
+        useIterableCallbackReturn: 'warn',
+      },
+      complexity: { noBannedTypes: 'warn' },
+      correctness: {
+        noUnusedVariables: 'warn',
+        noUnusedFunctionParameters: 'off',
+        noUnusedImports: 'warn',
+        useExhaustiveDependencies: 'warn',
+        noUnsafeOptionalChaining: 'warn',
+        useJsxKeyInIterable: 'warn',
+      },
+      style: { useImportType: 'warn' },
+      security: { noDangerouslySetInnerHtml: 'off' },
+      a11y: { noSvgWithoutTitle: 'off', useButtonType: 'warn' },
+    },
+  },
+  overrides: [
+    {
+      includes: ['**/*.config.{js,mjs,cjs,ts}', '**/scripts/**'],
+      linter: { rules: { suspicious: { noConsole: 'off' } } },
+    },
+  ],
+}
+writeFileSync(path.join(templateDest, 'biome.json'), JSON.stringify(templateBiomeConfig, null, 2) + '\n')
 
 console.log(`Template copied to package/template (${workspaceVersions.size} workspace deps inspected)`)

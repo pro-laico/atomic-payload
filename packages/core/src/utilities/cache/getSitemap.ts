@@ -1,6 +1,6 @@
 'use server'
 import 'server-only' //DO NOT REMOVE
-import { getPayload, Where, type CollectionSlug } from 'payload'
+import { type CollectionSlug, getPayload, type Where } from 'payload'
 import type { GCFunction } from '../../types/cache'
 import cacheLogger from '../cacheLogger'
 import { getServerSideURL } from '../getURL'
@@ -19,13 +19,19 @@ export const createGetCachedSitemap = (pagesSlug: string = 'pages'): GCFunction<
       depth: 0,
       limit: 0,
       overrideAccess: draft,
-      select: { href: true, updatedAt: true, meta: { priority: true, noIndex: true, changeFrequency: true } } as Parameters<typeof payload.find>[0]['select'],
+      select: { href: true, updatedAt: true, meta: { priority: true, noIndex: true, changeFrequency: true } } as Parameters<
+        typeof payload.find
+      >[0]['select'],
     })
 
     type SitemapDoc = {
       href?: string | null
       updatedAt?: string | null
-      meta?: { priority?: number | null; noIndex?: boolean | null; changeFrequency?: 'yearly' | 'monthly' | 'weekly' | 'daily' | 'hourly' | 'never' | null } | null
+      meta?: {
+        priority?: number | null
+        noIndex?: boolean | null
+        changeFrequency?: 'yearly' | 'monthly' | 'weekly' | 'daily' | 'hourly' | 'never' | null
+      } | null
     }
     const pages = (results.docs as SitemapDoc[]) || []
     const pagesWithout404 = pages.filter(({ href }) => href !== '/404') // Exclude 404 page

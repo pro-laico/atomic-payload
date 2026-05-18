@@ -1,5 +1,6 @@
-import { DesignSet } from '@pro-laico/design-sets/schema'
-import { Page } from '@pro-laico/site/schema'
+import type { DesignSet } from '@pro-laico/design-sets/schema'
+import type { Page } from '@pro-laico/site/schema'
+
 type DesignSetArgs = { page: Page }
 
 export const designSet: (args: DesignSetArgs) => Omit<DesignSet, 'createdAt' | 'updatedAt' | 'id'> = ({ page }) => {

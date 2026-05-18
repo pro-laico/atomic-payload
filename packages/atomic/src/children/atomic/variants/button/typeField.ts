@@ -1,5 +1,5 @@
-import { SelectField } from 'payload'
 import { APField } from '@pro-laico/core'
+import type { SelectField } from 'payload'
 
 export const ButtonTypeField: SelectField = APField({
   name: 'buttonType',

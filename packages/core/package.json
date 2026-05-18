@@ -92,7 +92,6 @@
     "build": "tsc -p tsconfig.build.json --noCheck && node -e \"require('fs').cpSync('src/ui/root/siteTriggers/index.scss','dist/ui/root/siteTriggers/index.scss')\" && node -e \"require('fs').cpSync('src/components/frontend/Toaster.module.css','dist/components/frontend/Toaster.module.css')\" && node -e \"require('fs').cpSync('src/ui/fields/slug/index.scss','dist/ui/fields/slug/index.scss')\" && node -e \"require('fs').cpSync('src/apf/components/admin/index.scss','dist/apf/components/admin/index.scss')\"",
     "clean": "node -e \"require('fs').rmSync('dist',{recursive:true,force:true})\"",
     "prepack": "pnpm clean && pnpm build",
-    "lint": "tsc -p tsconfig.json --noEmit",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {

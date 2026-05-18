@@ -1,5 +1,5 @@
-import React from 'react'
 import { Banner } from '@payloadcms/ui/elements/Banner'
+import type React from 'react'
 import { SeedButton } from './SeedButton'
 import './index.scss'
 

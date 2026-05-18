@@ -1,5 +1,5 @@
 import { APField } from '@pro-laico/core'
-import { ArrayField, TextField, SelectField, TabAsField, GroupField } from 'payload'
+import type { ArrayField, GroupField, SelectField, TabAsField, TextField } from 'payload'
 
 export const typographySupportedTags = [
   'headings',

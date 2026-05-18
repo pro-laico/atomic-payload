@@ -1,36 +1,36 @@
 ﻿'use server'
 import 'server-only' //DO NOT REMOVE
 
+import type { BlockBySlug, ChildBySlug, PassThroughs, RenderChildrenProps } from '@pro-laico/atomic/children'
+import type { AtomicChild, ChildBlocks, ChildrenWithActions } from '@pro-laico/atomic/children/schema'
 import type { BlockSlug } from 'payload'
-import { SSRProps } from './SSRProps'
-import type { RenderChildrenProps, ChildBySlug, PassThroughs, BlockBySlug } from '@pro-laico/atomic/children'
-import type { AtomicChild, ChildrenWithActions, ChildBlocks } from '@pro-laico/atomic/children/schema'
 import {
-  SVGChild,
+  AtomicButtonLink,
+  AtomicButtonLinkClient,
+  AtomicButtonPortalDialog,
+  AtomicButtonPortalPopover,
+  AtomicButtonRegular,
+  AtomicButtonRegularClient,
+  AtomicForm,
+  AtomicTag,
+  AtomicTagClient,
+  CheckboxInput,
+  CheckboxInputClient,
   IconChild,
   ImageChild,
-  VideoChild,
+  NumberInput,
+  NumberInputClient,
+  RadioInput,
+  RadioInputClient,
   RichTextChild,
   SimpleTextChild,
   SimpleTextChildClient,
-  AtomicTag,
-  AtomicTagClient,
-  AtomicForm,
-  TextInputClient,
+  SVGChild,
   TextInput,
-  RadioInputClient,
-  RadioInput,
-  NumberInputClient,
-  NumberInput,
-  CheckboxInputClient,
-  CheckboxInput,
-  AtomicButtonLinkClient,
-  AtomicButtonLink,
-  AtomicButtonRegular,
-  AtomicButtonRegularClient,
-  AtomicButtonPortalDialog,
-  AtomicButtonPortalPopover,
+  TextInputClient,
+  VideoChild,
 } from '../frontend-components'
+import { SSRProps } from './SSRProps'
 
 const components = {
   SVGChild,
@@ -118,9 +118,7 @@ export const RenderChildren: RenderChildrenProps = async ({ blocks }) => {
             Component = getAtomicComponent(block as AtomicChild, useAction)
           } else {
             const slug = (block as { blockType: string }).blockType
-            Component = useAction
-              ? clientComponents[slug as keyof typeof clientComponents]
-              : components[slug as keyof typeof components]
+            Component = useAction ? clientComponents[slug as keyof typeof clientComponents] : components[slug as keyof typeof components]
           }
           if (!Component) return null
 

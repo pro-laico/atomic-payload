@@ -1,8 +1,8 @@
-import type { Block } from 'payload'
-import { TrackingTab } from '@pro-laico/atomic/children/fields/trackingTab'
-import { ClassNameField } from '@pro-laico/core'
 import { ColoredEnd } from '@pro-laico/atomic/children/fields/coloredEnd'
 import { ChildsSettingsTab } from '@pro-laico/atomic/children/fields/tabs/settings'
+import { TrackingTab } from '@pro-laico/atomic/children/fields/trackingTab'
+import { ClassNameField } from '@pro-laico/core'
+import type { Block } from 'payload'
 
 const d = {
   svgAtomicClasses: 'Add atomic classes or shortcuts to the svg element here.',

@@ -1,24 +1,24 @@
-import type { TextFieldSingleValidation } from 'payload'
 import {
+  AlignFeature,
+  BlockquoteFeature,
   BoldFeature,
+  FixedToolbarFeature,
+  HeadingFeature,
+  IndentFeature,
+  InlineCodeFeature,
+  InlineToolbarFeature,
   ItalicFeature,
   LinkFeature,
-  ParagraphFeature,
-  lexicalEditor,
-  UnderlineFeature,
   type LinkFields,
-  StrikethroughFeature,
+  lexicalEditor,
   OrderedListFeature,
-  UnorderedListFeature,
+  ParagraphFeature,
+  StrikethroughFeature,
   SuperscriptFeature,
-  InlineCodeFeature,
-  HeadingFeature,
-  AlignFeature,
-  IndentFeature,
-  BlockquoteFeature,
-  InlineToolbarFeature,
-  FixedToolbarFeature,
+  UnderlineFeature,
+  UnorderedListFeature,
 } from '@payloadcms/richtext-lexical'
+import type { TextFieldSingleValidation } from 'payload'
 
 export const defaultLexical: ReturnType<typeof lexicalEditor> = lexicalEditor({
   features: [

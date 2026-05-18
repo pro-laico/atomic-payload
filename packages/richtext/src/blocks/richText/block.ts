@@ -1,10 +1,9 @@
-import type { Block } from 'payload'
-import { TrackingTab } from '@pro-laico/atomic/children/fields/trackingTab'
-import { ClassNameField } from '@pro-laico/core'
+import { FixedToolbarFeature, HeadingFeature, InlineToolbarFeature, lexicalEditor } from '@payloadcms/richtext-lexical'
 import { ColoredEnd } from '@pro-laico/atomic/children/fields/coloredEnd'
 import { ChildsSettingsTab } from '@pro-laico/atomic/children/fields/tabs/settings'
-import { lexicalEditor } from '@payloadcms/richtext-lexical'
-import { FixedToolbarFeature, HeadingFeature, InlineToolbarFeature } from '@payloadcms/richtext-lexical'
+import { TrackingTab } from '@pro-laico/atomic/children/fields/trackingTab'
+import { ClassNameField } from '@pro-laico/core'
+import type { Block } from 'payload'
 
 const d = {
   richTextAtomicClasses:

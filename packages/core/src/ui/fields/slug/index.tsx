@@ -1,9 +1,10 @@
 'use client'
 import './index.scss'
-import { TextFieldClientProps } from 'payload'
+import { Button, FieldLabel, TextInput, useField, useForm, useFormFields } from '@payloadcms/ui'
+import type { TextFieldClientProps } from 'payload'
+import type React from 'react'
+import { useCallback, useEffect } from 'react'
 import { formatSlug } from '../../../hooks/field/formatSlug'
-import React, { useCallback, useEffect } from 'react'
-import { useField, Button, TextInput, FieldLabel, useFormFields, useForm } from '@payloadcms/ui'
 
 type SlugComponentProps = { fieldToUse: string; checkboxFieldPath: string } & TextFieldClientProps
 

@@ -23,7 +23,9 @@ export const getCachedIconSet: GCFunction<'iconSet'> = async (configPromise, tag
   const payload = await getPayload({ config: configPromise })
   const results = (await payload
     .find({ collection: 'iconSet', depth: 0, limit: 1, draft, pagination: false, select: { iconsArray: true }, where: { active: { equals: true } } })
-    .then((res) => res.docs[0] || null)) as { iconsArray?: Array<{ name: string; icon?: string | number | { id: string | number } | null; id?: string | number | null }> } | null
+    .then((res) => res.docs[0] || null)) as {
+    iconsArray?: Array<{ name: string; icon?: string | number | { id: string | number } | null; id?: string | number | null }>
+  } | null
 
   const filteredResults = results?.iconsArray?.filter(isIconRef).map(({ id, ...item }) => ({ name: item.name, icon: item.icon })) || []
   cacheLogger({ tag, draft })

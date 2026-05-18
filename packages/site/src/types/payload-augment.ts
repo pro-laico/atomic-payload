@@ -1,7 +1,7 @@
 /**
  * Schema stubs owned by `@pro-laico/site`.
  */
-import type { Get, DefaultRecord } from '@pro-laico/core'
+import type { DefaultRecord, Get } from '@pro-laico/core'
 
 export type Page = Get<'Page', DefaultRecord>
 export type Header = Get<'Header', DefaultRecord>

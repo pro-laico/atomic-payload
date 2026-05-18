@@ -1,4 +1,4 @@
-import type { Config, Plugin, CollectionConfig } from 'payload'
+import type { CollectionConfig, Config, Plugin } from 'payload'
 import { Font } from './collections/font'
 
 export interface FontsPluginOptions {

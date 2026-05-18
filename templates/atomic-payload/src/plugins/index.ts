@@ -1,26 +1,25 @@
 //Plugin Imports
-import { Plugin } from 'payload'
 
+import { actionsPlugin } from '@pro-laico/atomic/actions'
+import { childBlocksPlugin } from '@pro-laico/atomic/children'
+import { formsPlugin } from '@pro-laico/atomic/forms'
+// Atomic Payload package plugins
+import { revalidationPlugin } from '@pro-laico/core'
+import { seedPlugin } from '@pro-laico/seed'
+import { sitePlugin } from '@pro-laico/site'
+import { trackingPlugin } from '@pro-laico/tracking'
+import type { Plugin } from 'payload'
+import { blurDataUrlsPluginConfig } from './blurDataUrls'
+import { designSetsPluginConfig } from './designSets'
+import { fontsPluginConfig } from './fonts'
+import { formBuilderPluginConfig } from './formBuilder'
+import { iconsPluginConfig } from './icons'
+import { imagesPluginConfig } from './images'
+import { jsonSchemaPluginConfig } from './jsonSchema'
 //Plugin Configurations
 import { muxVideoPluginConfig } from './muxVideo'
 import { nestedDocsPluginConfig } from './nestedDocs'
-import { formBuilderPluginConfig } from './formBuilder'
-import { blurDataUrlsPluginConfig } from './blurDataUrls'
 import { vercelBlobStoragePluginConfig } from './vercelBlobStorage'
-
-// Atomic Payload package plugins
-import { revalidationPlugin } from '@pro-laico/core'
-import { formsPlugin } from '@pro-laico/atomic/forms'
-import { actionsPlugin } from '@pro-laico/atomic/actions'
-import { childBlocksPlugin } from '@pro-laico/atomic/children'
-import { trackingPlugin } from '@pro-laico/tracking'
-import { seedPlugin } from '@pro-laico/seed'
-import { sitePlugin } from '@pro-laico/site'
-import { fontsPluginConfig } from './fonts'
-import { iconsPluginConfig } from './icons'
-import { imagesPluginConfig } from './images'
-import { designSetsPluginConfig } from './designSets'
-import { jsonSchemaPluginConfig } from './jsonSchema'
 
 // Notes on plugin composition:
 // - `Font` is registered via `fontsPlugin` (see `./fonts`).

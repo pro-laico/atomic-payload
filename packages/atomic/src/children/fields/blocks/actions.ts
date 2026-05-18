@@ -1,5 +1,5 @@
-﻿import { BlocksField } from 'payload'
-import type { ActionBlockType } from '@pro-laico/atomic/actions/schema'
+﻿import type { ActionBlockType } from '@pro-laico/atomic/actions/schema'
+import type { BlocksField } from 'payload'
 import { ActionBlocksPath } from '../../components/admin'
 
 const AllActionBlocks: ActionBlockType[] = [

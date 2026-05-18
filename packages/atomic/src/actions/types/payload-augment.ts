@@ -3,7 +3,7 @@
  * consumer project's concrete type when `PayloadAugment` is augmented; falls
  * back to a permissive default otherwise. See `@pro-laico/core` README.
  */
-import type { Get, DefaultRecord, DefaultBlock, DefaultActionFn } from '@pro-laico/core'
+import type { DefaultActionFn, DefaultBlock, DefaultRecord, Get } from '@pro-laico/core'
 
 // /////////////////////////////////////
 // Block / function shapes

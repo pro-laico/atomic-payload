@@ -1,5 +1,5 @@
 ﻿'use server'
-import { FormFunction } from '@pro-laico/atomic/forms'
+import type { FormFunction } from '@pro-laico/atomic/forms'
 import type { IsTrimText as IsTrimTextType } from '@pro-laico/atomic/forms/schema'
 export const IsTrimText: FormFunction<{ block: IsTrimTextType & { inputName: string } }> = async (args) => {
   const { formData, response, block } = args

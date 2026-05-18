@@ -1,7 +1,7 @@
-import { type Tab } from 'payload'
 import { APField, onArraySetAPFShallow } from '@pro-laico/core'
-import { DesignTokenLabelPath } from '../../paths'
+import type { Tab } from 'payload'
 import { TokenValueArrayField } from '../../fields/value'
+import { DesignTokenLabelPath } from '../../paths'
 
 export const FontsTab = () => {
   const fontsField: Tab = {

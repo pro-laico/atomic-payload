@@ -1,8 +1,11 @@
 import type { DesignSet } from '@pro-laico/design-sets/schema'
+
 function generatePreflights({ ds }: { ds: DesignSet }): string {
   const minify = ds?.minify ?? true
 
-  const variables = (ds?.variables || []).map((variable: { name?: string; value?: string }) => `  --${variable?.name}: ${variable?.value};`).join(minify ? '' : '\n')
+  const variables = (ds?.variables || [])
+    .map((variable: { name?: string; value?: string }) => `  --${variable?.name}: ${variable?.value};`)
+    .join(minify ? '' : '\n')
 
   const defaults = minify
     ? `--radius: ${ds?.defaults?.radius || '0.625rem'};`
@@ -10,8 +13,12 @@ function generatePreflights({ ds }: { ds: DesignSet }): string {
   --radius: ${ds?.defaults?.radius || '0.625rem'};
   `
 
-  const lightColors = (ds?.colors || []).map((color: { name?: string; light?: string }) => `  --${color?.name}: ${color?.light};`).join(minify ? '' : '\n')
-  const darkColors = (ds?.colors || []).map((color: { name?: string; dark?: string }) => `  --${color?.name}: ${color?.dark};`).join(minify ? '' : '\n')
+  const lightColors = (ds?.colors || [])
+    .map((color: { name?: string; light?: string }) => `  --${color?.name}: ${color?.light};`)
+    .join(minify ? '' : '\n')
+  const darkColors = (ds?.colors || [])
+    .map((color: { name?: string; dark?: string }) => `  --${color?.name}: ${color?.dark};`)
+    .join(minify ? '' : '\n')
 
   let result: string
 

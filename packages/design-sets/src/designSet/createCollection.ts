@@ -1,17 +1,16 @@
-import { APFControlsPath, generateAPFFields } from '@pro-laico/core'
-import { authd } from '../access/authenticated'
-import type { CollectionConfig, CollectionBeforeChangeHook, PayloadRequest } from 'payload'
 import type { APFunction } from '@pro-laico/core'
-import { revalidateCacheOnDelete } from '@pro-laico/core'
-import { FontsTab } from './tabs/fonts'
-import { SizesTab } from './tabs/sizes'
-import { ProseTab } from './tabs/prose'
-import { ColorsTab } from './tabs/colors'
-import { StorageTab } from './tabs/storage'
-import { SettingsTab } from './tabs/settings'
-import { VariablesTab } from './tabs/variables'
+import { APFControlsPath, generateAPFFields, revalidateCacheOnDelete } from '@pro-laico/core'
+import type { CollectionBeforeChangeHook, CollectionConfig, PayloadRequest } from 'payload'
+import { authd } from '../access/authenticated'
 import { AnimationsTab } from './tabs/animation'
+import { ColorsTab } from './tabs/colors'
+import { FontsTab } from './tabs/fonts'
 import { MiscellaneousTab } from './tabs/miscellaneous'
+import { ProseTab } from './tabs/prose'
+import { SettingsTab } from './tabs/settings'
+import { SizesTab } from './tabs/sizes'
+import { StorageTab } from './tabs/storage'
+import { VariablesTab } from './tabs/variables'
 
 const APFunctions: APFunction[] = ['classes', 'active']
 
@@ -31,12 +30,7 @@ export interface DesignSetCollectionOptions {
  * `generateLivePreviewPath`; use `designSetsPlugin` to register it on the config.
  */
 export function createDesignSetCollection(opts: DesignSetCollectionOptions): CollectionConfig {
-  const {
-    atomicHook,
-    generateLivePreviewPath,
-    access = { create: authd, delete: authd, read: authd, update: authd },
-    collection: merge,
-  } = opts
+  const { atomicHook, generateLivePreviewPath, access = { create: authd, delete: authd, read: authd, update: authd }, collection: merge } = opts
 
   const base: CollectionConfig = {
     slug: 'designSet',

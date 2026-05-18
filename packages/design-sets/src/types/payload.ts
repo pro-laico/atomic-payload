@@ -5,11 +5,10 @@
  */
 import type { DesignSet } from '@pro-laico/design-sets/schema'
 import type { ShortcutSet } from '@pro-laico/site/schema'
+
 declare module 'payload' {
   export interface RequestContext {
     designSet?: DesignSet
     shortcutSet?: ShortcutSet
   }
 }
-
-export {}

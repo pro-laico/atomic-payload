@@ -1,4 +1,4 @@
-import { GroupField } from 'payload'
+import type { GroupField } from 'payload'
 
 export const LinkSettingsTab: GroupField = {
   type: 'group',

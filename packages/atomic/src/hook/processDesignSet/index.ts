@@ -1,6 +1,7 @@
+import type { DesignSet } from '@pro-laico/design-sets/schema'
 import manualLogger from '../utilities/manualLogger'
 import generatePreflights from './generatePreflights'
-import type { DesignSet } from '@pro-laico/design-sets/schema'
+
 type RSS = Record<string, string>
 type RSSOSA = Record<string, string | string[]>
 type UnoColorsType = Record<string, string>
@@ -208,7 +209,10 @@ const processDesignSet = (ds: DesignSet): void => {
   const preflightStorage = generatePreflights({ ds })
   ds.proseColorStorage = processProseColor(ds.proseColors as unknown as Record<string, ProseColorEntry> | null | undefined)
 
-  const proseStyles = ds?.proseStyles as { sm?: ProseStyleRow[]; base?: ProseStyleRow[]; default?: ProseStyleRow[]; lg?: ProseStyleRow[] } | null | undefined
+  const proseStyles = ds?.proseStyles as
+    | { sm?: ProseStyleRow[]; base?: ProseStyleRow[]; default?: ProseStyleRow[]; lg?: ProseStyleRow[] }
+    | null
+    | undefined
   ds.proseDefaultStorage = processProseTagStyles(proseStyles?.default)
   ds.prosesmStorage = processProseTagStyles(proseStyles?.sm)
   ds.proseBaseStorage = processProseTagStyles(proseStyles?.base)

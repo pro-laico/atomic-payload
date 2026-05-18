@@ -1,4 +1,4 @@
-﻿import { AttFunction } from '@pro-laico/atomic/actions'
+﻿import type { AttFunction } from '@pro-laico/atomic/actions'
 export const AttBoolToDA: AttFunction<'AttBoolToDA'> = ({ key, persisted, initialValue, changeKey, context }) => {
   const { getValue, hydrated } = context.atomicStore
   if (!hydrated) {

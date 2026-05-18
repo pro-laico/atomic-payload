@@ -1,12 +1,7 @@
 import type { CollectionSlug, PayloadRequest } from 'payload'
 import manualLogger from './utilities/manualLogger'
 
-export type UnsetActiveType = (args: {
-  id: string
-  draft: boolean
-  req: PayloadRequest
-  slug: CollectionSlug
-}) => Promise<CollectionSlug | undefined>
+export type UnsetActiveType = (args: { id: string; draft: boolean; req: PayloadRequest; slug: CollectionSlug }) => Promise<CollectionSlug | undefined>
 
 export const unsetActive: UnsetActiveType = async ({ id, draft, req, slug }) => {
   try {

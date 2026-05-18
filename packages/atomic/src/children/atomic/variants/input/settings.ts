@@ -1,11 +1,12 @@
+import type { AtomicInputTypes } from '@pro-laico/atomic/actions/schema'
 import { APField } from '@pro-laico/core'
 import type { GroupField } from 'payload'
 import autocompleteOptions from './autoCompleteOptions'
-import { TextSettingsTab } from './variants/text/settings'
-import { RadioSettingsTab } from './variants/radio/settings'
-import { NumberSettingsTab } from './variants/number/settings'
 import { CheckboxSettingsTab } from './variants/checkBox/settings'
-import { AtomicInputTypes } from '@pro-laico/atomic/actions/schema'
+import { NumberSettingsTab } from './variants/number/settings'
+import { RadioSettingsTab } from './variants/radio/settings'
+import { TextSettingsTab } from './variants/text/settings'
+
 const allowed: AtomicInputTypes[] = ['text', 'textarea', 'email', 'number']
 
 export const InputSettingsTab: GroupField = {

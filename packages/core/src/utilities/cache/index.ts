@@ -1,23 +1,22 @@
 import 'server-only'
 import type { PayloadConfigPromise } from '../../types/cache'
-import { createGetCached, type GetRegistry } from './getCached'
-
-import { getCachedPages, createGetCachedPages } from './getPages'
-import { getCachedImage } from './getImage'
-import { getCachedFooter } from './getFooter'
-import { getCachedHeader } from './getHeader'
-import { getCachedSiteCSS } from './getSiteCSS'
-import { getCachedSitemap, createGetCachedSitemap } from './getSitemap'
-import { getCachedPageByHref, createGetCachedPageByHref } from './getPage'
-import { getCachedTracking } from './getTracking'
-import { getCachedDesignSet } from './getDesignSet'
-import { getCachedShortcutSet } from './getShortcutSet'
-import { getCachedSiteMetadata } from './getSiteMetadata'
-import { getCachedAtomicClasses, createGetCachedAtomicClasses } from './getAtomicClasses'
 import { getCachedAtomicActions } from './getAtomicActions'
+import { createGetCachedAtomicClasses, getCachedAtomicClasses } from './getAtomicClasses'
+import { createGetCached, type GetRegistry } from './getCached'
+import { getCachedDesignSet } from './getDesignSet'
+import { getCachedFooter } from './getFooter'
 import { getCachedFormSubmissions } from './getFormSubmissions'
-import { getCachedIconByName, getCachedIconSet, getCachedIconOptions } from './getIcon'
-import { getCachedAllForms, getCachedAtomicForms, getCachedBackendForms, createGetCachedAtomicForms, createGetCachedBackendForms } from './getForms'
+import { createGetCachedAtomicForms, createGetCachedBackendForms, getCachedAllForms, getCachedAtomicForms, getCachedBackendForms } from './getForms'
+import { getCachedHeader } from './getHeader'
+import { getCachedIconByName, getCachedIconOptions, getCachedIconSet } from './getIcon'
+import { getCachedImage } from './getImage'
+import { createGetCachedPageByHref, getCachedPageByHref } from './getPage'
+import { createGetCachedPages, getCachedPages } from './getPages'
+import { getCachedShortcutSet } from './getShortcutSet'
+import { getCachedSiteCSS } from './getSiteCSS'
+import { getCachedSiteMetadata } from './getSiteMetadata'
+import { createGetCachedSitemap, getCachedSitemap } from './getSitemap'
+import { getCachedTracking } from './getTracking'
 
 /** Collection-slug configuration for the default getter registry. */
 export type DefaultGetRegistryOptions = {
@@ -69,34 +68,34 @@ export function createDefaultGetCached(configPromise: PayloadConfigPromise, opti
   return createGetCached(configPromise, registry)
 }
 
+export type { GetCachedFn, GetRegistry } from './getCached'
 export { createGetCached } from './getCached'
-export type { GetRegistry, GetCachedFn } from './getCached'
 
 export {
-  getCachedPages,
-  createGetCachedPages,
-  getCachedImage,
-  getCachedFooter,
-  getCachedHeader,
-  getCachedSiteCSS,
-  getCachedSitemap,
-  createGetCachedSitemap,
-  getCachedPageByHref,
-  createGetCachedPageByHref,
-  getCachedTracking,
-  getCachedDesignSet,
-  getCachedShortcutSet,
-  getCachedSiteMetadata,
-  getCachedAtomicClasses,
   createGetCachedAtomicClasses,
-  getCachedAtomicActions,
-  getCachedFormSubmissions,
-  getCachedIconByName,
-  getCachedIconSet,
-  getCachedIconOptions,
-  getCachedAllForms,
-  getCachedAtomicForms,
   createGetCachedAtomicForms,
-  getCachedBackendForms,
   createGetCachedBackendForms,
+  createGetCachedPageByHref,
+  createGetCachedPages,
+  createGetCachedSitemap,
+  getCachedAllForms,
+  getCachedAtomicActions,
+  getCachedAtomicClasses,
+  getCachedAtomicForms,
+  getCachedBackendForms,
+  getCachedDesignSet,
+  getCachedFooter,
+  getCachedFormSubmissions,
+  getCachedHeader,
+  getCachedIconByName,
+  getCachedIconOptions,
+  getCachedIconSet,
+  getCachedImage,
+  getCachedPageByHref,
+  getCachedPages,
+  getCachedShortcutSet,
+  getCachedSiteCSS,
+  getCachedSiteMetadata,
+  getCachedSitemap,
+  getCachedTracking,
 }

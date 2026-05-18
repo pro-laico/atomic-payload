@@ -1,5 +1,5 @@
-﻿import { z } from '@pro-laico/zap'
-import { cookieConsentKeys } from '@pro-laico/atomic/actions/fields/strict/registry/cookieConsent'
+﻿import { cookieConsentKeys } from '@pro-laico/atomic/actions/fields/strict/registry/cookieConsent'
+import { z } from '@pro-laico/zap'
 
 export const SetCCSchema = z.ap.add(
   z.object({

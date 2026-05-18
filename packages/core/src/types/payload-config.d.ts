@@ -4,6 +4,7 @@
 // exists so ap-utils itself type-checks without that alias being available.
 declare module '@payload-config' {
   import type { SanitizedConfig } from 'payload'
+
   const config: SanitizedConfig | Promise<SanitizedConfig>
   export default config
 }

@@ -1,7 +1,8 @@
+import type { Image } from '@pro-laico/images/schema'
+import type { SiteMetaDatum } from '@pro-laico/site/schema'
 import type { Metadata } from 'next'
 import type { PageReturn } from '../types/cache'
-import type { SiteMetaDatum } from '@pro-laico/site/schema'
-import type { Image } from '@pro-laico/images/schema'
+
 type GenerateMetaDataArgs = { page?: PageReturn; siteMetadata?: SiteMetaDatum }
 type GenerateMetaDataFn = (args: GenerateMetaDataArgs) => Metadata
 

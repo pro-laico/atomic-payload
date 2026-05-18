@@ -1,4 +1,4 @@
-﻿import { RunAPFProps } from '../types'
+﻿import type { RunAPFProps } from '../types'
 /**
  * Checks if a document has been marked as changed in the context.
  * If the documents data includes 'active' it will only return true if active = true.

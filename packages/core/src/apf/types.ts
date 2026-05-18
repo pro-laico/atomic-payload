@@ -1,17 +1,18 @@
 /**
  * Hand-written types owned by `@pro-laico/core`.
  */
-import type { NumberFieldClientProps, RequestContext } from 'payload'
 import type {
-  TextField,
-  SelectField,
-  NumberField,
-  TextareaField,
   CheckboxField,
-  TextFieldClientProps,
-  SelectFieldClientProps,
-  TextareaFieldClientProps,
   CheckboxFieldClientProps,
+  NumberField,
+  NumberFieldClientProps,
+  RequestContext,
+  SelectField,
+  SelectFieldClientProps,
+  TextareaField,
+  TextareaFieldClientProps,
+  TextField,
+  TextFieldClientProps,
 } from 'payload'
 import type { Config } from '../kernel'
 

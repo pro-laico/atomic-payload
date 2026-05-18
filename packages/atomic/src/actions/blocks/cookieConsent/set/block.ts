@@ -1,6 +1,6 @@
-import type { Block } from 'payload'
+import { ChangeKeyField, KeySelectField, PerformSelectField, SetDataField } from '@pro-laico/atomic/actions/fields'
 import { APField } from '@pro-laico/core'
-import { KeySelectField, ChangeKeyField, SetDataField, PerformSelectField } from '@pro-laico/atomic/actions/fields'
+import type { Block } from 'payload'
 
 export const ActSetCC: Block = {
   slug: 'ActSetCC',

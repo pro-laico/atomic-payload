@@ -1,5 +1,5 @@
 'use client'
-import { useRowLabel, Pill, SectionTitle } from '@payloadcms/ui'
+import { Pill, SectionTitle, useRowLabel } from '@payloadcms/ui'
 
 interface DesignTokenData {
   name: string

@@ -1,11 +1,10 @@
-import { headers as nextHeaders, draftMode } from 'next/headers'
-import { redirect } from 'next/navigation'
-import { getPayload } from 'payload'
 import config from '@payload-config'
-
+import LivePreviewListener from '@pro-laico/core/components/frontend/LivePreviewListener'
 import { extractSvgContent, extractSvgProps } from '@pro-laico/icons'
 import { Icon } from '@pro-laico/icons/Icon'
-import LivePreviewListener from '@pro-laico/core/components/frontend/LivePreviewListener'
+import { draftMode, headers as nextHeaders } from 'next/headers'
+import { redirect } from 'next/navigation'
+import { getPayload } from 'payload'
 
 import { sampleIconSets } from '@/seed/sampleIcons'
 import { CodeBlock } from './CodeBlock'
@@ -180,9 +179,9 @@ export default async function HomePage() {
 
       <h2>Live preview</h2>
       <p className="lead" style={{ marginBottom: 12 }}>
-        Edits propagate to this page in real time. Open the active set at{' '}
-        <a href="/admin/collections/iconSet/1">/admin/collections/iconSet/1</a>, rename the <code>x</code> icon to <code>y</code>, and press{' '}
-        <code>Ctrl + S</code> to save a draft — the warning tile above turns into the actual icon as soon as the draft is saved.
+        Edits propagate to this page in real time. Open the active set at <a href="/admin/collections/iconSet/1">/admin/collections/iconSet/1</a>,
+        rename the <code>x</code> icon to <code>y</code>, and press <code>Ctrl + S</code> to save a draft — the warning tile above turns into the
+        actual icon as soon as the draft is saved.
       </p>
 
       <h2>Intended usage</h2>

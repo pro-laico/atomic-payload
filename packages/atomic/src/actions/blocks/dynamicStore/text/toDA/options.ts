@@ -1,5 +1,6 @@
-﻿import { z } from '@pro-laico/zap'
-import type { ActionProcessFunction } from '@pro-laico/atomic/actions'
+﻿import type { ActionProcessFunction } from '@pro-laico/atomic/actions'
+import type { z } from '@pro-laico/zap'
+
 const processFunction: ActionProcessFunction<'ActDSTextToDA'> = ({ key, changeKey, initialValuesMap, data }) => {
   const { initialValue, persisted } = initialValuesMap.get(key) || {}
   if (typeof initialValue !== 'string') return

@@ -1,10 +1,11 @@
 ﻿'use client'
 import './index.scss'
-import React, { memo } from 'react'
-import { type APFunction } from '../../types'
-import { apfRegistry } from '../../fields/storage'
+import { Button, DocumentIcon, EditIcon, FolderIcon, LinkIcon, MenuIcon, PlusIcon, PopupList, SearchIcon, useFormFields } from '@payloadcms/ui'
 import type { BeforeDocumentControlsClientProps } from 'payload'
-import { Button, EditIcon, PlusIcon, LinkIcon, MenuIcon, PopupList, SearchIcon, FolderIcon, DocumentIcon, useFormFields } from '@payloadcms/ui'
+import type React from 'react'
+import { memo } from 'react'
+import { apfRegistry } from '../../fields/storage'
+import type { APFunction } from '../../types'
 
 type RunControlsProps = { APFunctions?: APFunction[] } & BeforeDocumentControlsClientProps
 

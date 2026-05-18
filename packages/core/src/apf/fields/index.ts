@@ -1,5 +1,6 @@
 import deepMerge from '../../utilities/deepMerge'
-import type { APFieldType, APArgs, APReturn } from '../types'
+import type { APArgs, APFieldType, APReturn } from '../types'
+
 const APFieldPath = '@pro-laico/core/admin/field'
 const APFieldLabelPath = '@pro-laico/core/admin/label'
 

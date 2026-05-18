@@ -1,5 +1,5 @@
-import { type Tab } from 'payload'
 import { APField } from '@pro-laico/core'
+import type { Tab } from 'payload'
 import { TokenValueArrayField } from '../../fields/value'
 
 export const VariablesTab = () => {

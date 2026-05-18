@@ -1,5 +1,5 @@
 ﻿'use server'
-import { FormFunction } from '@pro-laico/atomic/forms'
+import type { FormFunction } from '@pro-laico/atomic/forms'
 import type { IvContains as IvContainsType } from '@pro-laico/atomic/forms/schema'
 export const IvContains: FormFunction<{ block: IvContainsType & { inputName: string } }> = async (args) => {
   const { formData, response, block } = args

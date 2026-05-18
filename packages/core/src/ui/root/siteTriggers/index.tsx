@@ -1,9 +1,9 @@
 'use client'
 import './index.scss'
+import { Button, PopupList, toast } from '@payloadcms/ui'
+import type { UIFieldClientComponent } from 'payload'
 import { useState } from 'react'
-import { UIFieldClientComponent } from 'payload'
 import { revalidateTag } from '../../../utilities/revalidateTag'
-import { Button, toast, PopupList } from '@payloadcms/ui'
 import { triggerVercelDeployServerFunction } from './triggerVercelDeploy'
 
 const SiteTriggers: UIFieldClientComponent = () => {

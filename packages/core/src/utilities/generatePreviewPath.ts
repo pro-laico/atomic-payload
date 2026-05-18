@@ -18,10 +18,7 @@ export type GeneratePreviewPathOptions = {
  *  the target page), and falls back to `/testing`. The host project must
  *  provide a `/next/preview` route handler (see
  *  `@pro-laico/core/next/preview`). */
-export const generateLivePreviewPath = async (
-  { data, req: { payload } }: Props,
-  options: GeneratePreviewPathOptions = {},
-): Promise<string> => {
+export const generateLivePreviewPath = async ({ data, req: { payload } }: Props, options: GeneratePreviewPathOptions = {}): Promise<string> => {
   const pagesSlug = (options.pagesSlug ?? 'pages') as CollectionSlug
   try {
     let slug = typeof data?.title === 'string' ? data.title : 'testing'
@@ -30,7 +27,11 @@ export const generateLivePreviewPath = async (
 
     if (typeof data?.testPath === 'string') {
       try {
-        const page = (await payload.findByID({ collection: pagesSlug, id: data?.testPath, select: { href: true } as Parameters<typeof payload.findByID>[0]['select'] })) as { href?: string } | null
+        const page = (await payload.findByID({
+          collection: pagesSlug,
+          id: data?.testPath,
+          select: { href: true } as Parameters<typeof payload.findByID>[0]['select'],
+        })) as { href?: string } | null
         if (page?.href) path = page.href
         //eslint-disable-next-line @typescript-eslint/no-unused-vars
       } catch (error) {

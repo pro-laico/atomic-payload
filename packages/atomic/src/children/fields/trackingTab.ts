@@ -10,8 +10,7 @@ export const TrackingTab: Tab = {
       relationTo: 'posthogProperty',
       hasMany: true,
       admin: {
-        condition: (_, sd) =>
-          Boolean(sd?.blockType === 'AtomicChild') ? Boolean(sd.type !== 'button') || Boolean(sd.buttonType === 'portal') : true,
+        condition: (_, sd) => (sd?.blockType === 'AtomicChild' ? Boolean(sd.type !== 'button') || Boolean(sd.buttonType === 'portal') : true),
       },
     },
     {
@@ -19,7 +18,7 @@ export const TrackingTab: Tab = {
       type: 'relationship',
       relationTo: 'posthogProperty',
       hasMany: true,
-      admin: { condition: (_, sd) => (Boolean(sd?.blockType === 'AtomicChild') ? Boolean(sd.type === 'button') : false) },
+      admin: { condition: (_, sd) => (sd?.blockType === 'AtomicChild' ? Boolean(sd.type === 'button') : false) },
     },
   ],
 }

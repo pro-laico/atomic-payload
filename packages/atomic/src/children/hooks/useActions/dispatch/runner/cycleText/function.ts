@@ -1,4 +1,5 @@
 ﻿import type { RunFunction } from '@pro-laico/atomic/actions'
+
 type CycleTextItem = { value: string; initialValue?: boolean | null }
 
 export const RunCycleText: RunFunction<'RunCycleText'> = ({ key, textArray, persisted, context }) => {

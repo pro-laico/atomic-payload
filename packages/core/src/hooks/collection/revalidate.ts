@@ -1,5 +1,5 @@
+import type { CollectionAfterDeleteHook, CollectionBeforeChangeHook } from 'payload'
 import { revalidateTag } from '../../utilities/revalidateTag'
-import type { CollectionBeforeChangeHook, CollectionAfterDeleteHook } from 'payload'
 
 /** Args passed to per-slug `beforeChange` revalidation handlers. `data` and
  *  `originalDoc` are typed as `any` so handlers can reach into collection-specific
@@ -69,19 +69,19 @@ export const DEFAULT_REVALIDATION_HANDLERS: CollectionRevalidationHandlers = {
 /** Default `afterDelete` handlers — match the atomic-payload template's collection set. */
 export const DEFAULT_DELETE_REVALIDATION_HANDLERS: CollectionDeleteRevalidationHandlers = {
   footer: async ({ doc }) => {
-    if (Boolean(doc?.active)) await revalidateTag('footer', false)
+    if (doc?.active) await revalidateTag('footer', false)
   },
   header: async ({ doc }) => {
-    if (Boolean(doc?.active)) await revalidateTag('header', false)
+    if (doc?.active) await revalidateTag('header', false)
   },
   iconSet: async ({ doc }) => {
-    if (Boolean(doc?.active)) await revalidateTag('iconSet', false)
+    if (doc?.active) await revalidateTag('iconSet', false)
   },
   designSet: async ({ doc }) => {
-    if (Boolean(doc?.active)) await revalidateTag('designSet', false)
+    if (doc?.active) await revalidateTag('designSet', false)
   },
   shortcutSet: async ({ doc }) => {
-    if (Boolean(doc?.active)) await revalidateTag('shortcutSet', false)
+    if (doc?.active) await revalidateTag('shortcutSet', false)
   },
   pages: ({ doc }) => {
     revalidateTag('pages', false)

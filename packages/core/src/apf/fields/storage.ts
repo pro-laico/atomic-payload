@@ -1,6 +1,6 @@
-﻿import { CheckboxField } from 'payload'
-import { APFunction } from '../types'
+﻿import type { CheckboxField } from 'payload'
 import { virtualAPFAfterReadFieldHook, virtualAPFBeforeChangeFieldHook } from '../hooks/field/apf'
+import type { APFunction } from '../types'
 
 /** Atomic Payload Functions Registry */
 export const apfRegistry: Record<APFunction, string> = {

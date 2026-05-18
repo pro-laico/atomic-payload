@@ -1,10 +1,10 @@
 'use server'
 
+import type { SubmitFormFunction } from '@pro-laico/atomic/forms'
 import getCached from '@pro-laico/core/cache/auto'
-import { SubmitFormFunction } from '@pro-laico/atomic/forms'
-import { getSubmitFormProcessor } from './formProcessor'
-import { getServerSideURL } from '../utilities/getServerSideURL'
 import { draftMode, headers as nextHeaders } from 'next/headers'
+import { getServerSideURL } from '../utilities/getServerSideURL'
+import { getSubmitFormProcessor } from './formProcessor'
 
 export const submitForm: SubmitFormFunction = async (submissionData) => {
   const headers = await nextHeaders()

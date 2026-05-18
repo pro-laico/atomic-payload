@@ -1,7 +1,6 @@
+import { APField, ClassNameField, onArraySetAPFShallow } from '@pro-laico/core'
 import type { Tab } from 'payload'
-import { APField, onArraySetAPFShallow } from '@pro-laico/core'
 import { ShortcutLabelPath } from '../../paths'
-import { ClassNameField } from '@pro-laico/core'
 import { protectedNames } from '../protectedNames'
 
 const d = {

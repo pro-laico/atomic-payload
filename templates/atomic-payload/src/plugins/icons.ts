@@ -1,5 +1,5 @@
-import { iconsPlugin } from '@pro-laico/icons'
 import { generateLivePreviewPath, TestPathField } from '@pro-laico/core'
+import { iconsPlugin } from '@pro-laico/icons'
 
 export const iconsPluginConfig = iconsPlugin({
   iconSetOptions: {

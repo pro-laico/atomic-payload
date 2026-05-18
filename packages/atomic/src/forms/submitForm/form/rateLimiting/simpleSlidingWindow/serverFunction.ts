@@ -1,6 +1,7 @@
 ﻿'use server'
-import { FormFunction } from '@pro-laico/atomic/forms'
+import type { FormFunction } from '@pro-laico/atomic/forms'
 import type { FrlSimpleSlidingWindow as FrlSimpleSlidingWindowType } from '@pro-laico/atomic/forms/schema'
+
 const lastCleanup: Record<string, number> = {}
 const memoryStore: Record<string, Record<string, number[]>> = {}
 

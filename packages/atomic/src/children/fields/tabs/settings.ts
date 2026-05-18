@@ -1,13 +1,13 @@
-﻿import type { Field, TabAsField, TextField } from 'payload'
-import type { ChildBlockType } from '@pro-laico/atomic/children/schema'
-import { StaticDataAttributesField } from '../staticDataAttributes'
-import { PortalBackdropTab } from './backdrop'
-import { TagSettingsTab } from '../../atomic/variants/tag/settings'
-import { FormSettingsTab } from '../../atomic/variants/form/settings'
-import { InputSettingsTab } from '../../atomic/variants/input/settings'
+﻿import type { ChildBlockType } from '@pro-laico/atomic/children/schema'
+import type { Field, TabAsField, TextField } from 'payload'
 import { LinkSettingsTab } from '../../atomic/variants/button/variants/link/settings'
 import { DialogSettingsTab } from '../../atomic/variants/button/variants/portal/dialog/settings'
 import { PopoverSettingsTab } from '../../atomic/variants/button/variants/portal/popover/settings'
+import { FormSettingsTab } from '../../atomic/variants/form/settings'
+import { InputSettingsTab } from '../../atomic/variants/input/settings'
+import { TagSettingsTab } from '../../atomic/variants/tag/settings'
+import { StaticDataAttributesField } from '../staticDataAttributes'
+import { PortalBackdropTab } from './backdrop'
 
 const d = {
   tab: 'Whichever block type is selected, this tab will contain the non control bar settings for that block type.',
@@ -17,7 +17,7 @@ const d = {
 const cidField: TextField = { name: 'cid', type: 'text', label: 'Anchor ID', admin: { description: d.cid } }
 
 export const ChildsSettingsTab = (childBlock: ChildBlockType) => {
-  let fields: Field[] | undefined = undefined
+  let fields: Field[] | undefined
 
   switch (childBlock) {
     case 'AtomicChild':

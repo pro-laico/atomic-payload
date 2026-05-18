@@ -1,6 +1,6 @@
+import type { DefaultNodeTypes } from '@payloadcms/richtext-lexical'
+import { type JSXConvertersFunction, LinkJSXConverter } from '@payloadcms/richtext-lexical/react'
 import { internalDocToHref } from './internalLink'
-import { DefaultNodeTypes } from '@payloadcms/richtext-lexical'
-import { JSXConvertersFunction, LinkJSXConverter } from '@payloadcms/richtext-lexical/react'
 
 type NodeTypes = DefaultNodeTypes
 

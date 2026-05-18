@@ -3,9 +3,7 @@ import { createDesignSetCollection, type DesignSetCollectionOptions } from './de
 import { createShortcutSetCollection, type ShortcutSetCollectionOptions } from './shortcutSet/createCollection'
 
 /** Omit hook + preview: those always come from the parent `designSetsPlugin` options. */
-export type DesignSetsShortcutSetOptions = Partial<
-  Omit<ShortcutSetCollectionOptions, 'atomicHook' | 'generateLivePreviewPath'>
-> & {
+export type DesignSetsShortcutSetOptions = Partial<Omit<ShortcutSetCollectionOptions, 'atomicHook' | 'generateLivePreviewPath'>> & {
   /** When false, the `shortcutSet` collection is not registered. Defaults to true. */
   enabled?: boolean
 }
@@ -35,8 +33,7 @@ export const designSetsPlugin =
     collections.push(createDesignSetCollection(collectionOpts))
 
     if (shortcutSetOpt !== false) {
-      const slice: DesignSetsShortcutSetOptions =
-        shortcutSetOpt && typeof shortcutSetOpt === 'object' ? shortcutSetOpt : {}
+      const slice: DesignSetsShortcutSetOptions = shortcutSetOpt && typeof shortcutSetOpt === 'object' ? shortcutSetOpt : {}
       if (slice.enabled !== false) {
         const { enabled: _e, access, collection, defaultShortcuts } = slice
         collections.push(

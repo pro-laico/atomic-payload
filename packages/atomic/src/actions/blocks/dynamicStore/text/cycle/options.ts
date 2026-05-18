@@ -1,5 +1,6 @@
-import { z } from '@pro-laico/zap'
 import type { ActionProcessFunction, ActionSetKeyInitialByAction } from '@pro-laico/atomic/actions'
+import type { z } from '@pro-laico/zap'
+
 type TextArrayItem = { id?: string | null; value: string; initialValue?: boolean | null }
 
 const setKeyInitialByAction: ActionSetKeyInitialByAction<'ActDSCycleText'> = (props) => {

@@ -1,7 +1,7 @@
 'use client'
-import type { ReactNode } from 'react'
-import type { Tracking } from '@pro-laico/tracking/schema'
 import { GoogleTagManager } from '@next/third-parties/google'
+import type { Tracking } from '@pro-laico/tracking/schema'
+import type { ReactNode } from 'react'
 
 export function GoogleTagManagerProvider({ children, tracking }: { children: ReactNode; tracking?: Tracking }) {
   return (

@@ -1,4 +1,4 @@
-﻿import { AttFunction } from '@pro-laico/atomic/actions'
+﻿import type { AttFunction } from '@pro-laico/atomic/actions'
 export const AttTextToDA: AttFunction<'AttTextToDA'> = ({
   key,
   persisted,

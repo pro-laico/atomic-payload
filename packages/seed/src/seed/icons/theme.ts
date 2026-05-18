@@ -1,4 +1,4 @@
-import { Icon } from '@pro-laico/icons/schema'
+import type { Icon } from '@pro-laico/icons/schema'
 export const themeIcon: Omit<Icon, 'createdAt' | 'updatedAt' | 'id'> = {
   optimized: 'SVG optimized: 687 to 315 bytes (54.1% reduction)',
   svgString:

@@ -9,7 +9,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "pnpm exec eslint .",
+    "lint": "biome lint .",
+    "format": "biome format --write .",
+    "check": "biome check --write .",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "payload": "payload",
     "generate:types": "cross-env NODE_OPTIONS=\"--conditions=react-server\" payload generate:types && core-augment-types",
@@ -32,6 +34,7 @@
     "@pro-laico/core": "workspace:*"
   },
   "devDependencies": {
+    "@biomejs/biome": "^2.2.0",
     "@types/node": "^22.19.15",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",

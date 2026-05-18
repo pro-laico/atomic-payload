@@ -1,9 +1,10 @@
-import type { Block } from 'payload'
-import { TrackingTab } from '@pro-laico/atomic/children/fields/trackingTab'
-import { ClassNameField } from '@pro-laico/core'
 import { ColoredEnd } from '@pro-laico/atomic/children/fields/coloredEnd'
 import { ChildsSettingsTab } from '@pro-laico/atomic/children/fields/tabs/settings'
+import { TrackingTab } from '@pro-laico/atomic/children/fields/trackingTab'
+import { ClassNameField } from '@pro-laico/core'
+import type { Block } from 'payload'
 import type { Image as ImageType } from '../../types/payload-augment'
+
 const d = {
   image: 'Select the image to be displayed.',
   quality: '0-100. Default is 75. Use 100 for best quality.',

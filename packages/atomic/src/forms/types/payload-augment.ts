@@ -1,7 +1,7 @@
 /**
  * Schema stubs owned by `@pro-laico/atomic/forms`.
  */
-import type { Get, DefaultRecord, DefaultBlock } from '@pro-laico/core'
+import type { DefaultBlock, DefaultRecord, Get } from '@pro-laico/core'
 
 // /////////////////////////////////////
 // Document / record shapes

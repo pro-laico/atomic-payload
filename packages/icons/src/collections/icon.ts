@@ -1,7 +1,7 @@
-import { authd } from '../access/authenticated'
-import type { CollectionConfig, Field } from 'payload'
-import { formatSVGHook } from '../hooks/formatSVG'
 import { mergeHooks, revalidateCacheCollection, revalidateCacheOnDelete } from '@pro-laico/core'
+import type { CollectionConfig, Field } from 'payload'
+import { authd } from '../access/authenticated'
+import { formatSVGHook } from '../hooks/formatSVG'
 
 /**
  * Options for {@link createIconCollection} — the `Icon` SVG upload collection.
@@ -106,10 +106,7 @@ export const createIconCollection = (opts: IconCollectionOptions = {}): Collecti
       ...extraFields,
     ],
     upload: { mimeTypes: ['image/svg+xml'] },
-    hooks: mergeHooks<Hooks>(
-      { beforeChange: [formatSVGHook, revalidateCacheCollection], afterDelete: [revalidateCacheOnDelete] },
-      extraHooks,
-    ),
+    hooks: mergeHooks<Hooks>({ beforeChange: [formatSVGHook, revalidateCacheCollection], afterDelete: [revalidateCacheOnDelete] }, extraHooks),
   }
 
   return merge ? { ...base, ...merge } : base

@@ -1,5 +1,5 @@
-﻿import type { Block } from 'payload'
-import { KeyTextField, SetDataField, PersistedField, InitialValueCheckboxField } from '@pro-laico/atomic/actions/fields'
+﻿import { InitialValueCheckboxField, KeyTextField, PersistedField, SetDataField } from '@pro-laico/atomic/actions/fields'
+import type { Block } from 'payload'
 
 export const ActDSSetBool: Block = {
   slug: 'ActDSSetBool',

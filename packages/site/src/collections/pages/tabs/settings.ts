@@ -1,7 +1,6 @@
-import { type Tab } from 'payload'
-import { DevModeField } from '@pro-laico/core'
-import { generateAPFFields } from '@pro-laico/core'
 import { createBreadcrumbsField } from '@payloadcms/plugin-nested-docs'
+import { DevModeField, generateAPFFields } from '@pro-laico/core'
+import type { Tab } from 'payload'
 
 export const SettingsTab = () => {
   const settingsField: Tab = {

@@ -1,9 +1,7 @@
+import { APField, onArraySetAPFShallow } from '@pro-laico/core'
 import { z } from '@pro-laico/zap'
-import { APField } from '@pro-laico/core'
-import type { TextField } from 'payload'
-import type { ArrayField } from 'payload'
+import type { ArrayField, TextField } from 'payload'
 import { DesignTokenLabelPath } from '../paths'
-import { onArraySetAPFShallow } from '@pro-laico/core'
 
 /** Creates a value field for use in the design sets collection. */
 export const ValueField: TextField = APField({ name: 'value', type: 'text', apf: ['classes'], required: true })

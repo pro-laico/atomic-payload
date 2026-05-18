@@ -1,7 +1,7 @@
 'use server'
-import React from 'react'
-import { draftMode } from 'next/headers'
 import getCached from '@pro-laico/core/cache/auto'
+import { draftMode } from 'next/headers'
+import type React from 'react'
 import { extractSvgContent, extractSvgProps } from '../../utilities/extractSVG'
 
 /**

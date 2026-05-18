@@ -1,34 +1,29 @@
 ﻿'use client'
 import './index.scss'
-import APFieldLabelServer from './label'
-import React, { memo, useEffect, useMemo, useState } from 'react'
 import { getTranslation } from '@payloadcms/translations'
-import { apfRegistry } from '../../fields/storage'
-import type { APFFieldComponentType } from '../../types'
-import { toKebabCase } from './toKebabCase'
-import {
-  useField,
-  useFormFields,
-  TextInput,
-  TextareaInput,
-  CheckboxInput,
-  FieldDescription,
-  ReactSelect,
-} from '@payloadcms/ui'
-import { useTranslation } from '@payloadcms/ui/providers/Translation'
+import { CheckboxInput, FieldDescription, ReactSelect, TextareaInput, TextInput, useField, useFormFields } from '@payloadcms/ui'
+import { FieldError } from '@payloadcms/ui/fields/FieldError'
 import { formatOptions, SelectInput } from '@payloadcms/ui/fields/Select'
 import { fieldBaseClass } from '@payloadcms/ui/fields/shared'
-import { FieldError } from '@payloadcms/ui/fields/FieldError'
+import { useTranslation } from '@payloadcms/ui/providers/Translation'
+import type React from 'react'
+import { memo, useEffect, useMemo, useState } from 'react'
+import { apfRegistry } from '../../fields/storage'
+import type { APFFieldComponentType } from '../../types'
+import APFieldLabelServer from './label'
+import { toKebabCase } from './toKebabCase'
 
 /** Mirrors Payload `@payloadcms/ui` `mergeFieldStyles` widths for arbitrary field shapes used by AP fields. */
-function mergeApfFieldStyles(field:
-  | {
-      admin?: {
-        style?: React.CSSProperties
-        width?: string | number | undefined
+function mergeApfFieldStyles(
+  field:
+    | {
+        admin?: {
+          style?: React.CSSProperties
+          width?: string | number | undefined
+        }
       }
-    }
-  | undefined): React.CSSProperties {
+    | undefined,
+): React.CSSProperties {
   const admin = field?.admin
   const style = admin?.style
   return {
@@ -67,15 +62,15 @@ export const APFieldComponent: APFFieldComponentType = (props) => {
 
   const placeholderNumber = useMemo(() => {
     if (type !== 'number') return undefined
-    const raw = (
-      props as Extract<typeof props, { type: 'number' }>
-    ).field?.admin?.placeholder
+    const raw = (props as Extract<typeof props, { type: 'number' }>).field?.admin?.placeholder
     if (raw === undefined || raw === null) return undefined
     const out = getTranslation(raw as Parameters<typeof getTranslation>[0], i18n)
     return typeof out === 'string' ? out : undefined
   }, [i18n, props, type])
 
-  const [numberMultiRender, setNumberMultiRender] = useState<Array<{ id: string; label: string; value: { toString: () => string; value: number | undefined } }>>([])
+  const [numberMultiRender, setNumberMultiRender] = useState<
+    Array<{ id: string; label: string; value: { toString: () => string; value: number | undefined } }>
+  >([])
 
   const hasManyNumber = type === 'number' && !!(field as { hasMany?: boolean }).hasMany
   const valueArray = useMemo(() => (Array.isArray(value) ? value : []), [value])
@@ -84,7 +79,8 @@ export const APFieldComponent: APFFieldComponentType = (props) => {
     setNumberMultiRender(
       valueArray.map((valEntry, index) => {
         const val_0 = valEntry as { value?: unknown } | number | string | null
-        const v = typeof val_0 === 'object' && val_0 !== null && 'value' in val_0 ? (val_0 as { value: number }).value : (val_0 as number | null | undefined)
+        const v =
+          typeof val_0 === 'object' && val_0 !== null && 'value' in val_0 ? (val_0 as { value: number }).value : (val_0 as number | null | undefined)
         const n = v == null || Number.isNaN(Number(v)) ? undefined : Number(v)
         return {
           id: `${String(n ?? '')}${index}`,
@@ -117,9 +113,8 @@ export const APFieldComponent: APFFieldComponentType = (props) => {
   const selectFilterMemo = useMemo(() => {
     if (!selectFilterOptions) return undefined
     return (opt: { label: string; value: unknown }, search: string) =>
-      !!selectFilterOptions.some((optionEl) =>
-        (typeof optionEl === 'string' ? optionEl : optionEl.value) === opt.value,
-      ) && opt.label.toLowerCase().includes(search.toLowerCase())
+      !!selectFilterOptions.some((optionEl) => (typeof optionEl === 'string' ? optionEl : optionEl.value) === opt.value) &&
+      opt.label.toLowerCase().includes(search.toLowerCase())
   }, [selectFilterOptions])
 
   let fieldComponent = null
@@ -226,24 +221,12 @@ export const APFieldComponent: APFFieldComponentType = (props) => {
             Number((option as { value?: { value?: number } }).value?.value ?? (option as { value?: number }).value),
           )
         } else {
-          next = [
-            Number(
-              (selectedOption as { value?: { value?: number } }).value?.value ??
-                (selectedOption as { value?: number }).value,
-            ),
-          ]
+          next = [Number((selectedOption as { value?: { value?: number } }).value?.value ?? (selectedOption as { value?: number }).value)]
         }
         handleChange(next)
       }
 
-      const numberRowClassName = [
-        fieldBaseClass,
-        'number',
-        adm.className,
-        showError && 'error',
-        readOnlyNum && 'read-only',
-        hasMany && 'has-many',
-      ]
+      const numberRowClassName = [fieldBaseClass, 'number', adm.className, showError && 'error', readOnlyNum && 'read-only', hasMany && 'has-many']
         .filter(Boolean)
         .join(' ')
 
@@ -256,8 +239,9 @@ export const APFieldComponent: APFFieldComponentType = (props) => {
                 className={`field-${path.replace(/\./g, '__')}`}
                 disabled={readOnlyNum}
                 filterOption={
-                  ((_opt, rawInput: string) =>
-                    valueArray.length >= maxRows ? false : isNumericRawInput(rawInput)) as React.ComponentProps<typeof ReactSelect>['filterOption']
+                  ((_opt, rawInput: string) => (valueArray.length >= maxRows ? false : isNumericRawInput(rawInput))) as React.ComponentProps<
+                    typeof ReactSelect
+                  >['filterOption']
                 }
                 isClearable
                 isCreatable

@@ -1,4 +1,4 @@
-import { Icon } from '@pro-laico/icons/schema'
+import type { Icon } from '@pro-laico/icons/schema'
 export const githubIcon: Omit<Icon, 'createdAt' | 'updatedAt' | 'id'> = {
   optimized: 'SVG optimized: 744 to 487 bytes (34.5% reduction)',
   svgString:

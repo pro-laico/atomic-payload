@@ -1,6 +1,6 @@
 'use server'
 import 'server-only'
-import { getPayload, Where, type CollectionSlug } from 'payload'
+import { type CollectionSlug, getPayload, type Where } from 'payload'
 import type { GCFunction } from '../../types/cache'
 import cacheLogger from '../cacheLogger'
 
@@ -14,7 +14,15 @@ export const createGetCachedAtomicClasses = (pagesSlug: string = 'pages'): GCFun
     if (!draft) and.push({ live: { equals: true } })
     const where: Where = { and }
 
-    const res = await payload.find({ collection, draft, where, limit: 0, pagination: false, depth: 0, select: { storedAtomicClasses: true } as Parameters<typeof payload.find>[0]['select'] })
+    const res = await payload.find({
+      collection,
+      draft,
+      where,
+      limit: 0,
+      pagination: false,
+      depth: 0,
+      select: { storedAtomicClasses: true } as Parameters<typeof payload.find>[0]['select'],
+    })
     const docs = res.docs as Array<{ storedAtomicClasses?: string[] | null }>
     const result = docs.flatMap((doc) => doc.storedAtomicClasses ?? [])
 

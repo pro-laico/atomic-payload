@@ -1,8 +1,8 @@
 import 'server-only' //DO NOT REMOVE
 import { createBlurUp } from '@mux/blurup'
+import type { StaticDataAttributes } from '@pro-laico/atomic/actions/schema'
 import type { PassThroughs } from '@pro-laico/atomic/children'
 import type { ChildBlocks } from '@pro-laico/atomic/children/schema'
-import type { StaticDataAttributes } from '@pro-laico/atomic/actions/schema'
 import { postHogPropertyApplicator } from '@pro-laico/tracking'
 
 type PassThrough = { p: Record<string, unknown>; da: Record<string, string> }
@@ -60,10 +60,11 @@ export async function SSRProps<T extends ChildBlocks[number]>(block: T): Promise
       const { type } = block
 
       switch (type) {
-        case 'tag':
+        case 'tag': {
           const { htmlFor } = block
           if (htmlFor) c.p.htmlFor = htmlFor
           break
+        }
         case 'button': {
           const { buttonType, triggerClassName, triggerPostHogProperty } = block
 

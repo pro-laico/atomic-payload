@@ -1,6 +1,6 @@
 'use client'
-import type { ReactNode } from 'react'
 import { Analytics } from '@vercel/analytics/next'
+import type { ReactNode } from 'react'
 
 export function VercelProvider({ children }: { children: ReactNode }) {
   return (

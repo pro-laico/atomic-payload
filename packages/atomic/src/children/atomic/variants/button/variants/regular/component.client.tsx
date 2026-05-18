@@ -1,10 +1,10 @@
 ﻿'use client'
-import React from 'react'
 import type { RenderChild } from '@pro-laico/atomic/children'
 import type { AtomicChild } from '@pro-laico/atomic/children/schema'
-import { useToDa } from '../../../../../hooks/useActions/useToDa'
-import { useButtonActions } from '../../../../../hooks/useActions/useButtonActions'
+import type React from 'react'
 import { useActionContext } from '../../../../../hooks/useActions/useActionContext'
+import { useButtonActions } from '../../../../../hooks/useActions/useButtonActions'
+import { useToDa } from '../../../../../hooks/useActions/useToDa'
 
 export const AtomicButtonRegularClient: React.FC<RenderChild<AtomicChild>> = (props) => {
   const { block, pt, triggerChildren } = props

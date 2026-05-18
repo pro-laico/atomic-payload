@@ -1,5 +1,5 @@
 'use client'
-import { useRowLabel, RowLabel, Pill, SectionTitle } from '@payloadcms/ui'
+import { Pill, RowLabel, SectionTitle, useRowLabel } from '@payloadcms/ui'
 
 const AnimationRowLabel = () => {
   const { data, path, rowNumber } = useRowLabel<{ [key: string]: string }>()

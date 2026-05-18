@@ -1,6 +1,6 @@
-import type { Config, Plugin, CollectionConfig } from 'payload'
-import { Images } from './collections/images'
+import type { CollectionConfig, Config, Plugin } from 'payload'
 import { Favicons } from './collections/favicons'
+import { Images } from './collections/images'
 
 export interface ImagesPluginOptions {
   /** When false, the plugin is a no-op. Defaults to true. */

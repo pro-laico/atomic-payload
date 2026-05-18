@@ -1,8 +1,8 @@
-import { z } from '@pro-laico/zap'
-import { type Tab } from 'payload'
 import { APField, onArraySetAPFShallow } from '@pro-laico/core'
-import { AnimationLabelPath } from '../../paths'
+import { z } from '@pro-laico/zap'
+import type { Tab } from 'payload'
 import { TokenValueArrayField, TokenValuesArrayField } from '../../fields/value'
+import { AnimationLabelPath } from '../../paths'
 
 export const unoThemeAnimation = z.ap.add(
   z.object({

@@ -1,18 +1,20 @@
-import { ActiveField, generateAPFFields, APFControlsPath } from '@pro-laico/core'
-import type { CollectionConfig } from 'payload'
-import { type APFunction } from '@pro-laico/core'
-import {
-  DevModeField,
-  TestPathField,
-  ClassNameField,
-  UniqueTitleField,
-  StorageTab,
-  revalidateCacheOnDelete,
-  generateLivePreviewPath,
-} from '@pro-laico/core'
-import { authd } from '../../access'
 import { ChildrenBlocksField as ChildrenBlocks } from '@pro-laico/atomic/children'
 import { atomicHook } from '@pro-laico/atomic/hook'
+import {
+  ActiveField,
+  APFControlsPath,
+  type APFunction,
+  ClassNameField,
+  DevModeField,
+  generateAPFFields,
+  generateLivePreviewPath,
+  revalidateCacheOnDelete,
+  StorageTab,
+  TestPathField,
+  UniqueTitleField,
+} from '@pro-laico/core'
+import type { CollectionConfig } from 'payload'
+import { authd } from '../../access'
 
 const APFunctions: APFunction[] = ['form', 'actions', 'classes', 'active']
 

@@ -1,7 +1,7 @@
 import type { GroupField } from 'payload'
-import { ModalField } from '../../../../../../fields/modal'
 import { DefaultOpenField } from '../../../../../../fields/defaultOpen'
 import { KeepMountedField } from '../../../../../../fields/keepMounted'
+import { ModalField } from '../../../../../../fields/modal'
 
 const popd = {
   side: 'The side of the portal.',

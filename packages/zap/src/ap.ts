@@ -1,7 +1,8 @@
 ﻿import 'server-only' //DO NOT REMOVE
-import z from 'zod'
-import traverse from 'traverse'
 import type { AtomicRegistry } from '@pro-laico/zap/schema'
+import traverse from 'traverse'
+import z from 'zod'
+
 type ZapSchemaRegistry = { id: string; description?: string }
 
 //KNOWN ISSUE: Updating past zod 4.1.11 breaks some handling of zod schemas. Need to investigate why and fix.
@@ -84,5 +85,5 @@ export namespace ap {
   export type Type<T extends keyof AtomicRegistry> = AtomicRegistry[T]
 }
 
-export { AtomicPayloadZodClass }
 export * from 'zod'
+export { AtomicPayloadZodClass }

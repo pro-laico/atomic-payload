@@ -1,5 +1,6 @@
-﻿import { z } from '@pro-laico/zap'
-import { ActionProcessFunction } from '@pro-laico/atomic/actions'
+﻿import type { ActionProcessFunction } from '@pro-laico/atomic/actions'
+import type { z } from '@pro-laico/zap'
+
 const processFunction: ActionProcessFunction<'ActSetCC'> = ({ perform, acceptAll, key, setDA, changeKey, data }) => {
   let values: z.ap.Type<'RunSetCC'>['values']
 

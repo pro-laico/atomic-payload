@@ -1,7 +1,7 @@
 import type { GroupField } from 'payload'
-import { ModalField } from '../../../../../../fields/modal'
 import { DefaultOpenField } from '../../../../../../fields/defaultOpen'
 import { KeepMountedField } from '../../../../../../fields/keepMounted'
+import { ModalField } from '../../../../../../fields/modal'
 
 //TODO: add starting and end styles to assist with animations
 export const DialogSettingsTab: GroupField = {

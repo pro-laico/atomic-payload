@@ -37,7 +37,12 @@ const seedRoot = path.join(process.cwd(), 'src', 'seed')
 
 function loadIconSet(key: string, title: string, dir: string, defaultActive: boolean): SampleIconSet {
   const folder = path.join(seedRoot, dir)
-  const files = fs.existsSync(folder) ? fs.readdirSync(folder).filter((f) => f.toLowerCase().endsWith('.svg')).sort() : []
+  const files = fs.existsSync(folder)
+    ? fs
+        .readdirSync(folder)
+        .filter((f) => f.toLowerCase().endsWith('.svg'))
+        .sort()
+    : []
   const icons: SampleIcon[] = files.map((file) => ({
     name: file.replace(/\.svg$/, ''),
     filename: `${key}-${file}`,
@@ -58,5 +63,4 @@ export const sampleIconSets: SampleIconSet[] = [
   loadIconSet('two', 'Second Demo Set', 'icons-two', false),
 ]
 
-export const findSampleIconSet = (key: string): SampleIconSet | undefined =>
-  sampleIconSets.find((s) => s.key === key)
+export const findSampleIconSet = (key: string): SampleIconSet | undefined => sampleIconSets.find((s) => s.key === key)

@@ -9,8 +9,8 @@
     "skipLibCheck": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
+    "jsx": "react-jsx",
     "noEmit": true
   },
-  "include": ["src/**/*.ts"],
-  "exclude": ["src/blocks/**"]
+  "include": ["src/**/*.ts", "src/**/*.tsx"]
 }

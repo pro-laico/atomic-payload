@@ -1,4 +1,4 @@
-import { GroupField } from 'payload'
+import type { GroupField } from 'payload'
 import { ActionBlocks } from '../blocks/actions'
 
 type ActionsTab = (prefix: 'trigger' | 'content') => GroupField
@@ -12,7 +12,7 @@ export const ActionsTab: ActionsTab = (prefix) => {
     admin: {
       hideGutter: true,
       condition: (_, sd) => {
-        if (Boolean(sd.blockType === 'AtomicChild')) {
+        if (sd.blockType === 'AtomicChild') {
           if (prefix === 'trigger') return Boolean(sd.type === 'button')
           else if (prefix === 'content') return Boolean(sd.type !== 'button') || Boolean(sd.buttonType === 'portal')
         }

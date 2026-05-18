@@ -1,4 +1,4 @@
-﻿import { AttFunction } from '@pro-laico/atomic/actions'
+﻿import type { AttFunction } from '@pro-laico/atomic/actions'
 export const AttFormStatusToDA: AttFunction<'AttFormStatusToDA'> = ({ key, context }) => {
   if (!context.fullFormContext) {
     console.error('AttFormStatusToDA: fullFormContext is undefined')

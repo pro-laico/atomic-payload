@@ -1,8 +1,15 @@
+import type { APFunction } from '@pro-laico/core'
+import {
+  ActiveField,
+  APFControlsPath,
+  APField,
+  generateAPFFields,
+  mergeHooks,
+  revalidateCacheCollection,
+  revalidateCacheOnDelete,
+} from '@pro-laico/core'
 import type { CollectionConfig, Field, PayloadRequest } from 'payload'
 import { authd } from '../access/authenticated'
-import type { APFunction } from '@pro-laico/core'
-import { APField, ActiveField, generateAPFFields, APFControlsPath, mergeHooks } from '@pro-laico/core'
-import { revalidateCacheCollection, revalidateCacheOnDelete } from '@pro-laico/core'
 
 const APFunctions: APFunction[] = ['active']
 
@@ -193,10 +200,7 @@ export const createIconSetCollection = (opts: IconSetCollectionOptions = {}): Co
         tabs: [
           {
             label: 'Settings',
-            fields: [
-              { type: 'row', fields: [ActiveField(), titleField('New Icon Set'), ...extraSettingsFields] },
-              ...extraFields,
-            ],
+            fields: [{ type: 'row', fields: [ActiveField(), titleField('New Icon Set'), ...extraSettingsFields] }, ...extraFields],
           },
           {
             label: 'Icons',

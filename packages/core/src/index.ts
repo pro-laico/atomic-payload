@@ -16,73 +16,67 @@
  *   from `@pro-laico/core/auth/getMeUser` on the frontend when needed.
  */
 
-// /////////////////////////////////////
-// Kernel (PayloadAugment, Get<>, defaults, generic helpers)
-// /////////////////////////////////////
-export * from './kernel'
-
+export { ActiveField } from './apf/fields/active'
+export { APField } from './apf/fields/index'
+export { apfRegistry, apfStorage, generateAPFFields } from './apf/fields/storage'
+export {
+  onArraySetAPFShallow,
+  onUploadSetAPF,
+  virtualAPFAfterReadFieldHook,
+  virtualAPFBeforeChangeFieldHook,
+} from './apf/hooks/field/apf'
 // /////////////////////////////////////
 // APF — Atomic Payload Functions
 // /////////////////////////////////////
 export type * from './apf/types'
-
 export { runAPF } from './apf/utilities/runAPF'
-export { APField } from './apf/fields/index'
-export { ActiveField } from './apf/fields/active'
-export { apfRegistry, apfStorage, generateAPFFields } from './apf/fields/storage'
+export type {
+  CollectionDeleteRevalidationHandlers,
+  CollectionRevalidationHandlers,
+  DeleteRevalidationContext,
+  RevalidationContext,
+} from './hooks/collection/revalidate'
 export {
-  virtualAPFAfterReadFieldHook,
-  virtualAPFBeforeChangeFieldHook,
-  onArraySetAPFShallow,
-  onUploadSetAPF,
-} from './apf/hooks/field/apf'
-
+  createRevalidateCache,
+  createRevalidateCacheOnDelete,
+  DEFAULT_DELETE_REVALIDATION_HANDLERS,
+  DEFAULT_REVALIDATION_HANDLERS,
+  revalidateCache as revalidateCacheCollection,
+  revalidateCacheOnDelete,
+} from './hooks/collection/revalidate'
+export { sanitizeAfterRead } from './hooks/collection/sanitize'
+export { revalidateCache as revalidateCacheGlobal } from './hooks/global/revalidate'
+export type {
+  AtomicPayloadSchemaBlocks,
+  BlockRefs,
+  CreateJSONSchemaExtensionsOptions,
+  GenerateBlocksTypeFn,
+  GenerateBlocksTypeProps,
+  JSONSchemaExtensionFn,
+  JSONSchemaPluginOptions,
+  ToJSONSchemaExtensionsFn,
+} from './jsonSchema'
+export {
+  atomicPayloadStoredDefinitions,
+  createJSONSchemaExtensions,
+  default as jsonSchemaPluginDefault,
+  jsonSchemaPlugin,
+} from './jsonSchema'
+// /////////////////////////////////////
+// Kernel (PayloadAugment, Get<>, defaults, generic helpers)
+// /////////////////////////////////////
+export * from './kernel'
+export type { RevalidationPluginOptions } from './plugin'
 // /////////////////////////////////////
 // Revalidation plugin + JSON-schema plugin
 // /////////////////////////////////////
-export { revalidationPlugin, default } from './plugin'
-export type { RevalidationPluginOptions } from './plugin'
-
+export { default, revalidationPlugin } from './plugin'
 export type * from './types/cache'
-export {
-  jsonSchemaPlugin,
-  createJSONSchemaExtensions,
-  atomicPayloadStoredDefinitions,
-  default as jsonSchemaPluginDefault,
-} from './jsonSchema'
-export type {
-  JSONSchemaPluginOptions,
-  JSONSchemaExtensionFn,
-  BlockRefs,
-  GenerateBlocksTypeProps,
-  GenerateBlocksTypeFn,
-  ToJSONSchemaExtensionsFn,
-  AtomicPayloadSchemaBlocks,
-  CreateJSONSchemaExtensionsOptions,
-} from './jsonSchema'
-
+export { mt } from './utilities/mergeTags'
 // /////////////////////////////////////
 // Cache + revalidate-tag entry points (sync)
 // /////////////////////////////////////
 export { revalidateTag } from './utilities/revalidateTag'
-export { mt } from './utilities/mergeTags'
-
-export {
-  revalidateCache as revalidateCacheCollection,
-  revalidateCacheOnDelete,
-  createRevalidateCache,
-  createRevalidateCacheOnDelete,
-  DEFAULT_REVALIDATION_HANDLERS,
-  DEFAULT_DELETE_REVALIDATION_HANDLERS,
-} from './hooks/collection/revalidate'
-export type {
-  CollectionRevalidationHandlers,
-  CollectionDeleteRevalidationHandlers,
-  RevalidationContext,
-  DeleteRevalidationContext,
-} from './hooks/collection/revalidate'
-export { revalidateCache as revalidateCacheGlobal } from './hooks/global/revalidate'
-export { sanitizeAfterRead } from './hooks/collection/sanitize'
 
 // /////////////////////////////////////
 // Path constants — string literals consumed by Payload's importMap.
@@ -93,40 +87,36 @@ export const APFieldLabelPath = '@pro-laico/core/admin/label'
 export const SiteTriggersPath = '@pro-laico/core/ui/root/siteTriggers'
 export const SlugPath = '@pro-laico/core/ui/fields/slug'
 
+export { ClassNameField } from './fields/className'
+export { DevModeField } from './fields/devMode'
 // /////////////////////////////////////
-// String utilities
+// Reusable Payload field configs
 // /////////////////////////////////////
-export { toTitleCase } from './utilities/toTitleCase'
-export { toKebabCase, type NameKebabOptions } from './utilities/toKebabCase'
-export { default as deepMerge, isObject } from './utilities/deepMerge'
-export { formatDurationString } from './utilities/formatDurationWithTokens'
-
-// /////////////////////////////////////
-// URL + meta helpers
-// /////////////////////////////////////
-export { GenerateMetaData } from './utilities/generateMetaData'
-export { getServerSideURL, getClientSideURL } from './utilities/getURL'
-export { getImageUrl } from './utilities/getImageURL'
-export { generateLivePreviewPath } from './utilities/generatePreviewPath'
-
-// /////////////////////////////////////
-// Hook composition
-// /////////////////////////////////////
-export { mergeHooks } from './utilities/mergeHooks'
-
+export { slugField } from './fields/slug'
+export { StorageTab } from './fields/storageTab'
+export { createTestPathField, TestPathField } from './fields/testPath'
+export { UniqueTitleField } from './fields/uniqueTitle'
 // /////////////////////////////////////
 // Field-level hooks
 // /////////////////////////////////////
 export { formatSlug, formatSlugHook } from './hooks/field/formatSlug'
 export { updateHrefHook } from './hooks/field/href'
 export { updatePublishedAtHook } from './hooks/field/publishedAt'
-
+export { default as deepMerge, isObject } from './utilities/deepMerge'
+export { formatDurationString } from './utilities/formatDurationWithTokens'
 // /////////////////////////////////////
-// Reusable Payload field configs
+// URL + meta helpers
 // /////////////////////////////////////
-export { slugField } from './fields/slug'
-export { StorageTab } from './fields/storageTab'
-export { ClassNameField } from './fields/className'
-export { DevModeField } from './fields/devMode'
-export { TestPathField, createTestPathField } from './fields/testPath'
-export { UniqueTitleField } from './fields/uniqueTitle'
+export { GenerateMetaData } from './utilities/generateMetaData'
+export { generateLivePreviewPath } from './utilities/generatePreviewPath'
+export { getImageUrl } from './utilities/getImageURL'
+export { getClientSideURL, getServerSideURL } from './utilities/getURL'
+// /////////////////////////////////////
+// Hook composition
+// /////////////////////////////////////
+export { mergeHooks } from './utilities/mergeHooks'
+export { type NameKebabOptions, toKebabCase } from './utilities/toKebabCase'
+// /////////////////////////////////////
+// String utilities
+// /////////////////////////////////////
+export { toTitleCase } from './utilities/toTitleCase'

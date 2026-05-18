@@ -1,9 +1,9 @@
 // TODO: Make Color Picker Component
+
+import { APField, onArraySetAPFShallow } from '@pro-laico/core'
 import { z } from '@pro-laico/zap'
-import { type Tab } from 'payload'
+import type { Tab } from 'payload'
 import { ColorLabelPath } from '../../paths'
-import { APField } from '@pro-laico/core'
-import { onArraySetAPFShallow } from '@pro-laico/core'
 
 export const UnoColors = z.ap.add(z.record(z.string(), z.string().or(z.record(z.string(), z.string()))), { id: 'UnoColors' })
 export const designSetColors = z.ap.add(z.array(z.object({ name: z.string(), light: z.string(), dark: z.string() })), { id: 'DesignSetColors' })

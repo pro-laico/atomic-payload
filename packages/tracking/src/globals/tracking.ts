@@ -1,7 +1,7 @@
-import type { Access, GlobalConfig } from 'payload'
 import { revalidateCacheGlobal } from '@pro-laico/core'
-import { postHogTabField } from './postHogTab'
+import type { Access, GlobalConfig } from 'payload'
 import { googleTagManagerTabField } from './gtmTab'
+import { postHogTabField } from './postHogTab'
 
 const authd: Access = ({ req }) => Boolean(req.user)
 

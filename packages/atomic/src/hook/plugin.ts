@@ -1,4 +1,4 @@
-import type { Config, Plugin, CollectionBeforeChangeHook } from 'payload'
+import type { CollectionBeforeChangeHook, Config, Plugin } from 'payload'
 
 export interface AtomicHookPluginOptions {
   enabled?: boolean

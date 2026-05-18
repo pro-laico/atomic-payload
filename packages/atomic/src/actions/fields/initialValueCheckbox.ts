@@ -1,5 +1,6 @@
-import { APField, deepMerge } from '@pro-laico/core'
 import type { APArgs, APFieldWrapper } from '@pro-laico/core'
+import { APField, deepMerge } from '@pro-laico/core'
+
 const description = 'The initial value to set the key to. Checked = true, Unchecked = false. First click set the opposite of this value.'
 
 /** Typically utilized to set what the initial value of an action will be.

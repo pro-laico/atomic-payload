@@ -1,9 +1,10 @@
-import fs from 'fs'
-import path from 'path'
-import https from 'https'
-import dotenv from 'dotenv'
 import { PayloadSDK } from '@payloadcms/sdk'
 import type { Font } from '@pro-laico/fonts/schema'
+import dotenv from 'dotenv'
+import fs from 'fs'
+import https from 'https'
+import path from 'path'
+
 const colors = {
   blue: (t: string) => `\x1b[34m${t}\x1b[0m`,
   green: (t: string) => `\x1b[32m${t}\x1b[0m`,
@@ -34,8 +35,7 @@ function resolveOptions(overrides?: RunDownloadFontsOptions) {
     fontsOutputDir: overrides?.fontsOutputDir ?? process.env.ATOMIC_FONTS_OUTPUT_DIR ?? './public/fonts',
     definitionFile: overrides?.definitionFile ?? process.env.ATOMIC_FONTS_DEFINITION_FILE ?? './src/app/definition.ts',
     envFile: overrides?.envFile ?? process.env.ATOMIC_FONTS_ENV_FILE ?? './.env',
-    localFontSrcPrefix:
-      overrides?.localFontSrcPrefix ?? process.env.ATOMIC_FONTS_SRC_PREFIX ?? '../../public/fonts',
+    localFontSrcPrefix: overrides?.localFontSrcPrefix ?? process.env.ATOMIC_FONTS_SRC_PREFIX ?? '../../public/fonts',
   }
 }
 
@@ -78,10 +78,7 @@ export async function runDownloadFonts(overrides?: RunDownloadFontsOptions): Pro
 
     const available = configs.filter((c) => c.extension)
     const declarations = available
-      .map(
-        (c) =>
-          `const ${c.name} = localFont({ src: '${localPrefix}/${c.type}.${c.extension}', variable: '${c.variable}' })`,
-      )
+      .map((c) => `const ${c.name} = localFont({ src: '${localPrefix}/${c.type}.${c.extension}', variable: '${c.variable}' })`)
       .join('\n')
     const exports = available.map((c) => c.name).join(', ')
 
@@ -129,11 +126,7 @@ export default fonts
     })
   }
 
-  async function downloadFont(
-    font: Font | string | null,
-    fontType: GenericFontFamily,
-    baseUrl: string,
-  ): Promise<string | undefined | void> {
+  async function downloadFont(font: Font | string | null, fontType: GenericFontFamily, baseUrl: string): Promise<string | undefined | void> {
     if (typeof font === 'string') return warn(colors.orange(`The ${fontType} font is a string reference`))
     if (!font?.filename) return warn(colors.orange(`No ${fontType} font found`))
 
@@ -192,9 +185,7 @@ export default fonts
   const fonts = (designSet.docs[0] as { font?: Record<string, Font | string | null | undefined> }).font
   if (!fonts) return warn(colors.red('No font configuration found'))
 
-  const hasProcessableFonts = Object.values(fonts).some(
-    (font) => typeof font === 'object' && font !== null && 'filename' in font,
-  )
+  const hasProcessableFonts = Object.values(fonts).some((font) => typeof font === 'object' && font !== null && 'filename' in font)
   if (!hasProcessableFonts) return console.log(colors.green('No valid fonts to process. Continuing build process.'))
 
   console.log(colors.green('✓ Font configuration found\n'))

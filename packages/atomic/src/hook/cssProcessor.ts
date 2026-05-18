@@ -1,11 +1,12 @@
-import { deepMerge } from '@pro-laico/core'
-import manualLogger from './utilities/manualLogger'
 import type { CollectionsWithStoredAtomicClasses, cssProcessorType } from '@pro-laico/atomic/hook'
+import { deepMerge } from '@pro-laico/core'
+import { defaultAtomicClasses } from '@pro-laico/design-sets/designSet/defaults'
 import type { DesignSet } from '@pro-laico/design-sets/schema'
 import type { ShortcutSet } from '@pro-laico/site/schema'
-import { defaultAtomicClasses } from '@pro-laico/design-sets/designSet/defaults'
-import { createGenerator, PresetWind4Theme, presetWind4, presetAttributify, presetTypography } from 'unocss'
+import { createGenerator, type PresetWind4Theme, presetAttributify, presetTypography, presetWind4 } from 'unocss'
 import type { AtomicHookGetCached } from './atomicHookTypes'
+import manualLogger from './utilities/manualLogger'
+
 type CssDocDesignSet = DesignSet & {
   tokenStorage?: (PresetWind4Theme & Record<string, unknown>) & {
     variables?: { spacing?: string }
@@ -88,7 +89,7 @@ export function createCssProcessor(getCached: AtomicHookGetCached, options: CssP
 
     await req.payload.updateGlobal({
       req,
-      slug: (draft ? cssStorageGlobals.draft : cssStorageGlobals.published),
+      slug: draft ? cssStorageGlobals.draft : cssStorageGlobals.published,
       data: { layoutCSS: css, cssSize: css.length, updatedAt },
     } as unknown as Parameters<typeof req.payload.updateGlobal>[0])
     manualLogger(`[UPDATE] (Global) - ${draft ? 'Draft' : 'Published'} CSS Storage - ${css.length} bytes`)

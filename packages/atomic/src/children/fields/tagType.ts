@@ -1,4 +1,4 @@
-import { SelectField, Condition } from 'payload'
+import type { Condition, SelectField } from 'payload'
 
 type ChildBlocksWithTagType = 'SimpleTextChild' | 'VideoChild' | 'AtomicChild'
 type TagTypeFieldType = (args: { childBlock: ChildBlocksWithTagType; width?: string; condition?: Condition }) => SelectField

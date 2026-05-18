@@ -69,7 +69,7 @@ export type MergeTuples<T extends readonly unknown[], U extends readonly unknown
 // Generic Payload-config helpers (rely only on the kernel `Config` stub).
 // /////////////////////////////////////
 
-import type { CollectionSlug, BlockSlug } from 'payload'
+import type { BlockSlug, CollectionSlug } from 'payload'
 
 export type AllCollections = Config['collections'][keyof Config['collections']]
 export type AllBlocks = Config['blocks'][keyof Config['blocks']]

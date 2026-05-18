@@ -1,5 +1,5 @@
-import { ForField } from '../../../fields/for'
 import type { GroupField } from 'payload'
+import { ForField } from '../../../fields/for'
 
 export const TagSettingsTab: GroupField = {
   type: 'group',

@@ -1,8 +1,8 @@
-import path from 'path'
-import { existsSync } from 'fs'
-import type { NextConfig } from 'next'
 import bundleAnalyzer from '@next/bundle-analyzer'
 import { withPayload } from '@payloadcms/next/withPayload'
+import { existsSync } from 'fs'
+import type { NextConfig } from 'next'
+import path from 'path'
 
 const NEXT_PUBLIC_SERVER_URL = process.env.VERCEL_PROJECT_PRODUCTION_URL
   ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`

@@ -1,22 +1,23 @@
-import { APField, APFControlsPath } from '@pro-laico/core'
-import { type APFunction } from '@pro-laico/core'
-import type { CollectionConfig } from 'payload'
+import { createParentField } from '@payloadcms/plugin-nested-docs'
+import { ChildrenBlocksField as ChildrenBlocks } from '@pro-laico/atomic/children'
+import { atomicHook } from '@pro-laico/atomic/hook'
 import {
-  slugField,
-  SlugPath,
+  APFControlsPath,
+  APField,
+  type APFunction,
   ClassNameField,
-  updateHrefHook,
-  StorageTab,
-  updatePublishedAtHook,
-  revalidateCacheOnDelete,
   generateLivePreviewPath,
+  revalidateCacheOnDelete,
+  SlugPath,
+  StorageTab,
+  slugField,
+  updateHrefHook,
+  updatePublishedAtHook,
 } from '@pro-laico/core'
+import type { CollectionConfig } from 'payload'
 import { authd, authenticatedOrPublished } from '../../access'
 import { SEOTab } from './tabs/SEO'
-import { ChildrenBlocksField as ChildrenBlocks } from '@pro-laico/atomic/children'
 import { SettingsTab } from './tabs/settings'
-import { createParentField } from '@payloadcms/plugin-nested-docs'
-import { atomicHook } from '@pro-laico/atomic/hook'
 
 const APFunctions: APFunction[] = ['form', 'page', 'pages', 'actions', 'classes', 'seo', 'sitemap']
 

@@ -1,7 +1,7 @@
 import type { Config, Plugin } from 'payload'
-import { Pages } from './collections/pages/collection'
-import { Header } from './collections/headers/collection'
 import { Footer } from './collections/footers/collection'
+import { Header } from './collections/headers/collection'
+import { Pages } from './collections/pages/collection'
 import { Settings } from './globals/settings'
 import { SiteMetaData } from './globals/siteMetaData'
 import { baseStorage } from './globals/storage'
@@ -21,13 +21,7 @@ export const sitePlugin =
     if (options.enabled === false) return config
 
     config.collections = [...(config.collections ?? []), Pages, Header, Footer]
-    config.globals = [
-      ...(config.globals ?? []),
-      Settings,
-      SiteMetaData,
-      baseStorage('draft'),
-      baseStorage('published'),
-    ]
+    config.globals = [...(config.globals ?? []), Settings, SiteMetaData, baseStorage('draft'), baseStorage('published')]
 
     return config
   }

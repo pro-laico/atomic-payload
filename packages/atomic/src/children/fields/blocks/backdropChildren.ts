@@ -1,4 +1,4 @@
-import { BlocksField } from 'payload'
+import type { BlocksField } from 'payload'
 
 export const BackdropChildren: BlocksField = {
   name: 'backdropChildren',

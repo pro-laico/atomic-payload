@@ -9,11 +9,12 @@ export const AttCCToDA: AttFunction<'AttCCToDA'> = ({
   let returns: Record<string, string> | undefined
 
   switch (listen.listen) {
-    case 'preference':
+    case 'preference': {
       if (!listen.key) return
       const checked = preferences?.[listen.key as keyof typeof preferences]
       if (checked) returns = { [`data-${changeKey || listen.key}`]: '' }
       break
+    }
     case 'accept':
       if (hasConsented === true) returns = { [`data-${changeKey || 'accepted'}`]: '' }
       break

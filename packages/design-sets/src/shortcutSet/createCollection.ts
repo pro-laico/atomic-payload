@@ -1,10 +1,9 @@
-import { APFControlsPath, generateAPFFields } from '@pro-laico/core'
-import { authd } from '../access/authenticated'
-import type { CollectionConfig, CollectionBeforeChangeHook, PayloadRequest } from 'payload'
 import type { APFunction } from '@pro-laico/core'
-import { revalidateCacheOnDelete } from '@pro-laico/core'
-import { createShortcutsTab } from './tabs/shortcuts'
+import { APFControlsPath, generateAPFFields, revalidateCacheOnDelete } from '@pro-laico/core'
+import type { CollectionBeforeChangeHook, CollectionConfig, PayloadRequest } from 'payload'
+import { authd } from '../access/authenticated'
 import { ShortcutSettingsTab } from './tabs/settings'
+import { createShortcutsTab } from './tabs/shortcuts'
 
 const APFunctions: APFunction[] = ['classes', 'active']
 
@@ -44,10 +43,7 @@ export function createShortcutSetCollection(opts: ShortcutSetCollectionOptions):
       livePreview: { url: ({ data, req }) => generateLivePreviewPath({ data, req }) },
       components: { edit: { beforeDocumentControls: [{ path: APFControlsPath, clientProps: { APFunctions } }] } },
     },
-    fields: [
-      { type: 'tabs', tabs: [ShortcutSettingsTab(), createShortcutsTab(defaultShortcuts)] },
-      ...generateAPFFields(APFunctions),
-    ],
+    fields: [{ type: 'tabs', tabs: [ShortcutSettingsTab(), createShortcutsTab(defaultShortcuts)] }, ...generateAPFFields(APFunctions)],
     hooks: { beforeChange: [atomicHook], afterDelete: [revalidateCacheOnDelete] },
     versions: { drafts: { schedulePublish: true, validate: true }, maxPerDoc: 50 },
   }

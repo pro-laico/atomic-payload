@@ -1,4 +1,4 @@
-import type { CollectionSlug, RelationshipField, RowField, SelectField, TextField, UploadField, EmailField as EmailFieldType } from 'payload'
+import type { CollectionSlug, EmailField as EmailFieldType, RelationshipField, RowField, SelectField, TextField, UploadField } from 'payload'
 
 const linkTypeField: SelectField = {
   name: 'linkType',

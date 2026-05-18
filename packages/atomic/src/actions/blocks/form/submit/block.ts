@@ -1,5 +1,5 @@
-import type { Block } from 'payload'
 import { APField } from '@pro-laico/core'
+import type { Block } from 'payload'
 
 export const ActSubmitForm: Block = {
   slug: 'ActSubmitForm',

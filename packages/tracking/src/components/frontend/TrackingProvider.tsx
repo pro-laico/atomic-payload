@@ -1,8 +1,8 @@
 'use client'
-import type { ReactNode } from 'react'
 import type { Tracking } from '@pro-laico/tracking/schema'
-import { PostHogProvider } from './PostHogProvider'
+import type { ReactNode } from 'react'
 import { GoogleTagManagerProvider } from './GoogleTagManagerProvider'
+import { PostHogProvider } from './PostHogProvider'
 import { VercelProvider } from './VercelProvider'
 
 type ProviderType = 'postHog' | 'vercel' | 'googleTagManager'

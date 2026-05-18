@@ -1,10 +1,11 @@
 ﻿import { z } from '@pro-laico/zap'
-import { CCtoDASchema } from './cCToDA/zap'
 import { BoolToDASchema } from './boolToDA/zap'
-import { TextToDASchema } from './textToDA/zap'
+import { CCtoDASchema } from './cCToDA/zap'
 import { FormErrorToDASchema } from './errorToDA/zap'
 import { FormStatusToDASchema } from './statusToDA/zap'
-export { CCtoDASchema, BoolToDASchema, TextToDASchema, FormErrorToDASchema, FormStatusToDASchema }
+import { TextToDASchema } from './textToDA/zap'
+
+export { BoolToDASchema, CCtoDASchema, FormErrorToDASchema, FormStatusToDASchema, TextToDASchema }
 
 const Attributers = [CCtoDASchema, BoolToDASchema, TextToDASchema, FormErrorToDASchema, FormStatusToDASchema] as const
 

@@ -1,18 +1,16 @@
-import { z } from '@pro-laico/zap'
-import traverse from 'traverse'
-import { runAPF } from '@pro-laico/core'
-import manualLogger from './utilities/manualLogger'
-import sanitizeData from './utilities/sanitizeData'
-import { revalidateTag } from '@pro-laico/core'
-import type { CollectionBeforeChangeHook } from 'payload'
-import type { CollectionBySlug } from '@pro-laico/core'
-import type { CollectionThatUsesCSSProcessor } from '@pro-laico/atomic/hook'
-import type { CollectionSlug } from 'payload'
 import type { StoredAtomicForm, StoredAtomicFormInput } from '@pro-laico/atomic/forms/schema'
-import { unsetActive } from './unsetActive'
+import type { CollectionThatUsesCSSProcessor } from '@pro-laico/atomic/hook'
+import type { CollectionBySlug } from '@pro-laico/core'
+import { revalidateTag, runAPF } from '@pro-laico/core'
+import { z } from '@pro-laico/zap'
+import type { CollectionBeforeChangeHook, CollectionSlug } from 'payload'
+import traverse from 'traverse'
+import { type CreateAtomicHookOptions, DEFAULT_ATOMIC_HOOK_SLUG_CONFIG } from './atomicHookTypes'
 import { createCssProcessor } from './cssProcessor'
 import processDesignSet from './processDesignSet/index'
-import { DEFAULT_ATOMIC_HOOK_SLUG_CONFIG, type CreateAtomicHookOptions } from './atomicHookTypes'
+import { unsetActive } from './unsetActive'
+import manualLogger from './utilities/manualLogger'
+import sanitizeData from './utilities/sanitizeData'
 
 function findClosestParent(inputPath: string[], parentPaths: MapIterator<string>): string | null {
   const inputPathString = inputPath.join('.')
@@ -47,10 +45,7 @@ export function createAtomicHook(opts: CreateAtomicHookOptions): CollectionBefor
     let runSlug = false
     if (slug === pagesSlug) {
       const previousHref = data?.href
-      href =
-        data?.breadcrumbs && data?.breadcrumbs?.length > 0
-          ? data?.breadcrumbs[data?.breadcrumbs?.length - 1]?.url
-          : undefined
+      href = data?.breadcrumbs && data?.breadcrumbs?.length > 0 ? data?.breadcrumbs[data?.breadcrumbs?.length - 1]?.url : undefined
       runSlug = operation !== 'create' ? (data?.slug !== originalDoc?.slug ? true : false) : Boolean(data?.live)
       if (operation !== 'create' && (previousHref !== href ? true : false)) await revalidateTag('page', previousHref!, draft)
     }
@@ -99,7 +94,7 @@ export function createAtomicHook(opts: CreateAtomicHookOptions): CollectionBefor
     const sd = sanitizeData(data) as CollectionBySlug<typeof slug>
 
     if (hasChildren && r.actions) {
-      traverse(sd).forEach(function (node) {
+      traverse(sd).forEach((node) => {
         if (node && typeof node === 'object') ABSP.setKeyInitialValueByBlock({ node })
       })
     }
@@ -108,7 +103,16 @@ export function createAtomicHook(opts: CreateAtomicHookOptions): CollectionBefor
       traverse(sd).forEach(function (node) {
         if (r.classes && this?.key?.endsWith('ClassName') && node) (node as string).split(/\s+/).forEach((cls: string) => classes.add(cls.trim()))
 
-        if (r.forms && this.path && typeof node === 'object' && node && 'type' in node && node.type === 'form' && 'children' in node && node.children) {
+        if (
+          r.forms &&
+          this.path &&
+          typeof node === 'object' &&
+          node &&
+          'type' in node &&
+          node.type === 'form' &&
+          'children' in node &&
+          node.children
+        ) {
           const formData: StoredAtomicForm = {
             id: node.id as string,
             backendForm: node.backendForm as StoredAtomicForm['backendForm'],
@@ -116,9 +120,12 @@ export function createAtomicHook(opts: CreateAtomicHookOptions): CollectionBefor
             em: node.em as string | undefined,
           }
 
-          if ('formSanitationBlocks' in node && node.formSanitationBlocks) formData.sanitation = node.formSanitationBlocks as StoredAtomicForm['sanitation']
-          if ('formValidationBlocks' in node && node.formValidationBlocks) formData.validation = node.formValidationBlocks as StoredAtomicForm['validation']
-          if ('formRateLimitBlocks' in node && node.formRateLimitBlocks) formData.rateLimiting = node.formRateLimitBlocks as StoredAtomicForm['rateLimiting']
+          if ('formSanitationBlocks' in node && node.formSanitationBlocks)
+            formData.sanitation = node.formSanitationBlocks as StoredAtomicForm['sanitation']
+          if ('formValidationBlocks' in node && node.formValidationBlocks)
+            formData.validation = node.formValidationBlocks as StoredAtomicForm['validation']
+          if ('formRateLimitBlocks' in node && node.formRateLimitBlocks)
+            formData.rateLimiting = node.formRateLimitBlocks as StoredAtomicForm['rateLimiting']
 
           formMap.set(this.path.join('.'), formData)
         }
@@ -141,8 +148,10 @@ export function createAtomicHook(opts: CreateAtomicHookOptions): CollectionBefor
                   type: n.inputType as StoredAtomicFormInput['type'],
                   inputName: n.inputName as string,
                 }
-                if ('inputSanitationBlocks' in n && n.inputSanitationBlocks) inputData.sanitationBlocks = n.inputSanitationBlocks as StoredAtomicFormInput['sanitationBlocks']
-                if ('inputValidationBlocks' in n && n.inputValidationBlocks) inputData.validationBlocks = n.inputValidationBlocks as StoredAtomicFormInput['validationBlocks']
+                if ('inputSanitationBlocks' in n && n.inputSanitationBlocks)
+                  inputData.sanitationBlocks = n.inputSanitationBlocks as StoredAtomicFormInput['sanitationBlocks']
+                if ('inputValidationBlocks' in n && n.inputValidationBlocks)
+                  inputData.validationBlocks = n.inputValidationBlocks as StoredAtomicFormInput['validationBlocks']
                 form.inputs.push(inputData)
               }
             }

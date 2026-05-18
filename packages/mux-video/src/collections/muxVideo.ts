@@ -1,4 +1,4 @@
-import type { CollectionConfig, Access } from 'payload'
+import type { Access, CollectionConfig } from 'payload'
 
 const authd: Access = ({ req }) => Boolean(req.user)
 const anyone: Access = () => true

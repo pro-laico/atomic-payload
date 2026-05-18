@@ -1,4 +1,3 @@
-export { muxVideoPlugin, default } from './plugin'
-export type { AtomicMuxVideoOptions } from './plugin'
 export { MuxVideo } from './collections/muxVideo'
-
+export type { AtomicMuxVideoOptions } from './plugin'
+export { default, muxVideoPlugin } from './plugin'

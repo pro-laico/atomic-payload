@@ -1,8 +1,8 @@
 'use server'
 import 'server-only' //DO NOT REMOVE
-import { getPayload, Where, type CollectionSlug } from 'payload'
-import type { GCFunction } from '../../types/cache'
 import { manualLogger, sanitizeData } from '@pro-laico/atomic/hook/light'
+import { type CollectionSlug, getPayload, type Where } from 'payload'
+import type { GCFunction } from '../../types/cache'
 import cacheLogger from '../cacheLogger'
 
 type PageGCReturn = Awaited<ReturnType<GCFunction<'page'>>>

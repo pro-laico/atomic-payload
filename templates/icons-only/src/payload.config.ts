@@ -1,13 +1,12 @@
-import path from 'path'
-import sharp from 'sharp'
-import { buildConfig } from 'payload'
 import { fileURLToPath } from 'node:url'
-import type { SharpDependency } from 'payload'
 import { sqliteAdapter } from '@payloadcms/db-sqlite'
-
-import { Users } from '@/collections/users'
-import { iconsPlugin } from '@pro-laico/icons'
 import { getServerSideURL } from '@pro-laico/core'
+import { iconsPlugin } from '@pro-laico/icons'
+import path from 'path'
+import type { SharpDependency } from 'payload'
+import { buildConfig } from 'payload'
+import sharp from 'sharp'
+import { Users } from '@/collections/users'
 
 /** Builds the live-preview iframe URL for IconSet edits. The icons demo has a
  *  single rendered page (`/`), so all iconSet previews point at the home page;

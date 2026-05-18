@@ -1,19 +1,18 @@
 import { readFile } from 'node:fs/promises'
-import { fileURLToPath } from 'node:url'
 import { dirname, join } from 'node:path'
-import type { CollectionSlug, Payload, PayloadRequest, File } from 'payload'
-import type { Page } from '@pro-laico/site/schema'
+import { fileURLToPath } from 'node:url'
 import type { Icon } from '@pro-laico/icons/schema'
-
+import type { Page } from '@pro-laico/site/schema'
+import type { CollectionSlug, File, Payload, PayloadRequest } from 'payload'
+import { backendForm } from './backendForm'
+import { designSet } from './designSet'
 //Collection Data
 import { footer } from './footer'
 import { header } from './header'
 import { iconSet } from './iconSet'
-import { designSet } from './designSet'
-import { backendForm } from './backendForm'
-import { shortcutSet } from './shortcutSet'
-import { homePage, notFoundPage, testingPage, prosePage } from './pages'
 import { checkIcon, closeIcon, cookieIcon, githubIcon, logoIcon, menuIcon, themeIcon } from './icons'
+import { homePage, notFoundPage, prosePage, testingPage } from './pages'
+import { shortcutSet } from './shortcutSet'
 
 //Global Data
 import { siteMetaData } from './siteMetaData'
@@ -46,10 +45,7 @@ const DEFAULT_SEED_SLUGS: Required<SeedSlugConfig> = {
 
 const args = { depth: 0, context: { isSeed: true } }
 
-export const seed = async (
-  { payload, req }: { payload: Payload; req: PayloadRequest },
-  slugConfig: SeedSlugConfig = {},
-): Promise<void> => {
+export const seed = async ({ payload, req }: { payload: Payload; req: PayloadRequest }, slugConfig: SeedSlugConfig = {}): Promise<void> => {
   const slugs = { ...DEFAULT_SEED_SLUGS, ...slugConfig }
   const collections: CollectionSlug[] = [
     slugs.footer as CollectionSlug,
@@ -102,15 +98,17 @@ export const seed = async (
 
   payload.logger.info(`Seeding pages...`)
   //Used as the default testing page for collections.
-  const page = (await payload.create({ collection: slugs.pages, ...args, data: testingPage } as Parameters<typeof payload.create>[0])) as unknown as Page
+  const page = (await payload.create({ collection: slugs.pages, ...args, data: testingPage } as Parameters<
+    typeof payload.create
+  >[0])) as unknown as Page
   //Prose Showcase Page
-  const prose = (await payload.create({ collection: slugs.pages, ...args, data: prosePage } as Parameters<typeof payload.create>[0])) as unknown as Page
+  const prose = (await payload.create({ collection: slugs.pages, ...args, data: prosePage } as Parameters<
+    typeof payload.create
+  >[0])) as unknown as Page
   //Used In Header for links
   const home = (await payload.create({ collection: slugs.pages, ...args, data: homePage } as Parameters<typeof payload.create>[0])) as unknown as Page
   //Other Pages
-  await Promise.all([
-    payload.create({ collection: slugs.pages, ...args, data: notFoundPage({ home }) } as Parameters<typeof payload.create>[0]),
-  ])
+  await Promise.all([payload.create({ collection: slugs.pages, ...args, data: notFoundPage({ home }) } as Parameters<typeof payload.create>[0])])
 
   payload.logger.info(`Seeding Icon Sets...`)
   await payload.create({ collection: slugs.iconSet, ...args, data: iconSet({ page, icons }) } as Parameters<typeof payload.create>[0])

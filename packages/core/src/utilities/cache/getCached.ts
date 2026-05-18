@@ -1,7 +1,7 @@
 ﻿import 'server-only'
 import { unstable_cache } from 'next/cache'
+import type { AllTagsWithGetters, GCArgs, GCFunction, GCReturns, IconSetReturn, PayloadConfigPromise } from '../../types/cache'
 import { mt } from '../mergeTags'
-import type { AllTagsWithGetters, GCArgs, GCReturns, GCFunction, IconSetReturn, PayloadConfigPromise } from '../../types/cache'
 export type GetRegistry = { [K in AllTagsWithGetters]: GCFunction<K> }
 
 export interface GetCachedFn {

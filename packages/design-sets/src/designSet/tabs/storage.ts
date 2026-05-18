@@ -1,5 +1,5 @@
 ﻿import { z } from '@pro-laico/zap'
-import { type Tab } from 'payload'
+import type { Tab } from 'payload'
 import { unoThemeAnimation } from './animation'
 
 export const tokenStorage = z.ap.add(

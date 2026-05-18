@@ -1,5 +1,5 @@
-import type { Config, Plugin, CollectionConfig } from 'payload'
 import { muxVideoPlugin as upstreamMuxVideoPlugin } from '@oversightstudio/mux-video'
+import type { CollectionConfig, Config, Plugin } from 'payload'
 import { MuxVideo } from './collections/muxVideo'
 
 export interface AtomicMuxVideoOptions {
@@ -33,9 +33,7 @@ export const muxVideoPlugin =
     if (!enabled) return config
 
     const collection: CollectionConfig = collectionOverride ? { ...MuxVideo, ...collectionOverride } : MuxVideo
-    const next: Config = includeCollection
-      ? { ...config, collections: [...(config.collections ?? []), collection] }
-      : config
+    const next: Config = includeCollection ? { ...config, collections: [...(config.collections ?? []), collection] } : config
 
     const upstream = upstreamMuxVideoPlugin({
       enabled,

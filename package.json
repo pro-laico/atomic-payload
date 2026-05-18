@@ -12,9 +12,15 @@
     "download:fonts": "pnpm --filter atomic-payload download:fonts",
     "generate:types": "pnpm --filter atomic-payload generate:types",
     "generate:importmap": "pnpm --filter atomic-payload generate:importmap",
-    "lint": "pnpm -r lint",
+    "lint": "biome lint .",
+    "format": "biome format --write .",
+    "check": "biome check --write .",
+    "check:ci": "biome check .",
     "typecheck": "pnpm -r typecheck",
     "create": "pnpm --filter create-atomic-payload exec node bin/cli.js"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.2.0"
   },
   "engines": {
     "node": "24.x"

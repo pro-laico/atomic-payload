@@ -1,5 +1,5 @@
-﻿import type { Block } from 'payload'
-import { KeySelectField, ChangeKeyField, ListenSelectField } from '@pro-laico/atomic/actions/fields'
+﻿import { ChangeKeyField, KeySelectField, ListenSelectField } from '@pro-laico/atomic/actions/fields'
+import type { Block } from 'payload'
 
 export const ActCCToDA: Block = {
   slug: 'ActCCToDA',
