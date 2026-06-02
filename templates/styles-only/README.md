@@ -118,7 +118,15 @@ src/
   entry), a component to `blocks/components.tsx`, and a `case` in
   `RenderBlocks.tsx`. Style it with `ClassNameField`s and the classes flow
   through automatically.
-- Workspace dependency direction: this template depends on `@pro-laico/styles`
-  (which pulls in `@pro-laico/core`, `@pro-laico/site`, and `@pro-laico/zap`),
-  on `@pro-laico/fonts` (the `font` collection the design set's font fields
-  reference), and on `unocss` (a peer dependency of the styles package).
+- **Just `styles` + `core`.** This template declares only `@pro-laico/styles`
+  and `@pro-laico/core` (plus `unocss`, a styles peer dependency). Two things
+  that used to be required are now opt-in:
+  - **No `@pro-laico/zap`.** `stylesPlugin` auto-appends zap's schema extension
+    to `typescript.schema` (its `registerTypescriptSchema` option, default on),
+    so `generate:types` resolves the designSet field type `$ref`s without the
+    app importing or wiring zap (it's pulled in transitively by styles).
+  - **No `@pro-laico/fonts`.** We pass no `fontField`, so the designSet's Fonts
+    tab has no `font`-collection upload fields and the config needs no `font`
+    collection. To enable font uploads: add `@pro-laico/fonts`, register
+    `fontsPlugin`, and pass `designSet: { fontField: fontUploadField() }` to
+    `stylesPlugin`.

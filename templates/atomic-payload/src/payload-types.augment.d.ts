@@ -5,64 +5,19 @@ import type * as G from './payload-types'
 
 declare module '@pro-laico/core' {
   interface PayloadAugment {
-    ActionBlockType: G.ActionBlockType
-    ActionBlocks: G.ActionBlocks
-    AllActions: G.AllActions
-    AtomicButtonPortalTypes: G.AtomicButtonPortalTypes
-    AtomicButtonTypes: G.AtomicButtonTypes
-    AtomicChild: G.AtomicChild
-    AtomicChildVariants: G.AtomicChildVariants
-    AtomicInputTypes: G.AtomicInputTypes
     AtomicRegistry: G.AtomicRegistry
-    Attributer: G.Attributer
-    AttributerType: G.AttributerType
-    Attributers: G.Attributers
-    ChildBlockType: G.ChildBlockType
-    ChildBlocks: G.ChildBlocks
-    ChildrenWithActions: G.ChildrenWithActions
     CollectionThatUsesCSSProcessorSlug: G.CollectionThatUsesCSSProcessorSlug
     CollectionWithStoredAtomicClassesSlug: G.CollectionWithStoredAtomicClassesSlug
     DesignSet: G.DesignSet
     Font: G.Font
     Footer: G.Footer
-    Form: G.Form
-    FormRateLimitBlockType: G.FormRateLimitBlockType
-    FormRateLimitBlocks: G.FormRateLimitBlocks
-    FormSanitationBlockType: G.FormSanitationBlockType
-    FormSanitationBlocks: G.FormSanitationBlocks
-    FormSubmission: G.FormSubmission
-    FormValidationBlockType: G.FormValidationBlockType
-    FormValidationBlocks: G.FormValidationBlocks
-    FrlSimpleSlidingWindow: G.FrlSimpleSlidingWindow
-    FsCombineTwoFields: G.FsCombineTwoFields
-    FvIsUnique: G.FvIsUnique
     Header: G.Header
     Icon: G.Icon
-    IconChild: G.IconChild
     IconSet: G.IconSet
     Image: G.Image
-    ImageChild: G.ImageChild
-    InputSanitationBlockType: G.InputSanitationBlockType
-    InputSanitationBlocks: G.InputSanitationBlocks
-    InputValidationBlockType: G.InputValidationBlockType
-    InputValidationBlocks: G.InputValidationBlocks
-    IsTrimText: G.IsTrimText
-    IvContains: G.IvContains
-    IvDoesNotContain: G.IvDoesNotContain
-    NonRecursiveChildBlockType: G.NonRecursiveChildBlockType
     Page: G.Page
-    RichTextChild: G.RichTextChild
-    RunnerType: G.RunnerType
-    Runners: G.Runners
-    SVGChild: G.SVGChild
     ShortcutSet: G.ShortcutSet
-    SimpleTextChild: G.SimpleTextChild
     SiteMetaDatum: G.SiteMetaDatum
-    StaticDataAttributes: G.StaticDataAttributes
-    StoredAtomicActions: G.StoredAtomicActions
-    StoredAtomicForm: G.StoredAtomicForm
-    StoredAtomicFormInput: G.StoredAtomicFormInput
     Tracking: G.Tracking
-    VideoChild: G.VideoChild
   }
 }

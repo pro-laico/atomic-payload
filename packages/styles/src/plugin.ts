@@ -1,3 +1,4 @@
+import { toJSONSchemaExtensions } from '@pro-laico/zap'
 import type { CollectionBeforeChangeHook, Config, PayloadRequest, Plugin } from 'payload'
 import type { CssProcessorGetCached } from './cssProcessor'
 import { createDesignSetCollection, type DesignSetCollectionOptions } from './designSet/createCollection'
@@ -50,6 +51,15 @@ export type StylesPluginOptions = {
   cssHookOptions?: CssHookOptions
   /** When false, the plugin does not register the draft/published CSS storage globals. Defaults to true. */
   storageGlobals?: boolean
+  /**
+   * When true (default), the plugin appends `@pro-laico/zap`'s
+   * `toJSONSchemaExtensions` to `config.typescript.schema`, so `payload
+   * generate:types` resolves the designSet field `$ref`s (TokenString,
+   * TokenStorage, ProseColorStorage, …) without the consumer importing/wiring
+   * zap. Set false if you already wire the zap schema yourself (e.g. via
+   * `@pro-laico/core`'s `jsonSchemaPlugin`) to avoid a redundant pass.
+   */
+  registerTypescriptSchema?: boolean
 }
 
 /**
@@ -76,6 +86,7 @@ export const stylesPlugin =
       getCached,
       cssHookOptions,
       storageGlobals = true,
+      registerTypescriptSchema = true,
     } = opts
     if (!enabled) return config
 
@@ -86,7 +97,7 @@ export const stylesPlugin =
     if (designSetOpt !== false) {
       const slice: StylesDesignSetOptions = designSetOpt && typeof designSetOpt === 'object' ? designSetOpt : {}
       if (slice.enabled !== false) {
-        const { enabled: _enabled, access, collection } = slice
+        const { enabled: _enabled, access, collection, fontField } = slice
         collections.push(
           createDesignSetCollection({
             atomicHook,
@@ -94,6 +105,7 @@ export const stylesPlugin =
             cssHook,
             ...(access !== undefined ? { access } : {}),
             ...(collection !== undefined ? { collection } : {}),
+            ...(fontField !== undefined ? { fontField } : {}),
           }),
         )
       }
@@ -118,7 +130,14 @@ export const stylesPlugin =
 
     const globals = storageGlobals ? [...(config.globals ?? []), baseStorage('draft'), baseStorage('published')] : config.globals
 
-    return { ...config, collections, globals }
+    // Inject the zap schema dumper so `generate:types` resolves the designSet
+    // field `$ref`s without the consumer importing zap. The zap registry is
+    // populated when the field modules load above.
+    const typescript = registerTypescriptSchema
+      ? { ...config.typescript, schema: [...(config.typescript?.schema ?? []), toJSONSchemaExtensions] }
+      : config.typescript
+
+    return { ...config, collections, globals, typescript }
   }
 
 export default stylesPlugin

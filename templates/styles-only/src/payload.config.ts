@@ -2,9 +2,7 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { sqliteAdapter } from '@payloadcms/db-sqlite'
 import { getServerSideURL, revalidateTag } from '@pro-laico/core'
-import { fontsPlugin } from '@pro-laico/fonts'
 import { createCssHook, type CssProcessorGetCached, stylesPlugin } from '@pro-laico/styles'
-import { toJSONSchemaExtensions } from '@pro-laico/zap'
 import type { CollectionAfterChangeHook, Config, Plugin, SharpDependency } from 'payload'
 import { buildConfig } from 'payload'
 import sharp from 'sharp'
@@ -83,9 +81,11 @@ export default buildConfig({
   // `storageGlobals` (default true) registers the `draftStorage` /
   // `publishedStorage` globals the generated CSS is written to.
   plugins: [
-    // The designSet's Fonts tab has `upload` fields pointing at a `font`
-    // collection, so it must be registered for the config to sanitize.
-    fontsPlugin({ enabled: true }),
+    // Only `styles` + `core` are needed. We pass no `fontField`, so the
+    // designSet's Fonts tab carries no `font`-collection upload fields — add
+    // `@pro-laico/fonts` and `designSet: { fontField: fontUploadField() }` if
+    // you want them. `stylesPlugin` also auto-wires the zap schema extension
+    // into `typescript.schema`, so `generate:types` works without importing zap.
     stylesPlugin({
       enabled: true,
       generateLivePreviewPath: stylesLivePreviewUrl,
@@ -93,10 +93,9 @@ export default buildConfig({
     }),
     revalidateStylesPlugin,
   ],
-  // `toJSONSchemaExtensions` injects every `@pro-laico/zap`-registered schema
-  // (e.g. the styles `TokenString` / `TokenStringArray` token shapes that the
-  // designSet fields `$ref`) into the JSON schema `payload generate:types` reads.
-  typescript: { outputFile: path.resolve(dirname, 'payload-types.ts'), schema: [toJSONSchemaExtensions] },
+  // The zap schema extension that `generate:types` needs is appended by
+  // `stylesPlugin` itself (see `registerTypescriptSchema`), so nothing to wire here.
+  typescript: { outputFile: path.resolve(dirname, 'payload-types.ts') },
   db: sqliteAdapter({ client: { url: process.env.DATABASE_URI || 'file:./styles-only.db' } }),
   admin: {
     user: Users.slug,

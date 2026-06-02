@@ -472,6 +472,55 @@ export type ThemeKeys = 'mode';
  */
 export type ThemeListen = 'mode';
 /**
+ * Type: {@link AttributerType}
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AttributerType".
+ */
+export type AttributerType = 'AttCCToDA' | 'AttBoolToDA' | 'AttTextToDA' | 'AttFormErrorToDA' | 'AttFormStatusToDA';
+/**
+ * Type: {@link RunnerType}
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "RunnerType".
+ */
+export type RunnerType = 'RunSetCC' | 'RunSetTheme' | 'RunCycleText' | 'RunSetBool' | 'RunResetForm' | 'RunSubmitForm';
+/**
+ * Type: {@link FormRateLimitBlockType}
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FormRateLimitBlockType".
+ */
+export type FormRateLimitBlockType = 'FrlSimpleSlidingWindow';
+/**
+ * Type: {@link FormSanitationBlockType}
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FormSanitationBlockType".
+ */
+export type FormSanitationBlockType = 'FsCombineTwoFields';
+/**
+ * Type: {@link FormValidationBlockType}
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FormValidationBlockType".
+ */
+export type FormValidationBlockType = 'FvIsUnique';
+/**
+ * Type: {@link InputSanitationBlockType}
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "InputSanitationBlockType".
+ */
+export type InputSanitationBlockType = 'IsTrimText';
+/**
+ * Type: {@link InputValidationBlockType}
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "InputValidationBlockType".
+ */
+export type InputValidationBlockType = 'IvContains' | 'IvDoesNotContain';
+/**
  * Type: {@link CollectionThatUsesAtomicHookSlug}
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -506,55 +555,6 @@ export type CollectionWithStoredAtomicFormsSlug = 'pages' | 'header' | 'footer';
  * via the `definition` "CollectionWithStoredAtomicActionsSlug".
  */
 export type CollectionWithStoredAtomicActionsSlug = 'pages' | 'header' | 'footer';
-/**
- * Type: {@link RunnerType}
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "RunnerType".
- */
-export type RunnerType = 'RunSetCC' | 'RunSetTheme' | 'RunCycleText' | 'RunSetBool' | 'RunResetForm' | 'RunSubmitForm';
-/**
- * Type: {@link AttributerType}
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "AttributerType".
- */
-export type AttributerType = 'AttCCToDA' | 'AttBoolToDA' | 'AttTextToDA' | 'AttFormErrorToDA' | 'AttFormStatusToDA';
-/**
- * Type: {@link InputSanitationBlockType}
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "InputSanitationBlockType".
- */
-export type InputSanitationBlockType = 'IsTrimText';
-/**
- * Type: {@link InputValidationBlockType}
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "InputValidationBlockType".
- */
-export type InputValidationBlockType = 'IvContains' | 'IvDoesNotContain';
-/**
- * Type: {@link FormRateLimitBlockType}
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "FormRateLimitBlockType".
- */
-export type FormRateLimitBlockType = 'FrlSimpleSlidingWindow';
-/**
- * Type: {@link FormSanitationBlockType}
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "FormSanitationBlockType".
- */
-export type FormSanitationBlockType = 'FsCombineTwoFields';
-/**
- * Type: {@link FormValidationBlockType}
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "FormValidationBlockType".
- */
-export type FormValidationBlockType = 'FvIsUnique';
 /**
  * Type: {@link ChildBlockType}
  *
@@ -694,16 +694,16 @@ export interface Config {
   globals: {
     settings: Setting;
     siteMetaData: SiteMetaDatum;
+    tracking: Tracking;
     draftStorage: DraftStorage;
     publishedStorage: PublishedStorage;
-    tracking: Tracking;
   };
   globalsSelect: {
     settings: SettingsSelect<false> | SettingsSelect<true>;
     siteMetaData: SiteMetaDataSelect<false> | SiteMetaDataSelect<true>;
+    tracking: TrackingSelect<false> | TrackingSelect<true>;
     draftStorage: DraftStorageSelect<false> | DraftStorageSelect<true>;
     publishedStorage: PublishedStorageSelect<false> | PublishedStorageSelect<true>;
-    tracking: TrackingSelect<false> | TrackingSelect<true>;
   };
   locale: null;
   widgets: {
@@ -891,11 +891,11 @@ export interface Page {
  * via the `definition` "SimpleTextChild".
  */
 export interface SimpleTextChild {
-  tagType: SimpleTextTagType;
   /**
    * Add atomic classes or shortcuts to the simple text element here.
    */
   ClassName?: string | null;
+  tagType: SimpleTextTagType;
   /**
    * The name of the input this label is associated with.
    */
@@ -1353,6 +1353,10 @@ export interface RichTextChild {
  */
 export interface ImageChild {
   /**
+   * Classes are added directly to the nextImage component.
+   */
+  ClassName?: string | null;
+  /**
    * Select the image to be displayed.
    */
   image: string | Image;
@@ -1364,10 +1368,6 @@ export interface ImageChild {
    * Defaults to alt set on the image asset. But you can add an alt for this instance here.
    */
   alt?: string | null;
-  /**
-   * Classes are added directly to the nextImage component.
-   */
-  ClassName?: string | null;
   /**
    * Default false. If true, the asset will be pre-loaded and disable lazy loading.
    */
@@ -1580,15 +1580,15 @@ export interface MuxVideo {
  * via the `definition` "IconChild".
  */
 export interface IconChild {
+  /**
+   * Styles applied directly on the svg. If left empty, defaults to 100% width and height.
+   */
+  ClassName?: string | null;
   icon?: string | null;
   /**
    * If checked, the icon will be hidden to screen readers. This is useful if you want to use the icon for decorative purposes only.
    */
   ariaHidden?: boolean | null;
-  /**
-   * Styles applied directly on the svg. If left empty, defaults to 100% width and height.
-   */
-  ClassName?: string | null;
   /**
    * Sets the components anchor ID, which can be used in anchor links.
    */
@@ -2328,7 +2328,7 @@ export interface ShortcutSet {
     id?: string | null;
   }[];
   /**
-   * Default shortcut rows come from `defaultShortcuts` on `designSetsPlugin({ shortcutSet: { defaultShortcuts: [...] } })`.
+   * Default shortcut rows come from `defaultShortcuts` on `stylesPlugin({ shortcutSet: { defaultShortcuts: [...] } })`.
    */
   defaultShortcuts?:
     | {
@@ -3429,28 +3429,6 @@ export interface SiteMetaDatum {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "draftStorage".
- */
-export interface DraftStorage {
-  id: string;
-  cssSize: number;
-  layoutCSS: string;
-  updatedAt?: string | null;
-  createdAt?: string | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "publishedStorage".
- */
-export interface PublishedStorage {
-  id: string;
-  cssSize: number;
-  layoutCSS: string;
-  updatedAt?: string | null;
-  createdAt?: string | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "tracking".
  */
 export interface Tracking {
@@ -3480,6 +3458,28 @@ export interface Tracking {
       | null;
   };
   _status?: ('draft' | 'published') | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "draftStorage".
+ */
+export interface DraftStorage {
+  id: string;
+  cssSize: number;
+  layoutCSS: string;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "publishedStorage".
+ */
+export interface PublishedStorage {
+  id: string;
+  cssSize: number;
+  layoutCSS: string;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -3521,28 +3521,6 @@ export interface SiteMetaDataSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "draftStorage_select".
- */
-export interface DraftStorageSelect<T extends boolean = true> {
-  cssSize?: T;
-  layoutCSS?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  globalType?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "publishedStorage_select".
- */
-export interface PublishedStorageSelect<T extends boolean = true> {
-  cssSize?: T;
-  layoutCSS?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  globalType?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "tracking_select".
  */
 export interface TrackingSelect<T extends boolean = true> {
@@ -3573,6 +3551,28 @@ export interface TrackingSelect<T extends boolean = true> {
             };
       };
   _status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "draftStorage_select".
+ */
+export interface DraftStorageSelect<T extends boolean = true> {
+  cssSize?: T;
+  layoutCSS?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "publishedStorage_select".
+ */
+export interface PublishedStorageSelect<T extends boolean = true> {
+  cssSize?: T;
+  layoutCSS?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
@@ -3641,47 +3641,47 @@ export interface AtomicRegistry {
   SOSA: SOSA;
   RSRSS: RSRSS;
   RSSOSA: RSSOSA;
-  ThemeKeys: ThemeKeys;
-  ThemeListen: ThemeListen;
-  ThemePerform: ThemePerform;
   CookieConsentPreferenceKeys: CookieConsentPreferenceKeys;
   CookieConsentListen: CookieConsentListen;
   CookieConsentPerform: CookieConsentPerform;
+  ThemeKeys: ThemeKeys;
+  ThemeListen: ThemeListen;
+  ThemePerform: ThemePerform;
   ActionBlockType: ActionBlockType;
   TokenString?: TokenString;
   TokenStringArray?: TokenStringArray;
+  UnoThemeAnimation: UnoThemeAnimation;
   UnoColors: UnoColors;
   DesignSetColors: DesignSetColors;
-  UnoThemeAnimation: UnoThemeAnimation;
   TokenStorage: TokenStorage;
   ProseColorStorage: ProseColorStorage;
+  AttBoolToDA: AttBoolToDA;
+  AttCCToDA: AttCCToDA;
+  AttFormErrorToDA: AttFormErrorToDA;
+  AttFormStatusToDA: AttFormStatusToDA;
+  AttTextToDA: AttTextToDA;
+  Attributer: Attributer;
+  Attributers: Attributers;
+  AttributerType: AttributerType;
+  RunCycleText: RunCycleText;
+  RunResetForm: RunResetForm;
+  RunSetBool: RunSetBool;
+  RunSetCC: RunSetCC;
+  RunSetTheme: RunSetTheme;
+  RunSubmitForm: RunSubmitForm;
+  Runner: Runner;
+  Runners: Runners;
+  RunnerType: RunnerType;
+  FormRateLimitBlockType: FormRateLimitBlockType;
+  FormSanitationBlockType: FormSanitationBlockType;
+  FormValidationBlockType: FormValidationBlockType;
+  InputSanitationBlockType: InputSanitationBlockType;
+  InputValidationBlockType: InputValidationBlockType;
   CollectionThatUsesAtomicHookSlug: CollectionThatUsesAtomicHookSlug;
   CollectionWithStoredAtomicClassesSlug: CollectionWithStoredAtomicClassesSlug;
   CollectionThatUsesCSSProcessorSlug: CollectionThatUsesCSSProcessorSlug;
   CollectionWithStoredAtomicFormsSlug: CollectionWithStoredAtomicFormsSlug;
   CollectionWithStoredAtomicActionsSlug: CollectionWithStoredAtomicActionsSlug;
-  RunSetCC: RunSetCC;
-  RunSetTheme: RunSetTheme;
-  RunResetForm: RunResetForm;
-  RunSetBool: RunSetBool;
-  RunSubmitForm: RunSubmitForm;
-  RunCycleText: RunCycleText;
-  Runner: Runner;
-  Runners: Runners;
-  RunnerType: RunnerType;
-  AttCCToDA: AttCCToDA;
-  AttBoolToDA: AttBoolToDA;
-  AttTextToDA: AttTextToDA;
-  AttFormErrorToDA: AttFormErrorToDA;
-  AttFormStatusToDA: AttFormStatusToDA;
-  Attributer: Attributer;
-  Attributers: Attributers;
-  AttributerType: AttributerType;
-  InputSanitationBlockType: InputSanitationBlockType;
-  InputValidationBlockType: InputValidationBlockType;
-  FormRateLimitBlockType: FormRateLimitBlockType;
-  FormSanitationBlockType: FormSanitationBlockType;
-  FormValidationBlockType: FormValidationBlockType;
   ChildBlockType: ChildBlockType;
   NonRecursiveChildBlockType: NonRecursiveChildBlockType;
   BackdropChildSlug: BackdropChildSlug;

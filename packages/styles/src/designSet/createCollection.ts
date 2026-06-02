@@ -1,6 +1,6 @@
 import type { APFunction } from '@pro-laico/core'
 import { APFControlsPath, generateAPFFields, revalidateCacheOnDelete } from '@pro-laico/core'
-import type { CollectionBeforeChangeHook, CollectionConfig, PayloadRequest } from 'payload'
+import type { CollectionBeforeChangeHook, CollectionConfig, Field, PayloadRequest } from 'payload'
 import { authd } from '../access/authenticated'
 import { AnimationsTab } from './tabs/animation'
 import { ColorsTab } from './tabs/colors'
@@ -25,6 +25,12 @@ export interface DesignSetCollectionOptions {
   access?: CollectionConfig['access']
   /** Shallow-merged onto the built collection (e.g. extra hooks). */
   collection?: Partial<CollectionConfig>
+  /**
+   * Optional font `upload` group injected at the top of the Fonts tab. Pass
+   * `fontUploadField()` from `@pro-laico/fonts` to enable font uploads; omit it
+   * to keep the designSet free of any `font`-collection dependency.
+   */
+  fontField?: Field
 }
 
 /**
@@ -32,7 +38,7 @@ export interface DesignSetCollectionOptions {
  * `generateLivePreviewPath`; use `stylesPlugin` to register it on the config.
  */
 export function createDesignSetCollection(opts: DesignSetCollectionOptions): CollectionConfig {
-  const { atomicHook, cssHook, generateLivePreviewPath, access = { create: authd, delete: authd, read: authd, update: authd }, collection: merge } = opts
+  const { atomicHook, cssHook, generateLivePreviewPath, access = { create: authd, delete: authd, read: authd, update: authd }, collection: merge, fontField } = opts
   const beforeChange = [atomicHook, cssHook].filter((h): h is CollectionBeforeChangeHook => Boolean(h))
 
   const base: CollectionConfig = {
@@ -50,7 +56,7 @@ export function createDesignSetCollection(opts: DesignSetCollectionOptions): Col
     fields: [
       {
         type: 'tabs',
-        tabs: [SettingsTab(), VariablesTab(), ColorsTab(), SizesTab(), FontsTab(), AnimationsTab(), MiscellaneousTab(), ProseTab, StorageTab()],
+        tabs: [SettingsTab(), VariablesTab(), ColorsTab(), SizesTab(), FontsTab(fontField), AnimationsTab(), MiscellaneousTab(), ProseTab, StorageTab()],
       },
       ...generateAPFFields(APFunctions),
     ],

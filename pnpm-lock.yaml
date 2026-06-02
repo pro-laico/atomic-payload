@@ -714,15 +714,9 @@ importers:
       '@pro-laico/core':
         specifier: workspace:*
         version: link:../../packages/core
-      '@pro-laico/fonts':
-        specifier: workspace:*
-        version: link:../../packages/fonts
       '@pro-laico/styles':
         specifier: workspace:*
         version: link:../../packages/styles
-      '@pro-laico/zap':
-        specifier: workspace:*
-        version: link:../../packages/zap
       cross-env:
         specifier: ^10.1.0
         version: 10.1.0

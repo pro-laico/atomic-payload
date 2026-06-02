@@ -7,11 +7,6 @@
  */
 
 /**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "GenericFontFamily".
- */
-export type GenericFontFamily = 'sans' | 'serif' | 'mono' | 'display';
-/**
  * Type: {@link TokenString}
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -176,7 +171,6 @@ export interface Config {
   collections: {
     pages: Page;
     users: User;
-    font: Font;
     designSet: DesignSet;
     shortcutSet: ShortcutSet;
     'payload-kv': PayloadKv;
@@ -189,7 +183,6 @@ export interface Config {
   collectionsSelect: {
     pages: PagesSelect<false> | PagesSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
-    font: FontSelect<false> | FontSelect<true>;
     designSet: DesignSetSelect<false> | DesignSetSelect<true>;
     shortcutSet: ShortcutSetSelect<false> | ShortcutSetSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
@@ -450,26 +443,6 @@ export interface User {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "font".
- */
-export interface Font {
-  id: number;
-  title: string;
-  family: GenericFontFamily;
-  updatedAt: string;
-  createdAt: string;
-  url?: string | null;
-  thumbnailURL?: string | null;
-  filename?: string | null;
-  mimeType?: string | null;
-  filesize?: number | null;
-  width?: number | null;
-  height?: number | null;
-  focalX?: number | null;
-  focalY?: number | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "designSet".
  */
 export interface DesignSet {
@@ -504,12 +477,6 @@ export interface DesignSet {
   breakpoint?: TokenString;
   spacing?: TokenString;
   radius?: TokenString;
-  font?: {
-    sans?: (number | null) | Font;
-    serif?: (number | null) | Font;
-    mono?: (number | null) | Font;
-    display?: (number | null) | Font;
-  };
   text?:
     | {
         name: string;
@@ -882,10 +849,6 @@ export interface PayloadLockedDocument {
         value: number | User;
       } | null)
     | ({
-        relationTo: 'font';
-        value: number | Font;
-      } | null)
-    | ({
         relationTo: 'designSet';
         value: number | DesignSet;
       } | null)
@@ -1071,25 +1034,6 @@ export interface UsersSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "font_select".
- */
-export interface FontSelect<T extends boolean = true> {
-  title?: T;
-  family?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  url?: T;
-  thumbnailURL?: T;
-  filename?: T;
-  mimeType?: T;
-  filesize?: T;
-  width?: T;
-  height?: T;
-  focalX?: T;
-  focalY?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "designSet_select".
  */
 export interface DesignSetSelect<T extends boolean = true> {
@@ -1149,14 +1093,6 @@ export interface DesignSetSelect<T extends boolean = true> {
         name?: T;
         value?: T;
         id?: T;
-      };
-  font?:
-    | T
-    | {
-        sans?: T;
-        serif?: T;
-        mono?: T;
-        display?: T;
       };
   text?:
     | T

@@ -20,8 +20,6 @@
   "dependencies": {
     "@pro-laico/styles": "workspace:*",
     "@pro-laico/core": "workspace:*",
-    "@pro-laico/fonts": "workspace:*",
-    "@pro-laico/zap": "workspace:*",
     "@payloadcms/db-sqlite": "3.79.0",
     "@payloadcms/live-preview-react": "^3.79.0",
     "@payloadcms/next": "^3.79.0",

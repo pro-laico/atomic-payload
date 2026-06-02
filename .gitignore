@@ -6,6 +6,12 @@ node_modules
 # TypeScript
 tsconfig.tsbuildinfo
 
+# SQLite databases (Payload local SQLite adapter — created at runtime, never committed)
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+
 public/robots.txt
 public/sitemap*.xml
 
