@@ -1,7 +1,7 @@
 {
-  "name": "@pro-laico/design-sets",
+  "name": "@pro-laico/styles",
   "version": "0.1.0",
-  "description": "Atomic Payload designSet collection (tabs, token fields, CSS preflight pipeline inputs) and designSetsPlugin. Ships TypeScript source; the app transpiles it.",
+  "description": "Atomic Payload styles: designSet + shortcutSet collections, token fields, CSS preflight pipeline, UnoCSS processor and processDesignSet pipeline. The single package responsible for all CSS handling (frontend + Payload admin/runtime).",
   "license": "MIT",
   "type": "module",
   "publishConfig": {
@@ -18,6 +18,14 @@
       "types": "./src/types/payload-augment.ts",
       "default": "./src/types/payload-augment.ts"
     },
+    "./cssProcessor": {
+      "types": "./src/cssProcessor.ts",
+      "default": "./src/cssProcessor.ts"
+    },
+    "./processDesignSet": {
+      "types": "./src/processDesignSet/index.ts",
+      "default": "./src/processDesignSet/index.ts"
+    },
     "./designSet/tabs/colors": {
       "types": "./src/designSet/tabs/colors.ts",
       "default": "./src/designSet/tabs/colors.ts"
@@ -29,6 +37,18 @@
     "./fields/value": {
       "types": "./src/fields/value.ts",
       "default": "./src/fields/value.ts"
+    },
+    "./fields/className": {
+      "types": "./src/fields/className.ts",
+      "default": "./src/fields/className.ts"
+    },
+    "./globals/storage": {
+      "types": "./src/globals/storage.ts",
+      "default": "./src/globals/storage.ts"
+    },
+    "./hooks/cssHook": {
+      "types": "./src/hooks/cssHook.ts",
+      "default": "./src/hooks/cssHook.ts"
     },
     "./ui/rowLabels/shortcut": {
       "types": "./src/ui/rowLabels/shortcut/index.tsx",
@@ -63,14 +83,21 @@
   "peerDependencies": {
     "@payloadcms/ui": ">=3.0.0",
     "payload": ">=3.0.0",
-    "react": ">=19.0.0"
+    "react": ">=19.0.0",
+    "unocss": ">=66.0.0"
+  },
+  "peerDependenciesMeta": {
+    "unocss": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "@payloadcms/ui": "^3.79.0",
     "@types/react": "^19.2.14",
     "payload": "^3.79.0",
     "react": "^19.2.4",
-    "typescript": "5.8.3"
+    "typescript": "5.8.3",
+    "unocss": "^66.6.6"
   },
   "engines": {
     "node": ">=18"

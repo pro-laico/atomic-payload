@@ -2,7 +2,7 @@ import { ColoredEnd } from '@pro-laico/atomic/children/fields/coloredEnd'
 import { ChildsSettingsTab } from '@pro-laico/atomic/children/fields/tabs/settings'
 import { TagTypeField } from '@pro-laico/atomic/children/fields/tagType'
 import { TrackingTab } from '@pro-laico/atomic/children/fields/trackingTab'
-import { ClassNameField } from '@pro-laico/core'
+import type { BlockFieldExtensions } from '@pro-laico/core'
 import type { Block } from 'payload'
 
 const d = {
@@ -15,10 +15,18 @@ const d = {
   time: 'Default is 0. The time in the video, the blur image will be generated from.',
   disableBlur: 'Default is false. If true, the video will not use the blur data URL.',
   autoplay: 'Default is false. If true, the video will autoplay, which also forces muted to be true.',
-  className: 'It is recommended to use this inside a tag component that controls sizing, use the default value.',
 }
 
-export const Video: Block = {
+/** Options for {@link createVideoBlock}: generic fields to prepend/append to the Video tab. */
+export type VideoBlockOptions = BlockFieldExtensions
+
+/**
+ * Builds the `VideoChild` block. `prependFields` / `appendFields` are spread at
+ * the start / end of the Video tab — the consumer decides what goes there (e.g.
+ * the `@pro-laico/styles` `ClassNameField`, project fields, or nothing), so the
+ * block carries no CSS dependency of its own.
+ */
+export const createVideoBlock = ({ prependFields = [], appendFields = [] }: VideoBlockOptions = {}): Block => ({
   slug: 'VideoChild',
   interfaceName: 'VideoChild',
   labels: { singular: 'Video', plural: 'Videos' },
@@ -29,11 +37,7 @@ export const Video: Block = {
         {
           label: 'Video',
           fields: [
-            ClassNameField({
-              admin: { description: d.className },
-              label: 'Video Atomic Classes',
-              defaultValue: 'relative flex max-w-full aspect-video overflow-hidden',
-            }),
+            ...prependFields,
             {
               type: 'row',
               fields: [
@@ -59,6 +63,7 @@ export const Video: Block = {
                 { name: 'quality', type: 'number', min: 0.25, max: 10, admin: { width: '25%', description: d.quality } },
               ],
             },
+            ...appendFields,
           ],
         },
         ChildsSettingsTab('VideoChild'),
@@ -67,4 +72,7 @@ export const Video: Block = {
     },
     ColoredEnd,
   ],
-}
+})
+
+/** The default `VideoChild` block, with no className field. */
+export const Video: Block = createVideoBlock()

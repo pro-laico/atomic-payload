@@ -2,16 +2,24 @@ import { IconSelectPath } from '@pro-laico/atomic/children/admin'
 import { ColoredEnd } from '@pro-laico/atomic/children/fields/coloredEnd'
 import { ChildsSettingsTab } from '@pro-laico/atomic/children/fields/tabs/settings'
 import { TrackingTab } from '@pro-laico/atomic/children/fields/trackingTab'
-import { ClassNameField } from '@pro-laico/core'
+import type { BlockFieldExtensions } from '@pro-laico/core'
 import type { Block } from 'payload'
 
 const d = {
   icon: 'Select an icon to display.',
   ariaHidden: 'If checked, the icon will be hidden to screen readers. This is useful if you want to use the icon for decorative purposes only.',
-  svgAtomicClasses: 'Styles applied directly on the svg. If left empty, defaults to 100% width and height.',
 }
 
-export const Icon: Block = {
+/** Options for {@link createIconBlock}: generic fields to prepend/append to the Icon tab. */
+export type IconBlockOptions = BlockFieldExtensions
+
+/**
+ * Builds the `IconChild` block. `prependFields` / `appendFields` are spread at
+ * the start / end of the Icon tab — the consumer decides what goes there (e.g.
+ * the `@pro-laico/styles` `ClassNameField`, project fields, or nothing), so the
+ * block carries no CSS dependency of its own.
+ */
+export const createIconBlock = ({ prependFields = [], appendFields = [] }: IconBlockOptions = {}): Block => ({
   slug: 'IconChild',
   interfaceName: 'IconChild',
   labels: { singular: 'Icon', plural: 'Icons' },
@@ -22,6 +30,7 @@ export const Icon: Block = {
         {
           label: 'Icon',
           fields: [
+            ...prependFields,
             {
               type: 'row',
               fields: [
@@ -29,7 +38,7 @@ export const Icon: Block = {
                 { name: 'ariaHidden', type: 'checkbox', admin: { width: '50%', description: d.ariaHidden } },
               ],
             },
-            ClassNameField({ label: 'SVG Atomic Classes', admin: { description: d.svgAtomicClasses, width: '100%' } }),
+            ...appendFields,
           ],
         },
         ChildsSettingsTab('IconChild'),
@@ -38,4 +47,7 @@ export const Icon: Block = {
     },
     ColoredEnd,
   ],
-}
+})
+
+/** The default `IconChild` block, with no className field. */
+export const Icon: Block = createIconBlock()

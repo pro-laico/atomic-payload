@@ -4,7 +4,6 @@ import {
   ActiveField,
   APFControlsPath,
   type APFunction,
-  ClassNameField,
   DevModeField,
   generateAPFFields,
   generateLivePreviewPath,
@@ -13,6 +12,7 @@ import {
   TestPathField,
   UniqueTitleField,
 } from '@pro-laico/core'
+import { ClassNameField } from '@pro-laico/styles/fields/className'
 import type { CollectionConfig } from 'payload'
 import { authd } from '../../access'
 

@@ -1,6 +1,6 @@
 /**
- * CSS-processor types â€” owned by `@pro-laico/atomic/hook` because the
- * processor implementation lives here (see `src/cssProcessor.ts`).
+ * CSS-processor types — owned by `@pro-laico/styles` because the
+ * processor implementation lives in this package (see `src/cssProcessor.ts`).
  */
 
 import type { Config } from '@pro-laico/core'

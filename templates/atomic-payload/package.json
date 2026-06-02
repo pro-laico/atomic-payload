@@ -28,7 +28,7 @@
     "@pro-laico/richtext": "workspace:*",
     "@pro-laico/tracking": "workspace:*",
     "@pro-laico/seed": "workspace:*",
-    "@pro-laico/design-sets": "workspace:*",
+    "@pro-laico/styles": "workspace:*",
     "@pro-laico/site": "workspace:*",
     "@base-ui-components/react": "1.0.0-rc.0",
     "@mux/blurup": "^1.0.2",

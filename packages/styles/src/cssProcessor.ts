@@ -1,11 +1,13 @@
-import type { CollectionsWithStoredAtomicClasses, cssProcessorType } from '@pro-laico/atomic/hook'
 import { deepMerge } from '@pro-laico/core'
-import { defaultAtomicClasses } from '@pro-laico/design-sets/designSet/defaults'
-import type { DesignSet } from '@pro-laico/design-sets/schema'
 import type { ShortcutSet } from '@pro-laico/site/schema'
 import { createGenerator, type PresetWind4Theme, presetAttributify, presetTypography, presetWind4 } from 'unocss'
-import type { AtomicHookGetCached } from './atomicHookTypes'
+import { defaultAtomicClasses } from './designSet/defaults'
+import type { DesignSet } from './types/payload-augment'
+import type { CollectionsWithStoredAtomicClasses, cssProcessorType } from './types/css'
 import manualLogger from './utilities/manualLogger'
+
+/** Narrow getter the CSS processor uses (e.g. app `getCached` / `unstable_cache` wrapper). */
+export type CssProcessorGetCached = (tag: string, draft: boolean) => Promise<unknown>
 
 type CssDocDesignSet = DesignSet & {
   tokenStorage?: (PresetWind4Theme & Record<string, unknown>) & {
@@ -30,7 +32,7 @@ export type CssProcessorOptions = {
   cssStorageGlobals: { draft: string; published: string }
 }
 
-export function createCssProcessor(getCached: AtomicHookGetCached, options: CssProcessorOptions): cssProcessorType {
+export function createCssProcessor(getCached: CssProcessorGetCached, options: CssProcessorOptions): cssProcessorType {
   const { cssCacheTagBySlug, cssStorageGlobals } = options
   const headerSlug = cssCacheTagBySlug.header ?? 'header'
   const footerSlug = cssCacheTagBySlug.footer ?? 'footer'

@@ -12,7 +12,7 @@ atomic-payload/
 │   ├── zap/                     # zod + AtomicRegistry helper
 │   ├── atomic/                  # actions, hook (createAtomicHook + cssProcessor), forms, children — runtime + admin UI
 │   ├── site/                    # sitePlugin: Pages, Header, Footer, SiteMetaData, Settings, Storage globals
-│   ├── design-sets/             # designSetsPlugin: designSet + shortcutSet collections + token fields
+│   ├── styles/                  # stylesPlugin: designSet + shortcutSet collections, className field, CSS storage globals, token fields, cssProcessor + cssHook + processDesignSet (all CSS handling)
 │   ├── icons/                   # iconsPlugin: Icon + iconSet collections, formatSVG, AtomicIcon
 │   ├── images/                  # Images + Favicons collections + FaviconField + blur integration
 │   ├── fonts/                   # fontsPlugin + Font collection + font download CLI
@@ -33,9 +33,9 @@ atomic-payload/
 | `@pro-laico/create-atomic-payload` | CLI to scaffold new Atomic Payload projects                                                  |
 | `@pro-laico/core`                  | Kernel types (`PayloadAugment`, `Get<>`, `ExtractOrDefault`), revalidate hooks + factories (`createRevalidateCache`, `createRevalidateCacheOnDelete`), cache helpers + factories (`createDefaultGetRegistry`, `createGetCachedPages`, etc.), `generateLivePreviewPath`, `createTestPathField`, APF runtime, JSON-schema plugin |
 | `@pro-laico/zap`                   | zod + AtomicRegistry helper                                                                  |
-| `@pro-laico/atomic`                | `actions` (action blocks + processor), `hook` (`createAtomicHook` + cssProcessor + slug config), `forms` (submit-form SVR blocks), `children` (childBlocksPlugin) |
+| `@pro-laico/atomic`                | `actions` (action blocks + processor), `hook` (`createAtomicHook` + cssProcessor + slug config), `forms` (submit-form SVR blocks), `children` (childBlocksPlugin — `blockFields` prepends/appends generic fields per block; `classNameField` for the AtomicChild special case) |
 | `@pro-laico/site`                  | sitePlugin: Pages, Header, Footer collections + SiteMetaData / Settings / draft+published Storage globals |
-| `@pro-laico/design-sets`           | designSetsPlugin: `designSet` + `shortcutSet` collections + token fields                     |
+| `@pro-laico/styles`                | stylesPlugin: `designSet` + `shortcutSet` collections (each toggleable), `ClassNameField`, draft/published CSS storage globals, token fields, `createCssProcessor` + `createCssHook` + `processDesignSet` — all CSS handling for frontend + Payload |
 | `@pro-laico/icons`                 | iconsPlugin (Icon + iconSet), formatSVG, AtomicIcon, createIconSelect                        |
 | `@pro-laico/images`                | Images + Favicons collections + FaviconField + blur integration                              |
 | `@pro-laico/fonts`                 | fontsPlugin + Font collection + font download CLI / API                                      |
@@ -97,7 +97,7 @@ All commands run from the monorepo root.
 
 ## Cross-package type augmentation
 
-Domain packages (`atomic`, `site`, `design-sets`, …) define schema stubs as `Get<'X', Default>` against the single `PayloadAugment` interface in `@pro-laico/core/kernel`. Consumer projects fill the interface in once via a generated `payload-types.augment.d.ts` (produced by `payload generate:types && core-augment-types`), and every package's stubs resolve to the project's concrete shapes.
+Domain packages (`atomic`, `site`, `styles`, …) define schema stubs as `Get<'X', Default>` against the single `PayloadAugment` interface in `@pro-laico/core/kernel`. Consumer projects fill the interface in once via a generated `payload-types.augment.d.ts` (produced by `payload generate:types && core-augment-types`), and every package's stubs resolve to the project's concrete shapes.
 
 `Get<K, F>` returns `F` when the key isn't augmented. For `Extract<T, { discriminant: K }>` patterns whose `T` is a default fallback like `DefaultBlock`, use `ExtractOrDefault<T, V>` (exported from `@pro-laico/core/kernel`) — it falls back to `T & V` rather than collapsing to `never` when the augmentation is missing.
 

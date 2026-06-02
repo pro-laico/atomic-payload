@@ -5,7 +5,6 @@ import {
   APFControlsPath,
   APField,
   type APFunction,
-  ClassNameField,
   generateLivePreviewPath,
   revalidateCacheOnDelete,
   SlugPath,
@@ -14,6 +13,7 @@ import {
   updateHrefHook,
   updatePublishedAtHook,
 } from '@pro-laico/core'
+import { ClassNameField } from '@pro-laico/styles/fields/className'
 import type { CollectionConfig } from 'payload'
 import { authd, authenticatedOrPublished } from '../../access'
 import { SEOTab } from './tabs/SEO'

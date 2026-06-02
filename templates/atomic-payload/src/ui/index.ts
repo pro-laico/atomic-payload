@@ -10,5 +10,5 @@ export const IconPath = '@/ui/assets/Icon'
 export { SiteTriggersPath, SlugPath } from '@pro-laico/core'
 
 //Row Labels
-export { AnimationLabelPath, ColorLabelPath, DesignTokenLabelPath, ShortcutLabelPath } from '@pro-laico/design-sets'
+export { AnimationLabelPath, ColorLabelPath, DesignTokenLabelPath, ShortcutLabelPath } from '@pro-laico/styles'
 export { IconLabelPath } from '@pro-laico/icons'

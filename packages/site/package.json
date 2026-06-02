@@ -39,6 +39,7 @@
     "@pro-laico/images": "workspace:*",
     "@pro-laico/zap": "workspace:*",
     "@pro-laico/core": "workspace:*",
+    "@pro-laico/styles": "workspace:*",
     "@pro-laico/atomic": "workspace:*"
   },
   "peerDependencies": {

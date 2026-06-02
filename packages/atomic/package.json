@@ -199,8 +199,8 @@
   "dependencies": {
     "@base-ui-components/react": "1.0.0-rc.0",
     "@pro-laico/core": "workspace:*",
-    "@pro-laico/design-sets": "workspace:*",
     "@pro-laico/icons": "workspace:*",
+    "@pro-laico/styles": "workspace:*",
     "@pro-laico/images": "workspace:*",
     "@pro-laico/mux-video": "workspace:*",
     "@pro-laico/richtext": "workspace:*",

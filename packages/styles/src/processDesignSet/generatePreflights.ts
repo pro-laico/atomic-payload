@@ -1,4 +1,4 @@
-import type { DesignSet } from '@pro-laico/design-sets/schema'
+import type { DesignSet } from '@pro-laico/styles/schema'
 
 function generatePreflights({ ds }: { ds: DesignSet }): string {
   const minify = ds?.minify ?? true

@@ -29,6 +29,7 @@ export {
 // APF — Atomic Payload Functions
 // /////////////////////////////////////
 export type * from './apf/types'
+export type { APArgs, APFieldWrapper, BlockFieldExtensions, ClassNameFieldWrapper } from './apf/types'
 export { runAPF } from './apf/utilities/runAPF'
 export type {
   CollectionDeleteRevalidationHandlers,
@@ -87,7 +88,6 @@ export const APFieldLabelPath = '@pro-laico/core/admin/label'
 export const SiteTriggersPath = '@pro-laico/core/ui/root/siteTriggers'
 export const SlugPath = '@pro-laico/core/ui/fields/slug'
 
-export { ClassNameField } from './fields/className'
 export { DevModeField } from './fields/devMode'
 // /////////////////////////////////////
 // Reusable Payload field configs

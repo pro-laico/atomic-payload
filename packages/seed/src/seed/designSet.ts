@@ -1,4 +1,4 @@
-import type { DesignSet } from '@pro-laico/design-sets/schema'
+import type { DesignSet } from '@pro-laico/styles/schema'
 import type { Page } from '@pro-laico/site/schema'
 
 type DesignSetArgs = { page: Page }

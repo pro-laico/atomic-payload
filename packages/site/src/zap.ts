@@ -2,7 +2,7 @@
 
 /**
  * Atomic-hook + storage zod enums for the ap-site collections plus the fixed
- * cross-package slugs from ap-design-sets (`designSet`, `shortcutSet`) and
+ * cross-package slugs from @pro-laico/styles (`designSet`, `shortcutSet`) and
  * ap-icons (`iconSet`). Hardcoded â€” projects that introduce additional
  * atomic-hook-using collections will need to extend these themselves.
  */

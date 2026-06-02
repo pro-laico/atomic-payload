@@ -1,11 +1,12 @@
-import { APField, ClassNameField, onArraySetAPFShallow } from '@pro-laico/core'
+import { APField, onArraySetAPFShallow } from '@pro-laico/core'
+import { ClassNameField } from '../../fields/className'
 import type { Tab } from 'payload'
 import { ShortcutLabelPath } from '../../paths'
 import { protectedNames } from '../protectedNames'
 
 const d = {
   name: 'The name of the shortcut. This is used to identify the shortcut in the code.',
-  ds: 'Default shortcut rows come from `defaultShortcuts` on `designSetsPlugin({ shortcutSet: { defaultShortcuts: [...] } })`.',
+  ds: 'Default shortcut rows come from `defaultShortcuts` on `stylesPlugin({ shortcutSet: { defaultShortcuts: [...] } })`.',
 }
 
 export const createShortcutsTab = (defaultShortcuts: unknown[]): Tab => ({

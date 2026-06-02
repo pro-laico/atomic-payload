@@ -1,9 +1,10 @@
 import { APField, onArraySetAPFShallow } from '@pro-laico/core'
-import type { Tab } from 'payload'
+import type { CollectionSlug, Tab } from 'payload'
 import { TokenValueArrayField } from '../../fields/value'
 import { DesignTokenLabelPath } from '../../paths'
 
-export const FontsTab = () => {
+export const FontsTab = (fontSlug: string = 'font') => {
+  const relationTo = fontSlug as CollectionSlug
   const fontsField: Tab = {
     label: 'Fonts',
     admin: { description: 'These are the fonts that are applied to the entire website.' },
@@ -16,15 +17,15 @@ export const FontsTab = () => {
           {
             type: 'row',
             fields: [
-              { name: 'sans', type: 'upload', relationTo: 'font' },
-              { name: 'serif', type: 'upload', relationTo: 'font' },
+              { name: 'sans', type: 'upload', relationTo },
+              { name: 'serif', type: 'upload', relationTo },
             ],
           },
           {
             type: 'row',
             fields: [
-              { name: 'mono', type: 'upload', relationTo: 'font' },
-              { name: 'display', type: 'upload', relationTo: 'font' },
+              { name: 'mono', type: 'upload', relationTo },
+              { name: 'display', type: 'upload', relationTo },
             ],
           },
         ],

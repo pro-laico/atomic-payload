@@ -6,7 +6,7 @@ import { Users } from './users'
 // - Images, Favicons             → imagesPlugin
 // - MuxVideo                     → muxVideoPlugin
 // - Icon, IconSet                → iconsPlugin
-// - DesignSet, ShortcutSet       → designSetsPlugin
+// - DesignSet, ShortcutSet       → stylesPlugin
 // - Font                         → fontsPlugin
 const collections = [Users]
 

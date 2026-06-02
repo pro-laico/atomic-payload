@@ -4,6 +4,7 @@
 import type {
   CheckboxField,
   CheckboxFieldClientProps,
+  Field,
   NumberField,
   NumberFieldClientProps,
   RequestContext,
@@ -98,6 +99,36 @@ export type APFieldWrapper<
 > = AdditionalArgs extends undefined
   ? (args?: Omit<APArgs<T>, Defaults>) => Extract<APFieldType, { args: { type: T } }>['return']
   : (args: Omit<APArgs<T>, Defaults> & AdditionalArgs) => Extract<APFieldType, { args: { type: T } }>['return']
+
+/**
+ * The wrapper signature of `@pro-laico/styles`'s `ClassNameField`: a textarea
+ * APF wrapper whose `name`/`type`/`apf` are preset and that accepts an optional
+ * `namePrefix`.
+ *
+ * Block factories accept a value of this type so they can place a className
+ * field at their canonical position — with their own label / defaultValue /
+ * condition / namePrefix — without taking a (runtime or type) dependency on
+ * `@pro-laico/styles`. The consumer threads the real `ClassNameField` in (e.g.
+ * via `childBlocksPlugin({ classNameField })`).
+ */
+export type ClassNameFieldWrapper = APFieldWrapper<'textarea', 'apf' | 'type' | 'name', { namePrefix?: string }>
+
+/**
+ * Generic field-extension points for a child-block factory. Each block factory
+ * accepts these and spreads them at the start (`prependFields`) and end
+ * (`appendFields`) of its primary (first) content tab.
+ *
+ * The block itself stays agnostic about what the fields are — the consumer
+ * decides (e.g. the `@pro-laico/styles` `ClassNameField`, project-specific
+ * fields, or nothing). Wired per-block through `childBlocksPlugin`'s
+ * `blockFields` map.
+ */
+export interface BlockFieldExtensions {
+  /** Fields inserted at the start of the block's primary (first) content tab. */
+  prependFields?: Field[]
+  /** Fields inserted at the end of the block's primary (first) content tab. */
+  appendFields?: Field[]
+}
 
 // /////////////////////////////////////
 // APF Field Component

@@ -1,11 +1,11 @@
 import type { DepthControls } from '@pro-laico/atomic/children'
 import type { NonRecursiveChildBlockType } from '@pro-laico/atomic/children/schema'
-import { ClassNameField } from '@pro-laico/core'
+import type { ClassNameFieldWrapper } from '@pro-laico/core'
 import type { Block, BlocksField } from 'payload'
 import { AtomicRowLabelPath as AtomicPath } from '../components/admin'
 import { ColoredEnd } from '../fields/coloredEnd'
 import { ContentActionsTab, TriggerActionsTab } from '../fields/tabs/actions'
-import { AtomicChildSettingsTab } from '../fields/tabs/settings'
+import { ChildsSettingsTab } from '../fields/tabs/settings'
 import { formRateLimitTab, formSanitationTab, formValidationTab } from '../fields/tabs/submitForm/form'
 import { inputTab } from '../fields/tabs/submitForm/input'
 import { TrackingTab } from '../fields/trackingTab'
@@ -22,9 +22,6 @@ const d = {
     'Content is the element itself, and what is rendered inside it. If you set the Atomic Block to (Button + Open Portal), this is the content inside of the opened portal.',
 }
 //let count = 0
-const contentClassNameField = ClassNameField({ label: 'Content Atomic Classes' })
-const triggerClassNameField = ClassNameField({ namePrefix: 'trigger', label: 'Trigger Atomic Classes' })
-
 const NonRecursiveChildBlocks: NonRecursiveChildBlockType[] = [
   'SimpleTextChild',
   'RichTextChild',
@@ -34,9 +31,25 @@ const NonRecursiveChildBlocks: NonRecursiveChildBlockType[] = [
   'SVGChild',
 ]
 
+/** Options for {@link AtomicBlockFactory}. */
+export interface AtomicBlockFactoryOptions {
+  depthControls: DepthControls
+  /**
+   * The `@pro-laico/styles` `ClassNameField` (or a compatible wrapper). When
+   * supplied, the content, trigger, and portal-backdrop atomic classes fields
+   * are added at their canonical spots. Omit it (the default) to ship the block
+   * without any CSS dependency. Threaded through the recursive child/trigger
+   * `AtomicChild` references.
+   */
+  classNameField?: ClassNameFieldWrapper
+}
+
 /** Do not use this anywhere. Only use the files default export. */
-export function AtomicBlockFactory({ depthControls }: { depthControls: DepthControls }): Block {
+export function AtomicBlockFactory({ depthControls, classNameField }: AtomicBlockFactoryOptions): Block {
   const { cd, cmd, td, tmd } = depthControls
+
+  const contentClassNameField = classNameField ? [classNameField({ label: 'Content Atomic Classes' })] : []
+  const triggerClassNameField = classNameField ? [classNameField({ namePrefix: 'trigger', label: 'Trigger Atomic Classes' })] : []
 
   const childrenBase: Omit<BlocksField, 'name'> = {
     type: 'blocks',
@@ -51,10 +64,10 @@ export function AtomicBlockFactory({ depthControls }: { depthControls: DepthCont
     blockReferences: [...NonRecursiveChildBlocks],
     admin: { ...childrenBase.admin, condition: (_, sd) => Boolean(sd.type !== 'input') },
   }
-  if (cd < cmd) cb.blockReferences?.unshift(AtomicBlockFactory({ depthControls: { ...depthControls, cd: cd + 1 } }))
+  if (cd < cmd) cb.blockReferences?.unshift(AtomicBlockFactory({ depthControls: { ...depthControls, cd: cd + 1 }, classNameField }))
 
   const tcb: BlocksField = { ...childrenBase, name: 'triggerChildren', blockReferences: [...NonRecursiveChildBlocks] }
-  if (td < tmd) tcb.blockReferences?.unshift(AtomicBlockFactory({ depthControls: { cd: td + 1, cmd: tmd, td: td + 1, tmd } }))
+  if (td < tmd) tcb.blockReferences?.unshift(AtomicBlockFactory({ depthControls: { cd: td + 1, cmd: tmd, td: td + 1, tmd }, classNameField }))
 
   const atomicBlock: Block = {
     slug: 'AtomicChild',
@@ -78,7 +91,7 @@ export function AtomicBlockFactory({ depthControls }: { depthControls: DepthCont
                   description: d.contentTab,
                   condition: (_, sd) => Boolean(sd?.type !== 'button' || (sd?.type === 'button' && sd?.buttonType === 'portal')),
                 },
-                fields: [contentClassNameField, cb],
+                fields: [...contentClassNameField, cb],
               },
             ],
           },
@@ -91,7 +104,7 @@ export function AtomicBlockFactory({ depthControls }: { depthControls: DepthCont
                 label: 'Trigger',
                 admin: { hideGutter: true, condition: (_, sd) => Boolean(sd?.type === 'button') },
                 fields: [
-                  triggerClassNameField,
+                  ...triggerClassNameField,
                   {
                     type: 'row',
                     fields: [
@@ -106,7 +119,7 @@ export function AtomicBlockFactory({ depthControls }: { depthControls: DepthCont
           },
           { label: 'Actions', admin: { description: d.actions }, fields: [TriggerActionsTab, ContentActionsTab] },
           { label: 'SVR', admin: { description: d.svr }, fields: [formRateLimitTab, formSanitationTab, formValidationTab, inputTab] },
-          AtomicChildSettingsTab,
+          ChildsSettingsTab('AtomicChild', { classNameField }),
           TrackingTab,
         ],
       },
@@ -116,6 +129,11 @@ export function AtomicBlockFactory({ depthControls }: { depthControls: DepthCont
   return atomicBlock
 }
 
-const AtomicBlock = AtomicBlockFactory({ depthControls: { cd: 0, cmd: 12, td: 0, tmd: 1 } })
+/** Default nesting limits for the top-level `AtomicChild` block: content nests
+ *  up to 12 deep, trigger children up to 1 deep. */
+export const defaultAtomicDepthControls: DepthControls = { cd: 0, cmd: 12, td: 0, tmd: 1 }
+
+/** The default `AtomicChild` block, with no className field. */
+const AtomicBlock = AtomicBlockFactory({ depthControls: defaultAtomicDepthControls })
 
 export default AtomicBlock

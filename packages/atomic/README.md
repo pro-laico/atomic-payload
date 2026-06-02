@@ -75,6 +75,27 @@ Extending forms means adding a new SVR block — the architecture is intentional
 
 The recursive content model. `childBlocksPlugin` registers the `AtomicChild` block and the built-in `SimpleText` block, then exposes a hook (`useActions`) that wires children to the action system. Sibling packages contribute their own child blocks (e.g. `@pro-laico/images/blocks/imageChild`, `@pro-laico/icons/blocks/iconChild`) which get picked up automatically when those plugins are installed.
 
+#### Generic field extension (CSS decoupling)
+
+Child blocks no longer hard-depend on `@pro-laico/styles`. Each package now exports a block **factory** (`createIconBlock`, `createSvgBlock`, `createImageBlock`, `createVideoBlock`, `createRichTextBlock`, `createSimpleTextBlock`) that accepts generic `prependFields` / `appendFields` (the `BlockFieldExtensions` type from `@pro-laico/core`). Those fields are spread at the start / end of the block's primary (first) content tab. The block stays agnostic about what they are — the consumer passes the `@pro-laico/styles` `ClassNameField`, project-specific fields, or nothing. The static exports (`Icon`, `Image`, …) and the `childBlocks` array carry no extra fields.
+
+Wire fields in per block via `blockFields` on the plugin (keyed by block slug):
+
+```ts
+import { childBlocksPlugin } from '@pro-laico/atomic/children'
+import { ClassNameField } from '@pro-laico/styles'
+
+childBlocksPlugin({
+  blockFields: {
+    SVGChild: { prependFields: [ClassNameField({ label: 'SVG Atomic Classes' })] },
+    ImageChild: { prependFields: [ClassNameField({ label: 'Image Atomic Classes' })] },
+    // …other blocks, any fields you like
+  },
+})
+```
+
+**`AtomicChild` is a special case** and is intentionally left on the older `classNameField` passthrough for now (its content / trigger / backdrop styling spots aren't covered by the generic `blockFields` mechanism). Pass `classNameField: ClassNameField` to supply it.
+
 The `render` subpath provides the front-end React component that walks the tree and renders each child.
 
 ## Notable subpaths
@@ -96,6 +117,6 @@ The full list is in `package.json` `exports`. Common ones:
 
 ## Where it sits in the monorepo
 
-Depends on `core`, `design-sets`, `icons`, `images`, `mux-video`, `richtext`, `site`, `zap`. Optional peer integrations with `@mux/blurup`, `@pro-laico/tracking`, `unocss`, and `zustand`.
+Depends on `core`, `styles`, `icons`, `images`, `mux-video`, `richtext`, `site`, `zap`. Optional peer integrations with `@mux/blurup`, `@pro-laico/tracking`, `unocss`, and `zustand`.
 
-This is the integration layer — read `core`, `zap`, and `design-sets` first if you're new to the repo.
+This is the integration layer — read `core`, `zap`, and `styles` first if you're new to the repo.

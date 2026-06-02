@@ -1,13 +1,12 @@
 import type { StoredAtomicForm, StoredAtomicFormInput } from '@pro-laico/atomic/forms/schema'
-import type { CollectionThatUsesCSSProcessor } from '@pro-laico/atomic/hook'
 import type { CollectionBySlug } from '@pro-laico/core'
 import { revalidateTag, runAPF } from '@pro-laico/core'
+import { createCssProcessor, processDesignSet } from '@pro-laico/styles'
+import type { CollectionThatUsesCSSProcessor } from '@pro-laico/styles'
 import { z } from '@pro-laico/zap'
 import type { CollectionBeforeChangeHook, CollectionSlug } from 'payload'
 import traverse from 'traverse'
 import { type CreateAtomicHookOptions, DEFAULT_ATOMIC_HOOK_SLUG_CONFIG } from './atomicHookTypes'
-import { createCssProcessor } from './cssProcessor'
-import processDesignSet from './processDesignSet/index'
 import { unsetActive } from './unsetActive'
 import manualLogger from './utilities/manualLogger'
 import sanitizeData from './utilities/sanitizeData'
@@ -35,6 +34,10 @@ export function createAtomicHook(opts: CreateAtomicHookOptions): CollectionBefor
 
   return async ({ collection, context, data, originalDoc, operation, req }) => {
     if (context.isSeed) return
+    // Mark that the all-in-one atomicHook owns CSS processing for this request so
+    // a standalone `cssHook` (from @pro-laico/styles) attached to the same
+    // collection stays inert and we don't process CSS twice.
+    context.atomicHookRan = true
     const slug = z.ap.get('CollectionThatUsesAtomicHookSlug').parse(collection.slug)
     const draft = data?._status === 'draft'
     const isActive = Boolean(data?.active)

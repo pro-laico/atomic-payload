@@ -69,4 +69,4 @@ import {
 
 ## Where it sits in the monorepo
 
-Depends on `core`, `images` (for SiteMetaData's favicon field), `atomic`, and `zap`. Consumed by `design-sets`, `seed`, and almost every template page.
+Depends on `core`, `images` (for SiteMetaData's favicon field), `atomic`, and `zap`. Consumed by `styles`, `seed`, and almost every template page.

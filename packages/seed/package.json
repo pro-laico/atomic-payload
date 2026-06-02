@@ -28,9 +28,9 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@pro-laico/design-sets": "workspace:*",
     "@pro-laico/icons": "workspace:*",
     "@pro-laico/site": "workspace:*",
+    "@pro-laico/styles": "workspace:*",
     "@pro-laico/core": "workspace:*",
     "@pro-laico/atomic": "workspace:*"
   },

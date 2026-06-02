@@ -2,15 +2,19 @@ import { FixedToolbarFeature, HeadingFeature, InlineToolbarFeature, lexicalEdito
 import { ColoredEnd } from '@pro-laico/atomic/children/fields/coloredEnd'
 import { ChildsSettingsTab } from '@pro-laico/atomic/children/fields/tabs/settings'
 import { TrackingTab } from '@pro-laico/atomic/children/fields/trackingTab'
-import { ClassNameField } from '@pro-laico/core'
+import type { BlockFieldExtensions } from '@pro-laico/core'
 import type { Block } from 'payload'
 
-const d = {
-  richTextAtomicClasses:
-    "Add the class 'prose' to apply tag based styles to rich text content. Supports suffixes '-sm', '-base', '-lg', '-xl', '-2xl'",
-}
+/** Options for {@link createRichTextBlock}: generic fields to prepend/append to the Content tab. */
+export type RichTextBlockOptions = BlockFieldExtensions
 
-export const RichText: Block = {
+/**
+ * Builds the `RichTextChild` block. `prependFields` / `appendFields` are spread
+ * at the start / end of the Content tab — the consumer decides what goes there
+ * (e.g. the `@pro-laico/styles` `ClassNameField`, project fields, or nothing),
+ * so the block carries no CSS dependency of its own.
+ */
+export const createRichTextBlock = ({ prependFields = [], appendFields = [] }: RichTextBlockOptions = {}): Block => ({
   slug: 'RichTextChild',
   interfaceName: 'RichTextChild',
   labels: { singular: 'Rich Text', plural: 'Rich Texts' },
@@ -21,11 +25,7 @@ export const RichText: Block = {
         {
           label: 'Content',
           fields: [
-            ClassNameField({
-              label: 'Rich Text Atomic Classes',
-              defaultValue: 'prose dark:prose-invert',
-              admin: { description: d.richTextAtomicClasses },
-            }),
+            ...prependFields,
             {
               name: 'richText',
               type: 'richText',
@@ -38,6 +38,7 @@ export const RichText: Block = {
                 },
               }),
             },
+            ...appendFields,
           ],
         },
         ChildsSettingsTab('RichTextChild'),
@@ -46,4 +47,7 @@ export const RichText: Block = {
     },
     ColoredEnd,
   ],
-}
+})
+
+/** The default `RichTextChild` block, with no className field. */
+export const RichText: Block = createRichTextBlock()

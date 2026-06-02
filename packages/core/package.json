@@ -95,9 +95,9 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@pro-laico/design-sets": "workspace:*",
     "@pro-laico/images": "workspace:*",
     "@pro-laico/site": "workspace:*",
+    "@pro-laico/styles": "workspace:*",
     "@pro-laico/tracking": "workspace:*",
     "@types/json-schema": "^7.0.15",
     "dayjs": "^1.11.13",

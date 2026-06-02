@@ -4,24 +4,24 @@ import { Header } from './collections/headers/collection'
 import { Pages } from './collections/pages/collection'
 import { Settings } from './globals/settings'
 import { SiteMetaData } from './globals/siteMetaData'
-import { baseStorage } from './globals/storage'
 
 export type SitePluginOptions = {
   enabled?: boolean
 }
 
 /** Registers the Pages/Header/Footer collections and the SiteMetaData/Settings
- *  /draftStorage/publishedStorage globals. Cross-package wiring (atomicHook,
- *  nested-docs, live preview URL, jsonSchema) is intentionally left to the
- *  template's plugin-composition layer so the package stays unopinionated
- *  about how those are configured. */
+ *  globals. The CSS storage globals (`draftStorage` / `publishedStorage`) now
+ *  ship with `@pro-laico/styles` (`stylesPlugin`). Cross-package wiring
+ *  (atomicHook, nested-docs, live preview URL, jsonSchema) is intentionally
+ *  left to the template's plugin-composition layer so the package stays
+ *  unopinionated about how those are configured. */
 export const sitePlugin =
   (options: SitePluginOptions = {}): Plugin =>
   (config: Config): Config => {
     if (options.enabled === false) return config
 
     config.collections = [...(config.collections ?? []), Pages, Header, Footer]
-    config.globals = [...(config.globals ?? []), Settings, SiteMetaData, baseStorage('draft'), baseStorage('published')]
+    config.globals = [...(config.globals ?? []), Settings, SiteMetaData]
 
     return config
   }

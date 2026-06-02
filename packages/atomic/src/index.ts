@@ -5,8 +5,8 @@
 
 export type { ActionsPluginOptions } from './actions'
 export { ActionBlockStorageProcessor, ActionBlockType, ActionFilters, ActionOptions, AllActionBlocks, actionsPlugin } from './actions'
-export type { ChildBlocksPluginOptions } from './children'
-export { ChildrenBlocksField, childBlocks, childBlocksPlugin, childBlocksZapSchemas } from './children'
+export type { BuildChildBlocksOptions, ChildBlocksPluginOptions, GenericChildBlockSlug } from './children'
+export { buildChildBlocks, ChildrenBlocksField, childBlocks, childBlocksPlugin, childBlocksZapSchemas } from './children'
 export type { FormsPluginOptions } from './forms'
 export { defaultSubmitFormBlocks, formsPlugin } from './forms'
 export type {
@@ -20,9 +20,7 @@ export {
   atomicHook,
   atomicHookPlugin,
   createAtomicHook,
-  createCssProcessor,
   manualLogger,
-  processDesignSet,
   sanitizeData,
   unsetActive,
 } from './hook'

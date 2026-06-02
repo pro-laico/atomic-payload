@@ -3,7 +3,7 @@
  * documents the CSS processor stores during a request. Side-effect imported
  * from `src/index.ts`.
  */
-import type { DesignSet } from '@pro-laico/design-sets/schema'
+import type { DesignSet } from '@pro-laico/styles/schema'
 import type { ShortcutSet } from '@pro-laico/site/schema'
 
 declare module 'payload' {

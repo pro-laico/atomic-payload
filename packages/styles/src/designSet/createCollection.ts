@@ -15,8 +15,10 @@ import { VariablesTab } from './tabs/variables'
 const APFunctions: APFunction[] = ['classes', 'active']
 
 export interface DesignSetCollectionOptions {
-  /** Wired to `hooks.beforeChange` (typically the project `atomicHook`). */
-  atomicHook: CollectionBeforeChangeHook
+  /** Wired to `hooks.beforeChange` (typically the project `atomicHook`). Optional — omit to rely solely on `cssHook`. */
+  atomicHook?: CollectionBeforeChangeHook
+  /** Standalone CSS hook (from `createCssHook`). Appended after `atomicHook`; stays inert when `atomicHook` also runs. */
+  cssHook?: CollectionBeforeChangeHook
   /** Same contract as the template `generateLivePreviewPath` helper. */
   generateLivePreviewPath: (args: { data: Partial<unknown>; req: PayloadRequest }) => Promise<string> | string
   /** Defaults to authenticated-only access. */
@@ -27,10 +29,11 @@ export interface DesignSetCollectionOptions {
 
 /**
  * Builds the `designSet` collection. Pass your project’s `atomicHook` and
- * `generateLivePreviewPath`; use `designSetsPlugin` to register it on the config.
+ * `generateLivePreviewPath`; use `stylesPlugin` to register it on the config.
  */
 export function createDesignSetCollection(opts: DesignSetCollectionOptions): CollectionConfig {
-  const { atomicHook, generateLivePreviewPath, access = { create: authd, delete: authd, read: authd, update: authd }, collection: merge } = opts
+  const { atomicHook, cssHook, generateLivePreviewPath, access = { create: authd, delete: authd, read: authd, update: authd }, collection: merge } = opts
+  const beforeChange = [atomicHook, cssHook].filter((h): h is CollectionBeforeChangeHook => Boolean(h))
 
   const base: CollectionConfig = {
     slug: 'designSet',
@@ -51,7 +54,7 @@ export function createDesignSetCollection(opts: DesignSetCollectionOptions): Col
       },
       ...generateAPFFields(APFunctions),
     ],
-    hooks: { beforeChange: [atomicHook], afterDelete: [revalidateCacheOnDelete] },
+    hooks: { beforeChange, afterDelete: [revalidateCacheOnDelete] },
     versions: { drafts: { schedulePublish: true, validate: true }, maxPerDoc: 50 },
   }
 

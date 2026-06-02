@@ -1,4 +1,6 @@
 export { default as childBlocks } from './blocks'
+export type { BuildChildBlocksOptions, GenericChildBlockSlug } from './buildChildBlocks'
+export { buildChildBlocks } from './buildChildBlocks'
 export { ChildrenBlocksField } from './fields/childrenBlocks'
 export type { ChildBlocksPluginOptions } from './plugin'
 export { childBlocksPlugin, default } from './plugin'

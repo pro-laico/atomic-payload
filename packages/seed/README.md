@@ -78,4 +78,4 @@ If you're upgrading from a template that hand-wired the seed flow:
 
 ## Where it sits in the monorepo
 
-Depends on `core`, `design-sets`, `icons`, `site`, and `atomic`. The default seed needs all of those to know what to write. Has no internal dependents.
+Depends on `core`, `styles`, `icons`, `site`, and `atomic`. The default seed needs all of those to know what to write. Has no internal dependents.
