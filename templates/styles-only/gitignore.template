@@ -1,0 +1,22 @@
+node_modules
+.next
+.vercel
+.DS_Store
+
+# TypeScript
+tsconfig.tsbuildinfo
+
+# Payload
+public/media
+src/payload-types.ts
+src/payload-types.augment.d.ts
+
+# SQLite (default DB adapter — file created at runtime)
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+
+# Env
+.env
+.env*.local
