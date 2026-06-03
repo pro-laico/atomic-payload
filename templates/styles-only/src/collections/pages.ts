@@ -44,7 +44,13 @@ export function createPages(cssHook: CollectionBeforeChangeHook): CollectionConf
         type: 'row',
         fields: [
           { name: 'title', type: 'text', required: true, admin: { width: '50%' } },
-          { name: 'href', type: 'text', required: true, defaultValue: '/', admin: { width: '30%', description: 'The path this page renders at, e.g. `/`.' } },
+          {
+            name: 'href',
+            type: 'text',
+            required: true,
+            defaultValue: '/',
+            admin: { width: '30%', description: 'The path this page renders at, e.g. `/`.' },
+          },
           { name: 'live', type: 'checkbox', required: true, defaultValue: true, admin: { width: '20%' } },
         ],
       },

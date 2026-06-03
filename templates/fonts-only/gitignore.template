@@ -1,0 +1,28 @@
+node_modules
+.next
+.vercel
+.DS_Store
+
+# TypeScript
+tsconfig.tsbuildinfo
+
+# Payload
+src/payload-types.ts
+src/payload-types.augment.d.ts
+
+# Font uploads (written by Payload at runtime; seed assets live in public/seed-fonts)
+media
+
+# Downloaded by `pnpm download:fonts` for next/font/local (definition.ts is a
+# committed stub it overwrites; the binaries here are generated)
+public/fonts
+
+# SQLite (default DB adapter — file created at runtime)
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+
+# Env
+.env
+.env*.local

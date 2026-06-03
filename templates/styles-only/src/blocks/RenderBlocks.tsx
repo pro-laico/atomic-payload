@@ -15,23 +15,25 @@ export function RenderBlocks({ blocks, draft }: { blocks?: AnyBlock[] | null; dr
   if (!blocks?.length) return null
   return (
     <>
-      {blocks.map((block, i) => {
-        const key = block.id ?? i
-        switch (block.blockType) {
-          case 'hero':
-            return <Hero key={key} block={block} />
-          case 'buttonRow':
-            return <ButtonRow key={key} block={block} />
-          case 'cardGrid':
-            return <CardGrid key={key} block={block} />
-          case 'prose':
-            return <Prose key={key} block={block} />
-          case 'palette':
-            return <Palette key={key} block={block} draft={draft} />
-          default:
-            return null
-        }
-      }) as React.ReactNode}
+      {
+        blocks.map((block, i) => {
+          const key = block.id ?? i
+          switch (block.blockType) {
+            case 'hero':
+              return <Hero key={key} block={block} />
+            case 'buttonRow':
+              return <ButtonRow key={key} block={block} />
+            case 'cardGrid':
+              return <CardGrid key={key} block={block} />
+            case 'prose':
+              return <Prose key={key} block={block} />
+            case 'palette':
+              return <Palette key={key} block={block} draft={draft} />
+            default:
+              return null
+          }
+        }) as React.ReactNode
+      }
     </>
   )
 }

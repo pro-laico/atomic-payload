@@ -3,8 +3,9 @@
  * documents the CSS processor stores during a request. Side-effect imported
  * from `src/index.ts`.
  */
-import type { DesignSet } from '@pro-laico/styles/schema'
+
 import type { ShortcutSet } from '@pro-laico/site/schema'
+import type { DesignSet } from '@pro-laico/styles/schema'
 
 declare module 'payload' {
   export interface RequestContext {

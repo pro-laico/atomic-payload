@@ -1,8 +1,8 @@
 import type { StoredAtomicForm, StoredAtomicFormInput } from '@pro-laico/atomic/forms/schema'
 import type { CollectionBySlug } from '@pro-laico/core'
 import { revalidateTag, runAPF } from '@pro-laico/core'
-import { createCssProcessor, processDesignSet } from '@pro-laico/styles'
 import type { CollectionThatUsesCSSProcessor } from '@pro-laico/styles'
+import { createCssProcessor, processDesignSet } from '@pro-laico/styles'
 import { z } from '@pro-laico/zap'
 import type { CollectionBeforeChangeHook, CollectionSlug } from 'payload'
 import traverse from 'traverse'
@@ -49,7 +49,7 @@ export function createAtomicHook(opts: CreateAtomicHookOptions): CollectionBefor
     if (slug === pagesSlug) {
       const previousHref = data?.href
       href = data?.breadcrumbs && data?.breadcrumbs?.length > 0 ? data?.breadcrumbs[data?.breadcrumbs?.length - 1]?.url : undefined
-      runSlug = operation !== 'create' ? (data?.slug  !== originalDoc?.slug) : Boolean(data?.live)
+      runSlug = operation !== 'create' ? data?.slug !== originalDoc?.slug : Boolean(data?.live)
       if (operation !== 'create' && previousHref && previousHref !== href) await revalidateTag('page', previousHref, draft)
     }
 

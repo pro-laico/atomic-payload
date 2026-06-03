@@ -10,6 +10,11 @@ export type RunDownloadFontsOptions = {
      * Default `../../public/fonts` or `ATOMIC_FONTS_SRC_PREFIX`. If you change `fontsOutputDir`, set this accordingly.
      */
     localFontSrcPrefix?: string;
+    /**
+     * Slug of the standalone font-selection global to fall back to when no active
+     * `designSet` is found. Default `fontSet` or `ATOMIC_FONTS_GLOBAL_SLUG`.
+     */
+    fontSetGlobalSlug?: string;
 };
 export declare function runDownloadFonts(overrides?: RunDownloadFontsOptions): Promise<void>;
 //# sourceMappingURL=downloadFonts.d.ts.map

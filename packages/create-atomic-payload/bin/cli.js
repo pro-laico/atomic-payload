@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 
+import fs from 'node:fs'
+import fsp from 'node:fs/promises'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import chalk from 'chalk'
 import { execa } from 'execa'
-import fs from 'node:fs'
-import fsp from 'node:fs/promises'
 import ora from 'ora'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))

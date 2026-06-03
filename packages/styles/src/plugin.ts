@@ -3,7 +3,7 @@ import type { CollectionBeforeChangeHook, Config, PayloadRequest, Plugin } from 
 import type { CssProcessorGetCached } from './cssProcessor'
 import { createDesignSetCollection, type DesignSetCollectionOptions } from './designSet/createCollection'
 import { baseStorage } from './globals/storage'
-import { createCssHook, type CssHookOptions } from './hooks/cssHook'
+import { type CssHookOptions, createCssHook } from './hooks/cssHook'
 import { createShortcutSetCollection, type ShortcutSetCollectionOptions } from './shortcutSet/createCollection'
 
 /**

@@ -38,7 +38,14 @@ export interface DesignSetCollectionOptions {
  * `generateLivePreviewPath`; use `stylesPlugin` to register it on the config.
  */
 export function createDesignSetCollection(opts: DesignSetCollectionOptions): CollectionConfig {
-  const { atomicHook, cssHook, generateLivePreviewPath, access = { create: authd, delete: authd, read: authd, update: authd }, collection: merge, fontField } = opts
+  const {
+    atomicHook,
+    cssHook,
+    generateLivePreviewPath,
+    access = { create: authd, delete: authd, read: authd, update: authd },
+    collection: merge,
+    fontField,
+  } = opts
   const beforeChange = [atomicHook, cssHook].filter((h): h is CollectionBeforeChangeHook => Boolean(h))
 
   const base: CollectionConfig = {
@@ -56,7 +63,17 @@ export function createDesignSetCollection(opts: DesignSetCollectionOptions): Col
     fields: [
       {
         type: 'tabs',
-        tabs: [SettingsTab(), VariablesTab(), ColorsTab(), SizesTab(), FontsTab(fontField), AnimationsTab(), MiscellaneousTab(), ProseTab, StorageTab()],
+        tabs: [
+          SettingsTab(),
+          VariablesTab(),
+          ColorsTab(),
+          SizesTab(),
+          FontsTab(fontField),
+          AnimationsTab(),
+          MiscellaneousTab(),
+          ProseTab,
+          StorageTab(),
+        ],
       },
       ...generateAPFFields(APFunctions),
     ],

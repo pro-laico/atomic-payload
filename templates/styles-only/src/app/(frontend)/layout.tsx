@@ -83,7 +83,6 @@ export default async function FrontendLayout({ children }: { children: React.Rea
         {/* The star of the show: CSS generated from the active design set. */}
         <style id="atomic-generated" type="text/css" dangerouslySetInnerHTML={{ __html: css || '' }} />
         {/* Demo frame — loaded after so it wins over the generated preflight reset. */}
-        {/** biome-ignore lint/security/noDangerouslySetInnerHtml: trusted static string */}
         <style id="demo-chrome" dangerouslySetInnerHTML={{ __html: demoChrome }} />
       </head>
       <body className={ds?.bodyClassName || undefined}>

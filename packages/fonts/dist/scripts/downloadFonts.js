@@ -1,8 +1,7 @@
-import fs from 'fs';
-import path from 'path';
-import https from 'https';
-import dotenv from 'dotenv';
 import { PayloadSDK } from '@payloadcms/sdk';
+import dotenv from 'dotenv';
+import fs from 'node:fs';
+import path from 'node:path';
 const colors = {
     blue: (t) => `\x1b[34m${t}\x1b[0m`,
     green: (t) => `\x1b[32m${t}\x1b[0m`,
@@ -15,6 +14,7 @@ function resolveOptions(overrides) {
         definitionFile: overrides?.definitionFile ?? process.env.ATOMIC_FONTS_DEFINITION_FILE ?? './src/app/definition.ts',
         envFile: overrides?.envFile ?? process.env.ATOMIC_FONTS_ENV_FILE ?? './.env',
         localFontSrcPrefix: overrides?.localFontSrcPrefix ?? process.env.ATOMIC_FONTS_SRC_PREFIX ?? '../../public/fonts',
+        fontSetGlobalSlug: overrides?.fontSetGlobalSlug ?? process.env.ATOMIC_FONTS_GLOBAL_SLUG ?? 'fontSet',
     };
 }
 export async function runDownloadFonts(overrides) {
@@ -29,7 +29,6 @@ export async function runDownloadFonts(overrides) {
     }
     const requiredEnvVars = {
         LIVE_SITE_URL: process.env.LIVE_SITE_URL,
-        BLOB_READ_WRITE_TOKEN: process.env.BLOB_READ_WRITE_TOKEN,
         SCRIPT_USER_EMAIL: process.env.SCRIPT_USER_EMAIL,
         SCRIPT_USER_PASSWORD: process.env.SCRIPT_USER_PASSWORD,
     };
@@ -41,6 +40,15 @@ export async function runDownloadFonts(overrides) {
     const FONT_FILES_DIR = opts.fontsOutputDir;
     const FONT_DEFINITION_FILE = opts.definitionFile;
     const localPrefix = opts.localFontSrcPrefix.replace(/\/$/, '');
+    const siteUrl = process.env.LIVE_SITE_URL || '';
+    const siteOrigin = (() => {
+        try {
+            return new URL(siteUrl).origin;
+        }
+        catch {
+            return '';
+        }
+    })();
     function generateFontDefinitions(extensions) {
         const configs = [
             { name: 'fontSans', type: 'sans', extension: extensions.sans, variable: '--font-setSans' },
@@ -71,36 +79,35 @@ export default fonts
             fs.unlinkSync(path.join(FONT_FILES_DIR, file));
         generateFontDefinitions({ sans: '', serif: '', mono: '', display: '' });
     }
-    async function downloadFile(fileUrl, outputPath) {
-        const file = fs.createWriteStream(outputPath);
-        return new Promise((resolve, reject) => {
-            https
-                .get(fileUrl, (res) => {
-                res.pipe(file);
-                file.on('finish', () => {
-                    file.close((err) => {
-                        if (err)
-                            reject(err);
-                        else
-                            resolve();
-                    });
-                });
-            })
-                .on('error', (err) => {
-                if (fs.existsSync(outputPath))
-                    fs.unlinkSync(outputPath);
-                reject(err);
-            });
-        });
+    // `fetch` handles both http and https (local dev vs deployed) and follows the
+    // redirects some storage adapters issue. Headers are only sent for same-origin
+    // (the Payload file route) requests.
+    async function downloadFile(fileUrl, outputPath, headers) {
+        const res = await fetch(fileUrl, headers ? { headers } : undefined);
+        if (!res.ok)
+            throw new Error(`HTTP ${res.status} ${res.statusText} for ${fileUrl}`);
+        fs.writeFileSync(outputPath, Buffer.from(await res.arrayBuffer()));
     }
-    async function downloadFont(font, fontType, baseUrl) {
-        if (typeof font === 'string')
-            return warn(colors.orange(`The ${fontType} font is a string reference`));
-        if (!font?.filename)
-            return warn(colors.orange(`No ${fontType} font found`));
+    async function downloadFont(font, fontType) {
+        if (typeof font === 'string') {
+            warn(colors.orange(`The ${fontType} font is an unpopulated reference`));
+            return;
+        }
+        const url = font?.url;
+        if (!font?.filename || !url) {
+            warn(colors.orange(`No ${fontType} font found`));
+            return;
+        }
         try {
             const extension = font.filename.split('.').pop()?.toLowerCase() || 'ttf';
-            await downloadFile(`${baseUrl}/${font.filename}?download=1`, path.join(FONT_FILES_DIR, `${fontType}.${extension}`));
+            // Piggyback off Payload's storage: `url` is set by whatever adapter the
+            // project uses (local disk, Vercel Blob, S3, …). Resolve relative URLs
+            // (local storage) against the site, and send auth only for same-origin —
+            // the Payload file route may be access-controlled, while external CDN URLs
+            // are public and fetched as-is.
+            const fileUrl = new URL(url, siteUrl || undefined).toString();
+            const sameOrigin = Boolean(siteOrigin) && new URL(fileUrl).origin === siteOrigin;
+            await downloadFile(fileUrl, path.join(FONT_FILES_DIR, `${fontType}.${extension}`), sameOrigin ? { Authorization: `JWT ${token}` } : undefined);
             console.log(`${colors.green('✓')} Downloaded ${fontType} font`);
             return extension;
         }
@@ -114,9 +121,6 @@ export default fonts
         console.warn(colors.orange('Font download failed — No fonts will be used'));
         return;
     }
-    const blobToken = process.env.BLOB_READ_WRITE_TOKEN;
-    const accountId = blobToken.split('_').slice(-2, -1)[0];
-    const baseUrl = `https://${accountId}.public.blob.vercel-storage.com`;
     let user;
     try {
         user = await sdk.login({
@@ -132,26 +136,46 @@ export default fonts
         return;
     }
     const token = user.token;
-    let designSet;
+    const authInit = { headers: { Authorization: `JWT ${token}` } };
+    // Resolve the font selection: prefer the active designSet's `font` group, then
+    // fall back to the standalone `fontSet` global (for projects using
+    // @pro-laico/fonts without @pro-laico/styles). Each lookup is tolerant — a
+    // standalone app won't have a `designSet` collection, and a styles app won't
+    // have a `fontSet` global.
+    let fonts;
     try {
-        designSet = await sdk.find({ collection: 'designSet', where: { active: { equals: true } }, limit: 1 }, { headers: { Authorization: `JWT ${token}` } });
+        const designSet = await sdk.find({ collection: 'designSet', where: { active: { equals: true } }, limit: 1, depth: 1 }, authInit);
+        if (designSet.docs.length) {
+            fonts = designSet.docs[0].font;
+            if (fonts)
+                console.log(colors.green('✓ Using fonts from the active design set\n'));
+        }
     }
-    catch (err) {
-        warn(colors.red('Failed to fetch design set'), err);
-        return;
+    catch {
+        // No `designSet` collection in this project — fall through to the global.
     }
-    if (!designSet.docs.length)
-        return warn(colors.red('No active design set found'));
-    const fonts = designSet.docs[0].font;
+    if (!fonts) {
+        try {
+            const global = (await sdk.findGlobal({ slug: opts.fontSetGlobalSlug, depth: 1 }, authInit));
+            const picked = { sans: global?.sans, serif: global?.serif, mono: global?.mono, display: global?.display };
+            if (Object.values(picked).some((font) => typeof font === 'object' && font !== null)) {
+                fonts = picked;
+                console.log(colors.green(`✓ Using fonts from the "${opts.fontSetGlobalSlug}" global\n`));
+            }
+        }
+        catch {
+            // No `fontSet` global either.
+        }
+    }
     if (!fonts)
-        return warn(colors.red('No font configuration found'));
+        return warn(colors.red(`No active design set and no "${opts.fontSetGlobalSlug}" global — nothing to download`));
     const hasProcessableFonts = Object.values(fonts).some((font) => typeof font === 'object' && font !== null && 'filename' in font);
     if (!hasProcessableFonts)
         return console.log(colors.green('No valid fonts to process. Continuing build process.'));
     console.log(colors.green('✓ Font configuration found\n'));
     const extensions = { sans: '', serif: '', mono: '', display: '' };
     const entries = Object.entries(fonts);
-    const results = await Promise.all(entries.map(([key, font]) => downloadFont(font, key, baseUrl)));
+    const results = await Promise.all(entries.map(([key, font]) => downloadFont(font, key)));
     entries.forEach(([key], i) => {
         extensions[key] = results[i] ?? '';
     });

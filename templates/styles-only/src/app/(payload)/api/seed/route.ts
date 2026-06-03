@@ -25,7 +25,12 @@ export async function POST() {
 
   const result: Record<'shortcutSet' | 'designSet' | 'page', 'created' | 'exists'> = { shortcutSet: 'exists', designSet: 'exists', page: 'exists' }
 
-  const existingShortcut = await payload.find({ collection: 'shortcutSet', where: { title: { equals: sampleShortcutSet.title } }, limit: 1, depth: 0 })
+  const existingShortcut = await payload.find({
+    collection: 'shortcutSet',
+    where: { title: { equals: sampleShortcutSet.title } },
+    limit: 1,
+    depth: 0,
+  })
   if (existingShortcut.docs.length === 0) {
     await payload.create({ collection: 'shortcutSet', data: sampleShortcutSet } as Parameters<typeof payload.create>[0])
     result.shortcutSet = 'created'

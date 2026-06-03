@@ -15,9 +15,8 @@ export default async function HomePage() {
   const isLoggedIn = Boolean(user)
   const { isEnabled: draft } = await draftMode()
 
-  const page = (await payload.find({ collection: 'pages', where: { href: { equals: '/' } }, limit: 1, depth: 1, draft, overrideAccess: true })).docs[0] as
-    | PageDoc
-    | undefined
+  const page = (await payload.find({ collection: 'pages', where: { href: { equals: '/' } }, limit: 1, depth: 1, draft, overrideAccess: true }))
+    .docs[0] as PageDoc | undefined
   const storage = (await payload.findGlobal({ slug: 'publishedStorage', overrideAccess: true }).catch(() => null)) as StorageDoc | null
   const cssSize = storage?.cssSize ?? 0
 

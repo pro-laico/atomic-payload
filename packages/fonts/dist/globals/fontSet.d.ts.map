@@ -1,0 +1,1 @@
+{"version":3,"file":"fontSet.d.ts","sourceRoot":"","sources":["../../src/globals/fontSet.ts"],"names":[],"mappings":"AAAA,OAAO,KAAK,EAAU,YAAY,EAAE,MAAM,SAAS,CAAA;AAKnD,oDAAoD;AACpD,eAAO,MAAM,aAAa,YAAY,CAAA;AAEtC;;;;;;;;;GASG;AACH,eAAO,MAAM,mBAAmB,GAAI,eAAuB;IAAE,QAAQ,CAAC,EAAE,MAAM,CAAA;CAAO,KAAG,YAKtF,CAAA;AAEF,+DAA+D;AAC/D,eAAO,MAAM,OAAO,EAAE,YAAoC,CAAA"}

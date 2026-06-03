@@ -2,12 +2,7 @@
 import { BlocksField, useFormFields } from '@payloadcms/ui'
 import type { ActionBlockFilter, ActionBlockPrefix } from '@pro-laico/atomic/actions'
 import { ActionFilters } from '@pro-laico/atomic/actions/filters'
-import type {
-  AtomicButtonPortalTypes,
-  AtomicButtonTypes,
-  AtomicChildVariants,
-  AtomicInputTypes,
-} from '@pro-laico/atomic/actions/schema'
+import type { AtomicButtonPortalTypes, AtomicButtonTypes, AtomicChildVariants, AtomicInputTypes } from '@pro-laico/atomic/actions/schema'
 import type { ChildBlockType } from '@pro-laico/atomic/children/schema'
 import type { BlocksFieldClientProps } from 'payload'
 import { useMemo } from 'react'

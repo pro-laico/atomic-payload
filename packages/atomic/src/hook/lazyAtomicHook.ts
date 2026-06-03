@@ -1,7 +1,7 @@
 'use server'
 
 import type { CollectionBeforeChangeHook } from 'payload'
-import type { AtomicHookGetCached, } from './atomicHookTypes'
+import type { AtomicHookGetCached } from './atomicHookTypes'
 
 /**
  * Ready-made `atomicHook` whose dependencies (`getCached` / UnoCSS via

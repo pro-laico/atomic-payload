@@ -4,3 +4,4 @@
 import type { DefaultRecord, Get } from '@pro-laico/core'
 
 export type Font = Get<'Font', DefaultRecord>
+export type FontSet = Get<'FontSet', DefaultRecord>

@@ -1,21 +1,24 @@
 # @pro-laico/fonts
 
-> Manages custom fonts in Payload and ships them to disk for `next/font/local`. Built around the design set — only fonts referenced by the active set get downloaded.
+> Manages custom fonts in Payload and ships them to disk for `next/font/local`. Works with the design set (when paired with `@pro-laico/styles`) or on its own via a standalone `fontSet` global, and reads the binaries from whatever storage Payload is configured with.
 
 ## What this package is
 
 A Payload plugin that:
 
-1. Registers an upload collection (`Font`) so admins can upload font files (woff/woff2) and reference them from the design set.
-2. Ships a build-time CLI (`atomic-fonts-download`) that pulls the active design set's font files out of storage and writes them to disk, where Next.js's `next/font/local` can pick them up.
+1. Registers an upload collection (`Font`) so admins can upload font files (woff/woff2/ttf/otf).
+2. Optionally registers a `fontSet` global — a singleton picking the active sans/serif/mono/display fonts — for projects that don't use `@pro-laico/styles`'s `designSet`.
+3. Ships a build-time CLI (`atomic-fonts-download`) that pulls the active font files out of storage and writes them to disk, where Next.js's `next/font/local` can pick them up.
 
 The download step is what makes a Payload-managed font appear as a real local font in the rendered site, with all the performance benefits of `next/font/local` (subset preloading, layout-shift prevention).
 
 ## Why it exists
 
-Atomic Payload's design tokens include font choices, so font management needs to live in the same place as the rest of the theme. But `next/font` only knows how to load fonts from the filesystem — it can't fetch them from Vercel Blob at runtime. This package bridges the gap: admin uploads → storage → download script → disk → `next/font/local`.
+`next/font` only loads fonts from the filesystem — it can't fetch them from object storage at request time. This package bridges the gap: admin uploads → storage → download script → disk → `next/font/local`.
 
-The download step intentionally runs at build time (or during scaffolding), not at request time, because next/font's bundling expects file paths it can resolve at compile.
+The downloader is **storage-agnostic**: it reads each font's `url` as Payload reports it, so it works whether the project stores uploads on local disk, Vercel Blob, S3, or any other adapter — no Vercel-specific token required. Relative URLs (local disk) are resolved against `LIVE_SITE_URL` and fetched with the script's auth token; absolute CDN URLs are fetched as-is.
+
+The download step intentionally runs at build time (or during scaffolding), not at request time, because `next/font`'s bundling expects file paths it can resolve at compile.
 
 ## Quick start
 
@@ -23,68 +26,85 @@ The download step intentionally runs at build time (or during scaffolding), not 
 import { buildConfig } from 'payload'
 import { fontsPlugin } from '@pro-laico/fonts'
 
+// With @pro-laico/styles — fonts come from the active designSet's `font` group:
 export default buildConfig({ plugins: [fontsPlugin()] })
+
+// Standalone — register the `fontSet` global to pick the active fonts:
+export default buildConfig({ plugins: [fontsPlugin({ global: true })] })
 ```
 
-In the template, the `download:fonts` script runs the CLI after every install or when fonts change.
+`fontsPlugin` options:
+
+| Option | Purpose |
+| --- | --- |
+| `enabled` | Set `false` to no-op the plugin. Default `true`. |
+| `fontOverride` | Shallow-merged onto the `Font` collection — e.g. `upload.staticDir` (local storage location), `access`, `hooks`. |
+| `global` | `true` registers the standalone `fontSet` global; pass a partial `GlobalConfig` to override. Default `false`. |
+
+> **Where are fonts stored?** That's Payload's job: the `Font` collection's `upload.staticDir` (local) or a storage plugin (`@payloadcms/storage-*`) you add at the config level. The downloader just follows the `url` Payload produces, so you don't configure storage twice.
 
 ## Downloading fonts
 
-Three ways to invoke the download:
+The CLI resolves the font selection in order: the **active `designSet`'s `font` group**, then the **`fontSet` global**. So a styles project and a standalone fonts project both work without changing the script.
 
-**Programmatic (from your own script):**
+Three ways to invoke it:
+
+**Programmatic:**
 ```ts
 import { runDownloadFonts } from '@pro-laico/fonts/scripts/downloadFonts'
 
-await runDownloadFonts({
-  // optional overrides — see env vars below
-})
+await runDownloadFonts({ /* optional overrides — see below */ })
 ```
 
-**Published bin:**
-```bash
-atomic-fonts-download
-```
-(Requires the package to be built — `dist/scripts/cli.js` is the published entry.)
+**Published bin:** `atomic-fonts-download` (requires the package to be built — `dist/scripts/cli.js`).
 
 **Starter template:**
 ```jsonc
 // package.json
-"scripts": {
-  "download:fonts": "pnpm exec tsx node_modules/@pro-laico/fonts/src/scripts/cli.ts"
-}
+"scripts": { "download:fonts": "pnpm exec tsx node_modules/@pro-laico/fonts/src/scripts/cli.ts" }
 ```
-(Runs the TypeScript source directly via `tsx`. The package's `files` includes `src/` so this works.)
 
 ## Environment variables
 
 | Variable | Purpose |
 | --- | --- |
-| `LIVE_SITE_URL` | Where to fetch the active design set from. |
-| `BLOB_READ_WRITE_TOKEN` | Vercel Blob token for pulling the font binaries. |
-| `SCRIPT_USER_EMAIL` | Payload user to authenticate as for the download. |
+| `LIVE_SITE_URL` | Site to read the active designSet / `fontSet` global from, and the base for resolving relative (local-storage) font URLs. |
+| `SCRIPT_USER_EMAIL` | Payload user to authenticate as (needed to read auth-gated fonts and, for local storage, the file route). |
 | `SCRIPT_USER_PASSWORD` | Password for that user. |
 
-## Optional path overrides
+No storage token is required — the downloader uses whatever URL Payload reports for each font.
 
-| Variable | Default behavior |
+## Optional overrides
+
+| Variable | `runDownloadFonts` option | Default behavior |
+| --- | --- | --- |
+| `ATOMIC_FONTS_OUTPUT_DIR` | `fontsOutputDir` | Where to write font binaries (`./public/fonts`). |
+| `ATOMIC_FONTS_DEFINITION_FILE` | `definitionFile` | The generated module declaring each `localFont(...)` call. |
+| `ATOMIC_FONTS_ENV_FILE` | `envFile` | `.env` file to load before running. |
+| `ATOMIC_FONTS_SRC_PREFIX` | `localFontSrcPrefix` | Path prepended to each `src` in the definition file. |
+| `ATOMIC_FONTS_GLOBAL_SLUG` | `fontSetGlobalSlug` | Slug of the global to fall back to (`fontSet`). |
+
+## Exports
+
+| Export | What it is |
 | --- | --- |
-| `ATOMIC_FONTS_OUTPUT_DIR` | Where to write font binaries. |
-| `ATOMIC_FONTS_DEFINITION_FILE` | The generated TypeScript file declaring each `localFont(...)` call. |
-| `ATOMIC_FONTS_ENV_FILE` | `.env` file to load before running. |
-| `ATOMIC_FONTS_SRC_PREFIX` | Path segments prepended to each `src` in the definition file (relative to the file itself). |
-
-All four can also be passed as options to `runDownloadFonts(...)`.
+| `fontsPlugin` (default) | The plugin. |
+| `Font` | The `Font` upload collection config. |
+| `fontUploadField` | The `font` group field for the designSet's Fonts tab. |
+| `fontUploadFields` | The four upload slots (shared by the group and the global). |
+| `FontSet`, `createFontSetGlobal`, `FONT_SET_SLUG` | The standalone font-selection global. |
 
 ## What lives in `src/`
 
 | Path | What's there |
 | --- | --- |
-| `plugin.ts` | `fontsPlugin` — registers the `Font` collection. |
+| `plugin.ts` | `fontsPlugin` — registers the `Font` collection (+ optional `fontSet` global). |
 | `collections/font.ts` | The `Font` upload collection config. |
+| `globals/fontSet.ts` | The standalone `fontSet` global. |
+| `fields/font.ts` | `fontUploadField` / `fontUploadFields`. |
 | `scripts/cli.ts` | CLI entry; thin wrapper around `runDownloadFonts`. |
-| `scripts/downloadFonts.ts` | The actual download + file-generation logic. |
-| `types/payload-augment.ts` | `zap` registry augmentations. |
+| `scripts/downloadFonts.ts` | Selection resolution + storage-agnostic download + definition generation. |
+| `types/payload-augment.ts` | `Font` / `FontSet` schema stubs. |
 
 ## Where it sits in the monorepo
 

@@ -124,7 +124,8 @@ export const sampleHomePage = {
       blockType: 'hero',
       eyebrow: 'Atomic Payload',
       heading: 'Build your design system in the dashboard',
-      subheading: 'Every class on this page was authored in Payload, collected on save, and compiled to CSS by the styles plugin — no stylesheet in the repo.',
+      subheading:
+        'Every class on this page was authored in Payload, collected on save, and compiled to CSS by the styles plugin — no stylesheet in the repo.',
       sectionClassName: 'flex flex-col items-center text-center gap-5 py-20',
       eyebrowClassName: 'text-sm font-medium text-brand-primary',
       headingClassName: 'text-4xl font-bold tracking-tight text-foreground',

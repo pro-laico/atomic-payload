@@ -1,5 +1,5 @@
-import type { DesignSet } from '@pro-laico/styles/schema'
 import type { Page } from '@pro-laico/site/schema'
+import type { DesignSet } from '@pro-laico/styles/schema'
 
 type DesignSetArgs = { page: Page }
 

@@ -1,5 +1,3 @@
-
-
 const AtomicLogo = () => {
   return (
     <svg

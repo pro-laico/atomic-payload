@@ -8,7 +8,6 @@ export const IconPath = '@/ui/assets/Icon'
 //Fields
 //Root
 export { SiteTriggersPath, SlugPath } from '@pro-laico/core'
-
+export { IconLabelPath } from '@pro-laico/icons'
 //Row Labels
 export { AnimationLabelPath, ColorLabelPath, DesignTokenLabelPath, ShortcutLabelPath } from '@pro-laico/styles'
-export { IconLabelPath } from '@pro-laico/icons'
