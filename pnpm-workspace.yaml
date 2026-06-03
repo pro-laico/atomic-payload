@@ -3,6 +3,7 @@ packages:
   - 'templates/*'
   - 'examples/*'
   - 'tools/*'
+  - 'docs'
 allowBuilds:
   '@swc/core': true
   core-js: true
