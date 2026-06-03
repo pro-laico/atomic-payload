@@ -23,14 +23,14 @@ templates/atomic-payload/src/app/definition.ts
 templates/atomic-payload/public/fonts
 
 # icons-only seed assets are populated locally by the seed script
-templates/icons-only/icon/
+examples/icons-only/icon/
 
 # fonts-only stores uploaded font files here at runtime
-templates/fonts-only/media/
+examples/fonts-only/media/
 
 # fonts-only: binaries downloaded by `download:fonts` for next/font/local
 # (the definition.ts stub it overwrites stays committed)
-templates/fonts-only/public/fonts/
+examples/fonts-only/public/fonts/
 
 
 # Built package output — generated on prepack, published via publishConfig (src→dist swap).

@@ -21,8 +21,11 @@ atomic-payload/
 │   ├── richtext/                # RichTextChild block + default Lexical editor + JSX renderer
 │   └── seed/                    # seedPlugin: opinionated seed data + /api/seed endpoint
 ├── templates/
-│   ├── atomic-payload/          # Full Atomic Payload starter (Payload + Next.js + Tailwind)
-│   └── icons-only/              # Minimal template that exercises @pro-laico/icons in isolation
+│   └── atomic-payload/          # Full Atomic Payload starter (Payload + Next.js + Tailwind)
+├── examples/                    # Minimal single-plugin demo apps (not full templates)
+│   ├── fonts-only/              # Exercises @pro-laico/fonts in isolation
+│   ├── icons-only/              # Exercises @pro-laico/icons in isolation
+│   └── styles-only/             # Exercises @pro-laico/styles in isolation
 └── package.json                 # Workspace root
 ```
 
@@ -49,7 +52,16 @@ atomic-payload/
 | Package                    | Description                                                              |
 | -------------------------- | ------------------------------------------------------------------------ |
 | `templates/atomic-payload` | The full starter template (Payload + Next.js + Tailwind) — uses every plugin |
-| `templates/icons-only`     | Minimal template exercising `@pro-laico/icons` alone — useful as a partial-augmentation regression test |
+
+## Examples
+
+Minimal single-plugin demo apps — useful as partial-augmentation regression tests. Not full starter templates.
+
+| Package                | Description                               |
+| ---------------------- | ----------------------------------------- |
+| `examples/fonts-only`  | Exercises `@pro-laico/fonts` in isolation  |
+| `examples/icons-only`  | Exercises `@pro-laico/icons` in isolation  |
+| `examples/styles-only` | Exercises `@pro-laico/styles` in isolation |
 
 ## Commands
 
@@ -59,7 +71,7 @@ All commands run from the monorepo root.
 
 | Command                      | What it does                                                                                    |
 | ---------------------------- | ----------------------------------------------------------------------------------------------- |
-| `pnpm typecheck`             | Runs `tsc -p tsconfig.json --noEmit` in every package + template. Stops at the first failure.   |
+| `pnpm typecheck`             | Runs `tsc -p tsconfig.json --noEmit` in every package, template + example. Stops at the first failure.   |
 | `pnpm -r --no-bail typecheck`| Same, but keeps going on failure so you see every package's errors in one run.                  |
 | `pnpm -r --parallel typecheck` | Run all package typechecks concurrently. Faster but interleaved output.                       |
 | `pnpm lint`                  | Runs `lint` in every workspace project (mostly `tsc --noEmit` or eslint).                       |
@@ -71,6 +83,7 @@ All commands run from the monorepo root.
 | `pnpm --filter @pro-laico/core typecheck`     | Typecheck a single package by name.                         |
 | `pnpm --filter atomic-payload typecheck`      | Typecheck a template by its `name` field.                   |
 | `pnpm --filter "./templates/*" typecheck`     | Typecheck only the templates (path glob).                   |
+| `pnpm --filter "./examples/*" typecheck`      | Typecheck only the example apps (path glob).                |
 | `pnpm --filter "@pro-laico/*" typecheck`      | Typecheck only the `@pro-laico/*` packages.                 |
 | `pnpm --filter @pro-laico/core build`         | Build a single package (the ones that emit a `dist/`).      |
 | `pnpm --filter @pro-laico/core exec tsc --noEmit` | Run any binary inside a package's environment.          |

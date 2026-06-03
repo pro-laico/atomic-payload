@@ -3,7 +3,7 @@ import { dirname, join } from 'node:path'
 
 /** Workspace groups whose packages share the monorepo version. `tools/*` is
  *  intentionally excluded — internal tooling is not part of the released set. */
-const RELEASE_GROUPS = ['packages', 'templates'] as const
+const RELEASE_GROUPS = ['packages', 'templates', 'examples'] as const
 
 export interface PackageDetails {
   /** `name` field from package.json. */
