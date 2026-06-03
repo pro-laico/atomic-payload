@@ -104,7 +104,7 @@ All commands run from the monorepo root.
 
 | Command                                                      | What it does                                                                 |
 | ------------------------------------------------------------ | ---------------------------------------------------------------------------- |
-| `pnpm --filter @pro-laico/create-atomic-payload exec node scripts/copy-template.js` | Bundles `templates/atomic-payload/` into the CLI's `template/` and rewrites `workspace:*` deps to caret-pinned versions read from each `packages/<name>/package.json`. |
+| `pnpm --filter @pro-laico/create-atomic-payload exec node scripts/bundle-scaffolds.js` | Bundles every scaffold (`templates/*` + `examples/*`, per `scaffolds.js`) into the CLI's `scaffolds/` and rewrites each `workspace:*` dep to a caret-pinned version read from `packages/<name>/package.json`. |
 | `pnpm --filter @pro-laico/create-atomic-payload pack`        | Triggers `prepack` (the above) then produces a tarball.                      |
 | `pnpm --filter @pro-laico/create-atomic-payload publish`     | Publish to npm. Run `pnpm typecheck` first.                                  |
 

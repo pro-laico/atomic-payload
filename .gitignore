@@ -37,8 +37,8 @@ examples/fonts-only/public/fonts/
 # Dev consumes src directly via turbopack, so dist is never needed in git.
 packages/*/dist
 
-# CLI packed template (generated during prepack)
-packages/create-atomic-payload/template
+# CLI bundled scaffolds (generated during prepack)
+packages/create-atomic-payload/scaffolds
 
 .claude
 

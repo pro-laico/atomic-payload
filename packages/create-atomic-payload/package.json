@@ -4,7 +4,7 @@
     "access": "public"
   },
   "version": "0.2.0",
-  "description": "Scaffold a new Atomic Payload project - the Payload CMS starter where all you need to know is Tailwind.",
+  "description": "Scaffold a new Atomic Payload project or example - the Payload CMS starter where all you need to know is Tailwind.",
   "license": "MIT",
   "type": "module",
   "bin": {
@@ -12,10 +12,11 @@
   },
   "files": [
     "bin",
-    "template"
+    "scaffolds",
+    "scaffolds.js"
   ],
   "scripts": {
-    "prepack": "node scripts/copy-template.js",
+    "prepack": "node scripts/bundle-scaffolds.js",
     "create": "node bin/cli.js"
   },
   "dependencies": {
