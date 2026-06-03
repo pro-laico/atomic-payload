@@ -1,4 +1,5 @@
 import type { CollectionConfig, Config, GlobalConfig, Plugin } from 'payload'
+
 import { Font } from './collections/font'
 import { FontSet } from './globals/fontSet'
 

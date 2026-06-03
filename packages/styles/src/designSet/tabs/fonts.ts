@@ -1,5 +1,6 @@
 import { APField, onArraySetAPFShallow } from '@pro-laico/core'
 import type { Field, Tab } from 'payload'
+
 import { TokenValueArrayField } from '../../fields/value'
 import { DesignTokenLabelPath } from '../../paths'
 

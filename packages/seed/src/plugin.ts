@@ -1,4 +1,5 @@
 import type { Config, Plugin } from 'payload'
+
 import { createSeedEndpoint, type SeedFn } from './endpoint'
 import { BeforeDashboardPath } from './index'
 import { seed as defaultSeed } from './seed'

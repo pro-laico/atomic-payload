@@ -1,4 +1,5 @@
 import type { Config, Plugin } from 'payload'
+
 import { Footer } from './collections/footers/collection'
 import { Header } from './collections/headers/collection'
 import { Pages } from './collections/pages/collection'

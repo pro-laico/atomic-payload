@@ -1,4 +1,5 @@
 ﻿import type { CheckboxField } from 'payload'
+
 import { virtualAPFAfterReadFieldHook, virtualAPFBeforeChangeFieldHook } from '../hooks/field/apf'
 import type { APFunction } from '../types'
 

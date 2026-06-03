@@ -21,6 +21,7 @@
       "!**/*.generated.*",
       "!**/payload-types.ts",
       "!**/importMap.js",
+      "!**/app/definition.ts",
       "!**/*.tsbuildinfo",
       "!**/-packages"
     ]
@@ -54,7 +55,24 @@
   },
   "assist": {
     "enabled": true,
-    "actions": { "source": { "organizeImports": "on" } }
+    "actions": {
+      "source": {
+        "organizeImports": {
+          "level": "on",
+          "options": {
+            "groups": [
+              [":BUN:", ":NODE:"],
+              ":BLANK_LINE:",
+              [":URL:", ":PACKAGE_WITH_PROTOCOL:", ":PACKAGE:"],
+              ":BLANK_LINE:",
+              ":ALIAS:",
+              ":BLANK_LINE:",
+              ":PATH:"
+            ]
+          }
+        }
+      }
+    }
   },
   "linter": {
     "enabled": true,

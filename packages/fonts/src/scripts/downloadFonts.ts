@@ -1,5 +1,6 @@
 import fs from 'node:fs'
 import path from 'node:path'
+
 import { PayloadSDK } from '@payloadcms/sdk'
 import type { Font } from '@pro-laico/fonts/schema'
 import dotenv from 'dotenv'

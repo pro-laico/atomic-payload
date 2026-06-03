@@ -1,5 +1,6 @@
 import { toJSONSchemaExtensions } from '@pro-laico/zap'
 import type { CollectionBeforeChangeHook, Config, PayloadRequest, Plugin } from 'payload'
+
 import type { CssProcessorGetCached } from './cssProcessor'
 import { createDesignSetCollection, type DesignSetCollectionOptions } from './designSet/createCollection'
 import { baseStorage } from './globals/storage'

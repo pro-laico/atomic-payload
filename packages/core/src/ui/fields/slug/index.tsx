@@ -4,6 +4,7 @@ import { Button, FieldLabel, TextInput, useField, useForm, useFormFields } from 
 import type { TextFieldClientProps } from 'payload'
 import type React from 'react'
 import { useCallback, useEffect } from 'react'
+
 import { formatSlug } from '../../../hooks/field/formatSlug'
 
 type SlugComponentProps = { fieldToUse: string; checkboxFieldPath: string } & TextFieldClientProps

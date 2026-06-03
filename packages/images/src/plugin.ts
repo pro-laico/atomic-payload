@@ -1,4 +1,5 @@
 import type { CollectionConfig, Config, Plugin } from 'payload'
+
 import { Favicons } from './collections/favicons'
 import { Images } from './collections/images'
 

@@ -1,4 +1,5 @@
 import type { CollectionConfig, Config, Plugin } from 'payload'
+
 import { createIconCollection, type IconCollectionOptions } from './collections/icon'
 import { createIconSetCollection, type IconSetCollectionOptions } from './collections/iconSet'
 

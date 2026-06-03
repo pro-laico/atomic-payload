@@ -1,5 +1,6 @@
 import type { BlockFieldExtensions, ClassNameFieldWrapper } from '@pro-laico/core'
 import type { Block, Config, Plugin } from 'payload'
+
 import { buildChildBlocks, type GenericChildBlockSlug } from './buildChildBlocks'
 
 export interface ChildBlocksPluginOptions {

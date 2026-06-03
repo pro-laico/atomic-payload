@@ -1,6 +1,7 @@
 import { deepMerge } from '@pro-laico/core'
 import type { ShortcutSet } from '@pro-laico/site/schema'
 import { createGenerator, type PresetWind4Theme, presetAttributify, presetTypography, presetWind4 } from 'unocss'
+
 import { defaultAtomicClasses } from './designSet/defaults'
 import type { CollectionsWithStoredAtomicClasses, cssProcessorType } from './types/css'
 import type { DesignSet } from './types/payload-augment'

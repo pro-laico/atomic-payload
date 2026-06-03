@@ -1,5 +1,6 @@
 ﻿import type { RunFunction } from '@pro-laico/atomic/actions'
 import type { RunnerType } from '@pro-laico/atomic/actions/schema'
+
 import { RunCycleText } from './cycleText/function'
 import { RunResetForm } from './resetForm/function'
 import { RunSetBool } from './setBool/function'

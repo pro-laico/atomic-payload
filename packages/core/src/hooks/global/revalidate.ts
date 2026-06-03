@@ -1,4 +1,5 @@
 import type { GlobalBeforeChangeHook } from 'payload'
+
 import { revalidateTag } from '../../utilities/revalidateTag'
 
 /**

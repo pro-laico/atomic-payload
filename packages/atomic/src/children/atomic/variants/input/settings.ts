@@ -1,6 +1,7 @@
 import type { AtomicInputTypes } from '@pro-laico/atomic/actions/schema'
 import { APField } from '@pro-laico/core'
 import type { GroupField } from 'payload'
+
 import autocompleteOptions from './autoCompleteOptions'
 import { CheckboxSettingsTab } from './variants/checkBox/settings'
 import { NumberSettingsTab } from './variants/number/settings'

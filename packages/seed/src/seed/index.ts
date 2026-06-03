@@ -1,9 +1,11 @@
 import { readFile } from 'node:fs/promises'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
+
 import type { Icon } from '@pro-laico/icons/schema'
 import type { Page } from '@pro-laico/site/schema'
 import type { CollectionSlug, File, Payload, PayloadRequest } from 'payload'
+
 import { backendForm } from './backendForm'
 import { designSet } from './designSet'
 //Collection Data
@@ -13,7 +15,6 @@ import { iconSet } from './iconSet'
 import { checkIcon, closeIcon, cookieIcon, githubIcon, logoIcon, menuIcon, themeIcon } from './icons'
 import { homePage, notFoundPage, prosePage, testingPage } from './pages'
 import { shortcutSet } from './shortcutSet'
-
 //Global Data
 import { siteMetaData } from './siteMetaData'
 

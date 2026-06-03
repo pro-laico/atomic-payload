@@ -1,4 +1,5 @@
 import type { CollectionSlug, PayloadRequest } from 'payload'
+
 import { getClientSideURL } from './getURL'
 
 type Props = {

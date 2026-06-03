@@ -1,4 +1,5 @@
 import type { CollectionConfig } from 'payload'
+
 import { anyone, authd } from '../access'
 
 export const Favicons: CollectionConfig = {

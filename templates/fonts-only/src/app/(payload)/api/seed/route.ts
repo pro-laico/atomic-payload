@@ -2,6 +2,7 @@ import config from '@payload-config'
 import { headers as nextHeaders } from 'next/headers'
 import { NextResponse } from 'next/server'
 import { getPayload } from 'payload'
+
 import { sampleFonts } from '@/seed/sampleFonts'
 
 /**

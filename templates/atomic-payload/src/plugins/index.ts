@@ -8,6 +8,7 @@ import { seedPlugin } from '@pro-laico/seed'
 import { sitePlugin } from '@pro-laico/site'
 import { trackingPlugin } from '@pro-laico/tracking'
 import type { Plugin } from 'payload'
+
 import { blurDataUrlsPluginConfig } from './blurDataUrls'
 import { childBlocksPluginConfig } from './childBlocks'
 import { fontsPluginConfig } from './fonts'

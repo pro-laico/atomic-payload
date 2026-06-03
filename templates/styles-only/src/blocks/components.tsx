@@ -1,4 +1,5 @@
 import getCached from '@/cache/getCached'
+
 import type { ButtonRowData, CardGridData, HeroData, PaletteData, ProseData } from './configs'
 
 /**

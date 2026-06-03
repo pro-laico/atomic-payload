@@ -2,6 +2,7 @@ import type { CookiePreferences } from '@pro-laico/atomic/actions'
 import type { AtomicInputTypes } from '@pro-laico/atomic/actions/schema'
 import type { Config } from '@pro-laico/core'
 import type { BlocksFieldClientProps } from 'payload'
+
 import type {
   FormRateLimitBlocks,
   FormRateLimitBlockType,

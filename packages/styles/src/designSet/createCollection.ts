@@ -1,6 +1,7 @@
 import type { APFunction } from '@pro-laico/core'
 import { APFControlsPath, generateAPFFields, revalidateCacheOnDelete } from '@pro-laico/core'
 import type { CollectionBeforeChangeHook, CollectionConfig, Field, PayloadRequest } from 'payload'
+
 import { authd } from '../access/authenticated'
 import { AnimationsTab } from './tabs/animation'
 import { ColorsTab } from './tabs/colors'

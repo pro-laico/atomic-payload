@@ -9,6 +9,7 @@ import {
   revalidateCacheOnDelete,
 } from '@pro-laico/core'
 import type { CollectionConfig, Field, PayloadRequest } from 'payload'
+
 import { authd } from '../access/authenticated'
 
 const APFunctions: APFunction[] = ['active']

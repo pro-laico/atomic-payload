@@ -1,4 +1,5 @@
 import type React from 'react'
+
 import { ButtonRow, CardGrid, Hero, Palette, Prose } from './components'
 import type { ButtonRowData, CardGridData, HeroData, PaletteData, ProseData } from './configs'
 

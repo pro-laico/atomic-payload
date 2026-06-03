@@ -5,6 +5,7 @@
 
 import type { Config } from '@pro-laico/core'
 import type { PayloadRequest, RequestContext } from 'payload'
+
 import type { CollectionThatUsesCSSProcessorSlug, CollectionWithStoredAtomicClassesSlug } from './payload-augment'
 
 /** Document types from collections that include storedAtomicClasses property. E.g., Page | Footer | Header */

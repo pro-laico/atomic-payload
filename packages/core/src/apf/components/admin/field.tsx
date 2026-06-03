@@ -8,6 +8,7 @@ import { fieldBaseClass } from '@payloadcms/ui/fields/shared'
 import { useTranslation } from '@payloadcms/ui/providers/Translation'
 import type React from 'react'
 import { memo, useEffect, useMemo, useState } from 'react'
+
 import { apfRegistry } from '../../fields/storage'
 import type { APFFieldComponentType } from '../../types'
 import APFieldLabelServer from './label'

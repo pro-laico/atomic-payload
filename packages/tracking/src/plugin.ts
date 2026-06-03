@@ -1,4 +1,5 @@
 import type { Config, Plugin } from 'payload'
+
 import { PostHogProperty } from './collections/posthogProperty'
 import { Tracking } from './globals/tracking'
 

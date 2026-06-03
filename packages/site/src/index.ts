@@ -2,7 +2,6 @@ import './types/payload'
 
 export { Footer } from './collections/footers/collection'
 export { Header } from './collections/headers/collection'
-
 export { Pages } from './collections/pages/collection'
 export type { SitePluginOptions } from './plugin'
 export { default, sitePlugin } from './plugin'

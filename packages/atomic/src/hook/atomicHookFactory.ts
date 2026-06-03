@@ -1,4 +1,5 @@
 import type { CollectionBeforeChangeHook } from 'payload'
+
 import type { AtomicHookGetCached, AtomicHookSlugConfig } from './atomicHookTypes'
 
 /**

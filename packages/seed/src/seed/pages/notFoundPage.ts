@@ -1,4 +1,5 @@
 import type { Page } from '@pro-laico/site/schema'
+
 import { toPageRelationship } from '../utilities/seedNestedRelationship'
 
 type NotFoundArgs = {

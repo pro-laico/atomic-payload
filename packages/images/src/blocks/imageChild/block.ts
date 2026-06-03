@@ -3,6 +3,7 @@ import { ChildsSettingsTab } from '@pro-laico/atomic/children/fields/tabs/settin
 import { TrackingTab } from '@pro-laico/atomic/children/fields/trackingTab'
 import type { BlockFieldExtensions } from '@pro-laico/core'
 import type { Block } from 'payload'
+
 import type { Image as ImageType } from '../../types/payload-augment'
 
 const d = {

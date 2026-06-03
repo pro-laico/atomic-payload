@@ -4,6 +4,7 @@ import { Button, DocumentIcon, EditIcon, FolderIcon, LinkIcon, MenuIcon, PlusIco
 import type { BeforeDocumentControlsClientProps } from 'payload'
 import type React from 'react'
 import { memo } from 'react'
+
 import { apfRegistry } from '../../fields/storage'
 import type { APFunction } from '../../types'
 

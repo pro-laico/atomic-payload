@@ -2,6 +2,7 @@ import LivePreviewListener from '@pro-laico/core/components/frontend/LivePreview
 import { draftMode } from 'next/headers'
 import { ThemeProvider } from 'next-themes'
 import type React from 'react'
+
 import getCached from '@/cache/getCached'
 
 /** Payload-backed layout needs a live DB; avoid static prerender at build time. */

@@ -15,6 +15,7 @@ import type {
   TextField,
   TextFieldClientProps,
 } from 'payload'
+
 import type { Config } from '../kernel'
 
 // /////////////////////////////////////

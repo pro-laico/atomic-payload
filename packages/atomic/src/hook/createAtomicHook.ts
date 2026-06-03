@@ -6,6 +6,7 @@ import { createCssProcessor, processDesignSet } from '@pro-laico/styles'
 import { z } from '@pro-laico/zap'
 import type { CollectionBeforeChangeHook, CollectionSlug } from 'payload'
 import traverse from 'traverse'
+
 import { type CreateAtomicHookOptions, DEFAULT_ATOMIC_HOOK_SLUG_CONFIG } from './atomicHookTypes'
 import { unsetActive } from './unsetActive'
 import manualLogger from './utilities/manualLogger'

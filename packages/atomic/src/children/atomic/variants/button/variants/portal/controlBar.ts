@@ -1,5 +1,4 @@
 import { APField } from '@pro-laico/core'
-
 import type { CheckboxField, SelectField, TextField } from 'payload'
 
 const portalTypeOptions = [

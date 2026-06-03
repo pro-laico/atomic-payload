@@ -70,7 +70,6 @@ export function createDefaultGetCached(configPromise: PayloadConfigPromise, opti
 
 export type { GetCachedFn, GetRegistry } from './getCached'
 export { createGetCached } from './getCached'
-
 export {
   createGetCachedAtomicClasses,
   createGetCachedAtomicForms,

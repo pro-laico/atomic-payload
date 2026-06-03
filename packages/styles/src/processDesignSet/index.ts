@@ -1,4 +1,5 @@
 import type { DesignSet } from '@pro-laico/styles/schema'
+
 import manualLogger from '../utilities/manualLogger'
 import generatePreflights from './generatePreflights'
 

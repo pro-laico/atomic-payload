@@ -1,4 +1,5 @@
 import type { GroupField } from 'payload'
+
 import { formFunctionsBlockTemplate } from '../../blocks/submitForm/form'
 
 export const formRateLimitTab: GroupField = {

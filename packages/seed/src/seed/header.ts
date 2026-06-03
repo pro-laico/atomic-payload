@@ -1,4 +1,5 @@
 import type { Header, Page } from '@pro-laico/site/schema'
+
 import { toPageRelationship } from './utilities/seedNestedRelationship'
 
 type HeaderArgs = { testing: Page; home: Page; prose: Page }

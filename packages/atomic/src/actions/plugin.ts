@@ -1,4 +1,5 @@
 import type { Block, Config, Plugin } from 'payload'
+
 import { AllActionBlocks } from './blocks/blocks'
 
 export interface ActionsPluginOptions {

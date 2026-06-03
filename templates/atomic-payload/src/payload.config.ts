@@ -1,5 +1,6 @@
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
+
 //import { resendAdapter } from '@payloadcms/email-resend'
 import { mongooseAdapter } from '@payloadcms/db-mongodb'
 import { getServerSideURL } from '@pro-laico/core'
@@ -7,6 +8,7 @@ import { defaultLexical } from '@pro-laico/richtext/default-lexical'
 import type { SharpDependency } from 'payload'
 import { buildConfig } from 'payload'
 import sharp from 'sharp'
+
 import Collections from '@/collections'
 import { Users } from '@/collections/users'
 import { plugins } from '@/plugins'

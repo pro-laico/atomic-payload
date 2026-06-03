@@ -6,6 +6,7 @@ import { TrackingProvider } from '@pro-laico/tracking/provider'
 import { draftMode } from 'next/headers'
 import { ThemeProvider } from 'next-themes'
 import type React from 'react'
+
 import fonts from '@/app/definition'
 
 /** Payload-backed layouts need a live DB; avoid static prerender at `next build` when Mongo is unavailable. */

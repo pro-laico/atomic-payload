@@ -5,6 +5,7 @@ import { createImageBlock } from '@pro-laico/images/blocks/imageChild'
 import { createVideoBlock } from '@pro-laico/mux-video/blocks/videoChild'
 import { createRichTextBlock } from '@pro-laico/richtext'
 import type { Block } from 'payload'
+
 import { AtomicBlockFactory, defaultAtomicDepthControls } from './atomic/block'
 import { createSimpleTextBlock } from './simpleText/block'
 

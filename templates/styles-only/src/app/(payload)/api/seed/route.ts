@@ -3,6 +3,7 @@ import { revalidateTag } from '@pro-laico/core'
 import { headers as nextHeaders } from 'next/headers'
 import { NextResponse } from 'next/server'
 import { getPayload } from 'payload'
+
 import { sampleDesignSet, sampleHomePage, sampleShortcutSet } from '@/seed/sampleSets'
 
 /**

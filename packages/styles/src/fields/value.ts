@@ -1,6 +1,7 @@
 import { APField, onArraySetAPFShallow } from '@pro-laico/core'
 import { z } from '@pro-laico/zap'
 import type { ArrayField, TextField } from 'payload'
+
 import { DesignTokenLabelPath } from '../paths'
 
 /** Creates a value field for use in the design sets collection. */

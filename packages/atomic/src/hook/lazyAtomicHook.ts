@@ -1,6 +1,7 @@
 'use server'
 
 import type { CollectionBeforeChangeHook } from 'payload'
+
 import type { AtomicHookGetCached } from './atomicHookTypes'
 
 /**

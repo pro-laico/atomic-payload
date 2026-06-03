@@ -2,6 +2,7 @@
 import 'server-only' //DO NOT REMOVE
 import { manualLogger, sanitizeData } from '@pro-laico/atomic/hook/light'
 import { type CollectionSlug, getPayload, type Where } from 'payload'
+
 import type { GCFunction } from '../../types/cache'
 import cacheLogger from '../cacheLogger'
 

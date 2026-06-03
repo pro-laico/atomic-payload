@@ -1,4 +1,5 @@
 import type { Tab } from 'payload'
+
 import { TokenValueArrayField } from '../../fields/value'
 
 export const SizesTab = () => {

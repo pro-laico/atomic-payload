@@ -1,4 +1,5 @@
 import type { GroupField } from 'payload'
+
 import { DefaultOpenField } from '../../../../../../fields/defaultOpen'
 import { KeepMountedField } from '../../../../../../fields/keepMounted'
 import { ModalField } from '../../../../../../fields/modal'

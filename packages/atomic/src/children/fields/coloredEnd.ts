@@ -1,4 +1,5 @@
 import type { UIField } from 'payload'
+
 import { ColoredEndPath } from '../components/admin'
 
 /** Place at the end of a block to add a colored strip that adjusts color based on the block type and values. */

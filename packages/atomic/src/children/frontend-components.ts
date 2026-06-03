@@ -3,6 +3,7 @@ export { SVGChild } from '@pro-laico/icons/blocks/svgChild/component'
 export { ImageChild } from '@pro-laico/images/blocks/imageChild/component'
 export { VideoChild } from '@pro-laico/mux-video/blocks/videoChild/component'
 export { RichTextChild } from '@pro-laico/richtext'
+
 export { AtomicButtonLink } from './atomic/variants/button/variants/link/component'
 export { AtomicButtonLinkClient } from './atomic/variants/button/variants/link/component.client'
 export { AtomicButtonPortalDialog } from './atomic/variants/button/variants/portal/dialog/component'

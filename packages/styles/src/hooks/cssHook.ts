@@ -1,4 +1,5 @@
 import type { CollectionBeforeChangeHook } from 'payload'
+
 import { type CssProcessorGetCached, createCssProcessor } from '../cssProcessor'
 import processDesignSet from '../processDesignSet'
 import manualLogger from '../utilities/manualLogger'

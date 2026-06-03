@@ -1,5 +1,6 @@
 import { Banner } from '@payloadcms/ui/elements/Banner'
 import type React from 'react'
+
 import { SeedControls } from './SeedControls'
 import './index.scss'
 

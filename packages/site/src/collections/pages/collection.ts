@@ -15,6 +15,7 @@ import {
 } from '@pro-laico/core'
 import { ClassNameField } from '@pro-laico/styles/fields/className'
 import type { CollectionConfig } from 'payload'
+
 import { authd, authenticatedOrPublished } from '../../access'
 import { SEOTab } from './tabs/SEO'
 import { SettingsTab } from './tabs/settings'

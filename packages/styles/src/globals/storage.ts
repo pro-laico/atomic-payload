@@ -1,4 +1,5 @@
 import type { GlobalConfig } from 'payload'
+
 import { authd } from '../access/authenticated'
 
 /** Factory for the per-state CSS storage globals (`draftStorage` /

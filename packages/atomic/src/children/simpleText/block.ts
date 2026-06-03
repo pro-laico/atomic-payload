@@ -1,5 +1,6 @@
 import type { BlockFieldExtensions } from '@pro-laico/core'
 import type { Block } from 'payload'
+
 import { SimpleTextRowLabelPath as SimpleTextLabelPath } from '../components/admin'
 import { ColoredEnd } from '../fields/coloredEnd'
 import { ForField } from '../fields/for'

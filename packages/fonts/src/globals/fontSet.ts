@@ -1,4 +1,5 @@
 import type { Access, GlobalConfig } from 'payload'
+
 import { fontUploadFields } from '../fields/font'
 
 const authd: Access = ({ req }) => Boolean(req.user)

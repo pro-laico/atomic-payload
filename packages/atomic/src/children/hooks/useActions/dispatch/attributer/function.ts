@@ -1,5 +1,6 @@
 ﻿import type { AttFunction } from '@pro-laico/atomic/actions'
 import type { AttributerType } from '@pro-laico/atomic/actions/schema'
+
 import { AttBoolToDA } from './boolToDA/function'
 //Functions
 import { AttCCToDA } from './cCToDA/function'

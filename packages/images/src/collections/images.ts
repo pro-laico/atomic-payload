@@ -1,5 +1,6 @@
 import { revalidateCacheCollection } from '@pro-laico/core'
 import type { CollectionConfig, ImageUploadFormatOptions } from 'payload'
+
 import { anyone, authd } from '../access'
 
 const formatOptions: ImageUploadFormatOptions = { format: 'webp', options: { nearLossless: true, quality: 75 } }

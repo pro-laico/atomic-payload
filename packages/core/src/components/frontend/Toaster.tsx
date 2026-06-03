@@ -1,5 +1,6 @@
 'use client'
 import { Toast } from '@base-ui-components/react/toast'
+
 import styles from './Toaster.module.css'
 
 const Toaster = ({ children }: { children: React.ReactNode }) => {

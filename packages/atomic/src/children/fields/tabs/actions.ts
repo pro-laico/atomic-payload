@@ -1,4 +1,5 @@
 import type { GroupField } from 'payload'
+
 import { ActionBlocks } from '../blocks/actions'
 
 type ActionsTab = (prefix: 'trigger' | 'content') => GroupField

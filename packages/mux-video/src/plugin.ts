@@ -1,5 +1,6 @@
 import { muxVideoPlugin as upstreamMuxVideoPlugin } from '@oversightstudio/mux-video'
 import type { CollectionConfig, Config, Plugin } from 'payload'
+
 import { MuxVideo } from './collections/muxVideo'
 
 export interface AtomicMuxVideoOptions {

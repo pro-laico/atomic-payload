@@ -4,6 +4,7 @@
 
 import type { DotNestedKeys, StringKeyOf } from '@pro-laico/core'
 import type { ReactNode } from 'react'
+
 import type { ChildBlocks, ChildBlockType } from './payload-augment'
 
 // Schema stubs are intentionally NOT re-exported — see `/schema` subpath.

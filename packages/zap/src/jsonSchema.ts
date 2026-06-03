@@ -1,4 +1,5 @@
 import type { JSONSchema4 } from 'json-schema'
+
 import { ap } from './ap'
 
 export type GenerateBlocksTypeProps = { name: string; refs: (string | undefined)[] }

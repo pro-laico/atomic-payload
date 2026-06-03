@@ -1,6 +1,7 @@
 ﻿import type { ChildBlockType } from '@pro-laico/atomic/children/schema'
 import type { ClassNameFieldWrapper } from '@pro-laico/core'
 import type { Field, TabAsField, TextField } from 'payload'
+
 import { LinkSettingsTab } from '../../atomic/variants/button/variants/link/settings'
 import { DialogSettingsTab } from '../../atomic/variants/button/variants/portal/dialog/settings'
 import { PopoverSettingsTab } from '../../atomic/variants/button/variants/portal/popover/settings'

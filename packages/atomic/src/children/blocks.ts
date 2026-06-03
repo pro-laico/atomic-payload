@@ -5,6 +5,7 @@ import { SVGBlock } from '@pro-laico/icons/blocks/svgChild'
 import { Image } from '@pro-laico/images/blocks/imageChild'
 import { Video } from '@pro-laico/mux-video/blocks/videoChild'
 import { RichText } from '@pro-laico/richtext'
+
 import AtomicBlock from './atomic/block'
 import { SimpleText } from './simpleText/block'
 

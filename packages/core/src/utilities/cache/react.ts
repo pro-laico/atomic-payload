@@ -1,5 +1,6 @@
 ﻿import 'server-only' //DO NOT REMOVE
 import { cache } from 'react'
+
 import type { PayloadConfigPromise } from '../../types/cache'
 import { createDefaultGetCached } from './index'
 

@@ -1,11 +1,13 @@
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
+
 import { sqliteAdapter } from '@payloadcms/db-sqlite'
 import { getServerSideURL } from '@pro-laico/core'
 import { iconsPlugin } from '@pro-laico/icons'
 import type { SharpDependency } from 'payload'
 import { buildConfig } from 'payload'
 import sharp from 'sharp'
+
 import { Users } from '@/collections/users'
 
 /** Builds the live-preview iframe URL for IconSet edits. The icons demo has a

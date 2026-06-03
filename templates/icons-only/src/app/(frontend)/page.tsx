@@ -7,6 +7,7 @@ import { redirect } from 'next/navigation'
 import { getPayload } from 'payload'
 
 import { sampleIconSets } from '@/seed/sampleIcons'
+
 import { CodeBlock } from './CodeBlock'
 
 const totalSampleIcons = sampleIconSets.reduce((n, s) => n + s.icons.length, 0)

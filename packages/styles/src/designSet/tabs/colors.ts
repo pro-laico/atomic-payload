@@ -3,6 +3,7 @@
 import { APField, onArraySetAPFShallow } from '@pro-laico/core'
 import { z } from '@pro-laico/zap'
 import type { Tab } from 'payload'
+
 import { ColorLabelPath } from '../../paths'
 
 export const UnoColors = z.ap.add(z.record(z.string(), z.string().or(z.record(z.string(), z.string()))), { id: 'UnoColors' })

@@ -1,4 +1,5 @@
 import type { Block, Config, Plugin } from 'payload'
+
 import FormRateLimitBlocks from './submitForm/form/rateLimiting/blocks'
 import FormSanitationBlocks from './submitForm/form/sanitation/blocks'
 import FormValidationBlocks from './submitForm/form/validation/blocks'

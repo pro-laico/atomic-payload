@@ -1,8 +1,10 @@
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
+
 import { sqliteAdapter } from '@payloadcms/db-sqlite'
 import { fontsPlugin } from '@pro-laico/fonts'
 import { buildConfig } from 'payload'
+
 import { Users } from '@/collections/users'
 import { FONT_STATIC_DIR } from '@/lib/fontDir'
 

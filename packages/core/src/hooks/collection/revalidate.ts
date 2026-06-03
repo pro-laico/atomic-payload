@@ -1,4 +1,5 @@
 import type { CollectionAfterDeleteHook, CollectionBeforeChangeHook } from 'payload'
+
 import { revalidateTag } from '../../utilities/revalidateTag'
 
 /** Args passed to per-slug `beforeChange` revalidation handlers. `data` and

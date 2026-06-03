@@ -1,5 +1,6 @@
 import { revalidateCacheGlobal as revalidateCache } from '@pro-laico/core'
 import type { GlobalConfig } from 'payload'
+
 import { authd } from '../access'
 
 const d = {

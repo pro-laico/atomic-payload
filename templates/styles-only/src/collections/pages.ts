@@ -1,6 +1,7 @@
 import { generateLivePreviewPath, revalidateTag } from '@pro-laico/core'
 import { ClassNameField } from '@pro-laico/styles/fields/className'
 import type { CollectionAfterChangeHook, CollectionAfterDeleteHook, CollectionBeforeChangeHook, CollectionConfig } from 'payload'
+
 import { exampleBlocks } from '@/blocks/configs'
 
 const authd = ({ req }: { req: { user?: unknown } }) => Boolean(req.user)

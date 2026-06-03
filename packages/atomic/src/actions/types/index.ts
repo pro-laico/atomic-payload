@@ -6,6 +6,7 @@ import type { ExtractOrDefault } from '@pro-laico/core'
 // Hand-written types for the actions surface.
 // /////////////////////////////////////
 import type { UseThemeProps } from 'next-themes'
+
 import type {
   ActionBlocks,
   ActionBlockType,

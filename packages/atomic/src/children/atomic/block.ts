@@ -2,6 +2,7 @@ import type { DepthControls } from '@pro-laico/atomic/children'
 import type { NonRecursiveChildBlockType } from '@pro-laico/atomic/children/schema'
 import type { ClassNameFieldWrapper } from '@pro-laico/core'
 import type { Block, BlocksField } from 'payload'
+
 import { AtomicRowLabelPath as AtomicPath } from '../components/admin'
 import { ColoredEnd } from '../fields/coloredEnd'
 import { ContentActionsTab, TriggerActionsTab } from '../fields/tabs/actions'

@@ -13,6 +13,7 @@ import type { Footer, Header, Page, ShortcutSet, SiteMetaDatum } from '@pro-laic
 import type { DesignSet } from '@pro-laico/styles/schema'
 import type { Tracking } from '@pro-laico/tracking/schema'
 import type { SanitizedConfig } from 'payload'
+
 import type { MergeTuples } from '../kernel'
 
 /** The Payload config (or its resolution promise) that getter functions need to instantiate a Payload local-API client. */
