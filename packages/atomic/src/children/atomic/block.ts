@@ -3,12 +3,12 @@ import type { ClassNameFieldWrapper } from '@pro-laico/core'
 import type { DepthControls } from '@pro-laico/atomic/children'
 import type { NonRecursiveChildBlockType } from '@pro-laico/atomic/children/schema'
 
+import { AtomicBlockControlBar } from './controlBar'
+import { AtomicRowLabelPath as AtomicPath } from '../components/admin'
 import { ColoredEnd } from '../fields/coloredEnd'
 import { TrackingTab } from '../fields/trackingTab'
-import { AtomicBlockControlBar } from './controlBar'
-import { inputTab } from '../fields/tabs/submitForm/input'
 import { ChildsSettingsTab } from '../fields/tabs/settings'
-import { AtomicRowLabelPath as AtomicPath } from '../components/admin'
+import { inputTab } from '../fields/tabs/submitForm/input'
 import { ContentActionsTab, TriggerActionsTab } from '../fields/tabs/actions'
 import { formRateLimitTab, formSanitationTab, formValidationTab } from '../fields/tabs/submitForm/form'
 
@@ -62,12 +62,16 @@ export function AtomicBlockFactory({ depthControls, classNameField }: AtomicBloc
   const cb: BlocksField = {
     ...childrenBase,
     name: 'children',
-    blockReferences: [...NonRecursiveChildBlocks],
+    blockReferences: [...NonRecursiveChildBlocks] as BlocksField['blockReferences'],
     admin: { ...childrenBase.admin, condition: (_, sd) => Boolean(sd.type !== 'input') },
   }
   if (cd < cmd) cb.blockReferences?.unshift(AtomicBlockFactory({ depthControls: { ...depthControls, cd: cd + 1 }, classNameField }))
 
-  const tcb: BlocksField = { ...childrenBase, name: 'triggerChildren', blockReferences: [...NonRecursiveChildBlocks] }
+  const tcb: BlocksField = {
+    ...childrenBase,
+    name: 'triggerChildren',
+    blockReferences: [...NonRecursiveChildBlocks] as BlocksField['blockReferences'],
+  }
   if (td < tmd) tcb.blockReferences?.unshift(AtomicBlockFactory({ depthControls: { cd: td + 1, cmd: tmd, td: td + 1, tmd }, classNameField }))
 
   const atomicBlock: Block = {

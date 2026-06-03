@@ -10,7 +10,7 @@ export const ChildrenBlocksField: BlocksField = {
   type: 'blocks',
   blocks: [],
   admin: { initCollapsed: true },
-  blockReferences: AllChildBlocks,
+  blockReferences: AllChildBlocks as BlocksField['blockReferences'],
   labels: { singular: 'Child', plural: 'Children' },
   typescriptSchema: [() => ({ $ref: `#/definitions/ChildBlocks` })],
 }

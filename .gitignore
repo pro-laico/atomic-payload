@@ -3,9 +3,6 @@ node_modules
 .vercel
 .DS_Store
 
-# TypeScript
-tsconfig.tsbuildinfo
-
 # SQLite databases (Payload local SQLite adapter — created at runtime, never committed)
 *.db
 *.db-journal
@@ -36,7 +33,36 @@ templates/fonts-only/media/
 templates/fonts-only/public/fonts/
 
 
+# Built package output — generated on prepack, published via publishConfig (src→dist swap).
+# Dev consumes src directly via turbopack, so dist is never needed in git.
+packages/*/dist
+
 # CLI packed template (generated during prepack)
 packages/create-atomic-payload/template
 
 .claude
+
+# Logs
+*.log
+npm-debug.log*
+.pnpm-debug.log*
+
+# Build / tooling caches
+.swc
+.turbo
+*.tsbuildinfo
+
+# Next.js static export
+out/
+
+# Editors
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+.idea/
+
+# Windows OS files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/

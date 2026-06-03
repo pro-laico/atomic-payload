@@ -1,4 +1,5 @@
 import 'server-only' //DO NOT REMOVE
+
 import { getPayload } from 'payload'
 
 import cacheLogger from '../cacheLogger'
@@ -13,7 +14,7 @@ export const getCachedImage: GCFunction<'image'> = async (configPromise, tag, ti
   const image = await payload.findByID({ collection: 'images', id: tid, depth: 0 })
   if (!image) return
 
-  const url = version ? image.sizes?.[version]?.url || image.url : image.url
+  const url = version ? image.sizes?.[version as keyof NonNullable<typeof image.sizes>]?.url || image.url : image.url
   if (!url) return
 
   cacheLogger({ tag, tid })

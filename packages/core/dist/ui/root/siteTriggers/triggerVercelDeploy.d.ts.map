@@ -1,1 +1,0 @@
-{"version":3,"file":"triggerVercelDeploy.d.ts","sourceRoot":"","sources":["../../../../src/ui/root/siteTriggers/triggerVercelDeploy.ts"],"names":[],"mappings":"AAEA,wBAAsB,iCAAiC,IAAI,OAAO,CAAC;IACjE,OAAO,EAAE,OAAO,CAAA;IAChB,OAAO,EAAE,MAAM,CAAA;IACf,SAAS,EAAE,MAAM,CAAA;CAClB,CAAC,CA8BD"}

@@ -2,9 +2,9 @@
 // Hand-written types for the child-block render surface.
 // /////////////////////////////////////
 
+import type { BlockSlug } from 'payload'
 import type { ReactNode } from 'react'
-import type { AllBlocks, BlockBySlug } from '@pro-laico/core'
-import type { DotNestedKeys, StringKeyOf } from '@pro-laico/core'
+import type { AllBlocks, BlockBySlug, DotNestedKeys, StringKeyOf } from '@pro-laico/core'
 
 import type { ChildBlocks, ChildBlockType } from './payload-augment'
 
@@ -25,7 +25,7 @@ export type DepthControls = {
   tmd: number
 }
 
-export type ChildBySlug<T extends ChildBlockType> = BlockBySlug<T>
+export type ChildBySlug<T extends ChildBlockType> = BlockBySlug<T & BlockSlug>
 export type AllBlockDotNestedKeys = DotNestedKeys<AllBlocks>
 
 // /////////////////////////////////////

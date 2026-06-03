@@ -1,9 +1,8 @@
 ﻿import type { BlocksField } from 'payload'
+import type { InputSanitationBlockType, InputValidationBlockType } from '@pro-laico/atomic/forms/schema'
 
 import { InputBlocksPath } from '../../../components/admin'
-
 import { useOn } from '@pro-laico/atomic/forms/submitForm/input/useOn'
-import type { InputSanitationBlockType, InputValidationBlockType } from '@pro-laico/atomic/forms/schema'
 
 type InputFunctionRegistry = {
   Sanitation: InputSanitationBlockType[]
@@ -20,7 +19,7 @@ export const inputFunctionsBlockTemplate = (variant: keyof typeof inputFunctionR
     name: `input${variant}Blocks`,
     type: 'blocks',
     blocks: [],
-    blockReferences: inputFunctionRegistry[variant],
+    blockReferences: inputFunctionRegistry[variant] as BlocksField['blockReferences'],
     typescriptSchema: [() => ({ $ref: `#/definitions/Input${variant}Blocks` })],
     admin: { initCollapsed: true, components: { Field: { path: InputBlocksPath, clientProps: { usedOn: useOn } } } },
   }

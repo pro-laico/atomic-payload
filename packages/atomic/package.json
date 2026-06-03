@@ -5,7 +5,183 @@
   "license": "MIT",
   "type": "module",
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "main": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "exports": {
+      ".": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "./src": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "./actions": {
+        "types": "./dist/actions/index.d.ts",
+        "default": "./dist/actions/index.js"
+      },
+      "./actions/schema": {
+        "types": "./dist/actions/types/payload-augment.d.ts",
+        "default": "./dist/actions/types/payload-augment.js"
+      },
+      "./actions/zap": {
+        "types": "./dist/actions/blocks/zap.d.ts",
+        "default": "./dist/actions/blocks/zap.js"
+      },
+      "./actions/blocks": {
+        "types": "./dist/actions/blocks/blocks.d.ts",
+        "default": "./dist/actions/blocks/blocks.js"
+      },
+      "./actions/filters": {
+        "types": "./dist/actions/blocks/filters.d.ts",
+        "default": "./dist/actions/blocks/filters.js"
+      },
+      "./actions/processor": {
+        "types": "./dist/actions/blocks/processor.d.ts",
+        "default": "./dist/actions/blocks/processor.js"
+      },
+      "./actions/fields": {
+        "types": "./dist/actions/fields/index.d.ts",
+        "default": "./dist/actions/fields/index.js"
+      },
+      "./actions/fields/keyText": {
+        "types": "./dist/actions/fields/keyText.d.ts",
+        "default": "./dist/actions/fields/keyText.js"
+      },
+      "./actions/fields/strict/registry/theme": {
+        "types": "./dist/actions/fields/strict/registry/theme.d.ts",
+        "default": "./dist/actions/fields/strict/registry/theme.js"
+      },
+      "./actions/fields/strict/registry/cookieConsent": {
+        "types": "./dist/actions/fields/strict/registry/cookieConsent.d.ts",
+        "default": "./dist/actions/fields/strict/registry/cookieConsent.js"
+      },
+      "./hook": {
+        "types": "./dist/hook/index.d.ts",
+        "default": "./dist/hook/index.js"
+      },
+      "./hook/schema": {
+        "types": "./dist/hook/types/payload-augment.d.ts",
+        "default": "./dist/hook/types/payload-augment.js"
+      },
+      "./hook/client": {
+        "types": "./dist/hook/frontEnd/atomicStore/index.d.ts",
+        "default": "./dist/hook/frontEnd/atomicStore/index.js"
+      },
+      "./forms": {
+        "types": "./dist/forms/index.d.ts",
+        "default": "./dist/forms/index.js"
+      },
+      "./forms/schema": {
+        "types": "./dist/forms/types/payload-augment.d.ts",
+        "default": "./dist/forms/types/payload-augment.js"
+      },
+      "./forms/fields/validationMessage": {
+        "types": "./dist/forms/fields/validationMessage.d.ts",
+        "default": "./dist/forms/fields/validationMessage.js"
+      },
+      "./forms/submitForm/form/zap": {
+        "types": "./dist/forms/submitForm/form/zap.d.ts",
+        "default": "./dist/forms/submitForm/form/zap.js"
+      },
+      "./forms/submitForm/input/zap": {
+        "types": "./dist/forms/submitForm/input/zap.d.ts",
+        "default": "./dist/forms/submitForm/input/zap.js"
+      },
+      "./forms/submitForm/input/useOn": {
+        "types": "./dist/forms/submitForm/input/useOn.d.ts",
+        "default": "./dist/forms/submitForm/input/useOn.js"
+      },
+      "./forms/submitForm/serverFunction": {
+        "types": "./dist/forms/submitForm/serverFunction.d.ts",
+        "default": "./dist/forms/submitForm/serverFunction.js"
+      },
+      "./forms/submitForm/formProcessor": {
+        "types": "./dist/forms/submitForm/formProcessor.d.ts",
+        "default": "./dist/forms/submitForm/formProcessor.js"
+      },
+      "./forms/utilities/formatDurationWithTokens": {
+        "types": "./dist/forms/utilities/formatDurationWithTokens.d.ts",
+        "default": "./dist/forms/utilities/formatDurationWithTokens.js"
+      },
+      "./forms/utilities/getServerSideURL": {
+        "types": "./dist/forms/utilities/getServerSideURL.d.ts",
+        "default": "./dist/forms/utilities/getServerSideURL.js"
+      },
+      "./children": {
+        "types": "./dist/children/index.d.ts",
+        "default": "./dist/children/index.js"
+      },
+      "./children/schema": {
+        "types": "./dist/children/types/payload-augment.d.ts",
+        "default": "./dist/children/types/payload-augment.js"
+      },
+      "./children/zap": {
+        "types": "./dist/children/zap.d.ts",
+        "default": "./dist/children/zap.js"
+      },
+      "./children/useActions/zap": {
+        "types": "./dist/children/hooks/useActions/dispatch/zap.d.ts",
+        "default": "./dist/children/hooks/useActions/dispatch/zap.js"
+      },
+      "./children/frontend-components": {
+        "types": "./dist/children/frontend-components.d.ts",
+        "default": "./dist/children/frontend-components.js"
+      },
+      "./children/render": {
+        "types": "./dist/children/render/index.d.ts",
+        "default": "./dist/children/render/index.js"
+      },
+      "./children/fields/trackingTab": {
+        "types": "./dist/children/fields/trackingTab.d.ts",
+        "default": "./dist/children/fields/trackingTab.js"
+      },
+      "./children/fields/coloredEnd": {
+        "types": "./dist/children/fields/coloredEnd.d.ts",
+        "default": "./dist/children/fields/coloredEnd.js"
+      },
+      "./children/fields/tagType": {
+        "types": "./dist/children/fields/tagType.d.ts",
+        "default": "./dist/children/fields/tagType.js"
+      },
+      "./children/fields/tabs/settings": {
+        "types": "./dist/children/fields/tabs/settings.d.ts",
+        "default": "./dist/children/fields/tabs/settings.js"
+      },
+      "./children/admin": {
+        "types": "./dist/children/components/admin/index.d.ts",
+        "default": "./dist/children/components/admin/index.js"
+      },
+      "./children/admin/warningIcon": {
+        "types": "./dist/children/components/admin/warningIcon.d.ts",
+        "default": "./dist/children/components/admin/warningIcon.js"
+      },
+      "./children/admin/coloredEnd": {
+        "types": "./dist/children/components/admin/coloredEnd.d.ts",
+        "default": "./dist/children/components/admin/coloredEnd.js"
+      },
+      "./children/admin/actionBlock": {
+        "types": "./dist/children/components/admin/actionBlock.d.ts",
+        "default": "./dist/children/components/admin/actionBlock.js"
+      },
+      "./children/admin/inputBlock": {
+        "types": "./dist/children/components/admin/inputBlock.d.ts",
+        "default": "./dist/children/components/admin/inputBlock.js"
+      },
+      "./children/admin/iconSelect": {
+        "types": "./dist/children/components/admin/iconSelect.d.ts",
+        "default": "./dist/children/components/admin/iconSelect.js"
+      },
+      "./children/admin/atomicRowLabel": {
+        "types": "./dist/children/components/admin/AtomicRowLabel.d.ts",
+        "default": "./dist/children/components/admin/AtomicRowLabel.js"
+      },
+      "./children/admin/simpleTextRowLabel": {
+        "types": "./dist/children/components/admin/SimpleTextRowLabel.d.ts",
+        "default": "./dist/children/components/admin/SimpleTextRowLabel.js"
+      }
+    }
   },
   "main": "./src/index.ts",
   "types": "./src/index.ts",
@@ -184,12 +360,16 @@
     }
   },
   "files": [
-    "src",
-    "README.md"
+    "dist"
   ],
   "scripts": {
-    "build": "node -e \"process.exit(0)\"",
-    "typecheck": "tsc -p tsconfig.json --noEmit"
+    "build": "pnpm clean && pnpm copyfiles && pnpm build:types && pnpm build:swc",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "build:swc": "swc ./src -d ./dist --config-file ../../.swcrc --strip-leading-paths",
+    "build:types": "tsc -p tsconfig.build.json --emitDeclarationOnly --noCheck",
+    "clean": "rimraf dist tsconfig.tsbuildinfo",
+    "copyfiles": "copyfiles -u 1 \"src/**/*.{scss,css,svg,json,ttf,woff,woff2,eot}\" dist/",
+    "prepack": "pnpm build"
   },
   "dependencies": {
     "@base-ui-components/react": "1.0.0-rc.0",

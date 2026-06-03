@@ -17,10 +17,15 @@
     "check": "biome check --write .",
     "check:ci": "biome check .",
     "typecheck": "pnpm -r typecheck",
-    "create": "pnpm --filter create-atomic-payload exec node bin/cli.js"
+    "create": "pnpm --filter create-atomic-payload exec node bin/cli.js",
+    "release": "pnpm --filter @tools/releaser release"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.2.0"
+    "@biomejs/biome": "^2.2.0",
+    "@swc/cli": "0.7.9",
+    "@swc/core": "1.15.3",
+    "copyfiles": "^2.4.1",
+    "rimraf": "^6.0.1"
   },
   "engines": {
     "node": "24.x"

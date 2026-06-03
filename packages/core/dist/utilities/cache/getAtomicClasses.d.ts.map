@@ -1,1 +1,0 @@
-{"version":3,"file":"getAtomicClasses.d.ts","sourceRoot":"","sources":["../../../src/utilities/cache/getAtomicClasses.ts"],"names":[],"mappings":"AAAA,OAAO,aAAa,CAAA;AAGpB,OAAO,KAAK,EAAE,UAAU,EAAE,MAAM,mBAAmB,CAAA;AAGnD,+EAA+E;AAC/E,eAAO,MAAM,4BAA4B,GAAI,YAAW,MAAgB,KAAG,UAAU,CAAC,gBAAgB,CAwBrG,CAAA;AAED,qDAAqD;AACrD,eAAO,MAAM,sBAAsB,EAAE,UAAU,CAAC,gBAAgB,CAAkC,CAAA"}

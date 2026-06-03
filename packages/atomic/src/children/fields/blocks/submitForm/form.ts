@@ -1,5 +1,4 @@
 ﻿import type { BlocksField } from 'payload'
-
 import type { FormRateLimitBlockType, FormSanitationBlockType, FormValidationBlockType } from '@pro-laico/atomic/forms/schema'
 
 type formFunctionRegistry = {
@@ -19,7 +18,7 @@ export const formFunctionsBlockTemplate = (variant: keyof typeof formFunctionReg
     name: `form${variant}Blocks`,
     type: 'blocks',
     blocks: [],
-    blockReferences: formFunctionRegistry[variant],
+    blockReferences: formFunctionRegistry[variant] as BlocksField['blockReferences'],
     typescriptSchema: [() => ({ $ref: `#/definitions/Form${variant}Blocks` })],
   }
 }

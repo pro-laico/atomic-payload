@@ -1,11 +1,15 @@
 ﻿'use client'
+
 import './index.scss'
+
 import type React from 'react'
 import { memo } from 'react'
+
+import type { BeforeDocumentControlsClientProps } from 'payload'
 import { Button, DocumentIcon, EditIcon, FolderIcon, LinkIcon, MenuIcon, PlusIcon, PopupList, SearchIcon, useFormFields } from '@payloadcms/ui'
 
-import type { APFunction } from '../../types'
 import { apfRegistry } from '../../fields/storage'
+import type { APFunction } from '../../types'
 
 type RunControlsProps = { APFunctions?: APFunction[] } & BeforeDocumentControlsClientProps
 

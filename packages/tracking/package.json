@@ -5,7 +5,23 @@
   "license": "MIT",
   "type": "module",
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "main": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "exports": {
+      ".": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "./schema": {
+        "types": "./dist/types/payload-augment.d.ts",
+        "default": "./dist/types/payload-augment.js"
+      },
+      "./provider": {
+        "types": "./dist/components/frontend/index.d.ts",
+        "default": "./dist/components/frontend/index.js"
+      }
+    }
   },
   "main": "./src/index.ts",
   "types": "./src/index.ts",
@@ -19,20 +35,21 @@
       "default": "./src/types/payload-augment.ts"
     },
     "./provider": {
-      "types": "./dist/components/frontend/index.d.ts",
-      "import": "./dist/components/frontend/index.js"
+      "types": "./src/components/frontend/index.ts",
+      "default": "./src/components/frontend/index.ts"
     }
   },
   "files": [
-    "dist",
-    "src",
-    "README.md"
+    "dist"
   ],
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
-    "clean": "node -e \"require('fs').rmSync('dist',{recursive:true,force:true})\"",
-    "prepack": "pnpm clean && pnpm build",
-    "typecheck": "tsc -p tsconfig.json --noEmit"
+    "build": "pnpm clean && pnpm copyfiles && pnpm build:types && pnpm build:swc",
+    "clean": "rimraf dist tsconfig.tsbuildinfo",
+    "prepack": "pnpm build",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "build:swc": "swc ./src -d ./dist --config-file ../../.swcrc --strip-leading-paths",
+    "build:types": "tsc -p tsconfig.build.json --emitDeclarationOnly --noCheck",
+    "copyfiles": "copyfiles -u 1 \"src/**/*.{scss,css,svg,json,ttf,woff,woff2,eot}\" dist/"
   },
   "dependencies": {
     "@pro-laico/core": "workspace:*"

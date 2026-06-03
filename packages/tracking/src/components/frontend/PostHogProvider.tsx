@@ -1,11 +1,12 @@
 'use client'
-import type { Tracking } from '@pro-laico/tracking/schema'
 
 import { useEffect } from 'react'
 import { usePathname } from 'next/navigation'
 
 import posthog from 'posthog-js'
 import { PostHogProvider as PHProvider } from 'posthog-js/react'
+
+import type { Tracking } from '@pro-laico/tracking/schema'
 
 export function PostHogProvider({ children, tracking }: { children: React.ReactNode; tracking?: Tracking }) {
   const pathname = usePathname()
@@ -39,8 +40,8 @@ export function PostHogProvider({ children, tracking }: { children: React.ReactN
         // `defaults: '2025-05-24'` snapshot above. Drop falsy entries — an empty
         // string would match every URL.
         autocapture: {
-          url_allowlist: postHogAutoCaptureSettings?.urlAllowList?.map((item: { url?: string }) => item.url ?? '').filter(Boolean),
-          url_ignorelist: postHogAutoCaptureSettings?.urlIgnoreList?.map((item: { url?: string }) => item.url ?? '').filter(Boolean),
+          url_allowlist: postHogAutoCaptureSettings?.urlAllowList?.map((item) => item.url ?? '').filter(Boolean),
+          url_ignorelist: postHogAutoCaptureSettings?.urlIgnoreList?.map((item) => item.url ?? '').filter(Boolean),
         },
       }),
       ...(disableSessionRecording && { disable_session_recording: disableSessionRecording }),

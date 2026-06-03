@@ -5,7 +5,87 @@
   "license": "MIT",
   "type": "module",
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "main": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "exports": {
+      ".": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "./kernel": {
+        "types": "./dist/kernel.d.ts",
+        "default": "./dist/kernel.js"
+      },
+      "./logger": {
+        "types": "./dist/utilities/log.d.ts",
+        "default": "./dist/utilities/log.js"
+      },
+      "./cache": {
+        "types": "./dist/utilities/cache/index.d.ts",
+        "default": "./dist/utilities/cache/index.js"
+      },
+      "./cache/react": {
+        "types": "./dist/utilities/cache/react.d.ts",
+        "default": "./dist/utilities/cache/react.js"
+      },
+      "./cache/auto": {
+        "types": "./dist/utilities/cache/auto.d.ts",
+        "default": "./dist/utilities/cache/auto.js"
+      },
+      "./payload": {
+        "types": "./dist/utilities/getPayloadInstance.d.ts",
+        "default": "./dist/utilities/getPayloadInstance.js"
+      },
+      "./ui/root/siteTriggers": {
+        "types": "./dist/ui/root/siteTriggers/index.d.ts",
+        "default": "./dist/ui/root/siteTriggers/index.js"
+      },
+      "./ui/fields/slug": {
+        "types": "./dist/ui/fields/slug/index.d.ts",
+        "default": "./dist/ui/fields/slug/index.js"
+      },
+      "./components/frontend/Toaster": {
+        "types": "./dist/components/frontend/Toaster.d.ts",
+        "default": "./dist/components/frontend/Toaster.js"
+      },
+      "./components/frontend/LivePreviewListener": {
+        "types": "./dist/components/frontend/LivePreviewListener.d.ts",
+        "default": "./dist/components/frontend/LivePreviewListener.js"
+      },
+      "./next/preview": {
+        "types": "./dist/next/previewRouteHandler.d.ts",
+        "default": "./dist/next/previewRouteHandler.js"
+      },
+      "./next/exit-preview": {
+        "types": "./dist/next/exitPreviewRouteHandler.d.ts",
+        "default": "./dist/next/exitPreviewRouteHandler.js"
+      },
+      "./auth/getMeUser": {
+        "types": "./dist/utilities/getMeUser.d.ts",
+        "default": "./dist/utilities/getMeUser.js"
+      },
+      "./admin/controls": {
+        "types": "./dist/apf/components/admin/controls.d.ts",
+        "default": "./dist/apf/components/admin/controls.js"
+      },
+      "./admin/field": {
+        "types": "./dist/apf/components/admin/field.d.ts",
+        "default": "./dist/apf/components/admin/field.js"
+      },
+      "./admin/label": {
+        "types": "./dist/apf/components/admin/label.d.ts",
+        "default": "./dist/apf/components/admin/label.js"
+      },
+      "./src": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "./config": {
+        "types": "./dist/config/index.d.ts",
+        "default": "./dist/config/index.js"
+      }
+    }
   },
   "main": "./src/index.ts",
   "types": "./src/index.ts",
@@ -22,81 +102,85 @@
       "default": "./src/kernel.ts"
     },
     "./logger": {
-      "types": "./dist/utilities/log.d.ts",
-      "import": "./dist/utilities/log.js"
+      "types": "./src/utilities/log.ts",
+      "default": "./src/utilities/log.ts"
     },
     "./cache": {
-      "types": "./dist/utilities/cache/index.d.ts",
-      "import": "./dist/utilities/cache/index.js"
+      "types": "./src/utilities/cache/index.ts",
+      "default": "./src/utilities/cache/index.ts"
     },
     "./cache/react": {
-      "types": "./dist/utilities/cache/react.d.ts",
-      "import": "./dist/utilities/cache/react.js"
+      "types": "./src/utilities/cache/react.ts",
+      "default": "./src/utilities/cache/react.ts"
     },
     "./cache/auto": {
-      "types": "./dist/utilities/cache/auto.d.ts",
-      "import": "./dist/utilities/cache/auto.js"
+      "types": "./src/utilities/cache/auto.ts",
+      "default": "./src/utilities/cache/auto.ts"
     },
     "./payload": {
-      "types": "./dist/utilities/getPayloadInstance.d.ts",
-      "import": "./dist/utilities/getPayloadInstance.js"
+      "types": "./src/utilities/getPayloadInstance.ts",
+      "default": "./src/utilities/getPayloadInstance.ts"
     },
     "./ui/root/siteTriggers": {
-      "types": "./dist/ui/root/siteTriggers/index.d.ts",
-      "import": "./dist/ui/root/siteTriggers/index.js"
+      "types": "./src/ui/root/siteTriggers/index.tsx",
+      "default": "./src/ui/root/siteTriggers/index.tsx"
     },
     "./ui/fields/slug": {
-      "types": "./dist/ui/fields/slug/index.d.ts",
-      "import": "./dist/ui/fields/slug/index.js"
+      "types": "./src/ui/fields/slug/index.tsx",
+      "default": "./src/ui/fields/slug/index.tsx"
     },
     "./components/frontend/Toaster": {
-      "types": "./dist/components/frontend/Toaster.d.ts",
-      "import": "./dist/components/frontend/Toaster.js"
+      "types": "./src/components/frontend/Toaster.tsx",
+      "default": "./src/components/frontend/Toaster.tsx"
     },
     "./components/frontend/LivePreviewListener": {
-      "types": "./dist/components/frontend/LivePreviewListener.d.ts",
-      "import": "./dist/components/frontend/LivePreviewListener.js"
+      "types": "./src/components/frontend/LivePreviewListener.tsx",
+      "default": "./src/components/frontend/LivePreviewListener.tsx"
     },
     "./next/preview": {
-      "types": "./dist/next/previewRouteHandler.d.ts",
-      "import": "./dist/next/previewRouteHandler.js"
+      "types": "./src/next/previewRouteHandler.ts",
+      "default": "./src/next/previewRouteHandler.ts"
     },
     "./next/exit-preview": {
-      "types": "./dist/next/exitPreviewRouteHandler.d.ts",
-      "import": "./dist/next/exitPreviewRouteHandler.js"
+      "types": "./src/next/exitPreviewRouteHandler.ts",
+      "default": "./src/next/exitPreviewRouteHandler.ts"
     },
     "./auth/getMeUser": {
-      "types": "./dist/utilities/getMeUser.d.ts",
-      "import": "./dist/utilities/getMeUser.js"
+      "types": "./src/utilities/getMeUser.ts",
+      "default": "./src/utilities/getMeUser.ts"
     },
     "./admin/controls": {
-      "types": "./dist/apf/components/admin/controls.d.ts",
-      "import": "./dist/apf/components/admin/controls.js"
+      "types": "./src/apf/components/admin/controls.tsx",
+      "default": "./src/apf/components/admin/controls.tsx"
     },
     "./admin/field": {
-      "types": "./dist/apf/components/admin/field.d.ts",
-      "import": "./dist/apf/components/admin/field.js"
+      "types": "./src/apf/components/admin/field.tsx",
+      "default": "./src/apf/components/admin/field.tsx"
     },
     "./admin/label": {
-      "types": "./dist/apf/components/admin/label.d.ts",
-      "import": "./dist/apf/components/admin/label.js"
+      "types": "./src/apf/components/admin/label.tsx",
+      "default": "./src/apf/components/admin/label.tsx"
     },
     "./src": {
       "types": "./src/index.ts",
       "default": "./src/index.ts"
+    },
+    "./config": {
+      "types": "./src/config/index.ts",
+      "default": "./src/config/index.ts"
     }
   },
   "files": [
-    "dist",
-    "src",
-    "scripts",
-    "README.md"
+    "dist"
   ],
   "scripts": {
-    "build": "tsc -p tsconfig.build.json --noCheck && node -e \"require('fs').cpSync('src/ui/root/siteTriggers/index.scss','dist/ui/root/siteTriggers/index.scss')\" && node -e \"require('fs').cpSync('src/components/frontend/Toaster.module.css','dist/components/frontend/Toaster.module.css')\" && node -e \"require('fs').cpSync('src/ui/fields/slug/index.scss','dist/ui/fields/slug/index.scss')\" && node -e \"require('fs').cpSync('src/apf/components/admin/index.scss','dist/apf/components/admin/index.scss')\"",
-    "clean": "node -e \"require('fs').rmSync('dist',{recursive:true,force:true})\"",
-    "prepack": "pnpm clean && pnpm build",
-    "typecheck": "tsc -p tsconfig.json --noEmit"
+    "build": "pnpm clean && pnpm copyfiles && pnpm build:types && pnpm build:swc",
+    "clean": "rimraf dist tsconfig.tsbuildinfo",
+    "prepack": "pnpm build",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "build:swc": "swc ./src -d ./dist --config-file ../../.swcrc --strip-leading-paths",
+    "build:types": "tsc -p tsconfig.build.json --emitDeclarationOnly --noCheck",
+    "copyfiles": "copyfiles -u 1 \"src/**/*.{scss,css,svg,json}\" dist/"
   },
   "dependencies": {
     "@types/json-schema": "^7.0.15",

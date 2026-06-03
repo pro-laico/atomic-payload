@@ -24,7 +24,7 @@ export const ActionBlocks = (prefix: 'trigger' | 'content'): BlocksField => {
     name: 'actionBlocks',
     blocks: [],
     label: `${prefix.charAt(0).toUpperCase() + prefix.slice(1)} Actions`,
-    blockReferences: AllActionBlocks,
+    blockReferences: AllActionBlocks as BlocksField['blockReferences'],
     typescriptSchema: [() => ({ $ref: `#/definitions/ActionBlocks` })],
     admin: { initCollapsed: true, components: { Field: { path: ActionBlocksPath, clientProps: { placement: prefix } } } },
   }

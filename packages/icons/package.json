@@ -5,7 +5,59 @@
   "license": "MIT",
   "type": "module",
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "main": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "exports": {
+      ".": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "./schema": {
+        "types": "./dist/types/payload-augment.d.ts",
+        "default": "./dist/types/payload-augment.js"
+      },
+      "./src": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "./Icon": {
+        "types": "./dist/components/frontend/Icon.d.ts",
+        "default": "./dist/components/frontend/Icon.js"
+      },
+      "./AtomicIcon": {
+        "types": "./dist/components/frontend/AtomicIcon.d.ts",
+        "default": "./dist/components/frontend/AtomicIcon.js"
+      },
+      "./admin/iconRowLabel": {
+        "types": "./dist/components/admin/iconRowLabel.d.ts",
+        "default": "./dist/components/admin/iconRowLabel.js"
+      },
+      "./admin/iconSelect": {
+        "types": "./dist/components/admin/iconSelect.d.ts",
+        "default": "./dist/components/admin/iconSelect.js"
+      },
+      "./iconSet/defaults": {
+        "types": "./dist/iconSet/defaults.d.ts",
+        "default": "./dist/iconSet/defaults.js"
+      },
+      "./blocks/iconChild": {
+        "types": "./dist/blocks/iconChild/block.d.ts",
+        "default": "./dist/blocks/iconChild/block.js"
+      },
+      "./blocks/iconChild/component": {
+        "types": "./dist/blocks/iconChild/component.d.ts",
+        "default": "./dist/blocks/iconChild/component.js"
+      },
+      "./blocks/svgChild": {
+        "types": "./dist/blocks/svgChild/block.d.ts",
+        "default": "./dist/blocks/svgChild/block.js"
+      },
+      "./blocks/svgChild/component": {
+        "types": "./dist/blocks/svgChild/component.d.ts",
+        "default": "./dist/blocks/svgChild/component.js"
+      }
+    }
   },
   "main": "./src/index.ts",
   "types": "./src/index.ts",
@@ -31,16 +83,16 @@
       "default": "./src/components/frontend/AtomicIcon.tsx"
     },
     "./admin/iconRowLabel": {
-      "types": "./dist/components/admin/iconRowLabel.d.ts",
-      "import": "./dist/components/admin/iconRowLabel.js"
+      "types": "./src/components/admin/iconRowLabel.tsx",
+      "default": "./src/components/admin/iconRowLabel.tsx"
     },
     "./admin/iconSelect": {
-      "types": "./dist/components/admin/iconSelect.d.ts",
-      "import": "./dist/components/admin/iconSelect.js"
+      "types": "./src/components/admin/iconSelect.tsx",
+      "default": "./src/components/admin/iconSelect.tsx"
     },
     "./iconSet/defaults": {
-      "types": "./dist/iconSet/defaults.d.ts",
-      "import": "./dist/iconSet/defaults.js"
+      "types": "./src/iconSet/defaults.ts",
+      "default": "./src/iconSet/defaults.ts"
     },
     "./blocks/iconChild": {
       "types": "./src/blocks/iconChild/block.ts",
@@ -60,15 +112,16 @@
     }
   },
   "files": [
-    "dist",
-    "src",
-    "README.md"
+    "dist"
   ],
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
-    "clean": "node -e \"require('fs').rmSync('dist',{recursive:true,force:true})\"",
-    "prepack": "pnpm clean && pnpm build",
-    "typecheck": "tsc -p tsconfig.json --noEmit"
+    "build": "pnpm clean && pnpm copyfiles && pnpm build:types && pnpm build:swc",
+    "clean": "rimraf dist tsconfig.tsbuildinfo",
+    "prepack": "pnpm build",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "build:swc": "swc ./src -d ./dist --config-file ../../.swcrc --strip-leading-paths",
+    "build:types": "tsc -p tsconfig.build.json --emitDeclarationOnly --noCheck",
+    "copyfiles": "copyfiles -u 1 \"src/**/*.{scss,css,svg,json,ttf,woff,woff2,eot}\" dist/"
   },
   "dependencies": {
     "@pro-laico/core": "workspace:*",

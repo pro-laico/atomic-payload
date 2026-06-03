@@ -1,1 +1,0 @@
-{"version":3,"file":"VercelProvider.d.ts","sourceRoot":"","sources":["../../../src/components/frontend/VercelProvider.tsx"],"names":[],"mappings":"AAEA,OAAO,KAAK,EAAE,SAAS,EAAE,MAAM,OAAO,CAAA;AAEtC,wBAAgB,cAAc,CAAC,EAAE,QAAQ,EAAE,EAAE;IAAE,QAAQ,EAAE,SAAS,CAAA;CAAE,2CAOnE;AAED,eAAe,cAAc,CAAA"}

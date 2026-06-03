@@ -5,7 +5,67 @@
   "license": "MIT",
   "type": "module",
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "main": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "exports": {
+      ".": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "./schema": {
+        "types": "./dist/types/payload-augment.d.ts",
+        "default": "./dist/types/payload-augment.js"
+      },
+      "./cssProcessor": {
+        "types": "./dist/cssProcessor.d.ts",
+        "default": "./dist/cssProcessor.js"
+      },
+      "./processDesignSet": {
+        "types": "./dist/processDesignSet/index.d.ts",
+        "default": "./dist/processDesignSet/index.js"
+      },
+      "./designSet/tabs/colors": {
+        "types": "./dist/designSet/tabs/colors.d.ts",
+        "default": "./dist/designSet/tabs/colors.js"
+      },
+      "./designSet/defaults": {
+        "types": "./dist/designSet/defaults.d.ts",
+        "default": "./dist/designSet/defaults.js"
+      },
+      "./fields/value": {
+        "types": "./dist/fields/value.d.ts",
+        "default": "./dist/fields/value.js"
+      },
+      "./fields/className": {
+        "types": "./dist/fields/className.d.ts",
+        "default": "./dist/fields/className.js"
+      },
+      "./globals/storage": {
+        "types": "./dist/globals/storage.d.ts",
+        "default": "./dist/globals/storage.js"
+      },
+      "./hooks/cssHook": {
+        "types": "./dist/hooks/cssHook.d.ts",
+        "default": "./dist/hooks/cssHook.js"
+      },
+      "./ui/rowLabels/shortcut": {
+        "types": "./dist/ui/rowLabels/shortcut/index.d.ts",
+        "default": "./dist/ui/rowLabels/shortcut/index.js"
+      },
+      "./ui/rowLabels/color": {
+        "types": "./dist/ui/rowLabels/color.d.ts",
+        "default": "./dist/ui/rowLabels/color.js"
+      },
+      "./ui/rowLabels/animation": {
+        "types": "./dist/ui/rowLabels/animation.d.ts",
+        "default": "./dist/ui/rowLabels/animation.js"
+      },
+      "./ui/rowLabels/designToken": {
+        "types": "./dist/ui/rowLabels/designToken.d.ts",
+        "default": "./dist/ui/rowLabels/designToken.js"
+      }
+    }
   },
   "main": "./src/index.ts",
   "types": "./src/index.ts",
@@ -68,12 +128,16 @@
     }
   },
   "files": [
-    "src",
-    "README.md"
+    "dist"
   ],
   "scripts": {
-    "build": "node -e \"process.exit(0)\"",
-    "typecheck": "tsc -p tsconfig.json --noEmit"
+    "build": "pnpm clean && pnpm copyfiles && pnpm build:types && pnpm build:swc",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "build:swc": "swc ./src -d ./dist --config-file ../../.swcrc --strip-leading-paths",
+    "build:types": "tsc -p tsconfig.build.json --emitDeclarationOnly --noCheck",
+    "clean": "rimraf dist tsconfig.tsbuildinfo",
+    "copyfiles": "copyfiles -u 1 \"src/**/*.{scss,css,svg,json,ttf,woff,woff2,eot}\" dist/",
+    "prepack": "pnpm build"
   },
   "dependencies": {
     "@pro-laico/zap": "workspace:*",

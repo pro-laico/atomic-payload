@@ -1,1 +1,0 @@
-{"version":3,"file":"payload-augment.d.ts","sourceRoot":"","sources":["../../src/types/payload-augment.ts"],"names":[],"mappings":"AAAA;;GAEG;AACH,OAAO,KAAK,EAAE,aAAa,EAAE,GAAG,EAAE,MAAM,iBAAiB,CAAA;AAEzD,MAAM,MAAM,IAAI,GAAG,GAAG,CAAC,MAAM,EAAE,aAAa,CAAC,CAAA;AAC7C,MAAM,MAAM,OAAO,GAAG,GAAG,CAAC,SAAS,EAAE,aAAa,CAAC,CAAA"}

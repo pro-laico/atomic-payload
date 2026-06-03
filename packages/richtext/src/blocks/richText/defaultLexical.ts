@@ -1,4 +1,4 @@
-import type { TextFieldSingleValidation } from 'payload'
+import type { CollectionSlug, TextFieldSingleValidation } from 'payload'
 import {
   AlignFeature,
   BlockquoteFeature,
@@ -10,14 +10,14 @@ import {
   InlineToolbarFeature,
   ItalicFeature,
   LinkFeature,
-  type LinkFields,
-  lexicalEditor,
   OrderedListFeature,
   ParagraphFeature,
   StrikethroughFeature,
   SuperscriptFeature,
   UnderlineFeature,
   UnorderedListFeature,
+  lexicalEditor,
+  type LinkFields,
 } from '@payloadcms/richtext-lexical'
 
 export type DefaultLexicalOptions = {
@@ -50,7 +50,7 @@ export function createDefaultLexical(options: DefaultLexicalOptions = {}): Retur
       InlineToolbarFeature(),
       FixedToolbarFeature(),
       LinkFeature({
-        enabledCollections,
+        enabledCollections: enabledCollections as CollectionSlug[],
         fields: ({ defaultFields }) => {
           const defaultFieldsWithoutUrl = defaultFields.filter((field) => {
             if ('name' in field && field.name === 'url') return false
