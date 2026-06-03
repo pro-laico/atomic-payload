@@ -49,6 +49,8 @@ export { updateHrefHook } from './hooks/field/href';
 export { updatePublishedAtHook } from './hooks/field/publishedAt';
 export { default as deepMerge, isObject } from './utilities/deepMerge';
 export { formatDurationString } from './utilities/formatDurationWithTokens';
+export { default as manualLogger } from './utilities/manualLogger';
+export { default as sanitizeData } from './utilities/sanitizeData';
 export { GenerateMetaData } from './utilities/generateMetaData';
 export { generateLivePreviewPath } from './utilities/generatePreviewPath';
 export { getImageUrl } from './utilities/getImageURL';

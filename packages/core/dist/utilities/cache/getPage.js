@@ -1,7 +1,8 @@
 import 'server-only'; //DO NOT REMOVE
-import { manualLogger, sanitizeData } from '@pro-laico/atomic/hook/light';
 import { getPayload } from 'payload';
 import cacheLogger from '../cacheLogger';
+import manualLogger from '../manualLogger';
+import sanitizeData from '../sanitizeData';
 /** Factory: pass the slug of the pages collection to bind the page-by-href getter to it. */
 export const createGetCachedPageByHref = (pagesSlug = 'pages') => {
     const collection = pagesSlug;

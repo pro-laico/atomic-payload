@@ -16,11 +16,4 @@ export type {
   CreateAtomicHookOptions,
   UnsetActiveType,
 } from './hook'
-export {
-  atomicHook,
-  atomicHookPlugin,
-  createAtomicHook,
-  manualLogger,
-  sanitizeData,
-  unsetActive,
-} from './hook'
+export { atomicHook, atomicHookPlugin, createAtomicHook, unsetActive } from './hook'

@@ -99,29 +99,43 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@pro-laico/images": "workspace:*",
-    "@pro-laico/site": "workspace:*",
-    "@pro-laico/styles": "workspace:*",
-    "@pro-laico/tracking": "workspace:*",
     "@types/json-schema": "^7.0.15",
     "dayjs": "^1.11.13",
-    "@pro-laico/atomic": "workspace:*"
+    "traverse": "^0.6.11"
   },
   "peerDependencies": {
     "@base-ui-components/react": ">=1.0.0-rc.0",
     "@payloadcms/live-preview-react": ">=3.0.0",
     "@payloadcms/ui": ">=3.0.0",
+    "@pro-laico/atomic": ">=0.1.0",
+    "@pro-laico/images": ">=0.1.0",
+    "@pro-laico/site": ">=0.1.0",
+    "@pro-laico/styles": ">=0.1.0",
+    "@pro-laico/tracking": ">=0.1.0",
     "next": ">=15.0.0",
     "payload": ">=3.0.0",
     "react": ">=19.0.0",
     "server-only": ">=0.0.1"
+  },
+  "peerDependenciesMeta": {
+    "@pro-laico/atomic": { "optional": true },
+    "@pro-laico/images": { "optional": true },
+    "@pro-laico/site": { "optional": true },
+    "@pro-laico/styles": { "optional": true },
+    "@pro-laico/tracking": { "optional": true }
   },
   "devDependencies": {
     "@base-ui-components/react": "1.0.0-rc.0",
     "@payloadcms/live-preview-react": "^3.79.0",
     "@payloadcms/translations": "^3.79.0",
     "@payloadcms/ui": "^3.79.0",
+    "@pro-laico/atomic": "workspace:*",
+    "@pro-laico/images": "workspace:*",
+    "@pro-laico/site": "workspace:*",
+    "@pro-laico/styles": "workspace:*",
+    "@pro-laico/tracking": "workspace:*",
     "@types/react": "^19.2.14",
+    "@types/traverse": "^0.6.37",
     "next": "^16.1.6",
     "payload": "^3.79.0",
     "react": "^19.2.4",

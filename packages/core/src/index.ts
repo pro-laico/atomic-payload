@@ -109,6 +109,10 @@ export { updateHrefHook } from './hooks/field/href'
 export { updatePublishedAtHook } from './hooks/field/publishedAt'
 export { default as deepMerge, isObject } from './utilities/deepMerge'
 export { formatDurationString } from './utilities/formatDurationWithTokens'
+// Generic helpers that used to live in `@pro-laico/atomic/hook/light`; moved here
+// (the trunk) so core no longer runtime-depends on atomic. atomic re-exports them.
+export { default as manualLogger } from './utilities/manualLogger'
+export { default as sanitizeData } from './utilities/sanitizeData'
 // /////////////////////////////////////
 // URL + meta helpers
 // /////////////////////////////////////

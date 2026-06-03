@@ -1,6 +1,6 @@
 import type { StoredAtomicForm, StoredAtomicFormInput } from '@pro-laico/atomic/forms/schema'
 import type { CollectionBySlug } from '@pro-laico/core'
-import { revalidateTag, runAPF } from '@pro-laico/core'
+import { manualLogger, revalidateTag, runAPF, sanitizeData } from '@pro-laico/core'
 import type { CollectionThatUsesCSSProcessor } from '@pro-laico/styles'
 import { createCssProcessor, processDesignSet } from '@pro-laico/styles'
 import { z } from '@pro-laico/zap'
@@ -9,8 +9,6 @@ import traverse from 'traverse'
 
 import { type CreateAtomicHookOptions, DEFAULT_ATOMIC_HOOK_SLUG_CONFIG } from './atomicHookTypes'
 import { unsetActive } from './unsetActive'
-import manualLogger from './utilities/manualLogger'
-import sanitizeData from './utilities/sanitizeData'
 
 function findClosestParent(inputPath: string[], parentPaths: MapIterator<string>): string | null {
   const inputPathString = inputPath.join('.')

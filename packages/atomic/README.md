@@ -62,7 +62,6 @@ The brain. `atomicHookPlugin` registers a Payload `beforeChange` hook (via `crea
 4. Hydrates the front-end zustand store (`AtomicStore`) so client components see the same state.
 
 Sub-exports worth knowing:
-- `@pro-laico/atomic/hook/light` — minimal client-safe API for components that just need to read state.
 - `@pro-laico/atomic/hook/client` — the zustand store binding for React.
 
 ### `/forms`
@@ -107,7 +106,6 @@ The full list is in `package.json` `exports`. Common ones:
 | `./actions/schema` | `payload-augment` types for action blocks |
 | `./actions/blocks` | Block factories |
 | `./actions/fields/strict/registry/*` | Strict typed registry entries (theme, cookieConsent) |
-| `./hook/light` | Client-safe slice of the hook API |
 | `./hook/client` | Zustand `AtomicStore` binding |
 | `./forms/submitForm/serverFunction` | The server action that runs form submission |
 | `./forms/submitForm/formProcessor` | The processor invoked after SVR passes |

@@ -101,6 +101,28 @@ importers:
 
   packages/core:
     dependencies:
+      '@types/json-schema':
+        specifier: ^7.0.15
+        version: 7.0.15
+      dayjs:
+        specifier: ^1.11.13
+        version: 1.11.19
+      traverse:
+        specifier: ^0.6.11
+        version: 0.6.11
+    devDependencies:
+      '@base-ui-components/react':
+        specifier: 1.0.0-rc.0
+        version: 1.0.0-rc.0(@types/react@19.2.14)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      '@payloadcms/live-preview-react':
+        specifier: ^3.79.0
+        version: 3.79.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      '@payloadcms/translations':
+        specifier: ^3.79.0
+        version: 3.79.0
+      '@payloadcms/ui':
+        specifier: ^3.79.0
+        version: 3.79.0(@types/react@19.2.14)(monaco-editor@0.52.2)(next@16.1.6(@opentelemetry/api@1.9.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(sass@1.77.4))(payload@3.79.0(graphql@16.11.0)(typescript@5.8.3))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(typescript@5.8.3)
       '@pro-laico/atomic':
         specifier: workspace:*
         version: link:../atomic
@@ -116,28 +138,12 @@ importers:
       '@pro-laico/tracking':
         specifier: workspace:*
         version: link:../tracking
-      '@types/json-schema':
-        specifier: ^7.0.15
-        version: 7.0.15
-      dayjs:
-        specifier: ^1.11.13
-        version: 1.11.19
-    devDependencies:
-      '@base-ui-components/react':
-        specifier: 1.0.0-rc.0
-        version: 1.0.0-rc.0(@types/react@19.2.14)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
-      '@payloadcms/live-preview-react':
-        specifier: ^3.79.0
-        version: 3.79.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
-      '@payloadcms/translations':
-        specifier: ^3.79.0
-        version: 3.79.0
-      '@payloadcms/ui':
-        specifier: ^3.79.0
-        version: 3.79.0(@types/react@19.2.14)(monaco-editor@0.52.2)(next@16.1.6(@opentelemetry/api@1.9.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(sass@1.77.4))(payload@3.79.0(graphql@16.11.0)(typescript@5.8.3))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(typescript@5.8.3)
       '@types/react':
         specifier: ^19.2.14
         version: 19.2.14
+      '@types/traverse':
+        specifier: ^0.6.37
+        version: 0.6.37
       next:
         specifier: ^16.1.6
         version: 16.1.6(@opentelemetry/api@1.9.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(sass@1.77.4)
