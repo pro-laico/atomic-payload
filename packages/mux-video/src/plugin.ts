@@ -1,9 +1,9 @@
-import type { CollectionConfig, Config, Plugin } from 'payload'
-import { muxVideoPlugin as upstreamMuxVideoPlugin } from '@oversightstudio/mux-video'
-
 import { mergeHooks } from '@pro-laico/core'
 
 import { MuxVideo } from './collections/muxVideo'
+
+import type { CollectionConfig, Config, Plugin } from 'payload'
+import { muxVideoPlugin as upstreamMuxVideoPlugin } from '@oversightstudio/mux-video'
 
 export interface AtomicMuxVideoOptions {
   enabled?: boolean

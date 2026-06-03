@@ -1,16 +1,16 @@
+import type { Block, BlocksField } from 'payload'
+import type { ClassNameFieldWrapper } from '@pro-laico/core'
 import type { DepthControls } from '@pro-laico/atomic/children'
 import type { NonRecursiveChildBlockType } from '@pro-laico/atomic/children/schema'
-import type { ClassNameFieldWrapper } from '@pro-laico/core'
-import type { Block, BlocksField } from 'payload'
 
-import { AtomicRowLabelPath as AtomicPath } from '../components/admin'
 import { ColoredEnd } from '../fields/coloredEnd'
-import { ContentActionsTab, TriggerActionsTab } from '../fields/tabs/actions'
-import { ChildsSettingsTab } from '../fields/tabs/settings'
-import { formRateLimitTab, formSanitationTab, formValidationTab } from '../fields/tabs/submitForm/form'
-import { inputTab } from '../fields/tabs/submitForm/input'
 import { TrackingTab } from '../fields/trackingTab'
 import { AtomicBlockControlBar } from './controlBar'
+import { inputTab } from '../fields/tabs/submitForm/input'
+import { ChildsSettingsTab } from '../fields/tabs/settings'
+import { AtomicRowLabelPath as AtomicPath } from '../components/admin'
+import { ContentActionsTab, TriggerActionsTab } from '../fields/tabs/actions'
+import { formRateLimitTab, formSanitationTab, formValidationTab } from '../fields/tabs/submitForm/form'
 
 const d = {
   trigger: 'The trigger is the actual button element. You can add what the button element renders inside it, such as text, icons, or anything else.',

@@ -1,9 +1,10 @@
 import 'server-only' //DO NOT REMOVE
-import type { Form, StoredAtomicForm } from '@pro-laico/atomic/forms/schema'
 import { type CollectionSlug, getPayload, type Where } from 'payload'
 
-import type { GCFunction } from '../../types/cache'
+import type { Form, StoredAtomicForm } from '@pro-laico/atomic/forms/schema'
+
 import cacheLogger from '../cacheLogger'
+import type { GCFunction } from '../../types/cache'
 
 /** Factory: pass the slug of the backend forms collection. */
 export const createGetCachedBackendForms = (formsSlug: string = 'forms'): GCFunction<'backend-forms'> => {

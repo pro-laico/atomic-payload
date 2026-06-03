@@ -1,10 +1,10 @@
 import type { Config, Plugin } from 'payload'
 
-import { Footer } from './collections/footers/collection'
-import { Header } from './collections/headers/collection'
-import { Pages } from './collections/pages/collection'
 import { Settings } from './globals/settings'
 import { SiteMetaData } from './globals/siteMetaData'
+import { Pages } from './collections/pages/collection'
+import { Footer } from './collections/footers/collection'
+import { Header } from './collections/headers/collection'
 
 export type SitePluginOptions = {
   enabled?: boolean

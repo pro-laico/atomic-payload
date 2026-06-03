@@ -2,13 +2,16 @@
 // Hand-written types for the child-block render surface.
 // /////////////////////////////////////
 
-import type { DotNestedKeys, StringKeyOf } from '@pro-laico/core'
 import type { ReactNode } from 'react'
+import type { AllBlocks, BlockBySlug } from '@pro-laico/core'
+import type { DotNestedKeys, StringKeyOf } from '@pro-laico/core'
 
 import type { ChildBlocks, ChildBlockType } from './payload-augment'
 
 // Schema stubs are intentionally NOT re-exported — see `/schema` subpath.
 // Block lookup helpers from ap-types are re-exported below.
+
+export type { AllBlocks, BlockBySlug } from '@pro-laico/core'
 
 /** The type used by the atomic child block's for depth management */
 export type DepthControls = {
@@ -21,14 +24,6 @@ export type DepthControls = {
   /** The maximum trigger blocks depth. */
   tmd: number
 }
-
-// /////////////////////////////////////
-// Block lookup helpers
-// /////////////////////////////////////
-
-import type { AllBlocks, BlockBySlug } from '@pro-laico/core'
-
-export type { AllBlocks, BlockBySlug } from '@pro-laico/core'
 
 export type ChildBySlug<T extends ChildBlockType> = BlockBySlug<T>
 export type AllBlockDotNestedKeys = DotNestedKeys<AllBlocks>

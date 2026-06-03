@@ -1,6 +1,7 @@
-import { SetDataField } from '@pro-laico/atomic/actions/fields'
-import { APField } from '@pro-laico/core'
 import type { Block } from 'payload'
+
+import { APField } from '@pro-laico/core'
+import { SetDataField } from '@pro-laico/atomic/actions/fields'
 
 export const ActSetPortalOpen: Block = {
   slug: 'ActSetPortalOpen',

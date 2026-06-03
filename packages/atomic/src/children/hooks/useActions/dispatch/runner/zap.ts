@@ -1,10 +1,10 @@
 ﻿import { z } from '@pro-laico/zap'
 
-import { CycleTextSchema } from './cycleText/zap'
-import { ResetFormSchema } from './resetForm/zap'
-import { SetBoolSchema } from './setBool/zap'
 import { SetCCSchema } from './setCCs/zap'
+import { SetBoolSchema } from './setBool/zap'
+import { CycleTextSchema } from './cycleText/zap'
 import { SetThemeSchema } from './setThemes/zap'
+import { ResetFormSchema } from './resetForm/zap'
 import { RunSubmitFormSchema } from './submitForm/zap'
 
 export { CycleTextSchema, ResetFormSchema, RunSubmitFormSchema, SetBoolSchema, SetCCSchema, SetThemeSchema }

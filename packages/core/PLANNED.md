@@ -32,3 +32,10 @@ Forward-looking backlog distilled from `AUDIT.md`. These items are intentionally
 
 - **`slugField` default uniqueness** — sets `index: true` but not `unique`. Already supports `slugOverrides: { unique: true }`; the index-only default is intentional (nested-docs/multi-tenant slugs aren't globally unique — uniqueness is enforced on `href`). No change unless the data model changes. (AUDIT.md → Low.)
 - **Access predicates home** — access predicates deliberately live in the consuming packages (`site`/`styles`/`fonts`/`tracking`), not core; core ships only `getMeUser`. The brief listing an `access/` dir in core is stale. (AUDIT.md → Low.)
+
+## Inline code TODOs
+
+Captured from `TODO:` comments in source.
+
+- **Convert the Toaster action to an atomic button variant** — `src/components/frontend/Toaster.tsx:19`.
+- **Replace the hard-coded Toaster icon with a stored icon** — `src/components/frontend/Toaster.tsx:35`.

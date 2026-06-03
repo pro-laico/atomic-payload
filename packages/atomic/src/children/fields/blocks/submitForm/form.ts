@@ -1,5 +1,6 @@
-﻿import type { FormRateLimitBlockType, FormSanitationBlockType, FormValidationBlockType } from '@pro-laico/atomic/forms/schema'
-import type { BlocksField } from 'payload'
+﻿import type { BlocksField } from 'payload'
+
+import type { FormRateLimitBlockType, FormSanitationBlockType, FormValidationBlockType } from '@pro-laico/atomic/forms/schema'
 
 type formFunctionRegistry = {
   RateLimit: FormRateLimitBlockType[]

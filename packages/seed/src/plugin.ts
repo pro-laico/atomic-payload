@@ -1,8 +1,8 @@
 import type { Config, Plugin } from 'payload'
 
-import { createSeedEndpoint, type SeedAuthorize, type SeedFn } from './endpoint'
 import { BeforeDashboardPath } from './index'
 import { seed as defaultSeed } from './seed'
+import { createSeedEndpoint, type SeedAuthorize, type SeedFn } from './endpoint'
 
 export type { SeedAuthorize, SeedFn } from './endpoint'
 

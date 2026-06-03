@@ -1,7 +1,8 @@
-import LivePreviewListener from '@pro-laico/core/components/frontend/LivePreviewListener'
+import type React from 'react'
 import { draftMode } from 'next/headers'
 import { ThemeProvider } from 'next-themes'
-import type React from 'react'
+
+import LivePreviewListener from '@pro-laico/core/components/frontend/LivePreviewListener'
 
 import getCached from '@/cache/getCached'
 

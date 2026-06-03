@@ -1,11 +1,14 @@
 'use client'
-import './AtomicRowLabel.scss'
+
 import { RowLabel, SectionTitle, useRowLabel } from '@payloadcms/ui'
-import type { AtomicChild } from '@pro-laico/atomic/children/schema'
+
 // Import from the narrow subpath, NOT the `@pro-laico/icons` barrel: the barrel
 // pulls in the Icon collection + the `server-only` formatSVG hook, which can't be
 // in this `'use client'` component's graph. AtomicIcon is a pure presentational SVG.
 import { AtomicIcon } from '@pro-laico/icons/AtomicIcon'
+import type { AtomicChild } from '@pro-laico/atomic/children/schema'
+
+import './AtomicRowLabel.scss'
 
 const AtomicRowLabel = () => {
   const { data, path, rowNumber } = useRowLabel<AtomicChild>()
@@ -13,11 +16,11 @@ const AtomicRowLabel = () => {
     data || {}
 
   let typePill = type
-  const typePillStyle = 'atomic-row-pill pill-default'
-  let elaborationPill: string | null | undefined
-  let elaborationPillStyle = 'atomic-row-pill pill-default'
   let namePill: string | null | undefined
+  let elaborationPill: string | null | undefined
+  const typePillStyle = 'atomic-row-pill pill-default'
   const namePillStyle = 'atomic-row-pill pill-name nocap'
+  let elaborationPillStyle = 'atomic-row-pill pill-default'
   switch (type) {
     case 'tag': {
       typePill = type

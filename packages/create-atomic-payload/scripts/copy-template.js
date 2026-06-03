@@ -10,9 +10,9 @@
  * corresponding `packages/<name>` directory will fail loudly so we don't ship
  * a broken tarball.
  */
-import { cpSync, existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { cpSync, existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const monorepoRoot = path.join(__dirname, '..', '..', '..')

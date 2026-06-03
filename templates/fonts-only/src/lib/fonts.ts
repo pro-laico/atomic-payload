@@ -1,10 +1,10 @@
 import 'server-only'
-import fs from 'node:fs/promises'
 import path from 'node:path'
+import fs from 'node:fs/promises'
 
-import configPromise from '@payload-config'
-import { getPayload } from 'payload'
 import { cache } from 'react'
+import { getPayload } from 'payload'
+import configPromise from '@payload-config'
 
 import { FONT_STATIC_DIR } from './fontDir'
 

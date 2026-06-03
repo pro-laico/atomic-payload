@@ -2,8 +2,8 @@ const AtomicIcon = () => {
   return (
     <svg
       aria-hidden="true"
-      fill={'white'}
-      stroke={'white'}
+      fill="white"
+      stroke="white"
       height="18px"
       width="18px"
       viewBox="4.831294298086888 3.964216194994505 119.20798159513734 119.2044895069186"

@@ -1,5 +1,5 @@
-﻿import { FieldLabel } from '@payloadcms/ui'
-import NextLink from 'next/link'
+﻿import NextLink from 'next/link'
+import { FieldLabel } from '@payloadcms/ui'
 
 import type { APFFieldComponentType } from '../../types'
 

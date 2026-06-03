@@ -1,8 +1,8 @@
-import type { Image } from '@pro-laico/images/schema'
-import type { SiteMetaDatum } from '@pro-laico/site/schema'
 import type { Metadata } from 'next'
 
 import type { PageReturn } from '../types/cache'
+import type { Image } from '@pro-laico/images/schema'
+import type { SiteMetaDatum } from '@pro-laico/site/schema'
 
 type GenerateMetaDataArgs = { page?: PageReturn; siteMetadata?: SiteMetaDatum }
 type GenerateMetaDataFn = (args: GenerateMetaDataArgs) => Metadata
@@ -15,8 +15,8 @@ const processImageUrl = (image: Image | string | null | undefined): string | und
 
 /** Gets the page metadata for a given page and site metadata. Returns a finished Metadata object. */
 export const GenerateMetaData: GenerateMetaDataFn = ({ page, siteMetadata }) => {
-  const { siteName, fallbackOGImage, fallbackLightFavicon, fallbackDarkFavicon, fallbackSiteDescription } = siteMetadata || {}
   const { title, description, image, lightFavicon, darkFavicon, noIndex } = page?.meta || {}
+  const { siteName, fallbackOGImage, fallbackLightFavicon, fallbackDarkFavicon, fallbackSiteDescription } = siteMetadata || {}
 
   const imageUrl = processImageUrl(image)
   const darkFaviconUrl = processImageUrl(darkFavicon)

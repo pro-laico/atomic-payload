@@ -1,15 +1,15 @@
 'use client'
 import './index.scss'
+import { useState } from 'react'
 import { Button, PopupList, toast } from '@payloadcms/ui'
 import type { UIFieldClientComponent } from 'payload'
-import { useState } from 'react'
 
 import { revalidateTag } from '../../../utilities/revalidateTag'
 import { triggerVercelDeployServerFunction } from './triggerVercelDeploy'
 
 const SiteTriggers: UIFieldClientComponent = () => {
-  const [isDeploying, setIsDeploying] = useState(false)
   const [isRevalidating, setIsRevalidating] = useState(false)
+  const [isDeploying, setIsDeploying] = useState(false)
 
   const handleRevalidate = async (tag: 'draft' | 'published') => {
     setIsRevalidating(true)

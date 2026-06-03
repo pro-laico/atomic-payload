@@ -2,11 +2,13 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 import { sqliteAdapter } from '@payloadcms/db-sqlite'
+
+import sharp from 'sharp'
 import { getServerSideURL, revalidateTag } from '@pro-laico/core'
 import { type CssProcessorGetCached, createCssHook, stylesPlugin } from '@pro-laico/styles'
-import type { CollectionAfterChangeHook, Config, Plugin, SharpDependency } from 'payload'
+
 import { buildConfig } from 'payload'
-import sharp from 'sharp'
+import type { CollectionAfterChangeHook, Config, Plugin, SharpDependency } from 'payload'
 
 import { createPages } from '@/collections/pages'
 import { Users } from '@/collections/users'

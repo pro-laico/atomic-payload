@@ -3,11 +3,11 @@ export const AttBoolToDA: AttFunction<'AttBoolToDA'> = ({ key, persisted, initia
   const { getValue, hydrated } = context.atomicStore
   if (!hydrated) {
     if (initialValue) return { [`data-${changeKey || key}`]: '' }
-    else return
+    return
   } //Prevents SSR hydration errors
 
   const storedValue = getValue(key, persisted)
   const newValue = storedValue && typeof storedValue === 'boolean' ? storedValue : initialValue
   if (newValue) return { [`data-${changeKey || key}`]: '' }
-  else return
+  return
 }

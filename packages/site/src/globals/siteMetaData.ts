@@ -1,6 +1,6 @@
-import { APField, generateAPFFields, onUploadSetAPF, revalidateCacheGlobalAfterChange as revalidateCache } from '@pro-laico/core'
-import { FaviconField } from '@pro-laico/images'
 import type { GlobalConfig } from 'payload'
+import { FaviconField } from '@pro-laico/images'
+import { APField, generateAPFFields, onUploadSetAPF, revalidateCacheGlobalAfterChange as revalidateCache } from '@pro-laico/core'
 
 import { authd } from '../access'
 

@@ -1,14 +1,15 @@
-import type { StoredAtomicForm, StoredAtomicFormInput } from '@pro-laico/atomic/forms/schema'
+import traverse from 'traverse'
+import type { CollectionBeforeChangeHook, CollectionSlug } from 'payload'
+
+import { z } from '@pro-laico/zap'
 import type { CollectionBySlug } from '@pro-laico/core'
 import { manualLogger, revalidateTag, runAPF, sanitizeData } from '@pro-laico/core'
 import type { CollectionThatUsesCSSProcessor } from '@pro-laico/styles'
 import { createCssProcessor, processDesignSet } from '@pro-laico/styles'
-import { z } from '@pro-laico/zap'
-import type { CollectionBeforeChangeHook, CollectionSlug } from 'payload'
-import traverse from 'traverse'
+import type { StoredAtomicForm, StoredAtomicFormInput } from '@pro-laico/atomic/forms/schema'
 
-import { type CreateAtomicHookOptions, DEFAULT_ATOMIC_HOOK_SLUG_CONFIG } from './atomicHookTypes'
 import { unsetActive } from './unsetActive'
+import { type CreateAtomicHookOptions, DEFAULT_ATOMIC_HOOK_SLUG_CONFIG } from './atomicHookTypes'
 
 function findClosestParent(inputPath: string[], parentPaths: MapIterator<string>): string | null {
   const inputPathString = inputPath.join('.')
@@ -37,10 +38,11 @@ export function createAtomicHook(opts: CreateAtomicHookOptions): CollectionBefor
     // a standalone `cssHook` (from @pro-laico/styles) attached to the same
     // collection stays inert and we don't process CSS twice.
     context.atomicHookRan = true
-    const slug = z.ap.get('CollectionThatUsesAtomicHookSlug').parse(collection.slug)
+
     const draft = data?._status === 'draft'
     const isActive = Boolean(data?.active)
     const id = 'id' in originalDoc ? originalDoc?.id : undefined
+    const slug = z.ap.get('CollectionThatUsesAtomicHookSlug').parse(collection.slug)
     const hasChildren = 'children' in data && data?.children?.length > 0
 
     let href: string | undefined
@@ -52,13 +54,13 @@ export function createAtomicHook(opts: CreateAtomicHookOptions): CollectionBefor
       if (operation !== 'create' && previousHref && previousHref !== href) await revalidateTag('page', previousHref, draft)
     }
 
-    const runSEO = runAPF({ context, id, apf: 'seo', data })
-    const runPage = runAPF({ context, id, apf: 'page', data })
-    const runForms = runAPF({ context, id, apf: 'form', data })
-    const runPages = runAPF({ context, id, apf: 'pages', data })
     const runActive = runAPF({ context, id, apf: 'active', data })
-    const runClasses = runAPF({ context, id, apf: 'classes', data })
+    const runForms = runAPF({ context, id, apf: 'form', data })
+    const runPage = runAPF({ context, id, apf: 'page', data })
+    const runSEO = runAPF({ context, id, apf: 'seo', data })
+    const runPages = runAPF({ context, id, apf: 'pages', data })
     const runActions = runAPF({ context, id, apf: 'actions', data })
+    const runClasses = runAPF({ context, id, apf: 'classes', data })
     const runSitemap = runAPF({ context, id, apf: 'sitemap', data })
     const runSiteMetadata = runAPF({ context, id, apf: 'siteMetadata', data })
 

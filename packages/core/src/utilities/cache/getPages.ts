@@ -1,8 +1,9 @@
 import 'server-only' //DO NOT REMOVE
+
 import { type CollectionSlug, getPayload, type Where } from 'payload'
 
-import type { GCFunction } from '../../types/cache'
 import cacheLogger from '../cacheLogger'
+import type { GCFunction } from '../../types/cache'
 
 /** Factory: pass the slug of the pages collection to bind the pages-list getter to it. */
 export const createGetCachedPages = (pagesSlug: string = 'pages'): GCFunction<'pages'> => {

@@ -1,5 +1,5 @@
-﻿import type { ActionProcessFunction } from '@pro-laico/atomic/actions'
-import type { z } from '@pro-laico/zap'
+﻿import type { z } from '@pro-laico/zap'
+import type { ActionProcessFunction } from '@pro-laico/atomic/actions'
 
 const processFunction: ActionProcessFunction<'ActDSBoolToDA'> = ({ key, changeKey, initialValuesMap, data }) => {
   const { initialValue, persisted } = initialValuesMap.get(key) || {}

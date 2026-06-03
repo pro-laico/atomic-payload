@@ -1,9 +1,9 @@
+import { getPayload } from 'payload'
 import config from '@payload-config'
 import { draftMode, headers as nextHeaders } from 'next/headers'
-import { getPayload } from 'payload'
 
-import type { AnyBlock } from '@/blocks/RenderBlocks'
 import { RenderBlocks } from '@/blocks/RenderBlocks'
+import type { AnyBlock } from '@/blocks/RenderBlocks'
 
 import { ThemeToggle } from './ThemeToggle'
 

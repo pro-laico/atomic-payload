@@ -7,7 +7,7 @@ export const AttFormErrorToDA: AttFunction<'AttFormErrorToDA'> = ({ key, inputNa
   }
   const { getValue, hydrated } = context.atomicStore
 
-  if (!hydrated) return //Prevents SSR hydration errors
+  if (!hydrated) return // Prevents SSR hydration errors
   if (!key) return
   const inputKey = inputName || 'form'
 

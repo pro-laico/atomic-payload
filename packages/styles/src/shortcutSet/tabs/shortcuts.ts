@@ -1,5 +1,5 @@
-import { APField, onArraySetAPFShallow } from '@pro-laico/core'
 import type { Tab } from 'payload'
+import { APField, onArraySetAPFShallow } from '@pro-laico/core'
 
 import { ClassNameField } from '../../fields/className'
 import { ShortcutLabelPath } from '../../paths'

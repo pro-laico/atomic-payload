@@ -1,9 +1,9 @@
-import { revalidateCacheGlobalAfterChange } from '@pro-laico/core'
 import type { GlobalConfig } from 'payload'
+import { revalidateCacheGlobalAfterChange } from '@pro-laico/core'
 
+import { postHogTabField } from './postHogTab'
 import { authd } from '../access/authenticated'
 import { googleTagManagerTabField } from './gtmTab'
-import { postHogTabField } from './postHogTab'
 
 export const Tracking: GlobalConfig = {
   slug: 'tracking',

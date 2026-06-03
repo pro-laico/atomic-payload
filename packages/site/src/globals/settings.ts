@@ -1,5 +1,5 @@
-import { revalidateCacheGlobalAfterChange as revalidateCache } from '@pro-laico/core'
 import type { GlobalConfig } from 'payload'
+import { revalidateCacheGlobalAfterChange as revalidateCache } from '@pro-laico/core'
 
 import { authd } from '../access'
 

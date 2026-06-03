@@ -1,6 +1,6 @@
 'use client'
-import { useTheme } from 'next-themes'
 import { useEffect, useState } from 'react'
+import { useTheme } from 'next-themes'
 
 /** Flips the `dark` class on <html>, which swaps every design-set token between
  *  its light and dark value (the generated preflight defines both). A concrete

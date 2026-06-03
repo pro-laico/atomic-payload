@@ -1,9 +1,10 @@
 import 'server-only' //DO NOT REMOVE
-import { type CollectionSlug, getPayload, type Where } from 'payload'
 
 import type { GCFunction } from '../../types/cache'
 import cacheLogger from '../cacheLogger'
 import { getServerSideURL } from '../getURL'
+
+import { type CollectionSlug, getPayload, type Where } from 'payload'
 
 /** Factory: pass the slug of the pages collection to bind the sitemap getter to it. */
 export const createGetCachedSitemap = (pagesSlug: string = 'pages'): GCFunction<'sitemap'> => {

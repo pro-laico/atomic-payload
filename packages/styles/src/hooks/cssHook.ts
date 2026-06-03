@@ -1,9 +1,9 @@
 import { revalidateTag } from '@pro-laico/core'
 import type { CollectionBeforeChangeHook } from 'payload'
 
-import { type CssProcessorGetCached, createCssProcessor } from '../cssProcessor'
 import processDesignSet from '../processDesignSet'
 import manualLogger from '../utilities/manualLogger'
+import { type CssProcessorGetCached, createCssProcessor } from '../cssProcessor'
 
 /** Options for the standalone CSS beforeChange hook. All default to the
  *  atomic-payload-conventional slug/global names. */
@@ -60,8 +60,8 @@ function collectClassNames(node: unknown, out: Set<string>): void {
  */
 export function createCssHook(getCached: CssProcessorGetCached, options: CssHookOptions = {}): CollectionBeforeChangeHook {
   const designSetSlug = options.designSetSlug ?? DEFAULTS.designSetSlug
-  const skip = new Set(options.cssProcessorSkipSlugs ?? DEFAULTS.cssProcessorSkipSlugs)
   const cacheTagBySlug = options.cssCacheTagBySlug ?? DEFAULTS.cssCacheTagBySlug
+  const skip = new Set(options.cssProcessorSkipSlugs ?? DEFAULTS.cssProcessorSkipSlugs)
   const cssProcessor = createCssProcessor(getCached, {
     cssCacheTagBySlug: cacheTagBySlug,
     cssStorageGlobals: options.cssStorageGlobals ?? DEFAULTS.cssStorageGlobals,

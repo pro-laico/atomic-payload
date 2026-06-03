@@ -2,16 +2,16 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 //import { resendAdapter } from '@payloadcms/email-resend'
+import sharp from 'sharp'
+import { buildConfig } from 'payload'
+import type { SharpDependency } from 'payload'
 import { mongooseAdapter } from '@payloadcms/db-mongodb'
 import { getServerSideURL } from '@pro-laico/core'
 import { defaultLexical } from '@pro-laico/richtext/default-lexical'
-import type { SharpDependency } from 'payload'
-import { buildConfig } from 'payload'
-import sharp from 'sharp'
 
+import { plugins } from '@/plugins'
 import Collections from '@/collections'
 import { Users } from '@/collections/users'
-import { plugins } from '@/plugins'
 import { IconPath, LogoPath, SiteTriggersPath } from '@/ui'
 
 const filename = fileURLToPath(import.meta.url)

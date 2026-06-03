@@ -1,5 +1,5 @@
-﻿import type { AtomicStore, DynamicSlice } from '@pro-laico/atomic/hook'
-import type { StateCreator } from 'zustand'
+﻿import type { StateCreator } from 'zustand'
+import type { AtomicStore, DynamicSlice } from '@pro-laico/atomic/hook'
 export const dynamicSlice: StateCreator<AtomicStore, [], [], DynamicSlice> = (set, get) => ({
   persisted: {},
   memory: {},

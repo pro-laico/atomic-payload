@@ -1,10 +1,10 @@
+import { getPayload } from 'payload'
 import config from '@payload-config'
-import LivePreviewListener from '@pro-laico/core/components/frontend/LivePreviewListener'
-import { extractSvgContent, extractSvgProps } from '@pro-laico/icons'
+import { redirect } from 'next/navigation'
 import { Icon } from '@pro-laico/icons/Icon'
 import { draftMode, headers as nextHeaders } from 'next/headers'
-import { redirect } from 'next/navigation'
-import { getPayload } from 'payload'
+import { extractSvgContent, extractSvgProps } from '@pro-laico/icons'
+import LivePreviewListener from '@pro-laico/core/components/frontend/LivePreviewListener'
 
 import { sampleIconSets } from '@/seed/sampleIcons'
 
@@ -62,11 +62,13 @@ function IconChildTile({ name }: { name: string }) {
 }
 
 export default async function HomePage() {
-  const payload = await getPayload({ config })
   const reqHeaders = await nextHeaders()
+  const payload = await getPayload({ config })
+
+  const { isEnabled: draft } = await draftMode()
+
   const { user } = await payload.auth({ headers: reqHeaders })
   const isLoggedIn = Boolean(user)
-  const { isEnabled: draft } = await draftMode()
 
   const icons = (await payload.find({ collection: 'icon', limit: 100, depth: 0, overrideAccess: true })).docs as IconDoc[]
   const sets = (await payload.find({ collection: 'iconSet', limit: 25, depth: 1, sort: 'createdAt', overrideAccess: true })).docs as IconSetDoc[]

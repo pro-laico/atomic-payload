@@ -1,8 +1,9 @@
+import type { Block } from 'payload'
+
 import { ColoredEnd } from '@pro-laico/atomic/children/fields/coloredEnd'
-import { ChildsSettingsTab } from '@pro-laico/atomic/children/fields/tabs/settings'
 import { TrackingTab } from '@pro-laico/atomic/children/fields/trackingTab'
 import type { BlockFieldExtensions } from '@pro-laico/core'
-import type { Block } from 'payload'
+import { ChildsSettingsTab } from '@pro-laico/atomic/children/fields/tabs/settings'
 
 const d = {
   ariaHidden: 'If true, the element will be hidden from screen readers.',

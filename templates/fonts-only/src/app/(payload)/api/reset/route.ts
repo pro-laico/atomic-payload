@@ -1,7 +1,7 @@
 import config from '@payload-config'
-import { headers as nextHeaders } from 'next/headers'
-import { NextResponse } from 'next/server'
 import { getPayload } from 'payload'
+import { NextResponse } from 'next/server'
+import { headers as nextHeaders } from 'next/headers'
 
 /**
  * Clears the `fontSet` global, then deletes every `font` doc. Auth-gated to

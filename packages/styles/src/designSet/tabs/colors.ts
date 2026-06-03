@@ -1,8 +1,8 @@
 // TODO: Make Color Picker Component
 
-import { APField, onArraySetAPFShallow } from '@pro-laico/core'
-import { z } from '@pro-laico/zap'
 import type { Tab } from 'payload'
+import { z } from '@pro-laico/zap'
+import { APField, onArraySetAPFShallow } from '@pro-laico/core'
 
 import { ColorLabelPath } from '../../paths'
 

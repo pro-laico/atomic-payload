@@ -7,11 +7,7 @@ function generatePreflights({ ds }: { ds: DesignSet }): string {
     .map((variable: { name?: string; value?: string }) => `  --${variable?.name}: ${variable?.value};`)
     .join(minify ? '' : '\n')
 
-  const defaults = minify
-    ? `--radius: ${ds?.defaults?.radius || '0.625rem'};`
-    : `  
-  --radius: ${ds?.defaults?.radius || '0.625rem'};
-  `
+  const defaults = minify ? `--radius: ${ds?.defaults?.radius || '0.625rem'};` : `  \n  --radius: ${ds?.defaults?.radius || '0.625rem'};\n  `
 
   const lightColors = (ds?.colors || [])
     .map((color: { name?: string; light?: string }) => `  --${color?.name}: ${color?.light};`)

@@ -8,13 +8,13 @@ export const AttTextToDA: AttFunction<'AttTextToDA'> = ({
     atomicStore: { getValue, hydrated },
   },
 }) => {
+  // Prevents SSR hydration errors
   if (!hydrated) {
     if (initialValue) return { [`data-${changeKey || key}`]: initialValue }
-    else return
-  } //Prevents SSR hydration errors
+    return
+  }
 
   const currentValue = getValue(key, persisted)
   const newValue = currentValue ? currentValue : initialValue
   if (newValue) return { [`data-${changeKey || key}`]: String(newValue) }
-  else return
 }

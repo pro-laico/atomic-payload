@@ -1,4 +1,5 @@
 import type { APFunction } from '@pro-laico/core'
+import type { CollectionConfig, Field, PayloadRequest } from 'payload'
 import {
   ActiveField,
   APFControlsPath,
@@ -8,7 +9,6 @@ import {
   revalidateCacheCollectionAfterChange,
   revalidateCacheOnDelete,
 } from '@pro-laico/core'
-import type { CollectionConfig, Field, PayloadRequest } from 'payload'
 
 import { authd } from '../access/authenticated'
 

@@ -1,8 +1,8 @@
+import { getPayload } from 'payload'
 import config from '@payload-config'
+import { NextResponse } from 'next/server'
 import { revalidateTag } from '@pro-laico/core'
 import { headers as nextHeaders } from 'next/headers'
-import { NextResponse } from 'next/server'
-import { getPayload } from 'payload'
 
 import { sampleIconSets } from '@/seed/sampleIcons'
 

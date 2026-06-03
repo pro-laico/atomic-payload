@@ -1,5 +1,6 @@
-﻿import { KeyTextField } from '@pro-laico/atomic/actions/fields/keyText'
-import type { ArrayField } from 'payload'
+﻿import type { ArrayField } from 'payload'
+
+import { KeyTextField } from '@pro-laico/atomic/actions/fields/keyText'
 
 const d = {
   array: 'Add static data attributes to the element.',

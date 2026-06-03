@@ -1,11 +1,11 @@
 import 'server-only'
+import { draftMode } from 'next/headers'
 
-import type { RenderChild } from '@pro-laico/atomic/children'
 import Warning from '@pro-laico/atomic/children/admin/warningIcon'
-import type { IconChild as IconChildType } from '@pro-laico/atomic/children/schema'
 import getCached from '@pro-laico/core/cache/auto'
 import { extractSvgContent, extractSvgProps } from '@pro-laico/icons'
-import { draftMode } from 'next/headers'
+import type { RenderChild } from '@pro-laico/atomic/children'
+import type { IconChild as IconChildType } from '@pro-laico/atomic/children/schema'
 
 export const IconChild: React.FC<RenderChild<IconChildType>> = async ({ block: { icon }, pt }) => {
   const { isEnabled: draft } = await draftMode()

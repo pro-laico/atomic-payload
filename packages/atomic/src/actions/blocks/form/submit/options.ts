@@ -1,5 +1,5 @@
-﻿import type { ActionDefaultFunction, ActionProcessFunction, ActionSetKeyInitialByBlock } from '@pro-laico/atomic/actions'
-import type { z } from '@pro-laico/zap'
+﻿import type { z } from '@pro-laico/zap'
+import type { ActionDefaultFunction, ActionProcessFunction, ActionSetKeyInitialByBlock } from '@pro-laico/atomic/actions'
 
 const setKeyInitialByBlock: ActionSetKeyInitialByBlock = ({ block }) => {
   if (block.blockType === 'AtomicChild' && block.type === 'form' && block.formName) {

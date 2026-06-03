@@ -1,9 +1,9 @@
 import 'server-only' //DO NOT REMOVE
 import { getPayload } from 'payload'
 
-import type { GCFunction } from '../../types/cache'
 import cacheLogger from '../cacheLogger'
 import { toTitleCase } from '../toTitleCase'
+import type { GCFunction } from '../../types/cache'
 
 /** Type guard to check if `icon` is a usable reference (string or numeric ID).
  *  With `depth: 0`, Payload returns the relationship as the ID — that ID is a

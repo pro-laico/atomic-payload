@@ -1,5 +1,5 @@
-import type { APArgs, APFieldWrapper } from '@pro-laico/core'
 import { APField, deepMerge } from '@pro-laico/core'
+import type { APArgs, APFieldWrapper } from '@pro-laico/core'
 
 const description = 'If true, the value will be set as a data attribute on the element. Which can be used by atomic classes.'
 

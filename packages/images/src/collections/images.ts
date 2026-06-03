@@ -1,5 +1,5 @@
-import { revalidateCacheCollectionAfterChange, revalidateCacheOnDelete } from '@pro-laico/core'
 import type { CollectionConfig, ImageUploadFormatOptions } from 'payload'
+import { revalidateCacheCollectionAfterChange, revalidateCacheOnDelete } from '@pro-laico/core'
 
 import { anyone, authd } from '../access'
 

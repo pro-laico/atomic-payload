@@ -1,8 +1,8 @@
-import { APField, onArraySetAPFShallow } from '@pro-laico/core'
 import type { Field, Tab } from 'payload'
+import { APField, onArraySetAPFShallow } from '@pro-laico/core'
 
-import { TokenValueArrayField } from '../../fields/value'
 import { DesignTokenLabelPath } from '../../paths'
+import { TokenValueArrayField } from '../../fields/value'
 
 /**
  * Builds the Fonts tab. The font `upload` fields (sans / serif / mono / display)

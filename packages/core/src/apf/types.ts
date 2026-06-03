@@ -1,6 +1,8 @@
 /**
  * Hand-written types owned by `@pro-laico/core`.
  */
+import type { Config } from '../kernel'
+
 import type {
   CheckboxField,
   CheckboxFieldClientProps,
@@ -15,8 +17,6 @@ import type {
   TextField,
   TextFieldClientProps,
 } from 'payload'
-
-import type { Config } from '../kernel'
 
 // /////////////////////////////////////
 // Inlined toKebabCase options (kept type-only so the package has no runtime deps on it)

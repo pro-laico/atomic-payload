@@ -1,8 +1,8 @@
 import 'server-only' //DO NOT REMOVE
 import { getPayload } from 'payload'
 
-import type { GCFunction } from '../../types/cache'
 import cacheLogger from '../cacheLogger'
+import type { GCFunction } from '../../types/cache'
 
 /** Gets the active shortcut set. */
 export const getCachedShortcutSet: GCFunction<'shortcutSet'> = async (configPromise, tag, draft) => {

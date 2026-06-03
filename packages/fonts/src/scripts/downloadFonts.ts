@@ -1,9 +1,9 @@
 import fs from 'node:fs'
 import path from 'node:path'
 
+import dotenv from 'dotenv'
 import { PayloadSDK } from '@payloadcms/sdk'
 import type { Font } from '@pro-laico/fonts/schema'
-import dotenv from 'dotenv'
 
 const colors = {
   blue: (t: string) => `\x1b[34m${t}\x1b[0m`,

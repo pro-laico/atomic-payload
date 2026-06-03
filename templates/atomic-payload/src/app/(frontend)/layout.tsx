@@ -1,11 +1,12 @@
-import { AtomicStoreProvider } from '@pro-laico/atomic/hook/client'
-import getCached from '@pro-laico/core/cache/auto'
-import { Toaster } from '@pro-laico/core/components/frontend/Toaster'
-import { Footer, Header } from '@pro-laico/site/components/frontend'
-import { TrackingProvider } from '@pro-laico/tracking/provider'
+import type React from 'react'
 import { draftMode } from 'next/headers'
 import { ThemeProvider } from 'next-themes'
-import type React from 'react'
+
+import getCached from '@pro-laico/core/cache/auto'
+import { TrackingProvider } from '@pro-laico/tracking/provider'
+import { AtomicStoreProvider } from '@pro-laico/atomic/hook/client'
+import { Footer, Header } from '@pro-laico/site/components/frontend'
+import { Toaster } from '@pro-laico/core/components/frontend/Toaster'
 
 import fonts from '@/app/definition'
 

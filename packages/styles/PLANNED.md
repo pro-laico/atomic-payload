@@ -25,3 +25,10 @@ Forward-looking backlog distilled from `AUDIT.md`. These items are intentionally
 
 - **`collection` shallow-merge hazard** — `createDesignSetCollection`/`createShortcutSetCollection` end with `merge ? { ...base, ...merge } : base`. A consumer passing `collection: { hooks }` / `{ fields }` / `{ admin }` fully replaces the plugin's version. Consider deep-merging those keys or documenting the hazard explicitly in the JSDoc. (AUDIT.md → Notes.)
 - **SCSS packaging for external publish** — `index.scss` is shipped via `files: ["src"]` and the template's Next build compiles it; a dedicated `./…index.scss` export is only needed if publishing to npm for non-bundler consumers. (AUDIT.md → Low.)
+
+## Inline code TODOs
+
+Captured from `TODO:` comments in source.
+
+- **Build a Color Picker component** — `src/designSet/tabs/colors.ts:1`.
+- **Add an `enableSystem` checkbox for next-themes** — `src/designSet/tabs/settings.ts:31`.

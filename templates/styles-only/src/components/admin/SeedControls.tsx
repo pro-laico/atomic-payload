@@ -1,9 +1,10 @@
 'use client'
 
-import { toast } from '@payloadcms/ui'
-import { useRouter } from 'next/navigation'
 import type React from 'react'
 import { useCallback, useState } from 'react'
+import { useRouter } from 'next/navigation'
+
+import { toast } from '@payloadcms/ui'
 
 const SeededMessage: React.FC = () => (
   <div>

@@ -1,8 +1,9 @@
 ﻿'use client'
-import type { RenderChild } from '@pro-laico/atomic/children'
-import type { AtomicChild } from '@pro-laico/atomic/children/schema'
 import dynamic from 'next/dynamic'
 import type React from 'react'
+
+import type { RenderChild } from '@pro-laico/atomic/children'
+import type { AtomicChild } from '@pro-laico/atomic/children/schema'
 
 import { useActionContext } from '../../../../../../hooks/useActions/useActionContext'
 import { usePortalActions } from '../../../../../../hooks/useActions/usePortal'
@@ -18,9 +19,9 @@ const Positioner = dynamic(() => import('@base-ui-components/react/popover').the
 
 export const AtomicButtonPortalPopover: React.FC<RenderChild<AtomicChild>> = (props) => {
   const { block, pt, triggerChildren, contentChildren, backdropChildren } = props
-  const { hasArrow, popPortal, popPositioner, defaultOpen, ...rp } = pt?.po?.pop?.p || {}
 
   const context = useActionContext()
+  const { hasArrow, popPortal, popPositioner, defaultOpen, ...rp } = pt?.po?.pop?.p || {}
   const portal = usePortalActions({ block, defaultOpen: Boolean(defaultOpen), context })
   const tda = useToDa({ attributers: block.triggerActions?.attributers, context })
   const cda = useToDa({ attributers: block.contentActions?.attributers, context })

@@ -5,16 +5,17 @@
 
 // biome-ignore-all lint/suspicious/noConfusingVoidType: `return: void` is intentional — these properties are later wrapped in `Promise<...>` and represent functions that return nothing.
 
-import type { ImageChild } from '@pro-laico/atomic/children/schema'
-import type { ModifiedStoredAtomicForm } from '@pro-laico/atomic/forms'
-import type { Form, FormSubmission, StoredAtomicForm } from '@pro-laico/atomic/forms/schema'
-import type { AtomicStoreInitialState } from '@pro-laico/atomic/hook'
-import type { Footer, Header, Page, ShortcutSet, SiteMetaDatum } from '@pro-laico/site/schema'
-import type { DesignSet } from '@pro-laico/styles/schema'
-import type { Tracking } from '@pro-laico/tracking/schema'
+import type { MergeTuples } from '../kernel'
+
 import type { SanitizedConfig } from 'payload'
 
-import type { MergeTuples } from '../kernel'
+import type { DesignSet } from '@pro-laico/styles/schema'
+import type { Tracking } from '@pro-laico/tracking/schema'
+import type { ImageChild } from '@pro-laico/atomic/children/schema'
+import type { AtomicStoreInitialState } from '@pro-laico/atomic/hook'
+import type { ModifiedStoredAtomicForm } from '@pro-laico/atomic/forms'
+import type { Form, FormSubmission, StoredAtomicForm } from '@pro-laico/atomic/forms/schema'
+import type { Footer, Header, Page, ShortcutSet, SiteMetaDatum } from '@pro-laico/site/schema'
 
 /** The Payload config (or its resolution promise) that getter functions need to instantiate a Payload local-API client. */
 export type PayloadConfigPromise = SanitizedConfig | Promise<SanitizedConfig>

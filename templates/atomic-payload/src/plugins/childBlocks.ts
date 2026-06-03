@@ -1,5 +1,5 @@
-import { childBlocksPlugin } from '@pro-laico/atomic/children'
 import { ClassNameField } from '@pro-laico/styles'
+import { childBlocksPlugin } from '@pro-laico/atomic/children'
 
 // The block packages (icons / images / mux-video / richtext) and the atomic
 // SimpleText block no longer hard-depend on @pro-laico/styles. Each exposes

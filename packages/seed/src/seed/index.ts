@@ -8,15 +8,13 @@ import type { CollectionSlug, File, Payload, PayloadRequest } from 'payload'
 
 import { backendForm } from './backendForm'
 import { designSet } from './designSet'
-//Collection Data
 import { footer } from './footer'
 import { header } from './header'
 import { iconSet } from './iconSet'
+import { shortcutSet } from './shortcutSet'
+import { siteMetaData } from './siteMetaData'
 import { checkIcon, closeIcon, cookieIcon, githubIcon, logoIcon, menuIcon, themeIcon } from './icons'
 import { homePage, notFoundPage, prosePage, testingPage } from './pages'
-import { shortcutSet } from './shortcutSet'
-//Global Data
-import { siteMetaData } from './siteMetaData'
 
 /** Collection / global slug overrides for the seed function. All optional; defaults
  *  match the atomic-payload template's collection set. */

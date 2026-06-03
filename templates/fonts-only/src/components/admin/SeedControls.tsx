@@ -1,8 +1,8 @@
 'use client'
 
+import type React from 'react'
 import { toast } from '@payloadcms/ui'
 import { useRouter } from 'next/navigation'
-import type React from 'react'
 import { useCallback, useState } from 'react'
 
 const SeededMessage: React.FC = () => (
@@ -22,6 +22,7 @@ const SeededMessage: React.FC = () => (
  */
 export const SeedControls: React.FC = () => {
   const router = useRouter()
+
   const [busy, setBusy] = useState<null | 'seed' | 'reset'>(null)
 
   const run = useCallback(

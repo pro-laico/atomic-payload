@@ -1,5 +1,5 @@
-import { generateLivePreviewPath, revalidateTag } from '@pro-laico/core'
 import { ClassNameField } from '@pro-laico/styles/fields/className'
+import { generateLivePreviewPath, revalidateTag } from '@pro-laico/core'
 import type { CollectionAfterChangeHook, CollectionAfterDeleteHook, CollectionBeforeChangeHook, CollectionConfig } from 'payload'
 
 import { exampleBlocks } from '@/blocks/configs'

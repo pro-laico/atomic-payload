@@ -1,12 +1,11 @@
 ﻿'use client'
 import './index.scss'
-import { Button, DocumentIcon, EditIcon, FolderIcon, LinkIcon, MenuIcon, PlusIcon, PopupList, SearchIcon, useFormFields } from '@payloadcms/ui'
-import type { BeforeDocumentControlsClientProps } from 'payload'
 import type React from 'react'
 import { memo } from 'react'
+import { Button, DocumentIcon, EditIcon, FolderIcon, LinkIcon, MenuIcon, PlusIcon, PopupList, SearchIcon, useFormFields } from '@payloadcms/ui'
 
-import { apfRegistry } from '../../fields/storage'
 import type { APFunction } from '../../types'
+import { apfRegistry } from '../../fields/storage'
 
 type RunControlsProps = { APFunctions?: APFunction[] } & BeforeDocumentControlsClientProps
 
@@ -25,11 +24,9 @@ const apfIcons: Record<APFunction, React.ComponentType> = {
 const RunControls: React.FC<RunControlsProps> = ({ APFunctions = Object.keys(apfRegistry) }) => {
   const runValues = useFormFields(([fields]) => {
     const values = {} as Record<APFunction, boolean>
-
     Object.entries(apfRegistry).forEach(([apFunction, path]) => {
       values[apFunction as APFunction] = Boolean(fields[path]?.value)
     })
-
     return values
   })
 

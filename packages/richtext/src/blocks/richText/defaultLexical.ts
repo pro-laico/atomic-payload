@@ -1,3 +1,4 @@
+import type { TextFieldSingleValidation } from 'payload'
 import {
   AlignFeature,
   BlockquoteFeature,
@@ -18,7 +19,6 @@ import {
   UnderlineFeature,
   UnorderedListFeature,
 } from '@payloadcms/richtext-lexical'
-import type { TextFieldSingleValidation } from 'payload'
 
 export type DefaultLexicalOptions = {
   /** Collections the internal-link feature can target. Defaults to `['pages']`. */

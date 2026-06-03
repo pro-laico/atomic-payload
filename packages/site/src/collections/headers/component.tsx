@@ -1,6 +1,7 @@
 import 'server-only'
-import { RenderChildren } from '@pro-laico/atomic/children/render'
+
 import type { Header as HeaderType } from '@pro-laico/site/schema'
+import { RenderChildren } from '@pro-laico/atomic/children/render'
 
 export const Header = async ({ header }: { header: HeaderType }) => {
   if (!header) return <header>No Header Found</header>

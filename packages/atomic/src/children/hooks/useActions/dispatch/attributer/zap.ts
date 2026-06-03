@@ -1,10 +1,10 @@
 ﻿import { z } from '@pro-laico/zap'
 
-import { BoolToDASchema } from './boolToDA/zap'
 import { CCtoDASchema } from './cCToDA/zap'
+import { BoolToDASchema } from './boolToDA/zap'
+import { TextToDASchema } from './textToDA/zap'
 import { FormErrorToDASchema } from './errorToDA/zap'
 import { FormStatusToDASchema } from './statusToDA/zap'
-import { TextToDASchema } from './textToDA/zap'
 
 export { BoolToDASchema, CCtoDASchema, FormErrorToDASchema, FormStatusToDASchema, TextToDASchema }
 

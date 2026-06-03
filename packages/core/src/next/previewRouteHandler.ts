@@ -1,9 +1,11 @@
 import 'server-only'
+
+import { getPayload } from 'payload'
+import type { CollectionSlug, PayloadRequest, SanitizedConfig } from 'payload'
+
 import { draftMode } from 'next/headers'
 import { redirect } from 'next/navigation'
 import type { NextRequest } from 'next/server'
-import type { CollectionSlug, PayloadRequest, SanitizedConfig } from 'payload'
-import { getPayload } from 'payload'
 
 type ConfigPromise = Promise<SanitizedConfig> | SanitizedConfig
 

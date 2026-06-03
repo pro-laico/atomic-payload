@@ -1,5 +1,5 @@
-import type { Icon, IconSet } from '@pro-laico/icons/schema'
 import type { Page } from '@pro-laico/site/schema'
+import type { Icon, IconSet } from '@pro-laico/icons/schema'
 
 type IconSetArgs = { page: Page; icons: Icon[] }
 

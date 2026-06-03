@@ -1,8 +1,9 @@
 'use server'
-import { RenderChildren } from '@pro-laico/atomic/children/render'
 import { GenerateMetaData } from '@pro-laico/core'
 import getCached from '@pro-laico/core/cache/auto'
+import { RenderChildren } from '@pro-laico/atomic/children/render'
 import LivePreviewListener from '@pro-laico/core/components/frontend/LivePreviewListener'
+
 import type { Metadata } from 'next'
 import { draftMode } from 'next/headers'
 import { notFound } from 'next/navigation'

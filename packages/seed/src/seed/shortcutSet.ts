@@ -10,17 +10,9 @@ export const shortcutSet: (args: ShortcutSetArgs) => Omit<ShortcutSet, 'createdA
     testPath: page,
 
     shortcuts: [
-      {
-        name: 'page-main',
-        ClassName: 'flex\nflex-1\nflex-col\npx-2',
-        id: '6927555aeb8aaaca85b3a425',
-      },
+      { name: 'page-main', ClassName: 'flex\nflex-1\nflex-col\npx-2', id: '6927555aeb8aaaca85b3a425' },
 
-      {
-        name: 'no-scrollbar',
-        ClassName: '[scrollbar-width:none]\n[-ms-overflow-style:none]',
-        id: '6930657ac59442e39df9579d',
-      },
+      { name: 'no-scrollbar', ClassName: '[scrollbar-width:none]\n[-ms-overflow-style:none]', id: '6930657ac59442e39df9579d' },
 
       {
         name: 'nice-scrollbar',
@@ -36,11 +28,7 @@ export const shortcutSet: (args: ShortcutSetArgs) => Omit<ShortcutSet, 'createdA
         id: '69288288df37686e6978aec5',
       },
 
-      {
-        name: 'icon-outline',
-        ClassName: 'rounded-full\nborder-1',
-        id: '69275568eb8aaaca85b3a426',
-      },
+      { name: 'icon-outline', ClassName: 'rounded-full\nborder-1', id: '69275568eb8aaaca85b3a426' },
 
       {
         name: 'icon-inline',
@@ -97,11 +85,7 @@ export const shortcutSet: (args: ShortcutSetArgs) => Omit<ShortcutSet, 'createdA
         id: '69307477e303ad21a77bdd55',
       },
 
-      {
-        name: 'trigger-style-base',
-        ClassName: 'bg-primary\ntext-primary-foreground\nhover:bg-primary/90',
-        id: '69332a133dc3aa372c7fa544',
-      },
+      { name: 'trigger-style-base', ClassName: 'bg-primary\ntext-primary-foreground\nhover:bg-primary/90', id: '69332a133dc3aa372c7fa544' },
 
       {
         name: 'trigger-style-destructive',
@@ -129,47 +113,19 @@ export const shortcutSet: (args: ShortcutSetArgs) => Omit<ShortcutSet, 'createdA
         id: '69332a4a3dc3aa372c7fa548',
       },
 
-      {
-        name: 'trigger-style-link',
-        ClassName: 'text-primary\nunderline-offset-4\nhover:underline',
-        id: '69332a5d3dc3aa372c7fa549',
-      },
+      { name: 'trigger-style-link', ClassName: 'text-primary\nunderline-offset-4\nhover:underline', id: '69332a5d3dc3aa372c7fa549' },
 
-      {
-        name: 'trigger-size-sm',
-        ClassName: 'h-8\nrounded-md\ngap-1.5\npx-3\nhas-[>svg]:px-2.5',
-        id: '69332b1f3dc3aa372c7fa54b',
-      },
+      { name: 'trigger-size-sm', ClassName: 'h-8\nrounded-md\ngap-1.5\npx-3\nhas-[>svg]:px-2.5', id: '69332b1f3dc3aa372c7fa54b' },
 
-      {
-        name: 'trigger-size-base',
-        ClassName: 'h-9\npx-4\npy-2\nhas-[>svg]:px-3',
-        id: '69332b153dc3aa372c7fa54a',
-      },
+      { name: 'trigger-size-base', ClassName: 'h-9\npx-4\npy-2\nhas-[>svg]:px-3', id: '69332b153dc3aa372c7fa54a' },
 
-      {
-        name: 'trigger-size-lg',
-        ClassName: 'h-10\nrounded-md\npx-6\nhas-[>svg]:px-4',
-        id: '69332b243dc3aa372c7fa54c',
-      },
+      { name: 'trigger-size-lg', ClassName: 'h-10\nrounded-md\npx-6\nhas-[>svg]:px-4', id: '69332b243dc3aa372c7fa54c' },
 
-      {
-        name: 'trigger-size-icon',
-        ClassName: 'size-9',
-        id: '69332b2a3dc3aa372c7fa54d',
-      },
+      { name: 'trigger-size-icon', ClassName: 'size-9', id: '69332b2a3dc3aa372c7fa54d' },
 
-      {
-        name: 'trigger-size-icon-sm',
-        ClassName: 'size-8',
-        id: '69332b313dc3aa372c7fa54e',
-      },
+      { name: 'trigger-size-icon-sm', ClassName: 'size-8', id: '69332b313dc3aa372c7fa54e' },
 
-      {
-        name: 'trigger-size-icon-lg',
-        ClassName: 'size-10',
-        id: '69332b393dc3aa372c7fa54f',
-      },
+      { name: 'trigger-size-icon-lg', ClassName: 'size-10', id: '69332b393dc3aa372c7fa54f' },
 
       {
         name: 'consent-trigger',

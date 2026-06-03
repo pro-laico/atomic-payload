@@ -1,8 +1,9 @@
-import config from '@payload-config'
-import { revalidateTag } from '@pro-laico/core'
-import { headers as nextHeaders } from 'next/headers'
 import { NextResponse } from 'next/server'
+import { headers as nextHeaders } from 'next/headers'
 import { getPayload } from 'payload'
+
+import { revalidateTag } from '@pro-laico/core'
+import config from '@payload-config'
 
 /**
  * Wipes every `icon` and `iconSet` doc. Auth-gated to logged-in admins.

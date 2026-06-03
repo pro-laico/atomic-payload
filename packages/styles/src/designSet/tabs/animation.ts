@@ -1,9 +1,9 @@
-import { APField, onArraySetAPFShallow } from '@pro-laico/core'
-import { z } from '@pro-laico/zap'
 import type { Tab } from 'payload'
+import { z } from '@pro-laico/zap'
+import { APField, onArraySetAPFShallow } from '@pro-laico/core'
 
-import { TokenValueArrayField, TokenValuesArrayField } from '../../fields/value'
 import { AnimationLabelPath } from '../../paths'
+import { TokenValueArrayField, TokenValuesArrayField } from '../../fields/value'
 
 // Mirrors exactly what `generateUnoAnimation` (processDesignSet/index.ts) emits:
 // five `RSS` maps. The processor never writes a `properties` key, and `counts`

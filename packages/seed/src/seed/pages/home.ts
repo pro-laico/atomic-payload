@@ -44,9 +44,7 @@ export const homePage: Omit<Page, 'createdAt' | 'updatedAt' | 'publishedAt' | 'i
                       text: 'Thanks for giving ',
                       id: '69306d9fc59442e39df957af',
 
-                      contentActions: {
-                        actionBlocks: [],
-                      },
+                      contentActions: { actionBlocks: [] },
 
                       staticDataAttributes: [],
                     },
@@ -58,9 +56,7 @@ export const homePage: Omit<Page, 'createdAt' | 'updatedAt' | 'publishedAt' | 'i
                       text: 'Atomic Payload',
                       id: '69306deac59442e39df957b3',
 
-                      contentActions: {
-                        actionBlocks: [],
-                      },
+                      contentActions: { actionBlocks: [] },
 
                       staticDataAttributes: [],
                     },
@@ -72,9 +68,7 @@ export const homePage: Omit<Page, 'createdAt' | 'updatedAt' | 'publishedAt' | 'i
                       text: ' a go',
                       id: '6930717ee303ad21a77bdd52',
 
-                      contentActions: {
-                        actionBlocks: [],
-                      },
+                      contentActions: { actionBlocks: [] },
 
                       staticDataAttributes: [],
                     },
@@ -83,13 +77,9 @@ export const homePage: Omit<Page, 'createdAt' | 'updatedAt' | 'publishedAt' | 'i
 
                   triggerChildren: [],
 
-                  triggerActions: {
-                    actionBlocks: [],
-                  },
+                  triggerActions: { actionBlocks: [] },
 
-                  contentActions: {
-                    actionBlocks: [],
-                  },
+                  contentActions: { actionBlocks: [] },
 
                   formRateLimitBlocks: [],
 
@@ -119,9 +109,7 @@ export const homePage: Omit<Page, 'createdAt' | 'updatedAt' | 'publishedAt' | 'i
                   text: 'If you enjoy the project, give it a star on github!',
                   id: '6933468f5ff10f7a3074a1f3',
 
-                  contentActions: {
-                    actionBlocks: [],
-                  },
+                  contentActions: { actionBlocks: [] },
 
                   staticDataAttributes: [],
                 },
@@ -159,13 +147,9 @@ export const homePage: Omit<Page, 'createdAt' | 'updatedAt' | 'publishedAt' | 'i
 
                       children: [],
 
-                      triggerActions: {
-                        actionBlocks: [],
-                      },
+                      triggerActions: { actionBlocks: [] },
 
-                      contentActions: {
-                        actionBlocks: [],
-                      },
+                      contentActions: { actionBlocks: [] },
 
                       formRateLimitBlocks: [],
 
@@ -217,13 +201,9 @@ export const homePage: Omit<Page, 'createdAt' | 'updatedAt' | 'publishedAt' | 'i
 
                       children: [],
 
-                      triggerActions: {
-                        actionBlocks: [],
-                      },
+                      triggerActions: { actionBlocks: [] },
 
-                      contentActions: {
-                        actionBlocks: [],
-                      },
+                      contentActions: { actionBlocks: [] },
 
                       formRateLimitBlocks: [],
 
@@ -250,13 +230,9 @@ export const homePage: Omit<Page, 'createdAt' | 'updatedAt' | 'publishedAt' | 'i
 
                   triggerChildren: [],
 
-                  triggerActions: {
-                    actionBlocks: [],
-                  },
+                  triggerActions: { actionBlocks: [] },
 
-                  contentActions: {
-                    actionBlocks: [],
-                  },
+                  contentActions: { actionBlocks: [] },
 
                   formRateLimitBlocks: [],
 
@@ -283,13 +259,9 @@ export const homePage: Omit<Page, 'createdAt' | 'updatedAt' | 'publishedAt' | 'i
 
               triggerChildren: [],
 
-              triggerActions: {
-                actionBlocks: [],
-              },
+              triggerActions: { actionBlocks: [] },
 
-              contentActions: {
-                actionBlocks: [],
-              },
+              contentActions: { actionBlocks: [] },
 
               formRateLimitBlocks: [],
 
@@ -317,13 +289,9 @@ export const homePage: Omit<Page, 'createdAt' | 'updatedAt' | 'publishedAt' | 'i
 
           triggerChildren: [],
 
-          triggerActions: {
-            actionBlocks: [],
-          },
+          triggerActions: { actionBlocks: [] },
 
-          contentActions: {
-            actionBlocks: [],
-          },
+          contentActions: { actionBlocks: [] },
 
           formRateLimitBlocks: [],
 
@@ -351,13 +319,9 @@ export const homePage: Omit<Page, 'createdAt' | 'updatedAt' | 'publishedAt' | 'i
 
       triggerChildren: [],
 
-      triggerActions: {
-        actionBlocks: [],
-      },
+      triggerActions: { actionBlocks: [] },
 
-      contentActions: {
-        actionBlocks: [],
-      },
+      contentActions: { actionBlocks: [] },
 
       formRateLimitBlocks: [],
 
@@ -401,9 +365,7 @@ export const homePage: Omit<Page, 'createdAt' | 'updatedAt' | 'publishedAt' | 'i
               text: 'Quick Links',
               id: '693346865ff10f7a3074a1e5',
 
-              contentActions: {
-                actionBlocks: [],
-              },
+              contentActions: { actionBlocks: [] },
 
               staticDataAttributes: [],
             },
@@ -413,13 +375,9 @@ export const homePage: Omit<Page, 'createdAt' | 'updatedAt' | 'publishedAt' | 'i
 
           triggerChildren: [],
 
-          triggerActions: {
-            actionBlocks: [],
-          },
+          triggerActions: { actionBlocks: [] },
 
-          contentActions: {
-            actionBlocks: [],
-          },
+          contentActions: { actionBlocks: [] },
 
           formRateLimitBlocks: [],
 
@@ -481,13 +439,9 @@ export const homePage: Omit<Page, 'createdAt' | 'updatedAt' | 'publishedAt' | 'i
 
                   triggerChildren: [],
 
-                  triggerActions: {
-                    actionBlocks: [],
-                  },
+                  triggerActions: { actionBlocks: [] },
 
-                  contentActions: {
-                    actionBlocks: [],
-                  },
+                  contentActions: { actionBlocks: [] },
 
                   formRateLimitBlocks: [],
 
@@ -517,9 +471,7 @@ export const homePage: Omit<Page, 'createdAt' | 'updatedAt' | 'publishedAt' | 'i
                   text: 'Github',
                   id: '693346865ff10f7a3074a1ea',
 
-                  contentActions: {
-                    actionBlocks: [],
-                  },
+                  contentActions: { actionBlocks: [] },
 
                   staticDataAttributes: [],
                 },
@@ -531,9 +483,7 @@ export const homePage: Omit<Page, 'createdAt' | 'updatedAt' | 'publishedAt' | 'i
                   text: 'View The Github Repo.',
                   id: '693346865ff10f7a3074a1eb',
 
-                  contentActions: {
-                    actionBlocks: [],
-                  },
+                  contentActions: { actionBlocks: [] },
 
                   staticDataAttributes: [],
                 },
@@ -543,13 +493,9 @@ export const homePage: Omit<Page, 'createdAt' | 'updatedAt' | 'publishedAt' | 'i
 
               children: [],
 
-              triggerActions: {
-                actionBlocks: [],
-              },
+              triggerActions: { actionBlocks: [] },
 
-              contentActions: {
-                actionBlocks: [],
-              },
+              contentActions: { actionBlocks: [] },
 
               formRateLimitBlocks: [],
 
@@ -604,13 +550,9 @@ export const homePage: Omit<Page, 'createdAt' | 'updatedAt' | 'publishedAt' | 'i
 
                   triggerChildren: [],
 
-                  triggerActions: {
-                    actionBlocks: [],
-                  },
+                  triggerActions: { actionBlocks: [] },
 
-                  contentActions: {
-                    actionBlocks: [],
-                  },
+                  contentActions: { actionBlocks: [] },
 
                   formRateLimitBlocks: [],
 
@@ -640,9 +582,7 @@ export const homePage: Omit<Page, 'createdAt' | 'updatedAt' | 'publishedAt' | 'i
                   text: 'Atomic Payload',
                   id: '693346865ff10f7a3074a1ef',
 
-                  contentActions: {
-                    actionBlocks: [],
-                  },
+                  contentActions: { actionBlocks: [] },
 
                   staticDataAttributes: [],
                 },
@@ -654,9 +594,7 @@ export const homePage: Omit<Page, 'createdAt' | 'updatedAt' | 'publishedAt' | 'i
                   text: 'View the documentation on all major aspects of Atomic Payload.',
                   id: '693346865ff10f7a3074a1f0',
 
-                  contentActions: {
-                    actionBlocks: [],
-                  },
+                  contentActions: { actionBlocks: [] },
 
                   staticDataAttributes: [],
                 },
@@ -666,13 +604,9 @@ export const homePage: Omit<Page, 'createdAt' | 'updatedAt' | 'publishedAt' | 'i
 
               children: [],
 
-              triggerActions: {
-                actionBlocks: [],
-              },
+              triggerActions: { actionBlocks: [] },
 
-              contentActions: {
-                actionBlocks: [],
-              },
+              contentActions: { actionBlocks: [] },
 
               formRateLimitBlocks: [],
 
@@ -700,13 +634,9 @@ export const homePage: Omit<Page, 'createdAt' | 'updatedAt' | 'publishedAt' | 'i
 
           triggerChildren: [],
 
-          triggerActions: {
-            actionBlocks: [],
-          },
+          triggerActions: { actionBlocks: [] },
 
-          contentActions: {
-            actionBlocks: [],
-          },
+          contentActions: { actionBlocks: [] },
 
           formRateLimitBlocks: [],
 
@@ -734,13 +664,9 @@ export const homePage: Omit<Page, 'createdAt' | 'updatedAt' | 'publishedAt' | 'i
 
       triggerChildren: [],
 
-      triggerActions: {
-        actionBlocks: [],
-      },
+      triggerActions: { actionBlocks: [] },
 
-      contentActions: {
-        actionBlocks: [],
-      },
+      contentActions: { actionBlocks: [] },
 
       formRateLimitBlocks: [],
 

@@ -1,9 +1,10 @@
+import type { Block } from 'payload'
+
+import type { BlockFieldExtensions } from '@pro-laico/core'
 import { ColoredEnd } from '@pro-laico/atomic/children/fields/coloredEnd'
-import { ChildsSettingsTab } from '@pro-laico/atomic/children/fields/tabs/settings'
 import { TagTypeField } from '@pro-laico/atomic/children/fields/tagType'
 import { TrackingTab } from '@pro-laico/atomic/children/fields/trackingTab'
-import type { BlockFieldExtensions } from '@pro-laico/core'
-import type { Block } from 'payload'
+import { ChildsSettingsTab } from '@pro-laico/atomic/children/fields/tabs/settings'
 
 const d = {
   video: 'Select the video to be displayed.',

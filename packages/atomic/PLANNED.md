@@ -46,3 +46,11 @@ Forward-looking backlog distilled from `AUDIT.md`. These items are intentionally
 - **What:** Drop the `@deprecated` `blocks`/`extra` aliases retained alongside the new options.
 - **Why deferred:** Kept for migration so existing configs don't break. Schedule for the next major + CHANGELOG note.
 - **Source:** `actions/plugin.ts:15`, `forms/plugin.ts:27`, `children/plugin.ts:43` · AUDIT.md → Low.
+
+## Inline code TODOs
+
+Captured from `TODO:` comments in source.
+
+- **Add starting/end styles to assist popover animations** — `src/children/atomic/variants/button/variants/portal/popover/settings.ts:85`.
+- **Add starting/end styles to assist dialog animations** — `src/children/atomic/variants/button/variants/portal/dialog/settings.ts:7`.
+- **Fix typing in the form processor** — `src/forms/submitForm/formProcessor.ts:191`. Same code path as the *Correlated-union refactor in the form processor* item above.

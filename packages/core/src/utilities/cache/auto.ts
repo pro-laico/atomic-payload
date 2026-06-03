@@ -1,6 +1,7 @@
 import 'server-only'
-import configPromise from '@payload-config'
+
 import { cache } from 'react'
+import configPromise from '@payload-config'
 
 import { createDefaultGetCached } from './index'
 

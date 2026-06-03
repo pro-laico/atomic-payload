@@ -1,5 +1,6 @@
-import { APField } from '@pro-laico/core'
 import type { TextField } from 'payload'
+
+import { APField } from '@pro-laico/core'
 
 const description = "The message to display when the validation fails. Use {{inputName}} to display the input's value."
 

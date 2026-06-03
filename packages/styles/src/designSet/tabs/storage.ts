@@ -1,5 +1,5 @@
-import { z } from '@pro-laico/zap'
 import type { Tab } from 'payload'
+import { z } from '@pro-laico/zap'
 
 import { unoThemeAnimation } from './animation'
 

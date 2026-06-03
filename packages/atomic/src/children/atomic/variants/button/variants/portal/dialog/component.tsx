@@ -1,8 +1,9 @@
 ﻿'use client'
-import type { RenderChild } from '@pro-laico/atomic/children'
-import type { AtomicChild } from '@pro-laico/atomic/children/schema'
 import dynamic from 'next/dynamic'
 import type React from 'react'
+
+import type { RenderChild } from '@pro-laico/atomic/children'
+import type { AtomicChild } from '@pro-laico/atomic/children/schema'
 
 import { useActionContext } from '../../../../../../hooks/useActions/useActionContext'
 import { usePortalActions } from '../../../../../../hooks/useActions/usePortal'
@@ -19,9 +20,9 @@ export const AtomicButtonPortalDialog: React.FC<RenderChild<AtomicChild>> = (pro
   const { dialogPortal, defaultOpen, ...rp } = pt?.po?.di?.p || {}
 
   const context = useActionContext()
-  const portal = usePortalActions({ block, defaultOpen: Boolean(defaultOpen), context })
   const tda = useToDa({ attributers: block.triggerActions?.attributers, context })
   const cda = useToDa({ attributers: block.contentActions?.attributers, context })
+  const portal = usePortalActions({ block, defaultOpen: Boolean(defaultOpen), context })
 
   return (
     <Root {...rp} {...portal}>

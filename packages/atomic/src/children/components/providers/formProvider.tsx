@@ -1,7 +1,8 @@
 ﻿'use client'
-import type { FullFormContext } from '@pro-laico/atomic/actions'
 import type React from 'react'
 import { createContext, useContext } from 'react'
+
+import type { FullFormContext } from '@pro-laico/atomic/actions'
 
 const FormContext = createContext<FullFormContext>({ formResponse: null })
 

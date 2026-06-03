@@ -1,5 +1,5 @@
-import { ClassNameField } from '@pro-laico/styles/fields/className'
 import type { Block } from 'payload'
+import { ClassNameField } from '@pro-laico/styles/fields/className'
 
 /**
  * Block **configs** only — no React, no `getCached`, no `server-only`. This file

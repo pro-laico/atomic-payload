@@ -1,10 +1,11 @@
-﻿import type { AtomicStore, AtomicStoreInitialState } from '@pro-laico/atomic/hook'
-import { createStore } from 'zustand'
+﻿import { createStore } from 'zustand'
 import { persist } from 'zustand/middleware'
 
 import { baseSlice } from './slices/base'
-import { consentSlice, STORAGE_KEYS } from './slices/consent'
 import { dynamicSlice } from './slices/dynamic'
+import { consentSlice, STORAGE_KEYS } from './slices/consent'
+
+import type { AtomicStore, AtomicStoreInitialState } from '@pro-laico/atomic/hook'
 
 const safeStorageOperation = <T>(operation: () => T, fallback: T): T => {
   try {

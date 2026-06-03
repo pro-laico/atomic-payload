@@ -1,23 +1,22 @@
-﻿//Action Options
-import type { ActionBlockDefaultReturns, ActionProcessFunction, ActionSetKeyInitialByAction, InitialValue } from '@pro-laico/atomic/actions'
-import type { ActionBlocks, ActionBlockType, AllActions, StoredAtomicActions } from '@pro-laico/atomic/actions/schema'
+﻿import type { InitialValue, ActionBlockDefaultReturns, ActionProcessFunction, ActionSetKeyInitialByAction } from '@pro-laico/atomic/actions'
+import type { AllActions, ActionBlocks, ActionBlockType, StoredAtomicActions } from '@pro-laico/atomic/actions/schema'
 import type { ChildBlocks } from '@pro-laico/atomic/children/schema'
-//Other
+
 import { z } from '@pro-laico/zap'
 
+import { ActionFilters } from './filters'
 import { ActSetCC } from './cookieConsent/set/options'
 import { ActCCToDA } from './cookieConsent/toDA/options'
+import { ActSetTheme } from './theme/set/options'
+import { ActResetForm } from './form/reset/options'
+import { ActSubmitForm } from './form/submit/options'
 import { ActDSSetBool } from './dynamicStore/boolean/set/options'
 import { ActDSBoolToDA } from './dynamicStore/boolean/toDA/options'
 import { ActDSCycleText } from './dynamicStore/text/cycle/options'
 import { ActDSTextToDA } from './dynamicStore/text/toDA/options'
-import { ActionFilters } from './filters'
 import { ActFormErrorToDA } from './form/errorToDA/options'
-import { ActResetForm } from './form/reset/options'
-import { ActFormStatusToDA } from './form/statusToDA/options'
-import { ActSubmitForm } from './form/submit/options'
 import { ActSetPortalOpen } from './portal/set/options'
-import { ActSetTheme } from './theme/set/options'
+import { ActFormStatusToDA } from './form/statusToDA/options'
 
 /** Makes an object and all its properties non-nullable */
 type NonNullableObject<T> = { [K in keyof T]-?: NonNullable<T[K]> }

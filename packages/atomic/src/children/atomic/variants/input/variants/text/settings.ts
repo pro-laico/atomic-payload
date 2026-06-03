@@ -1,5 +1,6 @@
-import { APField } from '@pro-laico/core'
 import type { GroupField } from 'payload'
+
+import { APField } from '@pro-laico/core'
 
 export const TextSettingsTab: GroupField = {
   type: 'group',

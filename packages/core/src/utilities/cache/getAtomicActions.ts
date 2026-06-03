@@ -1,9 +1,9 @@
-import 'server-only' //DO NOT REMOVE
-import type { AtomicStoreInitialState } from '@pro-laico/atomic/hook'
+import 'server-only' // DO NOT REMOVE
 import { getPayload, type Where } from 'payload'
+import type { AtomicStoreInitialState } from '@pro-laico/atomic/hook'
 
-import type { GCFunction } from '../../types/cache'
 import cacheLogger from '../cacheLogger'
+import type { GCFunction } from '../../types/cache'
 
 /** Gets all atomic actions stored in the pages collection. */
 export const getCachedAtomicActions: GCFunction<'atomic-actions'> = async (configPromise, tag, draft) => {

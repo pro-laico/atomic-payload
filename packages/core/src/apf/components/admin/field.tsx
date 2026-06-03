@@ -1,18 +1,19 @@
 ﻿'use client'
 import './index.scss'
-import { getTranslation } from '@payloadcms/translations'
-import { CheckboxInput, FieldDescription, ReactSelect, TextareaInput, TextInput, useField, useFormFields } from '@payloadcms/ui'
-import { FieldError } from '@payloadcms/ui/fields/FieldError'
-import { formatOptions, SelectInput } from '@payloadcms/ui/fields/Select'
-import { fieldBaseClass } from '@payloadcms/ui/fields/shared'
-import { useTranslation } from '@payloadcms/ui/providers/Translation'
 import type React from 'react'
 import { memo, useEffect, useMemo, useState } from 'react'
 
-import { apfRegistry } from '../../fields/storage'
+import { getTranslation } from '@payloadcms/translations'
+import { FieldError } from '@payloadcms/ui/fields/FieldError'
+import { fieldBaseClass } from '@payloadcms/ui/fields/shared'
+import { formatOptions, SelectInput } from '@payloadcms/ui/fields/Select'
+import { useTranslation } from '@payloadcms/ui/providers/Translation'
+import { CheckboxInput, FieldDescription, ReactSelect, TextareaInput, TextInput, useField, useFormFields } from '@payloadcms/ui'
+
 import type { APFFieldComponentType } from '../../types'
-import APFieldLabelServer from './label'
+import { apfRegistry } from '../../fields/storage'
 import { toKebabCase } from './toKebabCase'
+import APFieldLabelServer from './label'
 
 /** Mirrors Payload `@payloadcms/ui` `mergeFieldStyles` widths for arbitrary field shapes used by AP fields. */
 function mergeApfFieldStyles(
@@ -44,14 +45,12 @@ function isNumericRawInput(raw: unknown): raw is string {
 export const APFieldComponent: APFFieldComponentType = (props) => {
   const { path, field, apf, type } = props
   const { i18n, t } = useTranslation()
-
   const { value, initialValue, setValue, selectFilterOptions, showError, disabled: formBusy } = useField<unknown>({ path })
 
   const targetPaths = useMemo(() => {
     const apfArray = Array.isArray(apf) ? apf : [apf]
     return apfArray?.map((apfItem) => apfRegistry[apfItem])
   }, [apf])
-
   const setTargetValues = useFormFields(([, dispatch]) => (value: boolean) => {
     targetPaths?.forEach((targetPath) => {
       dispatch({ type: 'UPDATE', path: targetPath, value })
@@ -62,6 +61,12 @@ export const APFieldComponent: APFFieldComponentType = (props) => {
     if (type !== 'select') return []
     return formatOptions((field as Extract<typeof props, { type: 'select' }>['field']).options ?? [])
   }, [field, type])
+  const selectFilterMemo = useMemo(() => {
+    if (!selectFilterOptions) return undefined
+    return (opt: { label: string; value: unknown }, search: string) =>
+      !!selectFilterOptions.some((optionEl) => (typeof optionEl === 'string' ? optionEl : optionEl.value) === opt.value) &&
+      opt.label.toLowerCase().includes(search.toLowerCase())
+  }, [selectFilterOptions])
 
   const placeholderNumber = useMemo(() => {
     if (type !== 'number') return undefined
@@ -70,13 +75,11 @@ export const APFieldComponent: APFFieldComponentType = (props) => {
     const out = getTranslation(raw as Parameters<typeof getTranslation>[0], i18n)
     return typeof out === 'string' ? out : undefined
   }, [i18n, props, type])
-
+  const valueArray = useMemo(() => (Array.isArray(value) ? value : []), [value])
+  const hasManyNumber = type === 'number' && !!(field as { hasMany?: boolean }).hasMany
   const [numberMultiRender, setNumberMultiRender] = useState<
     Array<{ id: string; label: string; value: { toString: () => string; value: number | undefined } }>
   >([])
-
-  const hasManyNumber = type === 'number' && !!(field as { hasMany?: boolean }).hasMany
-  const valueArray = useMemo(() => (Array.isArray(value) ? value : []), [value])
   useEffect(() => {
     if (!hasManyNumber) return
     setNumberMultiRender(
@@ -97,6 +100,10 @@ export const APFieldComponent: APFFieldComponentType = (props) => {
     )
   }, [hasManyNumber, valueArray])
 
+  function handleChange(next: unknown) {
+    setValue(next)
+    if (next !== initialValue) setTargetValues(true)
+  }
   function handleTextChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
     if (type === 'text' || type === 'textarea') {
       const { kebab } = props
@@ -107,18 +114,6 @@ export const APFieldComponent: APFFieldComponentType = (props) => {
     }
     if (value !== initialValue) setTargetValues(true)
   }
-
-  function handleChange(next: unknown) {
-    setValue(next)
-    if (next !== initialValue) setTargetValues(true)
-  }
-
-  const selectFilterMemo = useMemo(() => {
-    if (!selectFilterOptions) return undefined
-    return (opt: { label: string; value: unknown }, search: string) =>
-      !!selectFilterOptions.some((optionEl) => (typeof optionEl === 'string' ? optionEl : optionEl.value) === opt.value) &&
-      opt.label.toLowerCase().includes(search.toLowerCase())
-  }, [selectFilterOptions])
 
   let fieldComponent = null
 

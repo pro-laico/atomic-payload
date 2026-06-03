@@ -1,5 +1,5 @@
-import { ActiveField, APField, TestPathField, UniqueTitleField } from '@pro-laico/core'
 import type { Tab } from 'payload'
+import { ActiveField, APField, TestPathField, UniqueTitleField } from '@pro-laico/core'
 
 import { ClassNameField } from '../../fields/className'
 

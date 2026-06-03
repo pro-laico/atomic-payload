@@ -5,6 +5,7 @@
 import type { FieldHook } from 'payload'
 
 import type { APFunction } from '../../types'
+
 export const virtualAPFBeforeChangeFieldHook: FieldHook = ({ context, value, field, originalDoc }) => {
   if (!originalDoc?.id) return
   const key = `${originalDoc?.id}-${field?.name?.replace(/^apf-/, '').trim()}`

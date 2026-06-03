@@ -1,7 +1,7 @@
 import type { Config, Plugin } from 'payload'
 
-import { revalidateCache as collectionRevalidate, revalidateCacheOnDelete } from './hooks/collection/revalidate'
 import { revalidateCache as globalRevalidate } from './hooks/global/revalidate'
+import { revalidateCache as collectionRevalidate, revalidateCacheOnDelete } from './hooks/collection/revalidate'
 
 export interface RevalidationPluginOptions {
   /** When false, the plugin is a no-op. Defaults to true. */

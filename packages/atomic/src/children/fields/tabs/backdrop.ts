@@ -1,5 +1,5 @@
-import type { ClassNameFieldWrapper } from '@pro-laico/core'
 import type { GroupField } from 'payload'
+import type { ClassNameFieldWrapper } from '@pro-laico/core'
 
 import { BackdropChildren } from '../blocks/backdropChildren'
 

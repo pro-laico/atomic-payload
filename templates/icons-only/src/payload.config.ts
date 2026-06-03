@@ -1,14 +1,19 @@
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-import { sqliteAdapter } from '@payloadcms/db-sqlite'
+import sharp from 'sharp'
+import { buildConfig } from 'payload'
+import type { SharpDependency } from 'payload'
 import { getServerSideURL } from '@pro-laico/core'
 import { iconsPlugin } from '@pro-laico/icons'
-import type { SharpDependency } from 'payload'
-import { buildConfig } from 'payload'
-import sharp from 'sharp'
+import { sqliteAdapter } from '@payloadcms/db-sqlite'
 
 import { Users } from '@/collections/users'
+
+const filename = fileURLToPath(import.meta.url)
+const dirname = path.dirname(filename)
+
+const serverURL = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000'
 
 /** Builds the live-preview iframe URL for IconSet edits. The icons demo has a
  *  single rendered page (`/`), so all iconSet previews point at the home page;
@@ -22,11 +27,6 @@ const iconSetLivePreviewUrl = (): string => {
   })
   return `${getServerSideURL()}/next/preview?${params.toString()}`
 }
-
-const filename = fileURLToPath(import.meta.url)
-const dirname = path.dirname(filename)
-
-const serverURL = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000'
 
 export default buildConfig({
   sharp: sharp as unknown as SharpDependency,

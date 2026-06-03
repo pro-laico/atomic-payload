@@ -1,11 +1,12 @@
 ﻿'use client'
+import { useMemo } from 'react'
 import { BlocksField, useFormFields } from '@payloadcms/ui'
+import type { BlocksFieldClientProps } from 'payload'
+
 import type { ActionBlockFilter, ActionBlockPrefix } from '@pro-laico/atomic/actions'
 import { ActionFilters } from '@pro-laico/atomic/actions/filters'
-import type { AtomicButtonPortalTypes, AtomicButtonTypes, AtomicChildVariants, AtomicInputTypes } from '@pro-laico/atomic/actions/schema'
 import type { ChildBlockType } from '@pro-laico/atomic/children/schema'
-import type { BlocksFieldClientProps } from 'payload'
-import { useMemo } from 'react'
+import type { AtomicButtonPortalTypes, AtomicButtonTypes, AtomicChildVariants, AtomicInputTypes } from '@pro-laico/atomic/actions/schema'
 
 interface ActionBlocksFieldProps extends BlocksFieldClientProps {
   placement: ActionBlockPrefix
@@ -16,10 +17,10 @@ const ActionBlocksField: React.FC<ActionBlocksFieldProps> = (props) => {
   const p = useMemo(() => path.split('.').slice(0, -2).join('.'), [path])
 
   const type = useFormFields(([fields]) => fields[`${p}.type`]?.value as AtomicChildVariants | undefined)
-  const blockType = useFormFields(([fields]) => fields[`${p}.blockType`]?.value as ChildBlockType | undefined)
   const inputType = useFormFields(([fields]) => fields[`${p}.inputType`]?.value as AtomicInputTypes | undefined)
   const buttonType = useFormFields(([fields]) => fields[`${p}.buttonType`]?.value as AtomicButtonTypes | undefined)
   const portalType = useFormFields(([fields]) => fields[`${p}.portalType`]?.value as AtomicButtonPortalTypes | undefined)
+  const blockType = useFormFields(([fields]) => fields[`${p}.blockType`]?.value as ChildBlockType | undefined)
 
   const block = useMemo((): ActionBlockFilter => {
     const blockFilter: ActionBlockFilter = { placement, blockType: blockType || 'AtomicChild' }

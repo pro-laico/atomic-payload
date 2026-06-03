@@ -1,11 +1,12 @@
 ﻿// /////////////////////////////////////
-import type { ChildBlocks, ChildBlockType } from '@pro-laico/atomic/children/schema'
-import type { FormResponse } from '@pro-laico/atomic/forms'
-import type { AtomicStore } from '@pro-laico/atomic/hook'
-import type { ExtractOrDefault } from '@pro-laico/core'
 // Hand-written types for the actions surface.
 // /////////////////////////////////////
 import type { UseThemeProps } from 'next-themes'
+
+import type { ExtractOrDefault } from '@pro-laico/core'
+import type { FormResponse } from '@pro-laico/atomic/forms'
+import type { AtomicStore } from '@pro-laico/atomic/hook'
+import type { ChildBlocks, ChildBlockType } from '@pro-laico/atomic/children/schema'
 
 import type {
   ActionBlocks,

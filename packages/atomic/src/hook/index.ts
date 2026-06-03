@@ -1,6 +1,14 @@
 import './types/payload'
 
+export { atomicHook } from './lazyAtomicHook'
 export { atomicHookWith } from './atomicHookFactory'
+export { createAtomicHook } from './createAtomicHook'
+export { unsetActive } from './unsetActive'
+export type { UnsetActiveType } from './unsetActive'
+export { DEFAULT_ATOMIC_HOOK_SLUG_CONFIG } from './atomicHookTypes'
+export type { AtomicHookPluginOptions } from './plugin'
+export { atomicHookPlugin, default } from './plugin'
+export type * from './types'
 export type {
   ActionBlockStorageProcessorClass,
   AtomicHookGetCached,
@@ -8,11 +16,3 @@ export type {
   CreateAtomicHookOptions,
   UnsetActiveCleanupFlags,
 } from './atomicHookTypes'
-export { DEFAULT_ATOMIC_HOOK_SLUG_CONFIG } from './atomicHookTypes'
-export { createAtomicHook } from './createAtomicHook'
-export { atomicHook } from './lazyAtomicHook'
-export type { AtomicHookPluginOptions } from './plugin'
-export { atomicHookPlugin, default } from './plugin'
-export type * from './types'
-export type { UnsetActiveType } from './unsetActive'
-export { unsetActive } from './unsetActive'

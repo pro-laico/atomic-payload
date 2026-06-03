@@ -1,5 +1,7 @@
 ﻿'use client'
+
 import { Pill, RowLabel, SectionTitle, useRowLabel } from '@payloadcms/ui'
+
 import type { SimpleTextChild } from '@pro-laico/atomic/children/schema'
 
 const TRUNCATE_LENGTH = 50

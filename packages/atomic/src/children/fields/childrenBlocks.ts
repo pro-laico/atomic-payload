@@ -1,5 +1,6 @@
-﻿import type { ChildBlockType } from '@pro-laico/atomic/children/schema'
-import type { BlocksField } from 'payload'
+﻿import type { BlocksField } from 'payload'
+
+import type { ChildBlockType } from '@pro-laico/atomic/children/schema'
 
 const AllChildBlocks: ChildBlockType[] = ['AtomicChild', 'SimpleTextChild', 'RichTextChild', 'ImageChild', 'VideoChild', 'IconChild', 'SVGChild']
 

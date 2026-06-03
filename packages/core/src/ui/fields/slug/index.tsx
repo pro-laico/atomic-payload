@@ -1,10 +1,11 @@
 'use client'
-import './index.scss'
-import { Button, FieldLabel, TextInput, useField, useForm, useFormFields } from '@payloadcms/ui'
-import type { TextFieldClientProps } from 'payload'
 import type React from 'react'
 import { useCallback, useEffect } from 'react'
 
+import type { TextFieldClientProps } from 'payload'
+import { Button, FieldLabel, TextInput, useField, useForm, useFormFields } from '@payloadcms/ui'
+
+import './index.scss'
 import { formatSlug } from '../../../hooks/field/formatSlug'
 
 type SlugComponentProps = { fieldToUse: string; checkboxFieldPath: string } & TextFieldClientProps
@@ -17,11 +18,10 @@ const SlugComponent: React.FC<SlugComponentProps> = ({
   checkboxFieldPath: checkboxFieldPathFromProps,
 }) => {
   const { label } = field
-
-  const checkboxFieldPath = path?.includes('.') ? `${path}.${checkboxFieldPathFromProps}` : checkboxFieldPathFromProps
-
   const { value, setValue } = useField<string>({ path: path || field.name })
   const { dispatchFields } = useForm()
+
+  const checkboxFieldPath = path?.includes('.') ? `${path}.${checkboxFieldPathFromProps}` : checkboxFieldPathFromProps
 
   // The value of the checkbox
   // We're using separate useFormFields to minimise re-renders
@@ -33,6 +33,8 @@ const SlugComponent: React.FC<SlugComponentProps> = ({
   const targetFieldValue = useFormFields(([fields]) => {
     return fields[fieldToUse]?.value as string
   })
+
+  const readOnly = readOnlyFromProps || checkboxValue
 
   useEffect(() => {
     if (checkboxValue) {
@@ -53,8 +55,6 @@ const SlugComponent: React.FC<SlugComponentProps> = ({
     },
     [checkboxValue, checkboxFieldPath, dispatchFields],
   )
-
-  const readOnly = readOnlyFromProps || checkboxValue
 
   return (
     <div className="field-type slug-field-component">

@@ -1,9 +1,10 @@
 ﻿'use client'
-import { Toast } from '@base-ui-components/react/toast'
-import type { ActionContext, FullFormContext } from '@pro-laico/atomic/actions'
-import type { AtomicChild } from '@pro-laico/atomic/children/schema'
-import type { FormResponse } from '@pro-laico/atomic/forms'
 import { useEffect, useMemo, useRef, useState } from 'react'
+import { Toast } from '@base-ui-components/react/toast'
+
+import type { FormResponse } from '@pro-laico/atomic/forms'
+import type { AtomicChild } from '@pro-laico/atomic/children/schema'
+import type { ActionContext, FullFormContext } from '@pro-laico/atomic/actions'
 
 import { useActionContext } from './useActionContext'
 
@@ -26,11 +27,9 @@ export type UseFormReturns = {
 export function useForm(props: UseFormProps): UseFormReturns {
   const { block } = props
   const { formName } = block
-
   const toastManager = Toast.useToastManager()
 
   const formRef = useRef<HTMLFormElement | null>(null)
-
   const [formStatus, setFormStatus] = useState<string | null>(null)
   const [submissionId, setSubmissionId] = useState<string | null>(null)
   const [formResponse, setFormResponse] = useState<FormResponse | null>(null)

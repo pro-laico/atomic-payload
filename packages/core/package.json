@@ -118,11 +118,21 @@
     "server-only": ">=0.0.1"
   },
   "peerDependenciesMeta": {
-    "@pro-laico/atomic": { "optional": true },
-    "@pro-laico/images": { "optional": true },
-    "@pro-laico/site": { "optional": true },
-    "@pro-laico/styles": { "optional": true },
-    "@pro-laico/tracking": { "optional": true }
+    "@pro-laico/atomic": {
+      "optional": true
+    },
+    "@pro-laico/images": {
+      "optional": true
+    },
+    "@pro-laico/site": {
+      "optional": true
+    },
+    "@pro-laico/styles": {
+      "optional": true
+    },
+    "@pro-laico/tracking": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "@base-ui-components/react": "1.0.0-rc.0",

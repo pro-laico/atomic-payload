@@ -1,6 +1,7 @@
 'use client'
-import { Pill, RowLabel, useRowLabel } from '@payloadcms/ui'
+
 import type { Icon } from '@pro-laico/icons/schema'
+import { Pill, RowLabel, useRowLabel } from '@payloadcms/ui'
 
 interface IconData {
   name: string

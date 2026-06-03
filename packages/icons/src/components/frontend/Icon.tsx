@@ -1,7 +1,8 @@
 import 'server-only'
-import getCached from '@pro-laico/core/cache/auto'
-import { draftMode } from 'next/headers'
+
 import type React from 'react'
+import { draftMode } from 'next/headers'
+import getCached from '@pro-laico/core/cache/auto'
 
 import { extractSvgContent, extractSvgProps } from '../../utilities/extractSVG'
 
@@ -50,6 +51,7 @@ export const Icon: React.FC<IconProps> = async ({ name, fallback, ...svgProps })
   const iconSet = await getCached('iconSet', draft)
   const svg = await getCached('icon', name, draft, iconSet)
   const source = svg || fallback || FALLBACK_WARNING_SVG
+
   // Default to decorative (aria-hidden); callers announcing the icon override
   // with `aria-hidden={false}` + a title since svgProps wins over this default.
   return <svg aria-hidden="true" {...extractSvgProps(source)} {...svgProps} dangerouslySetInnerHTML={{ __html: extractSvgContent(source) }} />

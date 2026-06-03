@@ -1,8 +1,8 @@
-import { existsSync } from 'node:fs'
 import path from 'node:path'
+import { existsSync } from 'node:fs'
 
-import { withPayload } from '@payloadcms/next/withPayload'
 import type { NextConfig } from 'next'
+import { withPayload } from '@payloadcms/next/withPayload'
 
 // In monorepo, Next.js needs the workspace root to resolve packages.
 const monorepoRoot = path.resolve(__dirname, '../..')

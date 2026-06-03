@@ -1,8 +1,10 @@
 'use client'
-import './index.scss'
-import { Pill, RowLabel, useRowLabel } from '@payloadcms/ui'
-import type { ShortcutSet } from '@pro-laico/site/schema'
+
 import { useMemo } from 'react'
+import type { ShortcutSet } from '@pro-laico/site/schema'
+import { Pill, RowLabel, useRowLabel } from '@payloadcms/ui'
+
+import './index.scss'
 
 const ShortcutRowLabel = () => {
   const { data, path, rowNumber } = useRowLabel<ShortcutSet['shortcuts'][number]>()

@@ -1,7 +1,9 @@
-import 'server-only'
-import configPromise from '@payload-config'
-import { createGetCached, defaultGetRegistry, type GetRegistry } from '@pro-laico/core/cache'
 import { cache } from 'react'
+
+import configPromise from '@payload-config'
+
+import 'server-only'
+import { createGetCached, defaultGetRegistry, type GetRegistry } from '@pro-laico/core/cache'
 
 /**
  * Per-request memoized `getCached` for the styles demo.

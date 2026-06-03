@@ -1,10 +1,10 @@
 import type { Block, Config, Plugin } from 'payload'
 
-import FormRateLimitBlocks from './submitForm/form/rateLimiting/blocks'
-import FormSanitationBlocks from './submitForm/form/sanitation/blocks'
-import FormValidationBlocks from './submitForm/form/validation/blocks'
-import InputSanitationBlocks from './submitForm/input/sanitation/blocks'
 import InputValidationBlocks from './submitForm/input/validation/blocks'
+import InputSanitationBlocks from './submitForm/input/sanitation/blocks'
+import FormValidationBlocks from './submitForm/form/validation/blocks'
+import FormSanitationBlocks from './submitForm/form/sanitation/blocks'
+import FormRateLimitBlocks from './submitForm/form/rateLimiting/blocks'
 
 const defaultSubmitFormBlocks: Block[] = [
   ...FormRateLimitBlocks,

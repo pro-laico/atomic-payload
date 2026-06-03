@@ -1,5 +1,8 @@
-import { ChildrenBlocksField as ChildrenBlocks } from '@pro-laico/atomic/children'
+import type { CollectionConfig } from 'payload'
+
 import { atomicHook } from '@pro-laico/atomic/hook'
+import { ChildrenBlocksField as ChildrenBlocks } from '@pro-laico/atomic/children'
+import { ClassNameField } from '@pro-laico/styles/fields/className'
 import {
   ActiveField,
   APFControlsPath,
@@ -12,8 +15,6 @@ import {
   TestPathField,
   UniqueTitleField,
 } from '@pro-laico/core'
-import { ClassNameField } from '@pro-laico/styles/fields/className'
-import type { CollectionConfig } from 'payload'
 
 import { authd } from '../../access'
 

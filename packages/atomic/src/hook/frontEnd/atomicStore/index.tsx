@@ -1,10 +1,11 @@
 ﻿'use client'
 
-import type { AtomicStore, AtomicStoreProviderProps } from '@pro-laico/atomic/hook'
-import { createContext, useContext, useState } from 'react'
-import { useStore } from 'zustand'
-
 import { createAtomicStore } from './createStore'
+
+import { useStore } from 'zustand'
+import { createContext, useContext, useState } from 'react'
+
+import type { AtomicStore, AtomicStoreProviderProps } from '@pro-laico/atomic/hook'
 export type AtomicStoreApi = ReturnType<typeof createAtomicStore>
 export const AtomicStoreContext = createContext<AtomicStoreApi | undefined>(undefined)
 

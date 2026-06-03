@@ -1,8 +1,8 @@
 import 'server-only' //DO NOT REMOVE
 import { getPayload } from 'payload'
 
-import type { GCFunction } from '../../types/cache'
 import cacheLogger from '../cacheLogger'
+import type { GCFunction } from '../../types/cache'
 
 /** Gets the active header. */
 export const getCachedHeader: GCFunction<'header'> = async (configPromise, tag, draft) => {

@@ -1,25 +1,22 @@
-//Plugin Imports
-
-import { actionsPlugin } from '@pro-laico/atomic/actions'
-import { formsPlugin } from '@pro-laico/atomic/forms'
-// Atomic Payload package plugins
-import { revalidationPlugin } from '@pro-laico/core'
-import { seedPlugin } from '@pro-laico/seed'
-import { sitePlugin } from '@pro-laico/site'
-import { trackingPlugin } from '@pro-laico/tracking'
 import type { Plugin } from 'payload'
 
-import { blurDataUrlsPluginConfig } from './blurDataUrls'
-import { childBlocksPluginConfig } from './childBlocks'
+import { seedPlugin } from '@pro-laico/seed'
+import { sitePlugin } from '@pro-laico/site'
+import { revalidationPlugin } from '@pro-laico/core'
+import { trackingPlugin } from '@pro-laico/tracking'
+import { actionsPlugin } from '@pro-laico/atomic/actions'
+import { formsPlugin } from '@pro-laico/atomic/forms'
+
 import { fontsPluginConfig } from './fonts'
-import { formBuilderPluginConfig } from './formBuilder'
 import { iconsPluginConfig } from './icons'
 import { imagesPluginConfig } from './images'
-import { jsonSchemaPluginConfig } from './jsonSchema'
-//Plugin Configurations
+import { stylesPluginConfig } from './styles'
 import { muxVideoPluginConfig } from './muxVideo'
 import { nestedDocsPluginConfig } from './nestedDocs'
-import { stylesPluginConfig } from './styles'
+import { childBlocksPluginConfig } from './childBlocks'
+import { jsonSchemaPluginConfig } from './jsonSchema'
+import { formBuilderPluginConfig } from './formBuilder'
+import { blurDataUrlsPluginConfig } from './blurDataUrls'
 import { vercelBlobStoragePluginConfig } from './vercelBlobStorage'
 
 // Notes on plugin composition:

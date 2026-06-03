@@ -1,4 +1,4 @@
-import 'server-only' //DO NOT REMOVE
+import 'server-only' // DO NOT REMOVE
 import { getPayload } from 'payload'
 
 import type { GCFunction } from '../../types/cache'

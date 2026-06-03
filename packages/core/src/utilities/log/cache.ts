@@ -1,6 +1,7 @@
 ﻿import 'server-only'
-import type { AllTags } from '../../types/cache'
+
 import { mt } from '../mergeTags'
+import type { AllTags } from '../../types/cache'
 
 export function cacheLogger({ tag, tid, draft }: { tag: AllTags; tid?: string; draft?: boolean }) {
   const fullTag: string = mt([tag, tid, draft ? 'draft' : undefined])

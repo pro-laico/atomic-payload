@@ -1,7 +1,8 @@
-﻿import 'server-only' //DO NOT REMOVE
-import type { AtomicRegistry } from '@pro-laico/zap/schema'
-import traverse from 'traverse'
+﻿import 'server-only' // DO NOT REMOVE
 import z from 'zod'
+import traverse from 'traverse'
+
+import type { AtomicRegistry } from '@pro-laico/zap/schema'
 
 type ZapSchemaRegistry = { id: string; description?: string }
 

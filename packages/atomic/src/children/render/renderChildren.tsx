@@ -1,36 +1,37 @@
 ﻿'use server'
 import 'server-only' //DO NOT REMOVE
 
+import type { BlockSlug } from 'payload'
 import type { BlockBySlug, ChildBySlug, PassThroughs, RenderChildrenProps } from '@pro-laico/atomic/children'
 import type { AtomicChild, ChildBlocks, ChildrenWithActions } from '@pro-laico/atomic/children/schema'
-import type { BlockSlug } from 'payload'
 
 import {
-  AtomicButtonLink,
-  AtomicButtonLinkClient,
-  AtomicButtonPortalDialog,
-  AtomicButtonPortalPopover,
-  AtomicButtonRegular,
-  AtomicButtonRegularClient,
-  AtomicForm,
-  AtomicTag,
-  AtomicTagClient,
-  CheckboxInput,
-  CheckboxInputClient,
+  SVGChild,
   IconChild,
   ImageChild,
-  NumberInput,
-  NumberInputClient,
+  VideoChild,
+  AtomicForm,
+  AtomicTag,
   RadioInput,
-  RadioInputClient,
+  TextInput,
   RichTextChild,
   SimpleTextChild,
-  SimpleTextChildClient,
-  SVGChild,
-  TextInput,
+  NumberInput,
+  CheckboxInput,
+  AtomicButtonLink,
+  AtomicTagClient,
   TextInputClient,
-  VideoChild,
+  RadioInputClient,
+  SimpleTextChildClient,
+  NumberInputClient,
+  CheckboxInputClient,
+  AtomicButtonRegular,
+  AtomicButtonLinkClient,
+  AtomicButtonRegularClient,
+  AtomicButtonPortalDialog,
+  AtomicButtonPortalPopover,
 } from '../frontend-components'
+
 import { SSRProps } from './SSRProps'
 
 const components = {

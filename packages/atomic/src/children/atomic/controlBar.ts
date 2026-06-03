@@ -1,12 +1,12 @@
 import type { GroupField } from 'payload'
 
+import { FormFields } from './variants/form/controlBar'
+import { TagControlBar } from './variants/tag/controlBar'
+import { InputTypeField } from './variants/input/typeField'
 import { ButtonTypeField } from './variants/button/typeField'
+import { InputControlBar } from './variants/input/controlBar'
 import { LinkControlBarFields } from './variants/button/variants/link/controlBar'
 import { PortalControlsFields } from './variants/button/variants/portal/controlBar'
-import { FormFields } from './variants/form/controlBar'
-import { InputControlBar } from './variants/input/controlBar'
-import { InputTypeField } from './variants/input/typeField'
-import { TagControlBar } from './variants/tag/controlBar'
 
 const atomicTypeOptions = [
   { label: 'Tag', value: 'tag' },

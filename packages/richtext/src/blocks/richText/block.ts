@@ -1,9 +1,10 @@
-import { FixedToolbarFeature, HeadingFeature, InlineToolbarFeature, lexicalEditor } from '@payloadcms/richtext-lexical'
-import { ColoredEnd } from '@pro-laico/atomic/children/fields/coloredEnd'
-import { ChildsSettingsTab } from '@pro-laico/atomic/children/fields/tabs/settings'
-import { TrackingTab } from '@pro-laico/atomic/children/fields/trackingTab'
-import type { BlockFieldExtensions } from '@pro-laico/core'
 import type { Block } from 'payload'
+import type { BlockFieldExtensions } from '@pro-laico/core'
+
+import { ColoredEnd } from '@pro-laico/atomic/children/fields/coloredEnd'
+import { TrackingTab } from '@pro-laico/atomic/children/fields/trackingTab'
+import { ChildsSettingsTab } from '@pro-laico/atomic/children/fields/tabs/settings'
+import { FixedToolbarFeature, HeadingFeature, InlineToolbarFeature, lexicalEditor } from '@payloadcms/richtext-lexical'
 
 /** Options for {@link createRichTextBlock}: generic fields to prepend/append to the Content tab. */
 export type RichTextBlockOptions = BlockFieldExtensions

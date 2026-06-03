@@ -1,6 +1,7 @@
 import 'server-only'
-import configPromise from '@payload-config'
 import { getPayload } from 'payload'
+
+import configPromise from '@payload-config'
 
 /**
  * The host project's Payload instance, bound to the `@payload-config` alias.

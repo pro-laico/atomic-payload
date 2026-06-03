@@ -1,5 +1,5 @@
-import { APField } from '@pro-laico/core'
 import type { Block } from 'payload'
+import { APField } from '@pro-laico/core'
 
 export const ActResetForm: Block = {
   slug: 'ActResetForm',

@@ -1,8 +1,8 @@
 import 'server-only' //DO NOT REMOVE
 import { getPayload } from 'payload'
 
-import type { GCFunction } from '../../types/cache'
 import cacheLogger from '../cacheLogger'
+import type { GCFunction } from '../../types/cache'
 
 /** Gets all site metadata from the siteMetaData global.*/
 export const getCachedSiteMetadata: GCFunction<'site-metadata'> = async (configPromise, tag, draft) => {

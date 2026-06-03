@@ -42,10 +42,7 @@ export const footer: (args: FooterArgs) => Omit<Footer, 'createdAt' | 'updatedAt
                     text: 'Built by ',
                     id: '6928904b18f4a1a54c700a5b',
 
-                    contentActions: {
-                      actionBlocks: [],
-                    },
-
+                    contentActions: { actionBlocks: [] },
                     staticDataAttributes: [],
                   },
 
@@ -64,11 +61,7 @@ export const footer: (args: FooterArgs) => Omit<Footer, 'createdAt' | 'updatedAt
                         tagType: 'fragment',
                         text: 'Atomic Payload',
                         id: '6928909518f4a1a54c700a5d',
-
-                        contentActions: {
-                          actionBlocks: [],
-                        },
-
+                        contentActions: { actionBlocks: [] },
                         staticDataAttributes: [],
                       },
                     ],
@@ -76,33 +69,17 @@ export const footer: (args: FooterArgs) => Omit<Footer, 'createdAt' | 'updatedAt
                     blockName: 'Atomic Payload',
 
                     children: [],
-
-                    triggerActions: {
-                      actionBlocks: [],
-                    },
-
-                    contentActions: {
-                      actionBlocks: [],
-                    },
-
+                    triggerActions: { actionBlocks: [] },
+                    contentActions: { actionBlocks: [] },
                     formRateLimitBlocks: [],
-
                     formSanitationBlocks: [],
-
                     formValidationBlocks: [],
-
                     inputSanitationBlocks: [],
-
                     inputValidationBlocks: [],
-
                     backdropChildren: [],
-
                     ds: {},
-
                     pops: {},
-
                     triggerStaticDataAttributes: [],
-
                     staticDataAttributes: [],
                   },
 
@@ -111,11 +88,7 @@ export const footer: (args: FooterArgs) => Omit<Footer, 'createdAt' | 'updatedAt
                     tagType: 'fragment',
                     text: ' at ',
                     id: '692890b218f4a1a54c700a5f',
-
-                    contentActions: {
-                      actionBlocks: [],
-                    },
-
+                    contentActions: { actionBlocks: [] },
                     staticDataAttributes: [],
                   },
 
@@ -134,11 +107,7 @@ export const footer: (args: FooterArgs) => Omit<Footer, 'createdAt' | 'updatedAt
                         tagType: 'fragment',
                         text: 'Pro Laico',
                         id: '692890d518f4a1a54c700a61',
-
-                        contentActions: {
-                          actionBlocks: [],
-                        },
-
+                        contentActions: { actionBlocks: [] },
                         staticDataAttributes: [],
                       },
                     ],
@@ -181,11 +150,7 @@ export const footer: (args: FooterArgs) => Omit<Footer, 'createdAt' | 'updatedAt
                     tagType: 'span',
                     text: '. The source code is available on ',
                     id: '692890f118f4a1a54c700a62',
-
-                    contentActions: {
-                      actionBlocks: [],
-                    },
-
+                    contentActions: { actionBlocks: [] },
                     staticDataAttributes: [],
                   },
 
@@ -204,11 +169,7 @@ export const footer: (args: FooterArgs) => Omit<Footer, 'createdAt' | 'updatedAt
                         tagType: 'fragment',
                         text: 'Github',
                         id: '69289191fe1cea35207f00ec',
-
-                        contentActions: {
-                          actionBlocks: [],
-                        },
-
+                        contentActions: { actionBlocks: [] },
                         staticDataAttributes: [],
                       },
                     ],
@@ -216,33 +177,17 @@ export const footer: (args: FooterArgs) => Omit<Footer, 'createdAt' | 'updatedAt
                     blockName: 'Github',
 
                     children: [],
-
-                    triggerActions: {
-                      actionBlocks: [],
-                    },
-
-                    contentActions: {
-                      actionBlocks: [],
-                    },
-
+                    triggerActions: { actionBlocks: [] },
+                    contentActions: { actionBlocks: [] },
                     formRateLimitBlocks: [],
-
                     formSanitationBlocks: [],
-
                     formValidationBlocks: [],
-
                     inputSanitationBlocks: [],
-
                     inputValidationBlocks: [],
-
                     backdropChildren: [],
-
                     ds: {},
-
                     pops: {},
-
                     triggerStaticDataAttributes: [],
-
                     staticDataAttributes: [],
                   },
 
@@ -251,110 +196,55 @@ export const footer: (args: FooterArgs) => Omit<Footer, 'createdAt' | 'updatedAt
                     tagType: 'fragment',
                     text: '.',
                     id: '6928919718f4a1a54c700a66',
-
-                    contentActions: {
-                      actionBlocks: [],
-                    },
-
+                    contentActions: { actionBlocks: [] },
                     staticDataAttributes: [],
                   },
                 ],
                 id: '6928904618f4a1a54c700a5a',
-
                 triggerChildren: [],
-
-                triggerActions: {
-                  actionBlocks: [],
-                },
-
-                contentActions: {
-                  actionBlocks: [],
-                },
-
+                triggerActions: { actionBlocks: [] },
+                contentActions: { actionBlocks: [] },
                 formRateLimitBlocks: [],
-
                 formSanitationBlocks: [],
-
                 formValidationBlocks: [],
-
                 inputSanitationBlocks: [],
-
                 inputValidationBlocks: [],
-
                 backdropChildren: [],
-
                 ds: {},
-
                 pops: {},
-
                 triggerStaticDataAttributes: [],
-
                 staticDataAttributes: [],
               },
             ],
             id: '6928902318f4a1a54c700a58',
-
             triggerChildren: [],
-
-            triggerActions: {
-              actionBlocks: [],
-            },
-
-            contentActions: {
-              actionBlocks: [],
-            },
-
+            triggerActions: { actionBlocks: [] },
+            contentActions: { actionBlocks: [] },
             formRateLimitBlocks: [],
-
             formSanitationBlocks: [],
-
             formValidationBlocks: [],
-
             inputSanitationBlocks: [],
-
             inputValidationBlocks: [],
-
             backdropChildren: [],
-
             ds: {},
-
             pops: {},
-
             triggerStaticDataAttributes: [],
-
             staticDataAttributes: [],
           },
         ],
         id: '692752aceb8aaaca85b3a424',
-
         triggerChildren: [],
-
-        triggerActions: {
-          actionBlocks: [],
-        },
-
-        contentActions: {
-          actionBlocks: [],
-        },
-
+        triggerActions: { actionBlocks: [] },
+        contentActions: { actionBlocks: [] },
         formRateLimitBlocks: [],
-
         formSanitationBlocks: [],
-
         formValidationBlocks: [],
-
         inputSanitationBlocks: [],
-
         inputValidationBlocks: [],
-
         backdropChildren: [],
-
         ds: {},
-
         pops: {},
-
         triggerStaticDataAttributes: [],
-
         staticDataAttributes: [],
       },
     ] as any,

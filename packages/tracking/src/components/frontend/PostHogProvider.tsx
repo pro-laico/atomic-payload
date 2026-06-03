@@ -1,9 +1,11 @@
 'use client'
 import type { Tracking } from '@pro-laico/tracking/schema'
+
+import { useEffect } from 'react'
 import { usePathname } from 'next/navigation'
+
 import posthog from 'posthog-js'
 import { PostHogProvider as PHProvider } from 'posthog-js/react'
-import { useEffect } from 'react'
 
 export function PostHogProvider({ children, tracking }: { children: React.ReactNode; tracking?: Tracking }) {
   const pathname = usePathname()

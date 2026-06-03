@@ -1,6 +1,6 @@
 'use client'
-import { Pill, RowLabel, useRowLabel } from '@payloadcms/ui'
 import { toTitleCase } from '@pro-laico/core'
+import { Pill, RowLabel, useRowLabel } from '@payloadcms/ui'
 
 const ColorRowLabel = () => {
   const { data, path, rowNumber } = useRowLabel<{ [key: string]: string }>()

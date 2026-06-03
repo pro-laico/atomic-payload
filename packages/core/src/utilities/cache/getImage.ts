@@ -1,8 +1,8 @@
 import 'server-only' //DO NOT REMOVE
 import { getPayload } from 'payload'
 
-import type { GCFunction } from '../../types/cache'
 import cacheLogger from '../cacheLogger'
+import type { GCFunction } from '../../types/cache'
 
 export const getCachedImage: GCFunction<'image'> = async (configPromise, tag, tid, version) => {
   if (!tid) return ''

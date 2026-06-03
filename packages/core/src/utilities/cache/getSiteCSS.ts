@@ -1,8 +1,8 @@
 import 'server-only' //DO NOT REMOVE
 import { getPayload } from 'payload'
 
-import type { GCFunction } from '../../types/cache'
 import cacheLogger from '../cacheLogger'
+import type { GCFunction } from '../../types/cache'
 
 // Gets the site css stored in payload, under the global 'draftStorage' or 'publishedStorage'.
 export const getCachedSiteCSS: GCFunction<'site-css'> = async (configPromise, tag, draft) => {

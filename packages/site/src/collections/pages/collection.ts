@@ -1,6 +1,9 @@
+import type { CollectionConfig } from 'payload'
 import { createParentField } from '@payloadcms/plugin-nested-docs'
-import { ChildrenBlocksField as ChildrenBlocks } from '@pro-laico/atomic/children'
+
 import { atomicHook } from '@pro-laico/atomic/hook'
+import { ChildrenBlocksField as ChildrenBlocks } from '@pro-laico/atomic/children'
+import { ClassNameField } from '@pro-laico/styles/fields/className'
 import {
   APFControlsPath,
   APField,
@@ -13,8 +16,6 @@ import {
   updateHrefHook,
   updatePublishedAtHook,
 } from '@pro-laico/core'
-import { ClassNameField } from '@pro-laico/styles/fields/className'
-import type { CollectionConfig } from 'payload'
 
 import { authd, authenticatedOrPublished } from '../../access'
 import { SEOTab } from './tabs/SEO'
