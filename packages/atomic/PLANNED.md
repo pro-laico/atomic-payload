@@ -40,11 +40,6 @@ Forward-looking backlog distilled from `AUDIT.md`. These items are intentionally
 - **Why deferred:** The `as any` is the classic correlated-union limitation (`formFunctions[type]` is a union of functions, `augmentedArgs` a union of params). The honest fix is a real refactor in a security-sensitive validated path, not a cast swap.
 - **Source:** `src/forms/submitForm/formProcessor.ts:194` · AUDIT.md → Low.
 
-### Drop the `atomicHookFactory` WeakMap
-- **What:** Remove the config-identity-keyed WeakMap cache (callers build fresh object literals per call, so it almost never hits).
-- **Why deferred:** Pure cleanup with no behavioral win and a small risk on a load-bearing lazy-init path; left until there's a reason to touch the file.
-- **Source:** `src/hook/atomicHookFactory.ts:15,31-38` · AUDIT.md → Medium.
-
 ## Deprecations
 
 ### Remove deprecated `blocks` / `extra` plugin options

@@ -38,7 +38,7 @@ Default env vars (all picked up automatically):
 | --- | --- | --- |
 | `enabled` | `true` | No-op the plugin entirely. |
 | `includeCollection` | `true` | Register the bundled `mux-video` extension collection. Disable if you supply your own with the same slug. |
-| `collectionOverride` | — | Shallow merge over the bundled collection. |
+| `collectionOverride` | — | Override the bundled collection. Top-level keys replace, but `access`/`admin` are deep-merged, `fields` are appended, and `hooks` are merged per phase — so a partial override can't silently drop the collection's access rules or fields. |
 | `adminThumbnail` | `'image'` | What to show in the admin list view (`'image'`, `'gif'`, `'none'`). |
 | `uploadSettings` | from `NEXT_PUBLIC_SERVER_URL` | Passed to upstream. |
 | `initSettings` | from env | Mux credentials. |
@@ -55,7 +55,7 @@ Default env vars (all picked up automatically):
 
 | Subpath | What's there |
 | --- | --- |
-| `./blocks/videoChild` | Child block config |
+| `./blocks/videoChild` | Child block config — also where the `createVideoBlock` factory, `Video` block, and `VideoBlockOptions` type live (they are intentionally **not** re-exported from the root `.`). |
 | `./blocks/videoChild/component` | Child block renderer |
 
 ## Gotchas

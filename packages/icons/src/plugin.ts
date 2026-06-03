@@ -82,7 +82,10 @@ export interface IconsPluginOptions {
  *   `active` toggle, and optional live preview wiring.
  *
  * Both collections wire cache revalidation through `@pro-laico/core` hooks
- * only — no runtime dependency on `@pro-laico/atomic`. For atomicHook
+ * only — the `Icon`/`IconSet` collections themselves carry no runtime dependency
+ * on `@pro-laico/atomic`. (The package as a whole does: the `iconChild`/`svgChild`
+ * block components render via `@pro-laico/atomic/children`, so `@pro-laico/atomic`
+ * is a genuine runtime dependency — see `package.json`.) For atomicHook
  * snapshot behavior, attach it yourself via `iconSetOptions.hooks.beforeChange`.
  *
  * Both collections support additive extension — see

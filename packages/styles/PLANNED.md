@@ -4,11 +4,6 @@ Forward-looking backlog distilled from `AUDIT.md`. These items are intentionally
 
 ## Design decisions pending
 
-### `unocss` — optional peer vs hard import
-- **What:** Reconcile the contradiction between `peerDependenciesMeta.unocss.optional = true` and the top-level `import` of `createGenerator`/`presetWind4`/… in `cssProcessor.ts` (which throws at load time if unocss is absent).
-- **Options:** (a) drop `optional: true` — unocss is genuinely required whenever CSS is processed (simplest, honest, **recommended**); or (b) make the unocss import lazy (`await import('unocss')` inside the processor) and gate the `cssProcessor`/`createCssHook` exports so the rest of the package loads without it.
-- **Source:** `src/cssProcessor.ts:3` + `package.json` `peerDependenciesMeta` · AUDIT.md → High.
-
 ### `cssHook` change-gating
 - **What:** Gate the standalone `cssHook`'s UnoCSS regeneration on whether a class/token field actually changed, instead of running the full `createGenerator` + `generate` pass on *every* `beforeChange` of any non-skip collection.
 - **Why deferred:** It's a real perf win but changes *when* CSS regenerates. The canonical `atomicHook` already gates via `runAPF`/APF flags; mirroring that here is the fix, but the question is whether to do so or keep the standalone path always-regenerate for safety.

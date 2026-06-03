@@ -8,7 +8,9 @@ export const getCachedImage: GCFunction<'image'> = async (configPromise, tag, ti
   if (!tid) return ''
 
   const payload = await getPayload({ config: configPromise })
-  const image = await payload.findByID({ collection: 'images', id: tid })
+  // Only the URL is needed — fetch at depth 0 so related docs aren't populated
+  // just to read a URL off the upload document.
+  const image = await payload.findByID({ collection: 'images', id: tid, depth: 0 })
   if (!image) return
 
   const url = version ? image.sizes?.[version]?.url || image.url : image.url

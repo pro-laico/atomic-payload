@@ -1,6 +1,7 @@
-import { muxVideoPlugin as upstreamMuxVideoPlugin } from '@oversightstudio/mux-video'
-import { mergeHooks } from '@pro-laico/core'
 import type { CollectionConfig, Config, Plugin } from 'payload'
+import { muxVideoPlugin as upstreamMuxVideoPlugin } from '@oversightstudio/mux-video'
+
+import { mergeHooks } from '@pro-laico/core'
 
 import { MuxVideo } from './collections/muxVideo'
 
@@ -38,6 +39,12 @@ export const muxVideoPlugin =
       },
     } = opts
     if (!enabled) return config
+
+    if (!initSettings.tokenId || !initSettings.tokenSecret) {
+      console.warn(
+        '[mux-video] MUX_TOKEN_ID / MUX_TOKEN_SECRET are empty — Mux uploads and API calls will fail. Set them in the environment before buildConfig runs, or pass `initSettings` explicitly.',
+      )
+    }
 
     const collection: CollectionConfig = collectionOverride
       ? {

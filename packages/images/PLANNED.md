@@ -9,13 +9,6 @@ Forward-looking backlog distilled from `AUDIT.md`. These items are intentionally
 - **Why deferred:** Intentional source-only consumption today — every export resolves to `src`, the same decision applied across `@pro-laico/*`. The committed `dist` exists only for a hypothetical npm publish and is rebuilt clean.
 - **Source:** `package.json:10-32`, `tsconfig.build.json:11` · AUDIT.md → Critical #2 / High (annotated intentional).
 
-## Upstream (core) optimization
-
-### `getCachedImage` over-fetch
-- **What:** `getCachedImage` in core does a `findByID` with no `depth: 0` or `select` clause — it fetches the full document just to extract a URL.
-- **Why deferred:** Lives in `@pro-laico/core`, not this package; noted here because `images` consumes it. Track the fix on the core side.
-- **Source:** core `getCachedImage` · AUDIT.md → Notes.
-
 ## Notes / intentional-for-now
 
 - The `dist/` tree is a build artifact — never hand-edit. Rebuilding from reconciled source resolves all dist-specific findings (the stale `@pro-laico/ap-utils`/`ap-apf` imports were already cleared by a clean rebuild).

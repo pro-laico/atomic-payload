@@ -22,8 +22,3 @@ Forward-looking backlog distilled from `AUDIT.md`. These items are intentionally
 ### Public read access review
 - **What:** `muxVideo` collection has `access.read: anyone` (`() => true`). If the upstream plugin persists raw asset/playback IDs on the document, public read exposes them. Confirm with upstream what fields are stored; restrict read to authenticated + use signed playback tokens if needed.
 - **Source:** `src/collections/muxVideo.ts:9` · AUDIT.md → Low.
-
-## Notes / lower priority
-
-- **`initSettings` env-read timing** — defaults read env vars at `buildConfig` time; if env is loaded lazily (e.g. `dotenv` after module eval), credentials are silently empty. Defer env reads into the inner `(config) => Config` body, or warn when `tokenId`/`tokenSecret` are empty. (AUDIT.md → Low.)
-- **Root-barrel exports** — `createVideoBlock`/`Video`/`VideoBlockOptions` are only reachable via the `./blocks/videoChild` subpath, not `.`. Deliberate; consider documenting in the README. (AUDIT.md → Low.)

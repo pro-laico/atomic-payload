@@ -5,9 +5,9 @@ Forward-looking backlog distilled from `AUDIT.md`. These items are intentionally
 ## Cross-package: dependency shape
 
 ### `@pro-laico/atomic` dependency classification
-- **What:** `package.json` lists `@pro-laico/atomic` in `dependencies`, while the JSDoc/README claim "no runtime dependency on `@pro-laico/atomic`." The block components (consumed via `src`) **do** import `@pro-laico/atomic/children` at runtime, so the *wording* is the stale part — but whether this should be `peerDependencies` is the same dependency-shape question as the core circular-deps family.
-- **Approach:** Fold into the workspace-deps decision (move shared schema stubs to a leaf package; settle peer-vs-dep classification across siblings). Cheap immediate follow-up: correct the "no runtime dependency" wording in the JSDoc/README.
-- **Source:** `package.json:71` · AUDIT.md → Low. See also `core/PLANNED.md`.
+- **What:** `package.json` lists `@pro-laico/atomic` in `dependencies`. Whether this should instead be `peerDependencies` is the same dependency-shape question as the core circular-deps family.
+- **Approach:** Fold into the workspace-deps decision (move shared schema stubs to a leaf package; settle peer-vs-dep classification across siblings). The misleading JSDoc wording was already corrected; only the peer-vs-dep reclassification remains.
+- **Source:** `package.json:75` · See also `core/PLANNED.md`.
 
 ## External-publish readiness
 

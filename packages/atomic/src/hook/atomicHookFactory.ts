@@ -12,8 +12,6 @@ import type { AtomicHookGetCached, AtomicHookSlugConfig } from './atomicHookType
  * function itself can be exported — the inner hook returned by the factory is
  * still an async function and runs server-side.
  */
-const cache = new WeakMap<AtomicHookSlugConfig, CollectionBeforeChangeHook>()
-
 async function buildHook(slugConfig: AtomicHookSlugConfig): Promise<CollectionBeforeChangeHook> {
   const [hookMod, procMod, cacheMod] = await Promise.all([
     import('./createAtomicHook'),
@@ -28,13 +26,9 @@ async function buildHook(slugConfig: AtomicHookSlugConfig): Promise<CollectionBe
 }
 
 export const atomicHookWith = (slugConfig: AtomicHookSlugConfig): CollectionBeforeChangeHook => {
-  const cached = cache.get(slugConfig)
-  if (cached) return cached
   let inner: CollectionBeforeChangeHook | undefined
-  const hook: CollectionBeforeChangeHook = async (args) => {
+  return async (args) => {
     if (!inner) inner = await buildHook(slugConfig)
     return inner(args)
   }
-  cache.set(slugConfig, hook)
-  return hook
 }
