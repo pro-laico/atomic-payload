@@ -1,10 +1,10 @@
 import type { Config, Plugin } from 'payload'
 
-import { createSeedEndpoint, type SeedFn } from './endpoint'
+import { createSeedEndpoint, type SeedAuthorize, type SeedFn } from './endpoint'
 import { BeforeDashboardPath } from './index'
 import { seed as defaultSeed } from './seed'
 
-export type { SeedFn } from './endpoint'
+export type { SeedAuthorize, SeedFn } from './endpoint'
 
 export interface SeedPluginOptions {
   /** Function that performs the actual seeding. Defaults to the bundled atomic-payload seed. */
@@ -13,6 +13,13 @@ export interface SeedPluginOptions {
   enabled?: boolean
   /** Endpoint path mounted under `/api`. Defaults to `/seed` (resolves to `/api/seed`). */
   endpointPath?: string
+  /**
+   * Authorization predicate run after the auth check. The seed wipes and
+   * recreates the whole DB, so in multi-user / production apps pass a role test
+   * (e.g. `(user) => user.roles?.includes('admin')`). Defaults to allowing any
+   * authenticated user.
+   */
+  authorize?: SeedAuthorize
   /** Whether to register the `BeforeDashboard` admin banner. Defaults to true. */
   registerBeforeDashboard?: boolean
 }
@@ -25,10 +32,10 @@ export interface SeedPluginOptions {
 export const seedPlugin =
   (opts: SeedPluginOptions): Plugin =>
   (config: Config): Config => {
-    const { seed = defaultSeed, enabled = true, endpointPath = '/seed', registerBeforeDashboard = true } = opts
+    const { seed = defaultSeed, enabled = true, endpointPath = '/seed', authorize, registerBeforeDashboard = true } = opts
     if (!enabled) return config
 
-    const endpoints = [...(config.endpoints ?? []), createSeedEndpoint(seed, endpointPath)]
+    const endpoints = [...(config.endpoints ?? []), createSeedEndpoint(seed, endpointPath, authorize)]
 
     const existingBefore = config.admin?.components?.beforeDashboard ?? []
     const beforeDashboard = registerBeforeDashboard ? [...existingBefore, BeforeDashboardPath] : existingBefore

@@ -67,12 +67,12 @@
       "default": "./src/hook/types/payload-augment.ts"
     },
     "./hook/light": {
-      "types": "./dist/hook/light.d.ts",
-      "import": "./dist/hook/light.js"
+      "types": "./src/hook/light.ts",
+      "default": "./src/hook/light.ts"
     },
     "./hook/client": {
-      "types": "./dist/hook/frontEnd/atomicStore/index.d.ts",
-      "import": "./dist/hook/frontEnd/atomicStore/index.js"
+      "types": "./src/hook/frontEnd/atomicStore/index.tsx",
+      "default": "./src/hook/frontEnd/atomicStore/index.tsx"
     },
     "./forms": {
       "types": "./src/forms/index.ts",
@@ -188,7 +188,6 @@
     }
   },
   "files": [
-    "dist",
     "src",
     "README.md"
   ],
@@ -255,6 +254,6 @@
     "zustand": "^5.0.11"
   },
   "engines": {
-    "node": ">=18"
+    "node": ">=20"
   }
 }

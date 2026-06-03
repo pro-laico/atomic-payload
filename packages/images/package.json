@@ -18,10 +18,6 @@
       "types": "./src/types/payload-augment.ts",
       "default": "./src/types/payload-augment.ts"
     },
-    "./src": {
-      "types": "./src/index.ts",
-      "default": "./src/index.ts"
-    },
     "./blocks/imageChild": {
       "types": "./src/blocks/imageChild/block.ts",
       "default": "./src/blocks/imageChild/block.ts"

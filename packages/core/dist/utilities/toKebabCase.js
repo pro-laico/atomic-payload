@@ -9,9 +9,7 @@ export function toKebabCase(input, options = {}) {
     if (options?.unicodeNormalization)
         s = s.normalize('NFKD').replace(/[̀-ͯ]/g, '');
     if (options?.camelCaseHandling) {
-        s = s
-            .replace(/([a-z0-9])([A-Z])/g, '$1-$2')
-            .replace(/([A-Z]+)([A-Z][a-z0-9]+)/g, '$1-$2');
+        s = s.replace(/([a-z0-9])([A-Z])/g, '$1-$2').replace(/([A-Z]+)([A-Z][a-z0-9]+)/g, '$1-$2');
     }
     s = s.replace(/[^A-Za-z0-9]+/g, '-');
     if (options?.lowercase)

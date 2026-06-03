@@ -31,5 +31,10 @@ export const FaviconField: FaviconFieldType = (args) => {
 
   if (apf) faviconField.hooks = { beforeValidate: [onUploadSetAPF(apf)] }
 
-  return deepMerge(faviconField, rest)
+  // Callers legitimately override `name`/`admin`/`hooks` (e.g. to mount several
+  // favicon pickers), but the field's identity — `type: 'upload'` targeting the
+  // `favicons` collection — is re-asserted after the merge so a stray override
+  // can't silently re-target the picker at another collection.
+  const merged = deepMerge(faviconField, rest)
+  return { ...merged, type: 'upload', relationTo: 'favicons' }
 }

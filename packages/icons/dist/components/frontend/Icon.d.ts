@@ -1,4 +1,5 @@
-import React from 'react';
+import 'server-only';
+import type React from 'react';
 export interface IconProps extends React.SVGAttributes<SVGSVGElement> {
     /**
      * Icon name as defined in the active `IconSet`'s `iconsArray` (each entry's

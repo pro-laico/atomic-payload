@@ -1,0 +1,4 @@
+# This package is consumed from `src` (every export points at source); the
+# `build` script is a no-op, so there is no `dist` to commit. Ignore any locally
+# generated output so a stray `tsc` run can't re-commit a stale build.
+dist/

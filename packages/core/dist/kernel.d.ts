@@ -16,6 +16,12 @@ export interface PayloadAugment {
 }
 /** Look up `K` in the augmented `PayloadAugment` interface; fall back to `F` when absent. */
 export type Get<K extends string, F> = PayloadAugment extends Record<K, infer T> ? T : F;
+/**
+ * Like `Extract<U, V>`, but when `Extract` collapses to `never` (e.g. because `U`
+ * is an un-augmented default like `DefaultBlock` whose discriminant is `string`),
+ * fall back to `U & V` so the discriminant literal is preserved.
+ */
+export type ExtractOrDefault<U, V> = [Extract<U, V>] extends [never] ? U & V : Extract<U, V>;
 export type DefaultRecord = Record<string, any>;
 export type DefaultConfig = {
     collections: Record<string, any>;
@@ -39,7 +45,7 @@ export type DotNestedKeys<T> = T extends object ? {
 export type Last<T extends any[]> = T extends [...infer _, infer L] ? L : never;
 /** Merges two tuple types by appending the second tuple to the first. */
 export type MergeTuples<T extends readonly unknown[], U extends readonly unknown[]> = [...T, ...U];
-import type { CollectionSlug, BlockSlug } from 'payload';
+import type { BlockSlug, CollectionSlug } from 'payload';
 export type AllCollections = Config['collections'][keyof Config['collections']];
 export type AllBlocks = Config['blocks'][keyof Config['blocks']];
 export type CollectionBySlug<T extends CollectionSlug> = Config['collections'][T];

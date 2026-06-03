@@ -6,9 +6,9 @@ export function createIconSelect(getCached) {
         const result = (await getCached('icon-options', true, iconSet));
         if (!result) {
             console.warn('Icon options fetch failed');
-            return (_jsx(SelectField, { field: { ...clientField, options: [] }, path: path, schemaPath: schemaPath, permissions: permissions }));
+            return _jsx(SelectField, { field: { ...clientField, options: [] }, path: path, schemaPath: schemaPath, permissions: permissions });
         }
-        return (_jsx(SelectField, { field: { ...clientField, options: result || [] }, path: path, schemaPath: schemaPath, permissions: permissions }));
+        return _jsx(SelectField, { field: { ...clientField, options: result || [] }, path: path, schemaPath: schemaPath, permissions: permissions });
     };
 }
 //# sourceMappingURL=iconSelect.js.map

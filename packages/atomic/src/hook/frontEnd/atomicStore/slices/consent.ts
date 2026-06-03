@@ -45,6 +45,10 @@ export const consentSlice: StateCreator<AtomicStore, [], [], ConsentSlice> = (se
 
     safeStorageOperation(() => {
       setCookie(STORAGE_KEYS.COOKIE_CONSENT, 'true')
+      // Mirror the granular preferences into a cookie so the server (e.g. the
+      // form-submission pipeline) can enforce consent — localStorage is not
+      // readable server-side and client-posted preferences are untrusted.
+      setCookie(STORAGE_KEYS.COOKIE_PREFERENCES, encodeURIComponent(JSON.stringify(newPreferences)))
       localStorage.setItem(STORAGE_KEYS.COOKIE_CONSENT, 'true')
       localStorage.setItem(STORAGE_KEYS.COOKIE_PREFERENCES, JSON.stringify(newPreferences))
       sessionStorage.removeItem(STORAGE_KEYS.COOKIE_CONSENT)
@@ -63,6 +67,10 @@ export const consentSlice: StateCreator<AtomicStore, [], [], ConsentSlice> = (se
     }
 
     safeStorageOperation(() => {
+      setCookie(STORAGE_KEYS.COOKIE_CONSENT, 'false')
+      // Write the declined preferences so the server reads an explicit "deny"
+      // rather than falling back to defaults on a missing cookie.
+      setCookie(STORAGE_KEYS.COOKIE_PREFERENCES, encodeURIComponent(JSON.stringify(declinedPreferences)))
       localStorage.removeItem(STORAGE_KEYS.COOKIE_CONSENT)
       localStorage.removeItem(STORAGE_KEYS.COOKIE_PREFERENCES)
       sessionStorage.setItem(STORAGE_KEYS.COOKIE_CONSENT, 'false')

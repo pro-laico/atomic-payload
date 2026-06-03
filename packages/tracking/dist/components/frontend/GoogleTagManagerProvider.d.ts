@@ -1,5 +1,5 @@
+import type { Tracking } from '@pro-laico/tracking/schema';
 import type { ReactNode } from 'react';
-import type { Tracking } from '@pro-laico/tracking/schema'
 export declare function GoogleTagManagerProvider({ children, tracking }: {
     children: ReactNode;
     tracking?: Tracking;

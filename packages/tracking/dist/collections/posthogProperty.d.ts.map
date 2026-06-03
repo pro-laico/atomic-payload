@@ -1,1 +1,1 @@
-{"version":3,"file":"posthogProperty.d.ts","sourceRoot":"","sources":["../../src/collections/posthogProperty.ts"],"names":[],"mappings":"AAAA,OAAO,KAAK,EAAE,gBAAgB,EAAU,MAAM,SAAS,CAAA;AAavD,eAAO,MAAM,eAAe,EAAE,gBAmC7B,CAAA"}
+{"version":3,"file":"posthogProperty.d.ts","sourceRoot":"","sources":["../../src/collections/posthogProperty.ts"],"names":[],"mappings":"AAAA,OAAO,KAAK,EAAE,gBAAgB,EAAE,MAAM,SAAS,CAAA;AAa/C,eAAO,MAAM,eAAe,EAAE,gBAmC7B,CAAA"}

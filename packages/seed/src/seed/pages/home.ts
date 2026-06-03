@@ -769,14 +769,11 @@ export const homePage: Omit<Page, 'createdAt' | 'updatedAt' | 'publishedAt' | 'i
     priority: 0.5,
   },
 
-  breadcrumbs: [
-    {
-      doc: '69274d8cc6c6fa92adf998ab',
-      url: '/',
-      label: '/',
-      id: '69274d8c58b4d28e286cff19',
-    },
-  ],
+  // No `doc`/`id` here — those were stale ObjectIDs from a prior database that
+  // don't exist in a fresh seed (every `payload.create` mints new IDs). The
+  // nested-docs plugin recomputes breadcrumbs (including `doc`) from the page
+  // hierarchy on create.
+  breadcrumbs: [{ url: '/', label: '/' }],
 
   storedAtomicClasses: [
     'page-main',

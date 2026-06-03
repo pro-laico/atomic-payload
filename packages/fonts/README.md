@@ -56,9 +56,9 @@ import { runDownloadFonts } from '@pro-laico/fonts/scripts/downloadFonts'
 await runDownloadFonts({ /* optional overrides — see below */ })
 ```
 
-**Published bin:** `atomic-fonts-download` (requires the package to be built — `dist/scripts/cli.js`).
+**Published bin:** `atomic-fonts-download` (requires the package to be built — `dist/scripts/cli.js`). This is the canonical form for consumers.
 
-**Starter template:**
+**In-repo development only:** running the un-built TypeScript source directly with `tsx`. This needs `tsx` installed and a toolchain that resolves the package's `src/` (i.e. inside this monorepo) — it is not a recommendation for published consumers, who should use the bin or programmatic form above.
 ```jsonc
 // package.json
 "scripts": { "download:fonts": "pnpm exec tsx node_modules/@pro-laico/fonts/src/scripts/cli.ts" }
@@ -83,6 +83,7 @@ No storage token is required — the downloader uses whatever URL Payload report
 | `ATOMIC_FONTS_ENV_FILE` | `envFile` | `.env` file to load before running. |
 | `ATOMIC_FONTS_SRC_PREFIX` | `localFontSrcPrefix` | Path prepended to each `src` in the definition file. |
 | `ATOMIC_FONTS_GLOBAL_SLUG` | `fontSetGlobalSlug` | Slug of the global to fall back to (`fontSet`). |
+| `ATOMIC_FONTS_CSS_VAR_PREFIX` | `cssVariablePrefix` | Prefix for the emitted CSS custom properties; slot name appended capitalised (`--font-set` → `--font-setSans`). |
 
 ## Exports
 

@@ -12,7 +12,7 @@ export const formatSlugHook =
     if (typeof value === 'string') return formatSlug(value)
 
     if (operation === 'create' || !data?.slug) {
-      const fallbackData = data?.[fallback] || data?.[fallback]
+      const fallbackData = data?.[fallback]
 
       if (fallbackData && typeof fallbackData === 'string') {
         return formatSlug(fallbackData)

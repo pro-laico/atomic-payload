@@ -1,4 +1,4 @@
-import type { Plugin, CollectionConfig } from 'payload';
+import type { CollectionConfig, Plugin } from 'payload';
 import { type IconCollectionOptions } from './collections/icon';
 import { type IconSetCollectionOptions } from './collections/iconSet';
 /**

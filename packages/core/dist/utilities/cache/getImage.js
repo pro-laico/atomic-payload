@@ -1,4 +1,3 @@
-'use server';
 import 'server-only'; //DO NOT REMOVE
 import { getPayload } from 'payload';
 import cacheLogger from '../cacheLogger';

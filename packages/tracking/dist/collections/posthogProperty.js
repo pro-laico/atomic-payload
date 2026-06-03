@@ -1,4 +1,4 @@
-const authd = ({ req }) => Boolean(req.user);
+import { authd } from '../access/authenticated';
 const d = {
     purpose: 'What this should be used for. e.g marketing, user flow, etc.',
     propertyFormal: 'The formal property name. e.g page_name',

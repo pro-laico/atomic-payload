@@ -1,7 +1,7 @@
 import 'server-only';
-import { getPayload } from 'payload';
 import { draftMode } from 'next/headers';
 import { redirect } from 'next/navigation';
+import { getPayload } from 'payload';
 /** Factory that returns a Next.js `GET` route handler enabling Payload's draft
  *  mode after validating the `previewSecret` query parameter. Pair with
  *  `exitPreviewRouteHandler` at `/next/exit-preview`. Pass the host project's

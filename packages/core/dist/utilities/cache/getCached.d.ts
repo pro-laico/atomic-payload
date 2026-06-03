@@ -1,5 +1,5 @@
 import 'server-only';
-import type { AllTagsWithGetters, GCArgs, GCReturns, GCFunction, PayloadConfigPromise } from '../../types/cache';
+import type { AllTagsWithGetters, GCArgs, GCFunction, GCReturns, PayloadConfigPromise } from '../../types/cache';
 export type GetRegistry = {
     [K in AllTagsWithGetters]: GCFunction<K>;
 };

@@ -18,10 +18,6 @@
       "types": "./src/types/payload-augment.ts",
       "default": "./src/types/payload-augment.ts"
     },
-    "./src": {
-      "types": "./src/index.ts",
-      "default": "./src/index.ts"
-    },
     "./provider": {
       "types": "./dist/components/frontend/index.d.ts",
       "import": "./dist/components/frontend/index.js"

@@ -1,7 +1,7 @@
-import { revalidateCacheGlobal } from '@pro-laico/ap-utils';
-import { postHogTabField } from './postHogTab';
+import { revalidateCacheGlobalAfterChange } from '@pro-laico/core';
+import { authd } from '../access/authenticated';
 import { googleTagManagerTabField } from './gtmTab';
-const authd = ({ req }) => Boolean(req.user);
+import { postHogTabField } from './postHogTab';
 export const Tracking = {
     slug: 'tracking',
     label: 'Settings',
@@ -18,7 +18,7 @@ export const Tracking = {
         },
         { type: 'tabs', tabs: [googleTagManagerTabField(), postHogTabField()] },
     ],
-    hooks: { beforeChange: [revalidateCacheGlobal] },
+    hooks: { afterChange: [revalidateCacheGlobalAfterChange] },
     versions: { drafts: { schedulePublish: true, validate: true }, max: 10 },
 };
 //# sourceMappingURL=tracking.js.map

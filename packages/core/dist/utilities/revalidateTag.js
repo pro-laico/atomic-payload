@@ -1,8 +1,8 @@
 'use server';
 import 'server-only';
-import { mt } from './mergeTags';
 import { revalidateTag as rt } from 'next/cache';
 import revalidationLogger from './log';
+import { mt } from './mergeTags';
 async function revalidateTag(...args) {
     const [tag, a, b] = args;
     let tid = '';
@@ -20,12 +20,12 @@ async function revalidateTag(...args) {
     // Secondary revalidations and special handlings for specific tags.
     switch (tag) {
         case 'pages':
-            revalidateTag('sitemap', draft);
+            await revalidateTag('sitemap', draft);
             break;
         case 'designSet':
         case 'shortcutSet':
         case 'atomic-classes':
-            revalidateTag('site-css', draft);
+            await revalidateTag('site-css', draft);
             break;
         case 'draft':
         case 'published':

@@ -1,4 +1,4 @@
-'use server'
+import 'server-only'
 import { RenderChildren } from '@pro-laico/atomic/children/render'
 import type { Footer as FooterType } from '@pro-laico/site/schema'
 

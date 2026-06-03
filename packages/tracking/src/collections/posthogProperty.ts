@@ -1,6 +1,6 @@
-import type { Access, CollectionConfig } from 'payload'
+import type { CollectionConfig } from 'payload'
 
-const authd: Access = ({ req }) => Boolean(req.user)
+import { authd } from '../access/authenticated'
 
 const d = {
   purpose: 'What this should be used for. e.g marketing, user flow, etc.',

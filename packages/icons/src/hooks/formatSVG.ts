@@ -1,8 +1,18 @@
-'use server'
+import 'server-only'
 import type { Icon } from '@pro-laico/icons/schema'
-import type { CollectionBeforeChangeHook } from 'payload'
+import type { CollectionBeforeChangeHook, Payload } from 'payload'
+import type { PluginConfig } from 'svgo'
 
-export const formatSvg = async (icon: Partial<Icon>, svgData: Buffer): Promise<Partial<Icon>> => {
+// Strip executable content from untrusted SVG uploads before they're stored and
+// later inlined via dangerouslySetInnerHTML: <script> elements + on* event
+// handlers. svgo 3.x has no `removeScripts`, so compose builtins.
+const sanitizePlugins: PluginConfig[] = ['removeScriptElement', { name: 'removeAttrs', params: { attrs: ['on.*'] } }]
+
+// svgo has no builtin for javascript: URLs, so scrub (xlink:)href values from
+// the serialized output as a final pass.
+const stripDangerousUrls = (svg: string): string => svg.replace(/\s(?:xlink:)?href\s*=\s*(["'])\s*javascript:[^"']*\1/gi, '')
+
+export const formatSvg = async (icon: Partial<Icon>, svgData: Buffer, logger: Payload['logger']): Promise<Partial<Icon>> => {
   try {
     const [{ optimize }, { svgPathBbox }] = await Promise.all([import('svgo'), import('svg-path-bbox')])
 
@@ -12,14 +22,19 @@ export const formatSvg = async (icon: Partial<Icon>, svgData: Buffer): Promise<P
     const hasTransforms = svg.includes('transform=')
     const hasClipPaths = svg.includes('clip-path=') || svg.includes('<clipPath')
     if (hasTransforms || hasClipPaths) {
-      console.warn('Unsupported SVG features:', { hasTransforms, hasClipPaths })
-      return icon
+      logger.warn({ msg: 'Unsupported SVG features; skipping optimization (scripts still stripped)', hasClipPaths, hasTransforms })
+      // Even when we skip optimization we MUST strip scripts/event handlers, because
+      // svgString is later inlined via dangerouslySetInnerHTML for every visitor.
+      const sanitized = stripDangerousUrls(optimize(svg, { multipass: false, plugins: sanitizePlugins }).data)
+      return { ...icon, optimized: 'Skipped optimization (transform/clip-path present); scripts stripped', svgString: sanitized }
     }
 
     const optimized = optimize(svg, {
       path: 'input.svg',
       multipass: true,
       plugins: [
+        // Strip <script> elements + on* handlers first so nothing downstream re-introduces them.
+        ...sanitizePlugins,
         'preset-default',
         'convertStyleToAttrs',
         'removeDimensions',
@@ -105,7 +120,7 @@ export const formatSvg = async (icon: Partial<Icon>, svgData: Buffer): Promise<P
           maxX = Math.max(maxX, x2)
           maxY = Math.max(maxY, y2)
         } catch (e) {
-          console.warn('Failed to calculate path bounds:', e)
+          logger.warn({ msg: 'Failed to calculate path bounds', err: e })
         }
       }
 
@@ -124,15 +139,17 @@ export const formatSvg = async (icon: Partial<Icon>, svgData: Buffer): Promise<P
       }
     }
 
+    svgStr = stripDangerousUrls(svgStr)
+
     const finalSize = Buffer.from(svgStr).length
     const reduction = originalSize - finalSize
     const reductionPercentage = ((reduction / originalSize) * 100).toFixed(1)
     const optimizedString = `SVG optimized: ${originalSize} to ${finalSize} bytes (${reductionPercentage}% reduction)`
-    console.info(optimizedString)
+    logger.info(optimizedString)
 
-    return { ...icon, svgString: svgStr, optimized: optimizedString, filesize: finalSize }
+    return { ...icon, filesize: finalSize, optimized: optimizedString, svgString: svgStr }
   } catch (error) {
-    console.error('Error processing SVG:', error)
+    logger.error({ msg: 'Error processing SVG', err: error })
     return icon
   }
 }
@@ -141,9 +158,9 @@ export const formatSVGHook: CollectionBeforeChangeHook = async ({ data, operatio
   if (operation === 'create' || operation === 'update') {
     if (data?.filename && req.file) {
       try {
-        return await formatSvg(data, req.file.data)
+        return await formatSvg(data, req.file.data, req.payload.logger)
       } catch (error) {
-        console.warn('Error in formatSVGHook:', error)
+        req.payload.logger.warn({ msg: 'Error in formatSVGHook', err: error })
         return data
       }
     }

@@ -8,19 +8,22 @@ import type { CollectionSlug, Field } from 'payload'
  */
 export const fontUploadFields = ({ fontSlug = 'font' }: { fontSlug?: string } = {}): Field[] => {
   const relationTo = fontSlug as CollectionSlug
+  // Pre-filter each slot to fonts whose `family` matches, so a `sans` slot can't
+  // be pointed at a `mono` font. Assumes the related collection carries the
+  // `family` radio from this package's `Font` collection.
   return [
     {
       type: 'row',
       fields: [
-        { name: 'sans', type: 'upload', relationTo },
-        { name: 'serif', type: 'upload', relationTo },
+        { name: 'sans', type: 'upload', relationTo, filterOptions: { family: { equals: 'sans' } } },
+        { name: 'serif', type: 'upload', relationTo, filterOptions: { family: { equals: 'serif' } } },
       ],
     },
     {
       type: 'row',
       fields: [
-        { name: 'mono', type: 'upload', relationTo },
-        { name: 'display', type: 'upload', relationTo },
+        { name: 'mono', type: 'upload', relationTo, filterOptions: { family: { equals: 'mono' } } },
+        { name: 'display', type: 'upload', relationTo, filterOptions: { family: { equals: 'display' } } },
       ],
     },
   ]

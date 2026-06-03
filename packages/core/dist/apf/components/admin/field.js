@@ -1,23 +1,23 @@
 'use client';
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import './index.scss';
-import APFieldLabelServer from './label';
-import { memo, useEffect, useMemo, useState } from 'react';
 import { getTranslation } from '@payloadcms/translations';
-import { apfRegistry } from '../../fields/storage';
-import { toKebabCase } from './toKebabCase';
-import { useField, useFormFields, TextInput, TextareaInput, CheckboxInput, FieldDescription, ReactSelect, } from '@payloadcms/ui';
-import { useTranslation } from '@payloadcms/ui/providers/Translation';
+import { CheckboxInput, FieldDescription, ReactSelect, TextareaInput, TextInput, useField, useFormFields } from '@payloadcms/ui';
+import { FieldError } from '@payloadcms/ui/fields/FieldError';
 import { formatOptions, SelectInput } from '@payloadcms/ui/fields/Select';
 import { fieldBaseClass } from '@payloadcms/ui/fields/shared';
-import { FieldError } from '@payloadcms/ui/fields/FieldError';
+import { useTranslation } from '@payloadcms/ui/providers/Translation';
+import { memo, useEffect, useMemo, useState } from 'react';
+import { apfRegistry } from '../../fields/storage';
+import APFieldLabelServer from './label';
+import { toKebabCase } from './toKebabCase';
 /** Mirrors Payload `@payloadcms/ui` `mergeFieldStyles` widths for arbitrary field shapes used by AP fields. */
 function mergeApfFieldStyles(field) {
     const admin = field?.admin;
     const style = admin?.style;
     return {
         ...(style ?? {}),
-        ...(admin?.width ? { ['--field-width']: `${admin.width}` } : { flex: '1 1 auto' }),
+        ...(admin?.width ? { '--field-width': `${admin.width}` } : { flex: '1 1 auto' }),
         ...(style?.flex !== undefined ? { flex: style.flex } : {}),
     };
 }
@@ -37,13 +37,15 @@ export const APFieldComponent = (props) => {
         return apfArray?.map((apfItem) => apfRegistry[apfItem]);
     }, [apf]);
     const setTargetValues = useFormFields(([, dispatch]) => (value) => {
-        targetPaths?.forEach((targetPath) => dispatch({ type: 'UPDATE', path: targetPath, value }));
+        targetPaths?.forEach((targetPath) => {
+            dispatch({ type: 'UPDATE', path: targetPath, value });
+        });
     });
     const selectFormattedOptions = useMemo(() => {
         if (type !== 'select')
             return [];
         return formatOptions(field.options ?? []);
-    }, [field, props, type]);
+    }, [field, type]);
     const placeholderNumber = useMemo(() => {
         if (type !== 'number')
             return undefined;
@@ -93,7 +95,8 @@ export const APFieldComponent = (props) => {
     const selectFilterMemo = useMemo(() => {
         if (!selectFilterOptions)
             return undefined;
-        return (opt, search) => !!selectFilterOptions.some((optionEl) => (typeof optionEl === 'string' ? optionEl : optionEl.value) === opt.value) && opt.label.toLowerCase().includes(search.toLowerCase());
+        return (opt, search) => !!selectFilterOptions.some((optionEl) => (typeof optionEl === 'string' ? optionEl : optionEl.value) === opt.value) &&
+            opt.label.toLowerCase().includes(search.toLowerCase());
     }, [selectFilterOptions]);
     let fieldComponent = null;
     switch (type) {
@@ -151,24 +154,14 @@ export const APFieldComponent = (props) => {
                     next = selectedOption.map((option) => Number(option.value?.value ?? option.value));
                 }
                 else {
-                    next = [
-                        Number(selectedOption.value?.value ??
-                            selectedOption.value),
-                    ];
+                    next = [Number(selectedOption.value?.value ?? selectedOption.value)];
                 }
                 handleChange(next);
             };
-            const numberRowClassName = [
-                fieldBaseClass,
-                'number',
-                adm.className,
-                showError && 'error',
-                readOnlyNum && 'read-only',
-                hasMany && 'has-many',
-            ]
+            const numberRowClassName = [fieldBaseClass, 'number', adm.className, showError && 'error', readOnlyNum && 'read-only', hasMany && 'has-many']
                 .filter(Boolean)
                 .join(' ');
-            fieldComponent = (_jsx("div", { className: numberRowClassName, style: mergeApfFieldStyles(f), children: _jsxs("div", { className: `${fieldBaseClass}__wrap`, children: [_jsx(FieldError, { path: path, showError: showError }), hasMany ? (_jsx(ReactSelect, { className: `field-${path.replace(/\./g, '__')}`, disabled: readOnlyNum, filterOption: ((_opt, rawInput) => valueArray.length >= maxRows ? false : isNumericRawInput(rawInput)), isClearable: true, isCreatable: true, isMulti: true, isSortable: true, noOptionsMessage: () => {
+            fieldComponent = (_jsx("div", { className: numberRowClassName, style: mergeApfFieldStyles(f), children: _jsxs("div", { className: `${fieldBaseClass}__wrap`, children: [_jsx(FieldError, { path: path, showError: showError }), hasMany ? (_jsx(ReactSelect, { className: `field-${path.replace(/\./g, '__')}`, disabled: readOnlyNum, filterOption: ((_opt, rawInput) => (valueArray.length >= maxRows ? false : isNumericRawInput(rawInput))), isClearable: true, isCreatable: true, isMulti: true, isSortable: true, noOptionsMessage: () => {
                                 const over = valueArray.length >= maxRows;
                                 if (over) {
                                     return t('validation:limitReached', { max: maxRows, value: valueArray.length + 1 });

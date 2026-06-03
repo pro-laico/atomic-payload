@@ -1,6 +1,6 @@
+import { mergeHooks, revalidateCacheCollectionAfterChange, revalidateCacheOnDelete } from '@pro-laico/core';
 import { authd } from '../access/authenticated';
 import { formatSVGHook } from '../hooks/formatSVG';
-import { mergeHooks, revalidateCacheCollection, revalidateCacheOnDelete } from '@pro-laico/core';
 /**
  * Builds the `Icon` upload collection with optional additive extensions.
  *
@@ -36,7 +36,10 @@ export const createIconCollection = (opts = {}) => {
             ...extraFields,
         ],
         upload: { mimeTypes: ['image/svg+xml'] },
-        hooks: mergeHooks({ beforeChange: [formatSVGHook, revalidateCacheCollection], afterDelete: [revalidateCacheOnDelete] }, extraHooks),
+        hooks: mergeHooks(
+        // Revalidate on afterChange (post-commit), not beforeChange — busting the
+        // cache before the write lands lets a concurrent read re-cache stale data.
+        { beforeChange: [formatSVGHook], afterChange: [revalidateCacheCollectionAfterChange], afterDelete: [revalidateCacheOnDelete] }, extraHooks),
     };
     return merge ? { ...base, ...merge } : base;
 };

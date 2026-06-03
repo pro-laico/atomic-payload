@@ -1,4 +1,5 @@
 import { muxVideoPlugin as upstreamMuxVideoPlugin } from '@oversightstudio/mux-video'
+import { mergeHooks } from '@pro-laico/core'
 import type { CollectionConfig, Config, Plugin } from 'payload'
 
 import { MuxVideo } from './collections/muxVideo'
@@ -9,7 +10,12 @@ export interface AtomicMuxVideoOptions {
    * upstream plugin's `extendCollection: 'mux-video'` attaches its fields to.
    * Set to false if you register your own extension collection with the same slug. */
   includeCollection?: boolean
-  /** Shallow override for the bundled `MuxVideo` extension collection. */
+  /**
+   * Override for the bundled `MuxVideo` extension collection. Top-level keys
+   * replace, but `access`/`admin` are deep-merged, `fields` are appended, and
+   * `hooks` are merged per phase — so a partial override can't silently drop the
+   * collection's access rules or other fields.
+   */
   collectionOverride?: Partial<CollectionConfig>
   adminThumbnail?: 'image' | 'gif' | 'none'
   uploadSettings?: { cors_origin: string }
@@ -33,7 +39,17 @@ export const muxVideoPlugin =
     } = opts
     if (!enabled) return config
 
-    const collection: CollectionConfig = collectionOverride ? { ...MuxVideo, ...collectionOverride } : MuxVideo
+    const collection: CollectionConfig = collectionOverride
+      ? {
+          ...MuxVideo,
+          ...collectionOverride,
+          // Deep-merge nested keys a top-level spread would otherwise replace.
+          access: { ...MuxVideo.access, ...collectionOverride.access },
+          admin: { ...MuxVideo.admin, ...collectionOverride.admin },
+          fields: [...MuxVideo.fields, ...(collectionOverride.fields ?? [])],
+          hooks: collectionOverride.hooks ? mergeHooks(MuxVideo.hooks ?? {}, collectionOverride.hooks) : MuxVideo.hooks,
+        }
+      : MuxVideo
     const next: Config = includeCollection ? { ...config, collections: [...(config.collections ?? []), collection] } : config
 
     const upstream = upstreamMuxVideoPlugin({

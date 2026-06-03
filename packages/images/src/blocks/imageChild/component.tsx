@@ -13,6 +13,7 @@ export const ImageChild: React.FC<RenderChild<ImageChildType>> = async (props) =
   // If the image document is modified, all pages that reference the image doc will be revalidated.
   // Note that the pages using the image will not be revalidated.
   // Hence using this getCached function. Everything else on the page stays the same, the image url is the only thing that changes.
+  // `@pro-laico/core/cache/auto` binds to the host app's `@payload-config` alias, so this component only works inside a Next.js app that resolves that alias.
   const src = await getCached('image', block?.image?.id, block?.version)
   if (!src) return <div className={'w-full h-full bg-gray-200'} />
 

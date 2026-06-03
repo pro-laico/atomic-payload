@@ -19,11 +19,12 @@ export interface IconCollectionOptions {
      * Additional Payload hooks. Each hook array is APPENDED to the built-in
      * hooks — user hooks run AFTER the defaults within their phase:
      *
-     * - `beforeChange`: `[formatSVGHook, revalidateCacheCollection, ...yours]`
-     *   — your hooks always see the already-optimized SVG.
+     * - `beforeChange`: `[formatSVGHook, ...yours]` — your hooks always see the
+     *   already-optimized SVG.
+     * - `afterChange`: `[revalidateCacheCollectionAfterChange, ...yours]` — cache
+     *   is revalidated post-commit.
      * - `afterDelete`: `[revalidateCacheOnDelete, ...yours]`.
-     * - Any other phase (`afterChange`, `beforeRead`, `afterRead`, …): just
-     *   your hooks, no built-ins.
+     * - Any other phase (`beforeRead`, `afterRead`, …): just your hooks, no built-ins.
      *
      * @example
      * ```ts

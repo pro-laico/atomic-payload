@@ -1,3 +1,4 @@
+import { revalidateTag } from '@pro-laico/core'
 import type { CollectionBeforeChangeHook } from 'payload'
 
 import { type CssProcessorGetCached, createCssProcessor } from '../cssProcessor'
@@ -60,8 +61,9 @@ function collectClassNames(node: unknown, out: Set<string>): void {
 export function createCssHook(getCached: CssProcessorGetCached, options: CssHookOptions = {}): CollectionBeforeChangeHook {
   const designSetSlug = options.designSetSlug ?? DEFAULTS.designSetSlug
   const skip = new Set(options.cssProcessorSkipSlugs ?? DEFAULTS.cssProcessorSkipSlugs)
+  const cacheTagBySlug = options.cssCacheTagBySlug ?? DEFAULTS.cssCacheTagBySlug
   const cssProcessor = createCssProcessor(getCached, {
-    cssCacheTagBySlug: options.cssCacheTagBySlug ?? DEFAULTS.cssCacheTagBySlug,
+    cssCacheTagBySlug: cacheTagBySlug,
     cssStorageGlobals: options.cssStorageGlobals ?? DEFAULTS.cssStorageGlobals,
   })
 
@@ -89,6 +91,18 @@ export function createCssHook(getCached: CssProcessorGetCached, options: CssHook
     const cssSlug = slug as Parameters<typeof cssProcessor>[0]['slug']
     await cssProcessor({ slug: cssSlug, context, draft: true, req })
     if (!draft) await cssProcessor({ slug: cssSlug, context, draft: false, req })
+
+    // The canonical atomicHook revalidates after regenerating; the standalone path
+    // must too, or the regenerated stylesheet sits in storage while getCached keeps
+    // serving stale inputs/CSS. Revalidate the changed set's tag (designSet/
+    // shortcutSet cascade to 'site-css' in core), atomic-classes for page-like docs,
+    // and 'site-css' explicitly so the served stylesheet is always busted.
+    const setTag = cacheTagBySlug[slug]
+    // All configured tags are collection tags (header/footer/designSet/shortcutSet)
+    // sharing the same (tag, draft) overload; cast to one to satisfy the union.
+    if (setTag) await revalidateTag(setTag as 'designSet', draft)
+    if ('storedAtomicClasses' in data) await revalidateTag('atomic-classes', draft)
+    await revalidateTag('site-css', draft)
 
     return data
   }

@@ -20,6 +20,11 @@ export const unsetActive: UnsetActiveType = async ({ id, draft, req, slug }) => 
     else manualLogger(`[INFO] No active status to remove from ${slug} docs.`)
     return slug
   } catch (error) {
-    manualLogger(`[ERROR] Error removing active status from ${slug} docs. ${error}`)
+    // Rethrow rather than swallow: if this update fails, the current save would
+    // still proceed and be marked active while the previously-active singleton
+    // stays active — yielding two active docs. Throwing aborts the transaction
+    // so the whole save rolls back atomically.
+    req.payload.logger.error({ err: error, msg: `Failed to remove active status from ${slug} docs` })
+    throw error
   }
 }

@@ -44,16 +44,12 @@
   },
   "peerDependencies": {
     "@payloadcms/plugin-nested-docs": ">=3.0.0",
-    "@payloadcms/ui": ">=3.0.0",
-    "next": ">=15.0.0",
     "payload": ">=3.0.0",
     "react": ">=19.0.0"
   },
   "devDependencies": {
     "@payloadcms/plugin-nested-docs": "^3.79.0",
-    "@payloadcms/ui": "^3.79.0",
     "@types/react": "^19.2.14",
-    "next": "^16.1.6",
     "payload": "^3.79.0",
     "react": "^19.2.4",
     "typescript": "5.8.3"

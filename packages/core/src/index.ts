@@ -39,14 +39,19 @@ export type {
 } from './hooks/collection/revalidate'
 export {
   createRevalidateCache,
+  createRevalidateCacheAfterChange,
   createRevalidateCacheOnDelete,
   DEFAULT_DELETE_REVALIDATION_HANDLERS,
   DEFAULT_REVALIDATION_HANDLERS,
   revalidateCache as revalidateCacheCollection,
+  revalidateCacheCollectionAfterChange,
   revalidateCacheOnDelete,
 } from './hooks/collection/revalidate'
 export { sanitizeAfterRead } from './hooks/collection/sanitize'
-export { revalidateCache as revalidateCacheGlobal } from './hooks/global/revalidate'
+export {
+  revalidateCache as revalidateCacheGlobal,
+  revalidateCacheAfterChange as revalidateCacheGlobalAfterChange,
+} from './hooks/global/revalidate'
 export type {
   AtomicPayloadSchemaBlocks,
   BlockRefs,

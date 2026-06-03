@@ -38,7 +38,7 @@ export type RevalidateTagResponse = { success: boolean; message: string; timesta
 // Tags
 // /////////////////////////////////////
 
-// When adding a new tag, also add the corresponding overload at /utilities/get/cache/index.ts
+// When adding a new tag, also add the corresponding overload in utilities/cache/getCached.ts
 type PageTags = 'page'
 type CacheTags = 'draft' | 'published'
 type GlobalsTags = 'tracking' | 'settings'

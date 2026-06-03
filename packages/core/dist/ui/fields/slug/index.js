@@ -1,9 +1,9 @@
 'use client';
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import './index.scss';
-import { formatSlug } from '../../../hooks/field/formatSlug';
+import { Button, FieldLabel, TextInput, useField, useForm, useFormFields } from '@payloadcms/ui';
 import { useCallback, useEffect } from 'react';
-import { useField, Button, TextInput, FieldLabel, useFormFields, useForm } from '@payloadcms/ui';
+import { formatSlug } from '../../../hooks/field/formatSlug';
 const SlugComponent = ({ path, field, fieldToUse, readOnly: readOnlyFromProps, checkboxFieldPath: checkboxFieldPathFromProps, }) => {
     const { label } = field;
     const checkboxFieldPath = path?.includes('.') ? `${path}.${checkboxFieldPathFromProps}` : checkboxFieldPathFromProps;

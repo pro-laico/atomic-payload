@@ -5,7 +5,7 @@ import type { CollectionConfig, Field, PayloadRequest } from 'payload';
  * support, and optional live preview wiring.
  *
  * Built-in revalidation hooks come from `@pro-laico/core`
- * (`revalidateCacheCollection` on `beforeChange`, `revalidateCacheOnDelete`
+ * (`revalidateCacheCollectionAfterChange` on `afterChange`, `revalidateCacheOnDelete`
  * on `afterDelete`); the icons package has no runtime dependency on
  * `@pro-laico/atomic`. If you need the atomicHook snapshot behavior, attach
  * it yourself via {@link hooks}.
@@ -72,7 +72,7 @@ export interface IconSetCollectionOptions {
      * Additional Payload hooks merged ADDITIVELY into the built-ins — user
      * hooks run AFTER the defaults within their phase:
      *
-     * - `beforeChange`: `[revalidateCacheCollection, ...yours]`
+     * - `afterChange`: `[revalidateCacheCollectionAfterChange, ...yours]`
      * - `afterDelete`: `[revalidateCacheOnDelete, ...yours]`
      * - Any other phase (`afterChange`, `beforeRead`, `afterRead`, …): just
      *   your hooks, no built-ins.
@@ -126,7 +126,7 @@ export interface IconSetCollectionOptions {
  * `Icon` documents with APF `active` toggle and optional live preview.
  *
  * Revalidation is wired via `@pro-laico/core` hooks
- * (`revalidateCacheCollection` on `beforeChange`, `revalidateCacheOnDelete`
+ * (`revalidateCacheCollectionAfterChange` on `afterChange`, `revalidateCacheOnDelete`
  * on `afterDelete`); no dependency on `@pro-laico/atomic`. To opt into
  * atomicHook snapshot behavior, attach it via {@link IconSetCollectionOptions.hooks}.
  *

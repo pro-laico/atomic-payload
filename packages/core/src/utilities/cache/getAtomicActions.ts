@@ -1,4 +1,3 @@
-﻿'use server'
 import 'server-only' //DO NOT REMOVE
 import type { AtomicStoreInitialState } from '@pro-laico/atomic/hook'
 import { getPayload, type Where } from 'payload'

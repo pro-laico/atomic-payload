@@ -1,4 +1,4 @@
-import { mergeHooks, revalidateCacheCollection, revalidateCacheOnDelete } from '@pro-laico/core'
+import { mergeHooks, revalidateCacheCollectionAfterChange, revalidateCacheOnDelete } from '@pro-laico/core'
 import type { CollectionConfig, Field } from 'payload'
 
 import { authd } from '../access/authenticated'
@@ -24,11 +24,12 @@ export interface IconCollectionOptions {
    * Additional Payload hooks. Each hook array is APPENDED to the built-in
    * hooks — user hooks run AFTER the defaults within their phase:
    *
-   * - `beforeChange`: `[formatSVGHook, revalidateCacheCollection, ...yours]`
-   *   — your hooks always see the already-optimized SVG.
+   * - `beforeChange`: `[formatSVGHook, ...yours]` — your hooks always see the
+   *   already-optimized SVG.
+   * - `afterChange`: `[revalidateCacheCollectionAfterChange, ...yours]` — cache
+   *   is revalidated post-commit.
    * - `afterDelete`: `[revalidateCacheOnDelete, ...yours]`.
-   * - Any other phase (`afterChange`, `beforeRead`, `afterRead`, …): just
-   *   your hooks, no built-ins.
+   * - Any other phase (`beforeRead`, `afterRead`, …): just your hooks, no built-ins.
    *
    * @example
    * ```ts
@@ -107,7 +108,12 @@ export const createIconCollection = (opts: IconCollectionOptions = {}): Collecti
       ...extraFields,
     ],
     upload: { mimeTypes: ['image/svg+xml'] },
-    hooks: mergeHooks<Hooks>({ beforeChange: [formatSVGHook, revalidateCacheCollection], afterDelete: [revalidateCacheOnDelete] }, extraHooks),
+    hooks: mergeHooks<Hooks>(
+      // Revalidate on afterChange (post-commit), not beforeChange — busting the
+      // cache before the write lands lets a concurrent read re-cache stale data.
+      { beforeChange: [formatSVGHook], afterChange: [revalidateCacheCollectionAfterChange], afterDelete: [revalidateCacheOnDelete] },
+      extraHooks,
+    ),
   }
 
   return merge ? { ...base, ...merge } : base

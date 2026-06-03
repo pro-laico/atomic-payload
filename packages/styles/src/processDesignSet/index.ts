@@ -74,6 +74,11 @@ function processProperty(input: TokenStringArrayRow[] | null | undefined): RSS {
   }, {})
 }
 
+// The font *family* values are always the `--font-set*` CSS custom properties
+// that `@pro-laico/fonts` writes via `next/font/local` — there is nothing
+// per-design-set to vary, so the mapping is intentionally fixed. `fonts` is only
+// a presence gate: a design set with no font group emits no `font` theme key, so
+// UnoCSS keeps its own default families rather than referencing undefined vars.
 function generateUnoFonts(fonts: DesignSet['font'] | undefined): RSS {
   if (!fonts) return {}
   return { mono: `var(--font-setMono)`, sans: `var(--font-setSans)`, serif: `var(--font-setSerif)`, display: `var(--font-setDisplay)` }
@@ -221,7 +226,7 @@ const processDesignSet = (ds: DesignSet): void => {
 
   ds.tokenStorage = tokenStorage as DesignSet['tokenStorage']
   ds.preflightStorage = preflightStorage
-  ds.updatedAt = new Date().toISOString()
+  // No manual `updatedAt` — Payload sets it on write.
 
   manualLogger(`[STORE] - Design Set - ${ds?.title}`)
 }

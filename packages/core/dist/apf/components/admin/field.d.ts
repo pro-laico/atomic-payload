@@ -1,5 +1,5 @@
 import './index.scss';
-import React from 'react';
+import type React from 'react';
 import type { APFFieldComponentType } from '../../types';
 export declare const APFieldComponent: APFFieldComponentType;
 declare const _default: React.MemoExoticComponent<APFFieldComponentType>;

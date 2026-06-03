@@ -1,5 +1,5 @@
-export { PostHogProvider } from './PostHogProvider';
 export { GoogleTagManagerProvider } from './GoogleTagManagerProvider';
-export { VercelProvider } from './VercelProvider';
+export { PostHogProvider } from './PostHogProvider';
 export { TrackingProvider } from './TrackingProvider';
+export { VercelProvider } from './VercelProvider';
 //# sourceMappingURL=index.d.ts.map

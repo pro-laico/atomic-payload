@@ -11,7 +11,7 @@ A Payload plugin that registers:
 - **`FaviconField`** — a reusable field config for picking a favicon from `Favicons` (used in the `SiteMetaData` global).
 - **`imageChild`** block — child block that lets editors drop an image into Atomic blocks. Renders via `@pro-laico/atomic/children`.
 
-If `@oversightstudio/blur-data-urls` is installed, the plugin opts the `Images` collection into automatic blur placeholder generation.
+`@oversightstudio/blur-data-urls` is an optional peer. The plugin does **not** auto-wire it (pnpm doesn't hoist the optional peer next to this package, so a `require()` from here would silently fail). Register `blurDataUrlsPlugin` yourself after `imagesPlugin`, passing the exported `Images` collection — see the `imagesPlugin` JSDoc for the snippet.
 
 ## Why it exists
 
@@ -38,7 +38,7 @@ import { FaviconField } from '@pro-laico/images'
 const SiteMetaData = {
   slug: 'siteMetaData',
   fields: [
-    FaviconField,
+    FaviconField(),
     // ...
   ],
 }
@@ -48,7 +48,7 @@ const SiteMetaData = {
 
 | Path | What's there |
 | --- | --- |
-| `plugin.ts` | `imagesPlugin` — registers both collections, wires `blur-data-urls` if present. |
+| `plugin.ts` | `imagesPlugin` — registers the `Images` + `Favicons` collections. |
 | `collections/images.ts` | The `Images` upload collection with default `formatOptions` + `imageSizes`. |
 | `collections/favicons.ts` | The `Favicons` upload collection. |
 | `fields/favicon.ts` | `FaviconField` — a reusable favicon-picker field. |
@@ -66,7 +66,7 @@ const SiteMetaData = {
 
 ## Peer dependencies
 
-`@oversightstudio/blur-data-urls` is optional. Install it if you want LQIP-style blur placeholders generated for every uploaded image.
+`@oversightstudio/blur-data-urls` is an optional peer. Install it **and wire it yourself** (see the `imagesPlugin` JSDoc) if you want LQIP-style blur placeholders generated for uploaded images.
 
 ## Where it sits in the monorepo
 

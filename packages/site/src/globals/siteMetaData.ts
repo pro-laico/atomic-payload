@@ -1,4 +1,4 @@
-import { APField, generateAPFFields, onUploadSetAPF, revalidateCacheGlobal as revalidateCache } from '@pro-laico/core'
+import { APField, generateAPFFields, onUploadSetAPF, revalidateCacheGlobalAfterChange as revalidateCache } from '@pro-laico/core'
 import { FaviconField } from '@pro-laico/images'
 import type { GlobalConfig } from 'payload'
 
@@ -22,6 +22,6 @@ export const SiteMetaData: GlobalConfig = {
     },
     ...generateAPFFields(['siteMetadata']),
   ],
-  hooks: { beforeChange: [revalidateCache] },
+  hooks: { afterChange: [revalidateCache] },
   versions: { drafts: { schedulePublish: true, validate: true }, max: 10 },
 }

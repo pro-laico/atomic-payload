@@ -1,4 +1,4 @@
-import { revalidateCacheGlobal as revalidateCache } from '@pro-laico/core'
+import { revalidateCacheGlobalAfterChange as revalidateCache } from '@pro-laico/core'
 import type { GlobalConfig } from 'payload'
 
 import { authd } from '../access'
@@ -32,6 +32,6 @@ export const Settings: GlobalConfig = {
       ],
     },
   ],
-  hooks: { beforeChange: [revalidateCache] },
+  hooks: { afterChange: [revalidateCache] },
   versions: { drafts: { schedulePublish: true, validate: true }, max: 10 },
 }

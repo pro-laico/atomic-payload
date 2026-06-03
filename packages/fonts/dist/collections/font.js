@@ -1,8 +1,9 @@
-const authd = ({ req }) => Boolean(req.user);
+import { authd } from '../access/authd';
 export const Font = {
     slug: 'font',
     access: { create: authd, delete: authd, read: authd, update: authd },
     admin: { group: 'Assets', useAsTitle: 'title', enableListViewSelectAPI: true, defaultColumns: ['title', 'family'] },
+    timestamps: true,
     fields: [
         { name: 'title', type: 'text', required: true },
         {

@@ -1,5 +1,5 @@
-import { APField } from './index';
 import deepMerge from '../../utilities/deepMerge';
+import { APField } from './index';
 /**
  * Reusable Atomic Payload `active` checkbox field. Wires the `active` APF flag
  * and ships with sensible admin defaults.

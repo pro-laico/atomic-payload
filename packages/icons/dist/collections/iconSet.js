@@ -1,6 +1,5 @@
+import { ActiveField, APFControlsPath, APField, generateAPFFields, mergeHooks, revalidateCacheCollectionAfterChange, revalidateCacheOnDelete, } from '@pro-laico/core';
 import { authd } from '../access/authenticated';
-import { APField, ActiveField, generateAPFFields, APFControlsPath, mergeHooks } from '@pro-laico/core';
-import { revalidateCacheCollection, revalidateCacheOnDelete } from '@pro-laico/core';
 const APFunctions = ['active'];
 const d = {
     icon: 'Select an icon',
@@ -19,7 +18,7 @@ const titleField = (defaultValue = 'New Icon Set') => ({
  * `Icon` documents with APF `active` toggle and optional live preview.
  *
  * Revalidation is wired via `@pro-laico/core` hooks
- * (`revalidateCacheCollection` on `beforeChange`, `revalidateCacheOnDelete`
+ * (`revalidateCacheCollectionAfterChange` on `afterChange`, `revalidateCacheOnDelete`
  * on `afterDelete`); no dependency on `@pro-laico/atomic`. To opt into
  * atomicHook snapshot behavior, attach it via {@link IconSetCollectionOptions.hooks}.
  *
@@ -56,10 +55,7 @@ export const createIconSetCollection = (opts = {}) => {
                 tabs: [
                     {
                         label: 'Settings',
-                        fields: [
-                            { type: 'row', fields: [ActiveField(), titleField('New Icon Set'), ...extraSettingsFields] },
-                            ...extraFields,
-                        ],
+                        fields: [{ type: 'row', fields: [ActiveField(), titleField('New Icon Set'), ...extraSettingsFields] }, ...extraFields],
                     },
                     {
                         label: 'Icons',
@@ -98,9 +94,15 @@ export const createIconSetCollection = (opts = {}) => {
             ...generateAPFFields(APFunctions),
         ],
         hooks: mergeHooks({
-            beforeChange: [revalidateCacheCollection],
+            // afterChange (post-commit), not beforeChange — busting the cache before
+            // the write lands lets a concurrent read re-cache stale data. Matches the
+            // `icon` collection.
+            afterChange: [revalidateCacheCollectionAfterChange],
             afterDelete: [revalidateCacheOnDelete],
         }, extraHooks),
+        // maxPerDoc: 50 — with schedulePublish + validate, every draft save makes a
+        // version, so a busy icon set silently drops history past 50. Raise/lower to
+        // trade audit depth against storage.
         versions: { drafts: { schedulePublish: true, validate: true }, maxPerDoc: 50 },
     };
 };

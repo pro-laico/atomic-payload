@@ -50,7 +50,6 @@ Default env vars (all picked up automatically):
 | `plugin.ts` | `muxVideoPlugin` — composes the upstream plugin with our defaults + collection. |
 | `collections/muxVideo.ts` | The local `mux-video` extension collection. |
 | `blocks/videoChild/` | The `videoChild` block (component + block config). |
-| `types/` | Type augmentations. |
 
 ## Subpath imports
 

@@ -407,7 +407,7 @@ export const header: (args: HeaderArgs) => Omit<Header, 'createdAt' | 'updatedAt
                                 tagType: 'div',
                                 buttonType: 'link',
                                 linkType: 'externalLink',
-                                externalLink: 'atomicpayload.com',
+                                externalLink: 'https://atomicpayload.com',
                                 triggerClassName: 'text-2xl font-medium',
 
                                 triggerChildren: [
@@ -825,7 +825,7 @@ export const header: (args: HeaderArgs) => Omit<Header, 'createdAt' | 'updatedAt
                     tagType: 'div',
                     buttonType: 'link',
                     linkType: 'externalLink',
-                    externalLink: 'atomicpayload.com',
+                    externalLink: 'https://atomicpayload.com',
                     triggerClassName: 'menu-trigger-text',
 
                     triggerChildren: [
@@ -923,7 +923,7 @@ export const header: (args: HeaderArgs) => Omit<Header, 'createdAt' | 'updatedAt
                     tagType: 'div',
                     buttonType: 'link',
                     linkType: 'externalLink',
-                    externalLink: 'www.github.com',
+                    externalLink: 'https://github.com',
                     triggerClassName: 'menu-trigger-both',
 
                     triggerChildren: [

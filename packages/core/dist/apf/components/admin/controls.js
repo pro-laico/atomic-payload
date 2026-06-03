@@ -1,9 +1,9 @@
 'use client';
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import './index.scss';
+import { Button, DocumentIcon, EditIcon, FolderIcon, LinkIcon, MenuIcon, PlusIcon, PopupList, SearchIcon, useFormFields } from '@payloadcms/ui';
 import { memo } from 'react';
 import { apfRegistry } from '../../fields/storage';
-import { Button, EditIcon, PlusIcon, LinkIcon, MenuIcon, PopupList, SearchIcon, FolderIcon, DocumentIcon, useFormFields } from '@payloadcms/ui';
 const apfIcons = {
     page: LinkIcon,
     pages: DocumentIcon,
@@ -18,7 +18,9 @@ const apfIcons = {
 const RunControls = ({ APFunctions = Object.keys(apfRegistry) }) => {
     const runValues = useFormFields(([fields]) => {
         const values = {};
-        Object.entries(apfRegistry).forEach(([apFunction, path]) => (values[apFunction] = Boolean(fields[path]?.value)));
+        Object.entries(apfRegistry).forEach(([apFunction, path]) => {
+            values[apFunction] = Boolean(fields[path]?.value);
+        });
         return values;
     });
     const setRunValue = useFormFields(([, dispatch]) => (apFunction, value) => {

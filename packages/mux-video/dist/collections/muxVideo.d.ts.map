@@ -1,1 +1,1 @@
-{"version":3,"file":"muxVideo.d.ts","sourceRoot":"","sources":["../../src/collections/muxVideo.ts"],"names":[],"mappings":"AAAA,OAAO,KAAK,EAAE,gBAAgB,EAAU,MAAM,SAAS,CAAA;AAKvD,eAAO,MAAM,QAAQ,EAAE,gBAKtB,CAAA"}
+{"version":3,"file":"muxVideo.d.ts","sourceRoot":"","sources":["../../src/collections/muxVideo.ts"],"names":[],"mappings":"AAAA,OAAO,KAAK,EAAU,gBAAgB,EAAE,MAAM,SAAS,CAAA;AAKvD,eAAO,MAAM,QAAQ,EAAE,gBAKtB,CAAA"}

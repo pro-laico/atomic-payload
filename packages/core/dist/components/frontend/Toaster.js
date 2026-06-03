@@ -1,7 +1,7 @@
 'use client';
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
-import styles from './Toaster.module.css';
 import { Toast } from '@base-ui-components/react/toast';
+import styles from './Toaster.module.css';
 const Toaster = ({ children }) => {
     return (_jsxs(Toast.Provider, { children: [children, _jsx(Toast.Portal, { children: _jsx(Toast.Viewport, { className: styles.Viewport, children: _jsx(ToastList, {}) }) })] }));
 };

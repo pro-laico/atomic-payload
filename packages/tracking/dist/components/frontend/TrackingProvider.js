@@ -1,7 +1,7 @@
 'use client';
 import { jsx as _jsx, Fragment as _Fragment } from "react/jsx-runtime";
-import { PostHogProvider } from './PostHogProvider';
 import { GoogleTagManagerProvider } from './GoogleTagManagerProvider';
+import { PostHogProvider } from './PostHogProvider';
 import { VercelProvider } from './VercelProvider';
 const providerRegistry = {
     vercel: ({ children }) => _jsx(VercelProvider, { children: children }),
@@ -21,7 +21,7 @@ export const TrackingProvider = ({ tracking, children }) => {
         .map(([type]) => type);
     return validProviders.reduceRight((acc, type) => {
         const Provider = providerRegistry[type];
-        return _jsx(Provider, { tracking: tracking, children: acc });
+        return (_jsx(Provider, { tracking: tracking, children: acc }, type));
     }, children);
 };
 export default TrackingProvider;

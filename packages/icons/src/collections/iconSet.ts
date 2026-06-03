@@ -5,7 +5,7 @@ import {
   APField,
   generateAPFFields,
   mergeHooks,
-  revalidateCacheCollection,
+  revalidateCacheCollectionAfterChange,
   revalidateCacheOnDelete,
 } from '@pro-laico/core'
 import type { CollectionConfig, Field, PayloadRequest } from 'payload'
@@ -36,7 +36,7 @@ type Hooks = NonNullable<CollectionConfig['hooks']>
  * support, and optional live preview wiring.
  *
  * Built-in revalidation hooks come from `@pro-laico/core`
- * (`revalidateCacheCollection` on `beforeChange`, `revalidateCacheOnDelete`
+ * (`revalidateCacheCollectionAfterChange` on `afterChange`, `revalidateCacheOnDelete`
  * on `afterDelete`); the icons package has no runtime dependency on
  * `@pro-laico/atomic`. If you need the atomicHook snapshot behavior, attach
  * it yourself via {@link hooks}.
@@ -100,7 +100,7 @@ export interface IconSetCollectionOptions {
    * Additional Payload hooks merged ADDITIVELY into the built-ins — user
    * hooks run AFTER the defaults within their phase:
    *
-   * - `beforeChange`: `[revalidateCacheCollection, ...yours]`
+   * - `afterChange`: `[revalidateCacheCollectionAfterChange, ...yours]`
    * - `afterDelete`: `[revalidateCacheOnDelete, ...yours]`
    * - Any other phase (`afterChange`, `beforeRead`, `afterRead`, …): just
    *   your hooks, no built-ins.
@@ -155,7 +155,7 @@ export interface IconSetCollectionOptions {
  * `Icon` documents with APF `active` toggle and optional live preview.
  *
  * Revalidation is wired via `@pro-laico/core` hooks
- * (`revalidateCacheCollection` on `beforeChange`, `revalidateCacheOnDelete`
+ * (`revalidateCacheCollectionAfterChange` on `afterChange`, `revalidateCacheOnDelete`
  * on `afterDelete`); no dependency on `@pro-laico/atomic`. To opt into
  * atomicHook snapshot behavior, attach it via {@link IconSetCollectionOptions.hooks}.
  *
@@ -241,11 +241,17 @@ export const createIconSetCollection = (opts: IconSetCollectionOptions = {}): Co
     ],
     hooks: mergeHooks<Hooks>(
       {
-        beforeChange: [revalidateCacheCollection],
+        // afterChange (post-commit), not beforeChange — busting the cache before
+        // the write lands lets a concurrent read re-cache stale data. Matches the
+        // `icon` collection.
+        afterChange: [revalidateCacheCollectionAfterChange],
         afterDelete: [revalidateCacheOnDelete],
       },
       extraHooks,
     ),
+    // maxPerDoc: 50 — with schedulePublish + validate, every draft save makes a
+    // version, so a busy icon set silently drops history past 50. Raise/lower to
+    // trade audit depth against storage.
     versions: { drafts: { schedulePublish: true, validate: true }, maxPerDoc: 50 },
   }
 }

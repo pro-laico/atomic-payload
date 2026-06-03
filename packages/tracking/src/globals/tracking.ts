@@ -1,10 +1,9 @@
-import { revalidateCacheGlobal } from '@pro-laico/core'
-import type { Access, GlobalConfig } from 'payload'
+import { revalidateCacheGlobalAfterChange } from '@pro-laico/core'
+import type { GlobalConfig } from 'payload'
 
+import { authd } from '../access/authenticated'
 import { googleTagManagerTabField } from './gtmTab'
 import { postHogTabField } from './postHogTab'
-
-const authd: Access = ({ req }) => Boolean(req.user)
 
 export const Tracking: GlobalConfig = {
   slug: 'tracking',
@@ -22,6 +21,6 @@ export const Tracking: GlobalConfig = {
     },
     { type: 'tabs', tabs: [googleTagManagerTabField(), postHogTabField()] },
   ],
-  hooks: { beforeChange: [revalidateCacheGlobal] },
+  hooks: { afterChange: [revalidateCacheGlobalAfterChange] },
   versions: { drafts: { schedulePublish: true, validate: true }, max: 10 },
 }

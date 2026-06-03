@@ -26,6 +26,10 @@
       "types": "./src/components/frontend/Icon.tsx",
       "default": "./src/components/frontend/Icon.tsx"
     },
+    "./AtomicIcon": {
+      "types": "./src/components/frontend/AtomicIcon.tsx",
+      "default": "./src/components/frontend/AtomicIcon.tsx"
+    },
     "./admin/iconRowLabel": {
       "types": "./dist/components/admin/iconRowLabel.d.ts",
       "import": "./dist/components/admin/iconRowLabel.js"

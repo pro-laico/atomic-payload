@@ -1,13 +1,24 @@
 import type { TabAsField } from 'payload'
 
-export const postHogTabField = () => {
+import { requiredWhenEnabled } from './validators'
+
+export const postHogTabField = (): TabAsField => {
   const storageField: TabAsField = {
     type: 'tab',
     label: 'PostHog',
     admin: { condition: (_, sd) => Boolean(sd?.postHogEnabled) },
     fields: [
-      { name: 'postHogPublicKey', type: 'text', required: true },
-      { name: 'postHogHost', type: 'text', defaultValue: 'https://us.i.posthog.com', required: true },
+      {
+        name: 'postHogPublicKey',
+        type: 'text',
+        validate: requiredWhenEnabled('postHogEnabled', 'PostHog public key is required when PostHog is enabled'),
+      },
+      {
+        name: 'postHogHost',
+        type: 'text',
+        defaultValue: 'https://us.i.posthog.com',
+        validate: requiredWhenEnabled('postHogEnabled', 'PostHog host is required when PostHog is enabled'),
+      },
       {
         type: 'group',
         label: 'Feature Toggles',

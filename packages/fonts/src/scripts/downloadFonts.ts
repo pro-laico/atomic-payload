@@ -33,6 +33,13 @@ export type RunDownloadFontsOptions = {
    * `designSet` is found. Default `fontSet` or `ATOMIC_FONTS_GLOBAL_SLUG`.
    */
   fontSetGlobalSlug?: string
+  /**
+   * Prefix for the CSS custom properties emitted by the generated `localFont()`
+   * calls. The slot name is appended capitalised (e.g. `--font-setSans`).
+   * Default `--font-set` or `ATOMIC_FONTS_CSS_VAR_PREFIX`. Change it only if your
+   * stylesheet references different variable names.
+   */
+  cssVariablePrefix?: string
 }
 
 function resolveOptions(overrides?: RunDownloadFontsOptions) {
@@ -42,6 +49,7 @@ function resolveOptions(overrides?: RunDownloadFontsOptions) {
     envFile: overrides?.envFile ?? process.env.ATOMIC_FONTS_ENV_FILE ?? './.env',
     localFontSrcPrefix: overrides?.localFontSrcPrefix ?? process.env.ATOMIC_FONTS_SRC_PREFIX ?? '../../public/fonts',
     fontSetGlobalSlug: overrides?.fontSetGlobalSlug ?? process.env.ATOMIC_FONTS_GLOBAL_SLUG ?? 'fontSet',
+    cssVariablePrefix: overrides?.cssVariablePrefix ?? process.env.ATOMIC_FONTS_CSS_VAR_PREFIX ?? '--font-set',
   }
 }
 
@@ -82,11 +90,12 @@ export async function runDownloadFonts(overrides?: RunDownloadFontsOptions): Pro
   })()
 
   function generateFontDefinitions(extensions: FontExtensions): void {
+    const cssVar = (type: GenericFontFamily) => `${opts.cssVariablePrefix}${type.charAt(0).toUpperCase()}${type.slice(1)}`
     const configs: Array<{ name: string; type: GenericFontFamily; extension: string; variable: string }> = [
-      { name: 'fontSans', type: 'sans', extension: extensions.sans, variable: '--font-setSans' },
-      { name: 'fontSerif', type: 'serif', extension: extensions.serif, variable: '--font-setSerif' },
-      { name: 'fontMono', type: 'mono', extension: extensions.mono, variable: '--font-setMono' },
-      { name: 'fontDisplay', type: 'display', extension: extensions.display, variable: '--font-setDisplay' },
+      { name: 'fontSans', type: 'sans', extension: extensions.sans, variable: cssVar('sans') },
+      { name: 'fontSerif', type: 'serif', extension: extensions.serif, variable: cssVar('serif') },
+      { name: 'fontMono', type: 'mono', extension: extensions.mono, variable: cssVar('mono') },
+      { name: 'fontDisplay', type: 'display', extension: extensions.display, variable: cssVar('display') },
     ]
 
     const available = configs.filter((c) => c.extension)
@@ -114,7 +123,11 @@ export default fonts
   function ensureFontOutputs() {
     if (!fs.existsSync(FONT_FILES_DIR)) fs.mkdirSync(FONT_FILES_DIR, { recursive: true })
 
-    for (const file of fs.readdirSync(FONT_FILES_DIR)) fs.unlinkSync(path.join(FONT_FILES_DIR, file))
+    // Only unlink files — a stray subdirectory would make unlinkSync throw EISDIR.
+    for (const file of fs.readdirSync(FONT_FILES_DIR)) {
+      const filePath = path.join(FONT_FILES_DIR, file)
+      if (fs.statSync(filePath).isFile()) fs.unlinkSync(filePath)
+    }
 
     generateFontDefinitions({ sans: '', serif: '', mono: '', display: '' })
   }
@@ -158,12 +171,15 @@ export default fonts
 
   console.log(colors.blue('Starting Font Download...\n'))
 
-  ensureFontOutputs()
-
+  // Validate config BEFORE touching disk. ensureFontOutputs() wipes the fonts
+  // directory, so bailing here on a missing env var preserves the previously
+  // downloaded fonts + definition instead of leaving the build font-less.
   if (hasWarnings) {
-    console.warn(colors.orange('Font download failed — No fonts will be used'))
+    console.warn(colors.orange('Font download failed — existing fonts left untouched'))
     return
   }
+
+  ensureFontOutputs()
 
   let user: Awaited<ReturnType<typeof sdk.login>> | undefined
   try {

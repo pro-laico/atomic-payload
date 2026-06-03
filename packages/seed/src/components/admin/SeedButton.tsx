@@ -24,7 +24,7 @@ export const SeedButton: React.FC<SeedButtonProps> = ({ endpoint = '/api/seed' }
   const [error, setError] = useState<null | string>(null)
 
   const handleClick = useCallback(
-    async (e: React.MouseEvent<HTMLButtonElement>) => {
+    (e: React.MouseEvent<HTMLButtonElement>) => {
       e.preventDefault()
 
       if (seeded) {
@@ -36,33 +36,30 @@ export const SeedButton: React.FC<SeedButtonProps> = ({ endpoint = '/api/seed' }
         return
       }
       if (error) {
-        toast.error(`An error occurred, please refresh and try again.`)
+        toast.error('An error occurred, please refresh and try again.')
         return
       }
 
       setLoading(true)
 
-      try {
-        toast.promise(
-          new Promise((resolve, reject) => {
-            fetch(endpoint, { method: 'POST', credentials: 'include' })
-              .then((res) => {
-                if (res.ok) {
-                  resolve(true)
-                  setSeeded(true)
-                } else reject('An error occurred while seeding.')
-              })
-              .catch((err) => reject(err))
-          }),
-          {
-            loading: 'Seeding with data....',
-            success: <SuccessMessage />,
-            error: 'An error occurred while seeding.',
-          },
-        )
-      } catch (err) {
-        setError(err instanceof Error ? err.message : String(err))
-      }
+      const run = fetch(endpoint, { method: 'POST', credentials: 'include' })
+        .then((res) => {
+          if (!res.ok) throw new Error('An error occurred while seeding.')
+          setSeeded(true)
+          return true
+        })
+        .catch((err) => {
+          const e2 = err instanceof Error ? err : new Error(String(err))
+          setError(e2.message)
+          throw e2
+        })
+        .finally(() => setLoading(false))
+
+      toast.promise(run, {
+        loading: 'Seeding with data....',
+        success: <SuccessMessage />,
+        error: 'An error occurred while seeding.',
+      })
     },
     [loading, seeded, error, endpoint],
   )
@@ -74,7 +71,7 @@ export const SeedButton: React.FC<SeedButtonProps> = ({ endpoint = '/api/seed' }
 
   return (
     <Fragment>
-      <button type="button" className="seedButton" onClick={handleClick}>
+      <button type="button" className="seedButton" onClick={handleClick} disabled={loading || seeded} aria-busy={loading}>
         SEED DATABASE
       </button>
       {message}

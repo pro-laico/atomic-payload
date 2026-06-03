@@ -1,4 +1,4 @@
 import type { APFFieldComponentType } from '../../types';
-declare const APFieldLabelServer: APFFieldComponentType;
-export default APFieldLabelServer;
+declare const APFieldLabel: APFFieldComponentType;
+export default APFieldLabel;
 //# sourceMappingURL=label.d.ts.map

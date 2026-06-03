@@ -2,7 +2,10 @@
 import './AtomicRowLabel.scss'
 import { RowLabel, SectionTitle, useRowLabel } from '@payloadcms/ui'
 import type { AtomicChild } from '@pro-laico/atomic/children/schema'
-import { AtomicIcon } from '@pro-laico/icons'
+// Import from the narrow subpath, NOT the `@pro-laico/icons` barrel: the barrel
+// pulls in the Icon collection + the `server-only` formatSVG hook, which can't be
+// in this `'use client'` component's graph. AtomicIcon is a pure presentational SVG.
+import { AtomicIcon } from '@pro-laico/icons/AtomicIcon'
 
 const AtomicRowLabel = () => {
   const { data, path, rowNumber } = useRowLabel<AtomicChild>()

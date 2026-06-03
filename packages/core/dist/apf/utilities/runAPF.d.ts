@@ -1,7 +1,9 @@
-import { RunAPFProps } from '../types';
+import type { RunAPFProps } from '../types';
 /**
- * Checks if a document has been marked as changed in the context.
- * If the documents data includes 'active' it will only return true if active = true.
+ * Returns whether this APF was marked as changed for the document in the request
+ * context — i.e. whether the per-`id`/`apf` flag set by the APF field hooks is
+ * present. (Both legacy branches returned this same value; the `active` check was
+ * a no-op, so it has been removed rather than left as misleading dead code.)
  */
-export declare const runAPF: ({ context, id, apf, data }: RunAPFProps) => boolean;
+export declare const runAPF: ({ context, id, apf }: RunAPFProps) => boolean;
 //# sourceMappingURL=runAPF.d.ts.map

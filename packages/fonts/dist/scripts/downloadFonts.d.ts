@@ -15,6 +15,13 @@ export type RunDownloadFontsOptions = {
      * `designSet` is found. Default `fontSet` or `ATOMIC_FONTS_GLOBAL_SLUG`.
      */
     fontSetGlobalSlug?: string;
+    /**
+     * Prefix for the CSS custom properties emitted by the generated `localFont()`
+     * calls. The slot name is appended capitalised (e.g. `--font-setSans`).
+     * Default `--font-set` or `ATOMIC_FONTS_CSS_VAR_PREFIX`. Change it only if your
+     * stylesheet references different variable names.
+     */
+    cssVariablePrefix?: string;
 };
 export declare function runDownloadFonts(overrides?: RunDownloadFontsOptions): Promise<void>;
 //# sourceMappingURL=downloadFonts.d.ts.map

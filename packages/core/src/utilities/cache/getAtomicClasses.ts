@@ -1,4 +1,3 @@
-'use server'
 import 'server-only'
 import { type CollectionSlug, getPayload, type Where } from 'payload'
 

@@ -5,7 +5,7 @@ type FooterArgs = { page: Page }
 export const footer: (args: FooterArgs) => Omit<Footer, 'createdAt' | 'updatedAt' | 'id'> = ({ page }) => {
   return {
     active: true,
-    devMode: true,
+    devMode: false,
     title: 'Base Footer',
     _status: 'published',
 
@@ -55,7 +55,7 @@ export const footer: (args: FooterArgs) => Omit<Footer, 'createdAt' | 'updatedAt
                     tagType: 'div',
                     buttonType: 'link',
                     linkType: 'externalLink',
-                    externalLink: 'www.google.com',
+                    externalLink: 'https://atomicpayload.com',
                     triggerClassName: 'font-medium underline underline-offset-4',
 
                     triggerChildren: [
@@ -125,7 +125,7 @@ export const footer: (args: FooterArgs) => Omit<Footer, 'createdAt' | 'updatedAt
                     tagType: 'div',
                     buttonType: 'link',
                     linkType: 'externalLink',
-                    externalLink: 'www.google.com',
+                    externalLink: 'https://prolaico.com',
                     triggerClassName: 'font-medium underline underline-offset-4',
 
                     triggerChildren: [

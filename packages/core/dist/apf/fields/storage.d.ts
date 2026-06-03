@@ -1,5 +1,5 @@
-import { CheckboxField } from 'payload';
-import { APFunction } from '../types';
+import type { CheckboxField } from 'payload';
+import type { APFunction } from '../types';
 /** Atomic Payload Functions Registry */
 export declare const apfRegistry: Record<APFunction, string>;
 /**

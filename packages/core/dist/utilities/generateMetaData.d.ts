@@ -1,6 +1,6 @@
+import type { SiteMetaDatum } from '@pro-laico/site/schema';
 import type { Metadata } from 'next';
 import type { PageReturn } from '../types/cache';
-import type { SiteMetaDatum } from '@pro-laico/site/schema';
 type GenerateMetaDataArgs = {
     page?: PageReturn;
     siteMetadata?: SiteMetaDatum;

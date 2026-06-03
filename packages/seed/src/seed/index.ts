@@ -44,9 +44,11 @@ const DEFAULT_SEED_SLUGS: Required<SeedSlugConfig> = {
   siteMetaDataGlobal: 'siteMetaData',
 }
 
-const args = { depth: 0, context: { isSeed: true } }
-
 export const seed = async ({ payload, req }: { payload: Payload; req: PayloadRequest }, slugConfig: SeedSlugConfig = {}): Promise<void> => {
+  // Threading `req` keeps every write in the request's transaction (so a
+  // mid-seed failure rolls back); `overrideAccess: true` makes the trusted
+  // server-side bypass explicit; `isSeed` lets hooks skip side effects.
+  const args = { depth: 0, context: { isSeed: true }, req, overrideAccess: true }
   const slugs = { ...DEFAULT_SEED_SLUGS, ...slugConfig }
   const collections: CollectionSlug[] = [
     slugs.footer as CollectionSlug,
@@ -124,6 +126,10 @@ export const seed = async ({ payload, req }: { payload: Payload; req: PayloadReq
   await payload.create({ collection: slugs.footer, ...args, data: footer({ page }) } as Parameters<typeof payload.create>[0])
 
   payload.logger.info(`Seeding Header...`)
+  // Created last with `isSeed: false` on purpose: every prior write ran with
+  // `isSeed: true` (CSS/atomic side-effect hooks skipped), so this final create
+  // lets the atomicHook run once — generating the stored stylesheet from the
+  // now-seeded designSet/shortcutSet. Keeps `req` from `args` for the transaction.
   await payload.create({
     collection: slugs.header,
     ...args,

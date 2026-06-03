@@ -1,4 +1,3 @@
-'use server'
 import 'server-only' //DO NOT REMOVE
 import { manualLogger, sanitizeData } from '@pro-laico/atomic/hook/light'
 import { type CollectionSlug, getPayload, type Where } from 'payload'

@@ -32,7 +32,10 @@ export const Pages: CollectionConfig<'pages'> = {
   access: { create: authd, delete: authd, read: authenticatedOrPublished, update: authd },
   admin: {
     group: 'Website',
-    useAsTitle: 'href',
+    // `title` (required) is always populated; `href` is empty until the first
+    // save (it's derived from breadcrumbs), so titling by it blanks new docs.
+    // `href` stays in defaultColumns below.
+    useAsTitle: 'title',
     enableListViewSelectAPI: true,
     preview: (data, { req }) => generateLivePreviewPath({ data, req }),
     livePreview: { url: ({ data, req }) => generateLivePreviewPath({ data, req }) },
@@ -62,6 +65,11 @@ export const Pages: CollectionConfig<'pages'> = {
         APField({
           type: 'text',
           name: 'href',
+          // href is the canonical page identity (cache key + getCachedPageByHref
+          // lookup + useAsTitle), so index it to avoid an unindexed scan per
+          // lookup. Not `unique` — hrefs are derived from the breadcrumb tree and
+          // a unique constraint would reject legitimate edge cases / seed reruns.
+          index: true,
           apf: ['page', 'pages'],
           hooks: { beforeChange: [updateHrefHook] },
           admin: { width: '30%', readOnly: true, style: { maxWidth: '300px' } },
@@ -82,7 +90,7 @@ export const Pages: CollectionConfig<'pages'> = {
         { label: 'Content', fields: [ClassNameField({ namePrefix: 'main', defaultValue: 'page-main' }), ChildrenBlocks] },
         SEOTab(),
         StorageTab(),
-        SettingsTab(),
+        SettingsTab(APFunctions),
       ],
     },
   ],

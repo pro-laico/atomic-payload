@@ -1,5 +1,6 @@
 import 'server-only';
 import type { GCFunction } from '../../types/cache';
-/** Gets the pages stored in payload and formats them into a sitemap array. */
+/** Factory: pass the slug of the pages collection to bind the sitemap getter to it. */
+export declare const createGetCachedSitemap: (pagesSlug?: string) => GCFunction<"sitemap">;
 export declare const getCachedSitemap: GCFunction<'sitemap'>;
 //# sourceMappingURL=getSitemap.d.ts.map

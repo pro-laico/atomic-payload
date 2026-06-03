@@ -1,11 +1,12 @@
-import type { Access, CollectionConfig } from 'payload'
+import type { CollectionConfig } from 'payload'
 
-const authd: Access = ({ req }) => Boolean(req.user)
+import { authd } from '../access/authd'
 
 export const Font: CollectionConfig = {
   slug: 'font',
   access: { create: authd, delete: authd, read: authd, update: authd },
   admin: { group: 'Assets', useAsTitle: 'title', enableListViewSelectAPI: true, defaultColumns: ['title', 'family'] },
+  timestamps: true,
   fields: [
     { name: 'title', type: 'text', required: true },
     {

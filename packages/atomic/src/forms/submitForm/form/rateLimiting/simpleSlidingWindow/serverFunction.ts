@@ -2,6 +2,12 @@
 import type { FormFunction } from '@pro-laico/atomic/forms'
 import type { FrlSimpleSlidingWindow as FrlSimpleSlidingWindowType } from '@pro-laico/atomic/forms/schema'
 
+// LIMITATION: this window is backed by module-level in-memory state, so it only
+// limits within a single running instance. On serverless / multi-instance
+// deploys (e.g. Vercel) every instance keeps its own store and cold starts wipe
+// it — treat this as best-effort spam friction, NOT a hard limit. For real
+// protection back it with a shared store (Redis/Upstash, or a Payload collection
+// keyed by backendFormID + ip). See AUDIT.md.
 const lastCleanup: Record<string, number> = {}
 const memoryStore: Record<string, Record<string, number[]>> = {}
 

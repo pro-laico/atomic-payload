@@ -245,14 +245,10 @@ export const notFoundPage: (args: NotFoundArgs) => Omit<Page, 'createdAt' | 'upd
     },
     devMode: false,
 
-    breadcrumbs: [
-      {
-        doc: '69274dbdc6c6fa92adf99960',
-        url: '/404',
-        label: '/404',
-        id: '69274dbd58b4d28e286cff1a',
-      },
-    ],
+    // No `doc`/`id` here — those were stale ObjectIDs from a prior database that
+    // don't exist in a fresh seed. The nested-docs plugin recomputes breadcrumbs
+    // (including `doc`) from the page hierarchy on create.
+    breadcrumbs: [{ url: '/404', label: '/404' }],
 
     storedAtomicClasses: [
       'page-main',

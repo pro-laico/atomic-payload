@@ -5,14 +5,18 @@ import type { Tab } from 'payload'
 import { TokenValueArrayField, TokenValuesArrayField } from '../../fields/value'
 import { AnimationLabelPath } from '../../paths'
 
+// Mirrors exactly what `generateUnoAnimation` (processDesignSet/index.ts) emits:
+// five `RSS` maps. The processor never writes a `properties` key, and `counts`
+// is reduced to `RSS` (string values), so the schema must not advertise a
+// `properties: RSRSS` field nor a `counts` that allows `number` — both would
+// make the generated `DesignSet['tokenStorage'].animation` type lie.
 export const unoThemeAnimation = z.ap.add(
   z.object({
     category: z.ap.get('RSS').optional(),
     keyframes: z.ap.get('RSS').optional(),
     durations: z.ap.get('RSS').optional(),
     timingFns: z.ap.get('RSS').optional(),
-    properties: z.ap.get('RSRSS').optional(),
-    counts: z.record(z.string(), z.union([z.string(), z.number()])).optional(),
+    counts: z.ap.get('RSS').optional(),
   }),
   { id: 'UnoThemeAnimation' },
 )

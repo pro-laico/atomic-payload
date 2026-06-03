@@ -29,17 +29,21 @@ export default buildConfig({
 })
 ```
 
-Frontend:
+Frontend — `TrackingProvider` needs the `Tracking` global threaded in as a prop (without it, every provider short-circuits and nothing loads). Fetch it server-side in your root layout and pass it down:
 
 ```tsx
+// app/(frontend)/layout.tsx — a Server Component
+import config from '@payload-config'
 import { TrackingProvider } from '@pro-laico/tracking/provider'
+import { getPayload } from 'payload'
 
-export default function RootLayout({ children }) {
-  return (
-    <TrackingProvider>
-      {children}
-    </TrackingProvider>
-  )
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const payload = await getPayload({ config })
+  // The Tracking global's `read` is authenticated-only; the Local API defaults to
+  // `overrideAccess: true`, so this server fetch works without a session.
+  const tracking = await payload.findGlobal({ slug: 'tracking' })
+
+  return <TrackingProvider tracking={tracking}>{children}</TrackingProvider>
 }
 ```
 

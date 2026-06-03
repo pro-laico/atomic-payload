@@ -13,7 +13,7 @@ Four big things live here:
 3. **Cache + revalidation** — opinionated helpers around Next.js `revalidateTag`, including `getCached` factories, collection/global hooks that revalidate on save, and a `revalidationPlugin`.
 4. **JSON-schema plugin** — generates JSON Schema entries from registered `zap` schemas, then feeds them into Payload's `typescript.schema` so app types reflect block shapes.
 
-It also ships small but pervasive utilities: `slugField`, `StorageTab`, `ClassNameField`, `DevModeField`, `formatSlugHook`, `getServerSideURL`, `GenerateMetaData`, `deepMerge`, case converters, and admin UI like the `Toaster` and `LivePreviewListener`.
+It also ships small but pervasive utilities: `slugField`, `StorageTab`, `DevModeField`, `formatSlugHook`, `getServerSideURL`, `GenerateMetaData`, `deepMerge`, case converters, and admin UI like the `Toaster` and `LivePreviewListener`. (The `ClassNameField` lives in `@pro-laico/styles`, not here.)
 
 ## Why it exists
 
@@ -58,7 +58,7 @@ import { revalidationLogger } from '@pro-laico/core/logger'  // server-only
 | `utilities/cache/` | `getCached` factory, React `cache()` wrapper, auto-keyed variants. |
 | `utilities/revalidateTag.ts` | A safe `revalidateTag` server action wrapper. |
 | `hooks/collection/` `hooks/global/` `hooks/field/` | Reusable Payload hooks (`revalidateCache`, `sanitizeAfterRead`, `formatSlug`, etc). |
-| `fields/` | `slugField`, `StorageTab`, `ClassNameField`, `DevModeField`, `TestPathField`, `UniqueTitleField`. |
+| `fields/` | `slugField`, `StorageTab`, `DevModeField`, `TestPathField`, `UniqueTitleField`. |
 | `ui/` | Admin field components (`slug`, `siteTriggers`) loaded via Payload's import map. |
 | `components/frontend/` | `Toaster`, `LivePreviewListener`. |
 | `next/` | `previewRouteHandler`, `exitPreviewRouteHandler` for draft preview routes. |

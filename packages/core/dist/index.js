@@ -15,28 +15,28 @@
  *   eagerly resolves this barrel under `--conditions=react-server`. Import it
  *   from `@pro-laico/core/auth/getMeUser` on the frontend when needed.
  */
+export { ActiveField } from './apf/fields/active';
+export { APField } from './apf/fields/index';
+export { apfRegistry, apfStorage, generateAPFFields } from './apf/fields/storage';
+export { onArraySetAPFShallow, onUploadSetAPF, virtualAPFAfterReadFieldHook, virtualAPFBeforeChangeFieldHook, } from './apf/hooks/field/apf';
+export { runAPF } from './apf/utilities/runAPF';
+export { createRevalidateCache, createRevalidateCacheAfterChange, createRevalidateCacheOnDelete, DEFAULT_DELETE_REVALIDATION_HANDLERS, DEFAULT_REVALIDATION_HANDLERS, revalidateCache as revalidateCacheCollection, revalidateCacheCollectionAfterChange, revalidateCacheOnDelete, } from './hooks/collection/revalidate';
+export { sanitizeAfterRead } from './hooks/collection/sanitize';
+export { revalidateCache as revalidateCacheGlobal, revalidateCacheAfterChange as revalidateCacheGlobalAfterChange, } from './hooks/global/revalidate';
+export { atomicPayloadStoredDefinitions, createJSONSchemaExtensions, default as jsonSchemaPluginDefault, jsonSchemaPlugin, } from './jsonSchema';
 // /////////////////////////////////////
 // Kernel (PayloadAugment, Get<>, defaults, generic helpers)
 // /////////////////////////////////////
 export * from './kernel';
-export { runAPF } from './apf/utilities/runAPF';
-export { APField } from './apf/fields/index';
-export { ActiveField } from './apf/fields/active';
-export { apfRegistry, apfStorage, generateAPFFields } from './apf/fields/storage';
-export { virtualAPFAfterReadFieldHook, virtualAPFBeforeChangeFieldHook, onArraySetAPFShallow, onUploadSetAPF, } from './apf/hooks/field/apf';
 // /////////////////////////////////////
 // Revalidation plugin + JSON-schema plugin
 // /////////////////////////////////////
-export { revalidationPlugin, default } from './plugin';
-export { jsonSchemaPlugin, createJSONSchemaExtensions, atomicPayloadStoredDefinitions, default as jsonSchemaPluginDefault, } from './jsonSchema';
+export { default, revalidationPlugin } from './plugin';
+export { mt } from './utilities/mergeTags';
 // /////////////////////////////////////
 // Cache + revalidate-tag entry points (sync)
 // /////////////////////////////////////
 export { revalidateTag } from './utilities/revalidateTag';
-export { mt } from './utilities/mergeTags';
-export { revalidateCache as revalidateCacheCollection, revalidateCacheOnDelete } from './hooks/collection/revalidate';
-export { revalidateCache as revalidateCacheGlobal } from './hooks/global/revalidate';
-export { sanitizeAfterRead } from './hooks/collection/sanitize';
 // /////////////////////////////////////
 // Path constants — string literals consumed by Payload's importMap.
 // /////////////////////////////////////
@@ -45,37 +45,36 @@ export const APFieldPath = '@pro-laico/core/admin/field';
 export const APFieldLabelPath = '@pro-laico/core/admin/label';
 export const SiteTriggersPath = '@pro-laico/core/ui/root/siteTriggers';
 export const SlugPath = '@pro-laico/core/ui/fields/slug';
+export { DevModeField } from './fields/devMode';
 // /////////////////////////////////////
-// String utilities
+// Reusable Payload field configs
 // /////////////////////////////////////
-export { toTitleCase } from './utilities/toTitleCase';
-export { toKebabCase } from './utilities/toKebabCase';
-export { default as deepMerge, isObject } from './utilities/deepMerge';
-export { formatDurationString } from './utilities/formatDurationWithTokens';
-// /////////////////////////////////////
-// URL + meta helpers
-// /////////////////////////////////////
-export { GenerateMetaData } from './utilities/generateMetaData';
-export { getServerSideURL, getClientSideURL } from './utilities/getURL';
-export { getImageUrl } from './utilities/getImageURL';
-export { generateLivePreviewPath } from './utilities/generatePreviewPath';
-// /////////////////////////////////////
-// Hook composition
-// /////////////////////////////////////
-export { mergeHooks } from './utilities/mergeHooks';
+export { slugField } from './fields/slug';
+export { StorageTab } from './fields/storageTab';
+export { createTestPathField, TestPathField } from './fields/testPath';
+export { UniqueTitleField } from './fields/uniqueTitle';
 // /////////////////////////////////////
 // Field-level hooks
 // /////////////////////////////////////
 export { formatSlug, formatSlugHook } from './hooks/field/formatSlug';
 export { updateHrefHook } from './hooks/field/href';
 export { updatePublishedAtHook } from './hooks/field/publishedAt';
+export { default as deepMerge, isObject } from './utilities/deepMerge';
+export { formatDurationString } from './utilities/formatDurationWithTokens';
 // /////////////////////////////////////
-// Reusable Payload field configs
+// URL + meta helpers
 // /////////////////////////////////////
-export { slugField } from './fields/slug';
-export { StorageTab } from './fields/storageTab';
-export { ClassNameField } from './fields/className';
-export { DevModeField } from './fields/devMode';
-export { TestPathField } from './fields/testPath';
-export { UniqueTitleField } from './fields/uniqueTitle';
+export { GenerateMetaData } from './utilities/generateMetaData';
+export { generateLivePreviewPath } from './utilities/generatePreviewPath';
+export { getImageUrl } from './utilities/getImageURL';
+export { getClientSideURL, getServerSideURL } from './utilities/getURL';
+// /////////////////////////////////////
+// Hook composition
+// /////////////////////////////////////
+export { mergeHooks } from './utilities/mergeHooks';
+export { toKebabCase } from './utilities/toKebabCase';
+// /////////////////////////////////////
+// String utilities
+// /////////////////////////////////////
+export { toTitleCase } from './utilities/toTitleCase';
 //# sourceMappingURL=index.js.map

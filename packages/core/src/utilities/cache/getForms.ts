@@ -1,4 +1,3 @@
-'use server'
 import 'server-only' //DO NOT REMOVE
 import type { Form, StoredAtomicForm } from '@pro-laico/atomic/forms/schema'
 import { type CollectionSlug, getPayload, type Where } from 'payload'
@@ -11,7 +10,7 @@ export const createGetCachedBackendForms = (formsSlug: string = 'forms'): GCFunc
   const collection = formsSlug as CollectionSlug
   return async (configPromise, tag) => {
     const payload = await getPayload({ config: configPromise })
-    const results = await payload.find({ draft: false, collection, limit: 1000, pagination: false }).then((res) => res.docs.map((doc) => doc))
+    const results = await payload.find({ draft: false, collection, limit: 0, pagination: false }).then((res) => res.docs.map((doc) => doc))
     cacheLogger({ tag })
     return results
   }
@@ -25,7 +24,14 @@ export const createGetCachedAtomicForms = (pagesSlug: string = 'pages'): GCFunct
     const where: Where = { storedAtomicForms: { exists: true } }
     if (!draft) Object.assign(where, { live: { equals: true } })
     const results = await payload
-      .find({ draft, collection, limit: 1000, where, select: { storedAtomicForms: true } as Parameters<typeof payload.find>[0]['select'] })
+      .find({
+        draft,
+        collection,
+        limit: 0,
+        pagination: false,
+        where,
+        select: { storedAtomicForms: true } as Parameters<typeof payload.find>[0]['select'],
+      })
       .then((res) =>
         res.docs
           .map((doc) => (doc as { storedAtomicForms?: StoredAtomicForm[] }).storedAtomicForms)

@@ -34,6 +34,11 @@ export const createIconBlock = ({ prependFields = [], appendFields = [] }: IconB
             {
               type: 'row',
               fields: [
+                // Stores the icon *name* as a string (resolved against the active
+                // IconSet at render time), deliberately — not an `upload`/relationship.
+                // Trade-off: no referential integrity, so renaming/deleting an icon
+                // leaves the stored name stale; and it's intentionally not `required`
+                // so a block can be saved before its icon is picked.
                 { name: `icon`, type: 'text', admin: { width: '50%', components: { Field: { path: IconSelectPath } } } },
                 { name: 'ariaHidden', type: 'checkbox', admin: { width: '50%', description: d.ariaHidden } },
               ],

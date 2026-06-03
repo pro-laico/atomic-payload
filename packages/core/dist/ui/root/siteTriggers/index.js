@@ -1,9 +1,9 @@
 'use client';
 import { jsx as _jsx, jsxs as _jsxs, Fragment as _Fragment } from "react/jsx-runtime";
 import './index.scss';
+import { Button, PopupList, toast } from '@payloadcms/ui';
 import { useState } from 'react';
 import { revalidateTag } from '../../../utilities/revalidateTag';
-import { Button, toast, PopupList } from '@payloadcms/ui';
 import { triggerVercelDeployServerFunction } from './triggerVercelDeploy';
 const SiteTriggers = () => {
     const [isDeploying, setIsDeploying] = useState(false);

@@ -7,13 +7,14 @@ function definedProps(obj) {
 export function APField(args) {
     const { type, name, apf, docLink, ...baseArgs } = args;
     const possiblyUndefinedProps = definedProps({ docLink });
+    const fieldClientProps = { type, apf, ...possiblyUndefinedProps };
     const baseField = {
         name,
         admin: {
             components: {
                 Field: {
                     path: APFieldPath,
-                    clientProps: { type, apf, ...possiblyUndefinedProps },
+                    clientProps: fieldClientProps,
                 },
                 Label: {
                     path: APFieldLabelPath,
@@ -26,13 +27,13 @@ export function APField(args) {
         case 'text': {
             const { kebab, ...rest } = baseArgs;
             if (kebab)
-                Object.assign(baseField.admin.components.Field.clientProps, { kebab: args.kebab });
+                Object.assign(fieldClientProps, { kebab: args.kebab });
             return deepMerge({ type: 'text', ...baseField }, rest);
         }
         case 'textarea': {
             const { kebab, ...rest } = baseArgs;
             if (kebab)
-                Object.assign(baseField.admin.components.Field.clientProps, { kebab: args.kebab });
+                Object.assign(fieldClientProps, { kebab: args.kebab });
             return deepMerge({ type: 'textarea', ...baseField }, rest);
         }
         case 'checkbox': {

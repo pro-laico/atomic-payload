@@ -2,9 +2,9 @@
 
 import type { SubmitFormFunction } from '@pro-laico/atomic/forms'
 import getCached from '@pro-laico/core/cache/auto'
+import { getPayloadInstance } from '@pro-laico/core/payload'
 import { draftMode, headers as nextHeaders } from 'next/headers'
 
-import { getServerSideURL } from '../utilities/getServerSideURL'
 import { getSubmitFormProcessor } from './formProcessor'
 
 export const submitForm: SubmitFormFunction = async (submissionData) => {
@@ -27,12 +27,21 @@ export const submitForm: SubmitFormFunction = async (submissionData) => {
     const { response, submitToPayload } = await formProcessor.process({ submissionData, headers, storedForm })
 
     if (response.success) {
-      const req = await fetch(`${getServerSideURL()}/api/form-submissions`, {
-        body: JSON.stringify({ form: storedForm.backendFormID, submissionData: submitToPayload }),
-        headers: { 'Content-Type': 'application/json' },
-        method: 'POST',
-      })
-      if (!req.ok) return { success: false, formData, submissionID, fm: 'Failed to store form submission.', im: {} }
+      // Write via the Local API rather than POSTing to the public
+      // `/api/form-submissions` REST endpoint. The validated SVR pipeline above
+      // must be the ONLY path to a stored submission, so the submission
+      // collection locks `create` to deny — hence `overrideAccess: true` here.
+      const payload = await getPayloadInstance()
+      try {
+        await payload.create({
+          collection: 'form-submissions',
+          data: { form: storedForm.backendFormID, submissionData: submitToPayload },
+          overrideAccess: true,
+        })
+      } catch (err) {
+        payload.logger.error({ err, msg: 'Failed to store form submission' })
+        return { success: false, formData, submissionID, fm: 'Failed to store form submission.', im: {} }
+      }
     }
 
     return response

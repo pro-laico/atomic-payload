@@ -1,6 +1,6 @@
 # @pro-laico/site
 
-> The opinionated "what does an Atomic Payload site contain" package. Pages, Header, Footer collections plus the SiteMetaData, Settings, and draft/published Storage globals — all registered by a single `sitePlugin()`.
+> The opinionated "what does an Atomic Payload site contain" package. Pages, Header, Footer collections plus the SiteMetaData and Settings globals — all registered by a single `sitePlugin()`.
 
 ## What this package is
 
@@ -11,11 +11,12 @@ Where every other plugin contributes one feature, `site` contributes the **shape
 - **`Footer`** — same pattern as Header.
 - **`SiteMetaData`** global — title, description, favicon, default OpenGraph image, etc. The single source of truth for site-level metadata.
 - **`Settings`** global — site-wide settings (auth pages, theme toggle defaults, anything that's "one row per site").
-- **`baseStorage('draft')`** and **`baseStorage('published')`** globals — the storage targets for the CSS / JSON the `@pro-laico/atomic/hook` processor generates. Two of them so draft and published builds don't clobber each other.
+
+> The draft/published CSS storage globals that previously lived here now ship from `@pro-laico/styles` — `site` no longer registers them.
 
 ## Why it exists
 
-Without a "site shape" package, every consumer would reinvent Pages, Header, Footer, and the storage globals slightly differently — and the hook in `@pro-laico/atomic/hook` would have to be configurable enough to write to any of them. Locking the shape down lets the hook hardcode where it writes generated CSS, lets the template wire navigation consistently, and gives `seed` a known set of slugs to populate.
+Without a "site shape" package, every consumer would reinvent Pages, Header, and Footer slightly differently. Locking the shape down lets the template wire navigation consistently and gives `seed` a known set of slugs to populate. (The CSS storage globals the `@pro-laico/atomic/hook` processor writes to live in `@pro-laico/styles`.)
 
 ## Quick start
 
@@ -40,7 +41,6 @@ That's the whole API. The plugin is intentionally unopinionated about cross-pack
 | `collections/footers/` | The `Footer` collection. |
 | `globals/settings.ts` | The `Settings` global. |
 | `globals/siteMetaData.ts` | The `SiteMetaData` global. |
-| `globals/storage.ts` | `baseStorage(stage)` — factory for the draft/published storage globals. |
 | `access.ts` | Default access predicates. |
 | `components/frontend/` | Frontend React components (Header/Footer/Pages renderers). Lives at a subpath so server config doesn't import client code. |
 | `zap.ts` | `zap` registry augmentations + helpers. |
@@ -51,7 +51,7 @@ That's the whole API. The plugin is intentionally unopinionated about cross-pack
 import {
   sitePlugin,
   Pages, Header, Footer,
-  Settings, SiteMetaData, baseStorage,
+  Settings, SiteMetaData,
   SEOTab, SettingsTab,
   COLLECTION_SLUGS_WITH_ATOMIC_HOOK,
 } from '@pro-laico/site'

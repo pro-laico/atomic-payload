@@ -26,12 +26,12 @@ async function revalidateTag(...args: RArgs<'all'>): RReturns<'all'> {
   // Secondary revalidations and special handlings for specific tags.
   switch (tag) {
     case 'pages':
-      revalidateTag('sitemap', draft)
+      await revalidateTag('sitemap', draft)
       break
     case 'designSet':
     case 'shortcutSet':
     case 'atomic-classes':
-      revalidateTag('site-css', draft)
+      await revalidateTag('site-css', draft)
       break
     case 'draft':
     case 'published':

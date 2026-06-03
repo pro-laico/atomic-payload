@@ -11,6 +11,11 @@ export const formBuilderPluginConfig = formBuilderPlugin({
   redirectRelationships: ['pages'],
   formSubmissionOverrides: {
     admin: { group: 'Forms', defaultColumns: ['form', 'submissionData', 'updatedAt'] },
+    // Deny public REST `create` — the ONLY write path is the `submitForm` server
+    // action, which runs the validation/rate-limit/sanitation pipeline and writes
+    // via the Local API with `overrideAccess: true`. Read/update/delete stay
+    // authenticated since submissions can hold PII.
+    access: { create: () => false, delete: authd, read: authd, update: authd },
     hooks: { beforeChange: [revalidateCache] },
   },
   fields: {

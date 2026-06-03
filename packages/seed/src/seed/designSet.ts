@@ -260,7 +260,7 @@ export const designSet: (args: DesignSetArgs) => Omit<DesignSet, 'createdAt' | '
 
       lead: {
         light: 'var(--foreground)',
-        dark: 'ovar(--foreground)',
+        dark: 'var(--foreground)',
       },
 
       links: {
@@ -315,7 +315,7 @@ export const designSet: (args: DesignSetArgs) => Omit<DesignSet, 'createdAt' | '
 
       code: {
         light: 'var(--foreground)',
-        dark: 'ovar(--foreground)',
+        dark: 'var(--foreground)',
       },
 
       'pre-code': {
@@ -457,9 +457,9 @@ export const designSet: (args: DesignSetArgs) => Omit<DesignSet, 'createdAt' | '
       hr: ['var(--foreground)', 'var(--foreground)'],
       kbd: ['var(--foreground)', 'var(--foreground)'],
       body: ['var(--foreground)', 'var(--foreground)'],
-      lead: ['var(--foreground)', 'ovar(--foreground)'],
+      lead: ['var(--foreground)', 'var(--foreground)'],
       bold: ['var(--foreground)', 'var(--foreground)'],
-      code: ['var(--foreground)', 'ovar(--foreground)'],
+      code: ['var(--foreground)', 'var(--foreground)'],
       links: ['var(--foreground)', 'var(--foreground)'],
       quotes: ['var(--foreground)', 'var(--foreground)'],
       'pre-bg': ['var(--foreground)', 'var(--foreground)'],

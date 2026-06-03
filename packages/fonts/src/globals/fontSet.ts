@@ -1,8 +1,7 @@
-import type { Access, GlobalConfig } from 'payload'
+import type { GlobalConfig } from 'payload'
 
+import { authd } from '../access/authd'
 import { fontUploadFields } from '../fields/font'
-
-const authd: Access = ({ req }) => Boolean(req.user)
 
 /** Slug of the standalone font-selection global. */
 export const FONT_SET_SLUG = 'fontSet'

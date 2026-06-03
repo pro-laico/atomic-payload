@@ -1,5 +1,5 @@
+import type { Tracking } from '@pro-laico/tracking/schema';
 import type { ReactNode } from 'react';
-import type { Tracking } from '@pro-laico/tracking/schema'
 export declare const TrackingProvider: ({ tracking, children }: {
     tracking?: Tracking;
     children: ReactNode;

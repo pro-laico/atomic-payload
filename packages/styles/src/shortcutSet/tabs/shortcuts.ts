@@ -17,7 +17,7 @@ export const createShortcutsTab = (defaultShortcuts: unknown[]): Tab => ({
       name: 'shortcuts',
       type: 'array',
       required: true,
-      admin: { components: { RowLabel: ShortcutLabelPath } },
+      admin: { components: { RowLabel: { path: ShortcutLabelPath } } },
       fields: [
         {
           type: 'row',
@@ -48,7 +48,7 @@ export const createShortcutsTab = (defaultShortcuts: unknown[]): Tab => ({
       type: 'array',
       required: false,
       defaultValue: defaultShortcuts,
-      admin: { readOnly: true, isSortable: false, initCollapsed: true, description: d.ds, components: { RowLabel: ShortcutLabelPath } },
+      admin: { readOnly: true, isSortable: false, initCollapsed: true, description: d.ds, components: { RowLabel: { path: ShortcutLabelPath } } },
       fields: [
         {
           type: 'row',

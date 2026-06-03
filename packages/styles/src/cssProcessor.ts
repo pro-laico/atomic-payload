@@ -87,13 +87,13 @@ export function createCssProcessor(getCached: CssProcessorGetCached, options: Cs
       extendTheme: (theme: PresetWind4Theme) => deepMerge(theme, deepMerge(ds?.tokenStorage, defaultClasses)),
     })
 
-    const updatedAt = new Date().toISOString()
     const { css } = await uno.generate(Array.from(classNames), { minify: ds?.minify })
 
+    // No manual `updatedAt` — Payload manages it; writing it forced the broad cast.
     await req.payload.updateGlobal({
       req,
       slug: draft ? cssStorageGlobals.draft : cssStorageGlobals.published,
-      data: { layoutCSS: css, cssSize: css.length, updatedAt },
+      data: { layoutCSS: css, cssSize: css.length },
     } as unknown as Parameters<typeof req.payload.updateGlobal>[0])
     manualLogger(`[UPDATE] (Global) - ${draft ? 'Draft' : 'Published'} CSS Storage - ${css.length} bytes`)
 

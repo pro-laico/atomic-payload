@@ -48,7 +48,6 @@ export function Block({ data }) {
 | `blocks/richText/block.ts` | The `RichText` block config factory. |
 | `blocks/richText/component.tsx` | The `RichTextChild` JSX renderer. |
 | `blocks/richText/defaultLexical.ts` | The `defaultLexical` editor preset. |
-| `types/` | Type helpers. |
 
 ## Subpath imports
 

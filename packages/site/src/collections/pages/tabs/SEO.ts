@@ -57,6 +57,7 @@ export const SEOTab = () => {
             type: 'select',
             apf: ['seo', 'sitemap'],
             name: 'changeFrequency',
+            defaultValue: 'monthly',
             options: ['daily', 'weekly', 'monthly', 'yearly', 'never'],
             admin: { width: '33%', description: d.changeFrequency },
           }),

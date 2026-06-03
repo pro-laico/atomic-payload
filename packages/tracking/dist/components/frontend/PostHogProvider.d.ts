@@ -1,4 +1,4 @@
-import type { Tracking } from '@pro-laico/tracking/schema'
+import type { Tracking } from '@pro-laico/tracking/schema';
 export declare function PostHogProvider({ children, tracking }: {
     children: React.ReactNode;
     tracking?: Tracking;

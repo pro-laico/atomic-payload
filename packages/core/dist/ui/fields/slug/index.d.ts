@@ -1,6 +1,6 @@
 import './index.scss';
-import { TextFieldClientProps } from 'payload';
-import React from 'react';
+import type { TextFieldClientProps } from 'payload';
+import type React from 'react';
 type SlugComponentProps = {
     fieldToUse: string;
     checkboxFieldPath: string;

@@ -38,6 +38,37 @@ const formFunctions: FormFunctionsMap = {
   IvDoesNotContain,
 }
 
+// Consent must be enforced server-side: the client posts `clientData.preferences`
+// but those are trivially spoofed, so PII collection is governed by the cookie the
+// consent UI writes (`cookiePreferences`, see actions/.../slices/consent.ts).
+// functional/security are always on; everything else defaults to denied.
+const COOKIE_PREFERENCES = 'cookiePreferences'
+const DENIED_CONSENT: CookiePreferences = {
+  adPersonalization: false,
+  analytics: false,
+  contentPersonalization: false,
+  functional: true,
+  marketing: false,
+  security: true,
+  userData: false,
+}
+
+const parseConsent = (headers: { get(name: string): string | null }): CookiePreferences => {
+  const cookieHeader = headers.get('cookie')
+  if (!cookieHeader) return DENIED_CONSENT
+  const entry = cookieHeader
+    .split(';')
+    .map((c) => c.trim())
+    .find((c) => c.startsWith(`${COOKIE_PREFERENCES}=`))
+  if (!entry) return DENIED_CONSENT
+  try {
+    const parsed = JSON.parse(decodeURIComponent(entry.slice(COOKIE_PREFERENCES.length + 1)))
+    return { ...DENIED_CONSENT, ...parsed, functional: true, security: true }
+  } catch {
+    return DENIED_CONSENT
+  }
+}
+
 class SubmitFormProcessor {
   //Context
   private success: boolean = true
@@ -81,7 +112,8 @@ class SubmitFormProcessor {
     const { submissionData, headers, storedForm } = args
     const { formData, clientData, submissionID } = submissionData
     this.formInputBlocks = storedForm.inputs
-    this.CCPreferences = clientData.preferences
+    // Authoritative consent from the cookie — NOT the spoofable client payload.
+    this.CCPreferences = parseConsent(headers)
     this.formSanitationBlocks = storedForm.sanitation
     this.formValidationBlocks = storedForm.validation
     this.formRateLimitBlocks = storedForm.rateLimiting
@@ -216,8 +248,10 @@ class SubmitFormProcessor {
   }
 }
 
-const submitFormProcessor = new SubmitFormProcessor()
-
 export async function getSubmitFormProcessor() {
-  return submitFormProcessor
+  // A NEW instance per call — never a shared singleton. The processor keeps
+  // per-submission state in instance fields and awaits between mutations, so a
+  // shared instance would let concurrent requests interleave and clobber each
+  // other's `args`/`success`/consent state (a validation-correctness hazard).
+  return new SubmitFormProcessor()
 }

@@ -1,4 +1,4 @@
-'use server'
+import 'server-only'
 
 import type { RenderChild } from '@pro-laico/atomic/children'
 import Warning from '@pro-laico/atomic/children/admin/warningIcon'

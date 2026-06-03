@@ -1,4 +1,4 @@
-import { revalidateCacheCollection } from '@pro-laico/core'
+import { revalidateCacheCollectionAfterChange, revalidateCacheOnDelete } from '@pro-laico/core'
 import type { CollectionConfig, ImageUploadFormatOptions } from 'payload'
 
 import { anyone, authd } from '../access'
@@ -8,14 +8,16 @@ const formatOptions: ImageUploadFormatOptions = { format: 'webp', options: { nea
 export const Images: CollectionConfig = {
   slug: 'images',
   access: { create: authd, delete: authd, read: anyone, update: authd },
-  admin: { group: 'Assets', enableListViewSelectAPI: true },
-  fields: [{ name: 'alt', type: 'text' }],
-  hooks: { beforeChange: [revalidateCacheCollection] },
+  admin: { group: 'Assets', enableListViewSelectAPI: true, useAsTitle: 'alt', defaultColumns: ['alt', 'updatedAt'] },
+  fields: [{ name: 'alt', type: 'text', required: true }],
+  // afterChange (not beforeChange) so the cache is busted only after the write
+  // commits; afterDelete clears the tag when an image is removed.
+  hooks: { afterChange: [revalidateCacheCollectionAfterChange], afterDelete: [revalidateCacheOnDelete] },
   upload: {
     formatOptions,
     focalPoint: true,
     adminThumbnail: 'thumbnail',
-    mimeTypes: ['image/png', 'image/jpeg', 'image/jpg', 'image/webp', 'image/avif'],
+    mimeTypes: ['image/png', 'image/jpeg', 'image/webp', 'image/avif'],
     imageSizes: [
       { formatOptions, name: 'thumbnail', width: 300 },
       { formatOptions, name: 'square', width: 500, height: 500 },

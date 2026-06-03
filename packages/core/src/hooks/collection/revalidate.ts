@@ -1,4 +1,4 @@
-import type { CollectionAfterDeleteHook, CollectionBeforeChangeHook } from 'payload'
+import type { CollectionAfterChangeHook, CollectionAfterDeleteHook, CollectionBeforeChangeHook } from 'payload'
 
 import { revalidateTag } from '../../utilities/revalidateTag'
 
@@ -38,10 +38,35 @@ export const createRevalidateCache =
     })
   }
 
+/**
+ * Builds a `CollectionAfterChangeHook` that dispatches to a per-slug handler.
+ *
+ * Prefer this over {@link createRevalidateCache} (beforeChange) for plain
+ * collections: revalidating in `beforeChange` busts the cache before the write
+ * commits, so a concurrent read can re-cache the OLD document. `afterChange`
+ * runs after commit, where `doc` carries the persisted state.
+ */
+export const createRevalidateCacheAfterChange =
+  (handlers: CollectionRevalidationHandlers): CollectionAfterChangeHook =>
+  async ({ collection, doc, previousDoc, context }) => {
+    if (context.isSeed) return doc
+    const handler = handlers[collection.slug]
+    if (!handler) return doc
+    await handler({
+      data: doc,
+      originalDoc: previousDoc ?? doc,
+      draft: doc?._status === 'draft',
+      active: Boolean(doc?.active),
+    })
+    return doc
+  }
+
 /** Builds a `CollectionAfterDeleteHook` that dispatches to a per-slug handler. */
 export const createRevalidateCacheOnDelete =
   (handlers: CollectionDeleteRevalidationHandlers): CollectionAfterDeleteHook =>
-  async ({ collection, doc }) => {
+  async ({ collection, doc, context }) => {
+    // Symmetry with the beforeChange dispatcher: don't revalidate while seeding.
+    if (context.isSeed) return
     const handler = handlers[collection.slug]
     if (!handler) return
     await handler({ doc })
@@ -84,9 +109,12 @@ export const DEFAULT_DELETE_REVALIDATION_HANDLERS: CollectionDeleteRevalidationH
   shortcutSet: async ({ doc }) => {
     if (doc?.active) await revalidateTag('shortcutSet', false)
   },
-  pages: ({ doc }) => {
-    revalidateTag('pages', false)
-    revalidateTag('page', doc?.href, false)
+  images: async ({ doc }) => {
+    await revalidateTag('image', doc?.id)
+  },
+  pages: async ({ doc }) => {
+    await revalidateTag('pages', false)
+    await revalidateTag('page', doc?.href, false)
   },
 }
 
@@ -95,6 +123,13 @@ export const DEFAULT_DELETE_REVALIDATION_HANDLERS: CollectionDeleteRevalidationH
  * `createRevalidateCache(handlers)` to bind a custom slug → handler map.
  */
 export const revalidateCache: CollectionBeforeChangeHook = createRevalidateCache(DEFAULT_REVALIDATION_HANDLERS)
+
+/**
+ * Unified `afterChange` hook bound to `DEFAULT_REVALIDATION_HANDLERS`. Prefer
+ * this over {@link revalidateCache} for plain collections (see
+ * {@link createRevalidateCacheAfterChange}).
+ */
+export const revalidateCacheCollectionAfterChange: CollectionAfterChangeHook = createRevalidateCacheAfterChange(DEFAULT_REVALIDATION_HANDLERS)
 
 /**
  * Unified `afterDelete` hook bound to `DEFAULT_DELETE_REVALIDATION_HANDLERS`.

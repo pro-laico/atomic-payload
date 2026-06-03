@@ -3,7 +3,9 @@ import NextLink from 'next/link'
 
 import type { APFFieldComponentType } from '../../types'
 
-const APFieldLabelServer: APFFieldComponentType = (props) => {
+// Runs inside the `'use client'` field.tsx subtree (it inherits that boundary),
+// so it executes client-side despite living in core — named accordingly.
+const APFieldLabel: APFFieldComponentType = (props) => {
   const { path, field, docLink } = props
   return (
     <div className="doc-link-label">
@@ -20,4 +22,4 @@ const APFieldLabelServer: APFFieldComponentType = (props) => {
   )
 }
 
-export default APFieldLabelServer
+export default APFieldLabel
