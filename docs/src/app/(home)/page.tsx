@@ -16,52 +16,52 @@ const features: { title: string; description: string; href: string }[] = [
   {
     title: 'Atomic Blocks',
     description: 'Build entire components from recursive child blocks — then copy, paste and duplicate to reuse them with ease.',
-    href: '/docs/plugins/atomic',
+    href: '/docs/features/atomic-blocks',
   },
   {
     title: 'Tailwind in the Admin',
     description: 'Write Tailwind classes directly in the Payload dashboard for custom-styled blocks anywhere you need them.',
-    href: '/docs/concepts/styles',
+    href: '/docs/features/styles',
   },
   {
     title: 'Design Sets & Tokens',
     description: 'Reusable colors, sizes, animations and more. Swap a whole design set to restyle the entire site instantly.',
-    href: '/docs/concepts/design-sets',
+    href: '/docs/features/styles',
   },
   {
     title: 'Actions',
     description: 'Add interactivity to any block — open dialogs and popovers, toggle dark mode, submit forms, and more.',
-    href: '/docs/concepts/actions',
+    href: '/docs/features/actions',
   },
   {
     title: 'Custom Fonts',
     description: 'next/font local fonts across sans, serif, mono and display roles, all managed from the CMS.',
-    href: '/docs/plugins/fonts',
+    href: '/docs/features/fonts',
   },
   {
     title: 'UnoCSS Shortcuts',
     description: 'Group styles into reusable shortcuts powered by UnoCSS, shared across your whole site.',
-    href: '/docs/concepts/styles',
+    href: '/docs/features/styles',
   },
   {
     title: 'Icon Library',
     description: 'Upload and optimize custom SVG icons, organize them into icon sets, and render them anywhere.',
-    href: '/docs/plugins/icons',
+    href: '/docs/features/icons',
   },
   {
     title: 'Forms with SVR',
     description: 'Fully custom forms with per-field Sanitation, Validation and Rate Limiting blocks.',
-    href: '/docs/plugins/atomic',
+    href: '/docs/features/forms',
   },
   {
     title: 'Tracking',
     description: 'First-class integrations for Vercel Analytics, Google Tag Manager and PostHog.',
-    href: '/docs/plugins/tracking',
+    href: '/docs/features/tracking',
   },
   {
     title: 'Video & Images',
     description: 'Optimized image uploads plus Mux video integration for upload and streaming.',
-    href: '/docs/plugins/images',
+    href: '/docs/features/media',
   },
 ];
 

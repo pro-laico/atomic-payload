@@ -1,0 +1,18 @@
+{
+  "title": "Plugins",
+  "pages": [
+    "index",
+    "core",
+    "atomic",
+    "styles",
+    "site",
+    "icons",
+    "images",
+    "fonts",
+    "mux-video",
+    "tracking",
+    "richtext",
+    "seed",
+    "zap"
+  ]
+}

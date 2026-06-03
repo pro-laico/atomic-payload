@@ -1,0 +1,9 @@
+{
+  "title": "Getting Started",
+  "pages": [
+    "quick-start",
+    "existing-project",
+    "environment",
+    "project-structure"
+  ]
+}

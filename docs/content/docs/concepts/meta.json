@@ -1,0 +1,10 @@
+{
+  "title": "Core Concepts",
+  "pages": [
+    "architecture",
+    "kernel",
+    "type-augmentation",
+    "caching",
+    "slugs"
+  ]
+}
