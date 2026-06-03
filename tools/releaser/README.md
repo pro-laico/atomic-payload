@@ -15,7 +15,7 @@ When you run it, the script:
 
 Internal `workspace:*` dependencies are left untouched — pnpm rewrites them to the concrete version automatically at publish time.
 
-It does **not** publish to npm (see [What it doesn't do](#what-it-doesnt-do)).
+Publishing to npm is a separate command — see [Publishing](#publishing).
 
 ## Usage
 
@@ -55,17 +55,35 @@ git push --follow-tags
 | `--yes` | `false` | Skip the interactive confirmation prompt. |
 | `--skip-git` | `false` | Stamp the version files but do not commit or tag. |
 
+## Publishing
+
+`release` owns the version and tag; `publish-packages` builds and publishes. They're separate so versioning happens locally while publishing happens in CI (on the pushed tag).
+
+```bash
+pnpm publish-packages --dry-run          # build + pack every package, no upload
+pnpm publish-packages                     # publish at dist-tag "latest" (prompts)
+pnpm publish-packages --tag beta
+pnpm publish-packages --provenance --yes  # CI: signed provenance, no prompt
+```
+
+It publishes every **non-private `packages/*`** (templates, examples, and `tools/*` are never published). Each `pnpm publish` runs the package's `prepack` (swc/tsc build; the CLI also bundles its scaffolds), and pnpm rewrites `workspace:*` deps to the concrete shared version. Versions already on the registry are skipped, so re-running after a partial failure is safe.
+
+| Flag | Default | Effect |
+| --- | --- | --- |
+| `--tag <name>` | `latest` | npm dist-tag to publish under. |
+| `--provenance` | `false` | Emit npm provenance (requires CI OIDC — fails locally). |
+| `--dry-run` | `false` | Build + pack every package without uploading. |
+| `--yes` | `false` | Skip the confirmation prompt. |
+
 ## Typical workflow
 
 ```bash
 pnpm release --dry-run                                # eyeball the version table
 pnpm --filter @tools/releaser release --bump minor    # confirm -> stamps + commits + tags
-git push --follow-tags
+git push --follow-tags                                # the v* tag triggers the publish CI
 ```
 
-## What it doesn't do
-
-It **does not publish to npm**. The releaser owns the version number and the git tag only. Publishing is a separate step (each package builds its `dist` via `prepack`, then `pnpm publish -r`) that has not been wired up yet.
+CI (`.github/workflows/release.yml`) then runs `pnpm publish-packages --yes --provenance` on the pushed tag. For local publishing, run `pnpm publish-packages` yourself after `pnpm release`.
 
 ## How it works
 

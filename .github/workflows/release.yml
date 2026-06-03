@@ -1,0 +1,41 @@
+name: Publish packages
+
+# Publishes all @pro-laico/* packages to npm when a release tag (created by
+# `pnpm release`) is pushed: `git push --follow-tags`.
+#
+# Setup required once:
+#   - Add an npm automation token as the `NPM_TOKEN` repo secret.
+#   - Ensure the npm account/org can publish the `@pro-laico` scope.
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: read
+  id-token: write # required for npm provenance (OIDC)
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          registry-url: https://registry.npmjs.org
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Configure npm auth
+        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" >> .npmrc
+
+      - name: Publish to npm (with provenance)
+        run: pnpm publish-packages --yes --provenance --tag latest
+        env:
+          NPM_CONFIG_PROVENANCE: 'true'

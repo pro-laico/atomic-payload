@@ -10,8 +10,10 @@ export interface PackageDetails {
   name: string
   /** Current `version` field. */
   version: string
-  /** True when the package is not published (templates, etc.). */
+  /** True when the package is not published (templates, examples, etc.). */
   private: boolean
+  /** Absolute path to the package directory. */
+  dir: string
   /** Absolute path to the package.json. */
   pkgJsonPath: string
 }
@@ -31,19 +33,31 @@ export function findRepoRoot(start: string = process.cwd()): string {
 export const REPO_ROOT = findRepoRoot()
 export const ROOT_PACKAGE_JSON = join(REPO_ROOT, 'package.json')
 
-/** Read every releasable workspace package (packages/* + templates/*), sorted by name. */
+function readPackage(dir: string): PackageDetails | null {
+  const pkgJsonPath = join(dir, 'package.json')
+  if (!existsSync(pkgJsonPath)) return null
+  const json = JSON.parse(readFileSync(pkgJsonPath, 'utf8')) as { name?: string; version?: string; private?: boolean }
+  if (!json.name || !json.version) return null
+  return { name: json.name, version: json.version, private: Boolean(json.private), dir, pkgJsonPath }
+}
+
+function readGroup(group: string): PackageDetails[] {
+  const groupDir = join(REPO_ROOT, group)
+  if (!existsSync(groupDir)) return []
+  return readdirSync(groupDir)
+    .map((entry) => readPackage(join(groupDir, entry)))
+    .filter((p): p is PackageDetails => p !== null)
+}
+
+/** Every releasable workspace package (packages/* + templates/* + examples/*), sorted by name. */
 export function getReleasablePackages(): PackageDetails[] {
-  const out: PackageDetails[] = []
-  for (const group of RELEASE_GROUPS) {
-    const groupDir = join(REPO_ROOT, group)
-    if (!existsSync(groupDir)) continue
-    for (const entry of readdirSync(groupDir)) {
-      const pkgJsonPath = join(groupDir, entry, 'package.json')
-      if (!existsSync(pkgJsonPath)) continue
-      const json = JSON.parse(readFileSync(pkgJsonPath, 'utf8')) as { name?: string; version?: string; private?: boolean }
-      if (!json.name || !json.version) continue
-      out.push({ name: json.name, version: json.version, private: Boolean(json.private), pkgJsonPath })
-    }
-  }
-  return out.sort((a, b) => a.name.localeCompare(b.name))
+  return RELEASE_GROUPS.flatMap(readGroup).sort((a, b) => a.name.localeCompare(b.name))
+}
+
+/** Packages actually published to npm: non-private `packages/*` only. Templates,
+ *  examples, and tools are never published. Sorted by name. */
+export function getPublishablePackages(): PackageDetails[] {
+  return readGroup('packages')
+    .filter((p) => !p.private)
+    .sort((a, b) => a.name.localeCompare(b.name))
 }

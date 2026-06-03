@@ -1,11 +1,12 @@
 {
   "name": "@tools/releaser",
   "version": "0.0.0",
-  "description": "Internal monorepo release tooling (lockstep versioning). Never published — private workspace package.",
+  "description": "Internal monorepo release tooling (lockstep versioning + npm publish). Never published — private workspace package.",
   "private": true,
   "type": "module",
   "scripts": {
     "release": "tsx src/release.ts",
+    "publish-packages": "tsx src/publish.ts",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "devDependencies": {

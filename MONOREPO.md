@@ -100,13 +100,22 @@ All commands run from the monorepo root.
 | `pnpm generate:importmap`     | Regenerates Payload's admin importmap.                                                 |
 | `pnpm create`                 | Runs the `create-atomic-payload` CLI locally against the workspace.                    |
 
-### Publishing the CLI
+### Releasing & publishing
 
-| Command                                                      | What it does                                                                 |
-| ------------------------------------------------------------ | ---------------------------------------------------------------------------- |
-| `pnpm --filter @pro-laico/create-atomic-payload exec node scripts/bundle-scaffolds.js` | Bundles every scaffold (`templates/*` + `examples/*`, per `scaffolds.js`) into the CLI's `scaffolds/` and rewrites each `workspace:*` dep to a caret-pinned version read from `packages/<name>/package.json`. |
-| `pnpm --filter @pro-laico/create-atomic-payload pack`        | Triggers `prepack` (the above) then produces a tarball.                      |
-| `pnpm --filter @pro-laico/create-atomic-payload publish`     | Publish to npm. Run `pnpm typecheck` first.                                  |
+All `@pro-laico/*` packages share one version (Payload-style lockstep) and are published together. The flow:
+
+1. `pnpm release` — stamp the next version across the root + every `packages/*`, `templates/*`, `examples/*`, then commit and tag. See `tools/releaser/README.md` for flags (`--bump`, `--dry-run`, …).
+2. `git push --follow-tags` — pushing a `v*` tag triggers `.github/workflows/release.yml`, which builds and publishes with npm provenance.
+
+| Command                          | What it does                                                                                          |
+| -------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| `pnpm release`                   | Lockstep version bump + commit + tag (no publish). `--dry-run` to preview.                            |
+| `pnpm publish-packages`          | Build (`prepack`) + `pnpm publish` every non-private `packages/*` to npm. `--dry-run`, `--tag`, `--provenance`, `--yes`. Skips versions already on the registry. |
+| `pnpm publish-packages --dry-run`| Build + pack every publishable package without uploading — validates the whole publish.              |
+
+Each `pnpm publish` runs the package's `prepack` (swc/tsc build; the CLI also bundles its scaffolds) and pnpm rewrites `workspace:*` deps to the concrete shared version. Templates, examples, and `tools/*` are never published.
+
+One-time setup for CI publishing: add an npm automation token as the `NPM_TOKEN` repo secret, and ensure the npm account/org can publish the `@pro-laico` scope.
 
 ## Cross-package type augmentation
 

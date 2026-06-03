@@ -18,7 +18,8 @@
     "check:ci": "biome check .",
     "typecheck": "pnpm -r typecheck",
     "create": "pnpm --filter create-atomic-payload exec node bin/cli.js",
-    "release": "pnpm --filter @tools/releaser release"
+    "release": "pnpm --filter @tools/releaser release",
+    "publish-packages": "pnpm --filter @tools/releaser publish-packages"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.2.0",
