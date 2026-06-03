@@ -1,0 +1,27 @@
+# @pro-laico/fonts — Planned Features & Deferred Work
+
+Forward-looking backlog distilled from `AUDIT.md`. These items are intentionally **not** done today — each is publish-only or depends on the consumer's generated types. The corresponding `AUDIT.md` checkbox stays `[ ]` with an inline annotation.
+
+## CLI type safety
+
+### Replace `PayloadSDK<any>` with the consumer's generated types
+- **What:** The download CLI uses `PayloadSDK<any>`, which untypes every `sdk.find`/`sdk.findGlobal` response and forces the cast-heavy code below (e.g. `(user as { token: string }).token`).
+- **Why deferred:** The CLI talks to an arbitrary consumer's Payload instance, whose generated types this package can't import. Proper fix needs the consumer to supply their generated types (or a narrowing pass). The `token` cast is downstream of the same `any` — login has already succeeded, so `token` is present at runtime.
+- **Source:** `src/scripts/downloadFonts.ts:70,182` · AUDIT.md → Medium.
+
+## External-publish readiness
+
+### Point `main`/`types`/`exports` at `dist`
+- **What:** For an external npm consumer, change the `.`/`./schema` `default` conditions (and `main`/`types`) from `src/*.ts` to their `dist/` equivalents. The `bin` and `./scripts/downloadFonts` already point at `dist`.
+- **Why deferred:** Intentional source-only consumption today (the standard `@pro-laico/*` `transpilePackages` pattern). Only the genuinely-compiled surfaces (the `bin` and the CLI script) point at `dist`.
+- **Source:** `package.json:10-21` · AUDIT.md → Critical #2 / High (annotated intentional).
+
+### `moduleResolution` for the published CLI
+- **What:** Set `moduleResolution: "node16"`/`"nodenext"` in `tsconfig.build.json` so the `tsc`-compiled `dist/` doesn't emit bare specifiers Node's ESM resolver rejects.
+- **Why deferred:** Changing it for just this package risks diverging from the monorepo's bundler-resolution baseline and surfacing extensionless-import errors across shared types. Only matters for external ESM consumers of the built CLI.
+- **Source:** `tsconfig.build.json` · AUDIT.md → Medium.
+
+## Notes / intentional-for-now
+
+- **`Font` collection `authd` access** — fonts are licensed binaries, so authenticated-only read/write is appropriate; the shared `authd` now carries a JSDoc on tightening via `fontOverride.access` / `global.access`. The package ships no role model. (AUDIT.md → Medium.)
+- **Schema stubs fall back to `Record<string, any>`** — intentional so the package compiles without the consumer's generated types; augmenting core's `PayloadAugment` removes the casts. Pairs with the `PayloadSDK<any>` item. (AUDIT.md → Low.)
