@@ -3,7 +3,7 @@ title: "@pro-laico/zap"
 description: "Zod with Atomic Payload extensions — a registry-aware schema layer shared across every @pro-laico/* package and the starter template."
 ---
 
-`zap` is the schema vocabulary for Atomic Payload: it re-exports Zod and bolts on a tiny class (`z.ap`) that lets every package register its own Zod schemas into a single global registry keyed by string ID.
+`@pro-laico/zap` is the shared schema layer that keeps Atomic Payload type-safe. Built on [Zod](https://zod.dev/), it lets each plugin describe its data once and have those shapes flow through to your generated Payload types. Like `core`, it's mostly behind-the-scenes plumbing — you'll rarely reach for it directly.
 
 ## Installation
 

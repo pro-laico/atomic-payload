@@ -1,11 +1,13 @@
 ---
 title: "Introduction"
-description: "A website builder on Payload CMS with a hard separation between front-end and backend — build entire sites in the admin from composable @pro-laico/* plugins."
+description: "A suite of composable @pro-laico/* plugins for Payload CMS — Tailwind styling in the admin, atomic blocks, media, icons, fonts, and more. Several work standalone in any Payload + Next.js project."
 ---
 
-**Atomic Payload** is a website builder built on [Payload CMS](https://payloadcms.com/) that draws a hard line between front-end development and the backend. Editors build their entire website directly in Payload's admin dashboard — without ever having to touch real code. That separation makes it easy to enforce best practices and achieve great performance out of the box.
+**Atomic Payload** is a collection of composable [Payload CMS](https://payloadcms.com/) plugins for building Next.js websites. It started life as a single website builder, but the project has since been split into independent `@pro-laico/*` packages — and several of them work as standalone plugins you can drop into any Payload project.
 
-The building blocks come from a family of composable `@pro-laico/*` plugins: Tailwind styles written in the admin, recursive atomic blocks with copy-paste-duplicate, UnoCSS shortcuts, design tokens and swappable design sets, interactive actions, and custom forms with sanitation, validation, and rate limiting — plus images, fonts, icons, Mux video, and tracking.
+The building blocks come from that plugin family: Tailwind styles written in the admin, recursive atomic blocks with copy-paste-duplicate, UnoCSS shortcuts, design tokens and swappable design sets, interactive actions, and custom forms with sanitation, validation, and rate limiting — plus images, fonts, icons, Mux video, and tracking. Add the ones you need on top of the **`@pro-laico/core`** kernel.
+
+A full starter template composes every plugin into a visual, no-code website builder — editors assemble entire pages directly in the admin, and the sites it produces have excellent performance out of the box. It's the fastest way to see what the plugins can do together, though in your own project you'll typically reach for just the individual plugins you need.
 
 <Callout type="info">
   Atomic Payload is not affiliated with Payload CMS in any capacity.
@@ -13,7 +15,7 @@ The building blocks come from a family of composable `@pro-laico/*` plugins: Tai
 
 ## How it's built
 
-Every feature ships as an independently-installable Payload plugin (`sitePlugin`, `stylesPlugin`, `iconsPlugin`, `fontsPlugin`, `trackingPlugin`, and more), all sitting on top of the **`@pro-laico/core`** kernel. Core provides the shared type machinery — the single `PayloadAugment` interface plus the `Get<>` and `ExtractOrDefault` helpers — so each package defines its schema as stubs that resolve to your project's concrete shapes once you generate types. The whole thing is distributed both as a full starter template (Payload + Next.js + Tailwind that uses every plugin) and as the individual plugins you can add to an existing project one at a time.
+The packages fall into three groups: the **`@pro-laico/core`** foundation, the **standalone** plugins (styles, icons, fonts, tracking) usable on their own, and the **tools** (atomic, site, images, mux-video, richtext, seed, zap) that the standalones and the template build on. Every package defines its schema as stubs against a single `PayloadAugment` interface in core — resolved through the `Get<>` and `ExtractOrDefault` helpers — so a plugin's types snap to your project's concrete shapes once you generate types. See the [plugins reference](/docs/plugins) for the full list.
 
 ## How these docs are organized
 
@@ -21,5 +23,5 @@ Every feature ships as an independently-installable Payload plugin (`sitePlugin`
   <Card title="Getting Started" href="/docs/getting-started/quick-start" description="Scaffold a new project or add Atomic Payload to an existing one." />
   <Card title="Core Concepts" href="/docs/concepts/architecture" description="The kernel, cross-package type augmentation, and the front-end / backend split." />
   <Card title="Features" href="/docs/features/atomic-blocks" description="Atomic blocks, styles, design sets, actions, forms, and more." />
-  <Card title="Plugins" href="/docs/plugins" description="Reference for each independently-installable @pro-laico/* plugin." />
+  <Card title="Plugins" href="/docs/plugins" description="Reference for every @pro-laico/* package." />
 </Cards>

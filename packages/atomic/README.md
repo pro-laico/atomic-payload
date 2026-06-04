@@ -6,6 +6,35 @@ The runtime that turns Payload content into a working website — action blocks,
 - [Source code](https://github.com/pro-laico/atomic-payload/tree/main/packages/atomic)
 - [Documentation source](https://github.com/pro-laico/atomic-payload/tree/main/docs/content/docs/plugins/atomic.mdx)
 
+## Features
+
+### Recursive Structure + Copy Paste Duplicate
+
+Build entire custom components using Atomic Child Blocks. Combined with Payload's CPD functionality, you can reuse components with ease.
+
+![duplicate](https://github.com/user-attachments/assets/f9a6580b-ab82-4e7b-8815-9fbed20e576b)
+
+> [!NOTE]
+> Once Payload CMS implements Sanity Style CPD, you will be able to reuse components across projects.
+
+### Actions
+
+Actions create interactivity and reactivity for your application for all atomic blocks. Including functionality such as opening/closing dialogs/popovers, toggling dark mode, converting stateful values to data attributes, or just submitting a form.
+
+![actions](https://github.com/user-attachments/assets/109a6f47-3f35-4a3d-af7f-f340bfdfb23d)
+
+> [!NOTE]
+> Actions utilize a block structure so you can extend them by adding a new action block.
+
+### Custom Forms With SVR
+
+All of the above functionality meshes with the additional Sanitation, Validation and Rate Limiting for forms and their inputs. Allowing you to build fully customizable forms.
+
+![forms](https://github.com/user-attachments/assets/61a4fd29-0d0b-40ab-a2f0-1cfa698b5997)
+
+> [!NOTE]
+> SVR's utilize a block structure so you can extend them by adding a new SVR block.
+
 ## Atomic Payload dependencies
 
 - `@pro-laico/core` — primitives the runtime builds on (read this first).
