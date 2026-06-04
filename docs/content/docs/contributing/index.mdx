@@ -49,7 +49,14 @@ All commands run from the monorepo root.
 ```bash
 # Install all workspace deps
 pnpm install
+
+# Freeze the committed (empty) font definition stubs — run once per clone
+git update-index --skip-worktree examples/fonts-only/src/app/definition.ts templates/atomic-payload/src/app/definition.ts
 ```
+
+<Callout type="info">
+  The font `src/app/definition.ts` files are committed **empty** so `pnpm dev` works in a fresh clone, then rewritten locally by `generate:fonts` / `setup:fonts`. They're tracked but frozen with `git update-index --skip-worktree`, so regenerating fonts never shows up as a diff. Because `skip-worktree` is a local, per-clone setting (it isn't stored in the repo), run the command above once after cloning. To intentionally edit a stub, unfreeze it with `git update-index --no-skip-worktree <path>`.
+</Callout>
 
 </Tab>
 
