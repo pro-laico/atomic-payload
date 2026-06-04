@@ -93,7 +93,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
 | Subpath | What's there |
 | --- | --- |
-| `@pro-laico/tracking` | The plugin, `Tracking` global, and tab fields |
+| `@pro-laico/tracking` | The plugin, `Tracking` global, and provider field groups |
 | `@pro-laico/tracking/provider` | The React providers (client) |
 | `@pro-laico/tracking/schema` | Payload `Tracking` type augmentation stub |
 
@@ -101,7 +101,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
 - **Globals** — `Tracking`
 - **Providers** (from `/provider`) — `TrackingProvider`, `PostHogProvider`, `GoogleTagManagerProvider`, `VercelProvider`
-- **Fields** — `postHogTabField()`, `googleTagManagerTabField()` — drop-in tabs for composing your own Tracking global
+- **Fields** — `postHogGroup()`, `googleTagManagerGroup()` — drop-in provider field groups for composing your own Tracking global
 
 <Callout type="info">
   The providers live behind `/provider` because they're client components that pull in the optional SDKs, which aren't safe to load on the server. Keeping them off the main barrel means the server-resolved entry (e.g. for `payload generate:importmap`) never reaches them.

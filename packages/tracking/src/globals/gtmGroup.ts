@@ -1,9 +1,11 @@
-import type { TabAsField } from 'payload'
+import type { Field } from 'payload'
 
 import { requiredWhenEnabled } from './validators'
 
-export const googleTagManagerTabField = (): TabAsField => ({
-  type: 'tab',
+/** Google Tag Manager settings as an unnamed (presentational) group — its fields
+ *  sit at the `Tracking` root, shown only when `googleTagManagerEnabled` is on. */
+export const googleTagManagerGroup = (): Field => ({
+  type: 'group',
   label: 'Google Tag Manager',
   admin: { condition: (_, sd) => Boolean(sd?.googleTagManagerEnabled) },
   fields: [

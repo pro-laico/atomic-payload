@@ -14,6 +14,6 @@ Analytics and tag-manager integration for Atomic Payload: a Tracking global (Pos
 
 | Import | What's there |
 | --- | --- |
-| `@pro-laico/tracking` | The barrel: `trackingPlugin`, the `Tracking` global, and tab fields. |
+| `@pro-laico/tracking` | The barrel: `trackingPlugin`, the `Tracking` global, and provider field groups. |
 | `@pro-laico/tracking/schema` | Payload `Tracking` type augmentation stub. |
 | `@pro-laico/tracking/provider` | All React providers: `PostHogProvider`, `GoogleTagManagerProvider`, `VercelProvider`, and the composite `TrackingProvider`. |

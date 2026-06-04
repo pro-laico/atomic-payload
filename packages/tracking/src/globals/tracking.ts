@@ -1,9 +1,9 @@
 import type { GlobalConfig } from 'payload'
 import { revalidateCacheGlobalAfterChange } from '@pro-laico/core'
 
-import { postHogTabField } from './postHogTab'
+import { postHogGroup } from './postHogGroup'
 import { authd } from '../access/authenticated'
-import { googleTagManagerTabField } from './gtmTab'
+import { googleTagManagerGroup } from './gtmGroup'
 
 export const Tracking: GlobalConfig = {
   slug: 'tracking',
@@ -11,15 +11,13 @@ export const Tracking: GlobalConfig = {
   admin: { group: 'Tracking' },
   access: { read: authd, update: authd },
   fields: [
-    {
-      type: 'row',
-      fields: [
-        { name: 'googleTagManagerEnabled', type: 'checkbox', defaultValue: false, admin: { position: 'sidebar' } },
-        { name: 'postHogEnabled', type: 'checkbox', defaultValue: false, admin: { position: 'sidebar' } },
-        { name: 'vercelAnalyticsEnabled', type: 'checkbox', defaultValue: false, admin: { position: 'sidebar' } },
-      ],
-    },
-    { type: 'tabs', tabs: [googleTagManagerTabField(), postHogTabField()] },
+    // Provider on/off toggles live in the sidebar; each provider's settings
+    // group (below) appears in the main area when its toggle is on.
+    { name: 'googleTagManagerEnabled', type: 'checkbox', defaultValue: false, admin: { position: 'sidebar' } },
+    { name: 'postHogEnabled', type: 'checkbox', defaultValue: false, admin: { position: 'sidebar' } },
+    { name: 'vercelAnalyticsEnabled', type: 'checkbox', defaultValue: false, admin: { position: 'sidebar' } },
+    googleTagManagerGroup(),
+    postHogGroup(),
   ],
   hooks: { afterChange: [revalidateCacheGlobalAfterChange] },
   versions: { drafts: { schedulePublish: true, validate: true }, max: 10 },

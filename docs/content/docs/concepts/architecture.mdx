@@ -37,7 +37,7 @@ export default buildConfig({
 
 Each plugin is a function you call with its options. Calling it returns a `(config) => config` transform that Payload applies to your config — registering that plugin's collections, globals, hooks, and fields. You compose plugins simply by listing them in the `plugins` array.
 
-Beyond the factory, each package also exports its **raw collections, hooks, fields, and components** as named imports, for advanced consumers who want to wire pieces in by hand rather than take the whole plugin. The `@pro-laico/tracking` package, for instance, exports `postHogTabField()` and `googleTagManagerTabField()` so you can compose your own `Tracking` global instead of registering the bundled one.
+Beyond the factory, each package also exports its **raw collections, hooks, fields, and components** as named imports, for advanced consumers who want to wire pieces in by hand rather than take the whole plugin. The `@pro-laico/tracking` package, for instance, exports `postHogGroup()` and `googleTagManagerGroup()` so you can compose your own `Tracking` global instead of registering the bundled one.
 
 A few conventions keep this consistent across every package:
 
