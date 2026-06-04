@@ -19,7 +19,7 @@ export async function generateStaticParams() {
     const returns = routes.filter((href) => href !== '/').map((href) => ({ slug: href.split('/').slice(1) }))
     return returns || []
   } catch {
-    // e.g. MongoDB unreachable during `next build` in CI â€” pages are still served dynamically
+    // e.g. MongoDB unreachable during `next build` in CI — pages are still served dynamically
     return []
   }
 }

@@ -18,7 +18,7 @@ import type {
   StoredAtomicForm,
 } from './payload-augment'
 
-// Schema stubs are intentionally NOT re-exported â€” see `/schema` subpath.
+// Schema stubs are intentionally NOT re-exported — see `/schema` subpath.
 
 // /////////////////////////////////////
 // Collection Types

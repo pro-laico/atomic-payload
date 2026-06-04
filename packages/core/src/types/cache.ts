@@ -1,5 +1,5 @@
 /**
- * Cache / revalidate-tag types â€” owned by `@pro-laico/core` because the
+ * Cache / revalidate-tag types — owned by `@pro-laico/core` because the
  * cache helpers (`getCached`, `revalidateTag`, etc.) live in this package.
  */
 

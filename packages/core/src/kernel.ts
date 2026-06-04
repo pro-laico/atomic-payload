@@ -1,7 +1,7 @@
 /**
  * Kernel of the per-package PayloadAugment system.
  *
- * Domain packages (ap-actions, ap-icons, ap-site, â€¦) define their own schema
+ * Domain packages (ap-actions, ap-icons, ap-site, …) define their own schema
  * stubs as `export type X = Get<'X', Default>` against the single `PayloadAugment`
  * interface declared here. Consumer projects fill the interface in once via
  * module augmentation, and every package's stubs resolve to the project's
@@ -29,7 +29,7 @@ export type ExtractOrDefault<U, V> = [Extract<U, V>] extends [never] ? U & V : E
 
 // /////////////////////////////////////
 // Default fallbacks. Picked so each domain package compiles cleanly without
-// augmentation â€” `Config['collections']` indexes by `string`, blocks have a
+// augmentation — `Config['collections']` indexes by `string`, blocks have a
 // `blockType` discriminator, runners/attributers have a `type` discriminator.
 // /////////////////////////////////////
 
@@ -44,7 +44,7 @@ export type DefaultBlock = { blockType: string; [k: string]: any }
 export type DefaultActionFn = { type: string; [k: string]: any }
 
 // /////////////////////////////////////
-// Root config stub â€” used everywhere, kept here to avoid a cycle through any
+// Root config stub — used everywhere, kept here to avoid a cycle through any
 // single domain package.
 // /////////////////////////////////////
 

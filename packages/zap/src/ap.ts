@@ -52,7 +52,7 @@ class AtomicPayloadZodClass {
     return undefined as any as AtomicRegistry[T]
   }
 
-  /** Converts the ZOD global registry to a JSON Schema. Idempotent â€” callers
+  /** Converts the ZOD global registry to a JSON Schema. Idempotent — callers
    *  (e.g. Payload's `typescript.schema`) may invoke this more than once per
    *  process, so we only register the aggregate `AtomicRegistry` entry if it
    *  isn't already present in the global registry. */

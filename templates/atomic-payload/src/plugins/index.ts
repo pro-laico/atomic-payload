@@ -25,20 +25,20 @@ import { vercelBlobStoragePluginConfig } from './vercelBlobStorage'
 // - The `designSet` and `shortcutSet` collections (each individually toggleable) plus the
 //   draftStorage / publishedStorage CSS globals are registered via `stylesPlugin` (see `./designSets`).
 // - `trackingPlugin` registers the `Tracking` global (GTM + PostHog tabs + analytics toggles)
-//   and the `posthogProperty` collection â€” both used to live in the template.
+//   and the `posthogProperty` collection — both used to live in the template.
 // - `seedPlugin` mounts `POST /api/seed` and the `BeforeDashboard` SEED DATABASE
-//   banner. The bundled atomic-payload seed runs by default; pass `seed: â€¦` to
+//   banner. The bundled atomic-payload seed runs by default; pass `seed: …` to
 //   override. Gate registration on `INCLUDE_SEED`.
 // - `sitePlugin` registers the Pages, Header, Footer collections plus the
-//   SiteMetaData and Settings globals â€” the opinionated "site shape" that used
+//   SiteMetaData and Settings globals — the opinionated "site shape" that used
 //   to live in the template. (The CSS storage globals now ship with `stylesPlugin`.)
 // - `imagesPlugin` registers the Images and Favicons collections.
 //   `blurDataUrlsPluginConfig` (see `./blurDataUrls`) is applied separately
 //   *after* it so blur fields land on the registered Images collection.
 // - `muxVideoPlugin` registers the MuxVideo extension collection and applies
 //   `@oversightstudio/mux-video`'s upstream plugin to it.
-// - `formsPlugin` prepends default submit-form blocks; pass `formBlocks: [â€¦]` for more.
-// - `actionsPlugin` prepends default action blocks; pass `actionBlocks: [â€¦]` for more.
+// - `formsPlugin` prepends default submit-form blocks; pass `formBlocks: […]` for more.
+// - `actionsPlugin` prepends default action blocks; pass `actionBlocks: […]` for more.
 // - `revalidationPlugin` attaches beforeChange / afterDelete revalidation hooks
 //   to the listed slugs.
 

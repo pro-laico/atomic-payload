@@ -66,7 +66,7 @@ export default async function NotFound() {
             color: '#6b7280', // text-gray-500
           }}
         >
-          The page youâ€™re looking for doesnâ€™t exist or has been moved.
+          The page you’re looking for doesn’t exist or has been moved.
         </p>
 
         <div style={{ marginTop: '2rem' }}>
