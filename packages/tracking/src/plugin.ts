@@ -1,26 +1,27 @@
 import type { Config, Plugin } from 'payload'
 
-import { Tracking } from './globals/tracking'
 import { PostHogProperty } from './collections/posthogProperty'
+import { Tracking } from './globals/tracking'
 
 export interface TrackingPluginOptions {
+  /** When false, the plugin is a no-op. Defaults to true. */
   enabled?: boolean
-  /** Whether to add the posthogProperty collection. Defaults to true. */
-  addPropertyCollection?: boolean
-  /** Whether to add the Tracking global. Defaults to true. */
-  addTrackingGlobal?: boolean
+  /** When true (default), registers the `posthogProperty` collection. */
+  includePropertyCollection?: boolean
+  /** When true (default), registers the `Tracking` global. */
+  includeTrackingGlobal?: boolean
 }
 
 export const trackingPlugin =
   (opts: TrackingPluginOptions = {}): Plugin =>
   (config: Config): Config => {
-    const { enabled = true, addPropertyCollection = true, addTrackingGlobal = true } = opts
+    const { enabled = true, includePropertyCollection = true, includeTrackingGlobal = true } = opts
     if (!enabled) return config
 
     return {
       ...config,
-      collections: [...(config.collections ?? []), ...(addPropertyCollection ? [PostHogProperty] : [])],
-      globals: [...(config.globals ?? []), ...(addTrackingGlobal ? [Tracking] : [])],
+      collections: [...(config.collections ?? []), ...(includePropertyCollection ? [PostHogProperty] : [])],
+      globals: [...(config.globals ?? []), ...(includeTrackingGlobal ? [Tracking] : [])],
     }
   }
 

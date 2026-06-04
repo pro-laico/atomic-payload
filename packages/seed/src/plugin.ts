@@ -1,10 +1,16 @@
 import type { Config, Plugin } from 'payload'
 
-import { BeforeDashboardPath } from './index'
-import { seed as defaultSeed } from './seed'
 import { createSeedEndpoint, type SeedAuthorize, type SeedFn } from './endpoint'
+import { seed as defaultSeed } from './seed'
 
 export type { SeedAuthorize, SeedFn } from './endpoint'
+
+/**
+ * Admin import-map path for the `BeforeDashboard` SEED DATABASE banner. Defined
+ * here (the plugin uses it at registration time) and re-exported from the
+ * package barrel.
+ */
+export const BeforeDashboardPath = '@pro-laico/seed/admin/beforeDashboard'
 
 export interface SeedPluginOptions {
   /** Function that performs the actual seeding. Defaults to the bundled atomic-payload seed. */
@@ -20,8 +26,8 @@ export interface SeedPluginOptions {
    * authenticated user.
    */
   authorize?: SeedAuthorize
-  /** Whether to register the `BeforeDashboard` admin banner. Defaults to true. */
-  registerBeforeDashboard?: boolean
+  /** When true (default), registers the `BeforeDashboard` admin banner. */
+  includeBeforeDashboard?: boolean
 }
 
 /**
@@ -30,15 +36,15 @@ export interface SeedPluginOptions {
  * banner with a SEED DATABASE button that hits the endpoint.
  */
 export const seedPlugin =
-  (opts: SeedPluginOptions): Plugin =>
+  (opts: SeedPluginOptions = {}): Plugin =>
   (config: Config): Config => {
-    const { seed = defaultSeed, enabled = true, endpointPath = '/seed', authorize, registerBeforeDashboard = true } = opts
+    const { seed = defaultSeed, enabled = true, endpointPath = '/seed', authorize, includeBeforeDashboard = true } = opts
     if (!enabled) return config
 
     const endpoints = [...(config.endpoints ?? []), createSeedEndpoint(seed, endpointPath, authorize)]
 
     const existingBefore = config.admin?.components?.beforeDashboard ?? []
-    const beforeDashboard = registerBeforeDashboard ? [...existingBefore, BeforeDashboardPath] : existingBefore
+    const beforeDashboard = includeBeforeDashboard ? [...existingBefore, BeforeDashboardPath] : existingBefore
 
     return {
       ...config,

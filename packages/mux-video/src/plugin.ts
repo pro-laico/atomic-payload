@@ -1,11 +1,12 @@
-import { mergeHooks } from '@pro-laico/core'
+import type { CollectionConfig, Config, Plugin } from 'payload'
+
+import { muxVideoPlugin as upstreamMuxVideoPlugin } from '@oversightstudio/mux-video'
+import { mergeCollection } from '@pro-laico/core'
 
 import { MuxVideo } from './collections/muxVideo'
 
-import type { CollectionConfig, Config, Plugin } from 'payload'
-import { muxVideoPlugin as upstreamMuxVideoPlugin } from '@oversightstudio/mux-video'
-
-export interface AtomicMuxVideoOptions {
+export interface MuxVideoPluginOptions {
+  /** When false, the plugin is a no-op. Defaults to true. */
   enabled?: boolean
   /** When true (default), registers the `mux-video` extension collection that the
    * upstream plugin's `extendCollection: 'mux-video'` attaches its fields to.
@@ -17,19 +18,19 @@ export interface AtomicMuxVideoOptions {
    * `hooks` are merged per phase — so a partial override can't silently drop the
    * collection's access rules or other fields.
    */
-  collectionOverride?: Partial<CollectionConfig>
+  collectionOptions?: Partial<CollectionConfig>
   adminThumbnail?: 'image' | 'gif' | 'none'
   uploadSettings?: { cors_origin: string }
   initSettings?: { tokenId: string; tokenSecret: string; webhookSecret: string }
 }
 
 export const muxVideoPlugin =
-  (opts: AtomicMuxVideoOptions = {}): Plugin =>
+  (opts: MuxVideoPluginOptions = {}): Plugin =>
   (config: Config): Config => {
     const {
       enabled = true,
       includeCollection = true,
-      collectionOverride,
+      collectionOptions,
       adminThumbnail = 'image',
       uploadSettings = { cors_origin: process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000' },
       initSettings = {
@@ -46,17 +47,7 @@ export const muxVideoPlugin =
       )
     }
 
-    const collection: CollectionConfig = collectionOverride
-      ? {
-          ...MuxVideo,
-          ...collectionOverride,
-          // Deep-merge nested keys a top-level spread would otherwise replace.
-          access: { ...MuxVideo.access, ...collectionOverride.access },
-          admin: { ...MuxVideo.admin, ...collectionOverride.admin },
-          fields: [...MuxVideo.fields, ...(collectionOverride.fields ?? [])],
-          hooks: collectionOverride.hooks ? mergeHooks(MuxVideo.hooks ?? {}, collectionOverride.hooks) : MuxVideo.hooks,
-        }
-      : MuxVideo
+    const collection: CollectionConfig = mergeCollection(MuxVideo, collectionOptions)
     const next: Config = includeCollection ? { ...config, collections: [...(config.collections ?? []), collection] } : config
 
     const upstream = upstreamMuxVideoPlugin({

@@ -2,7 +2,6 @@ import { authd } from '@/access/authenticated'
 import { formBuilderPlugin } from '@payloadcms/plugin-form-builder'
 import { revalidateCacheCollection as revalidateCache } from '@pro-laico/core'
 
-
 function insertFieldAtPosition<T>(fields: T[], field: T, position: number): T[] {
   return [...fields.slice(0, position), field, ...fields.slice(position)]
 }

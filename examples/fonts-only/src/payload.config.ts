@@ -1,12 +1,12 @@
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-import { FONT_STATIC_DIR } from '@/lib/fontDir'
-import { Users } from '@/collections/users'
-
+import { sqliteAdapter } from '@payloadcms/db-sqlite'
 import { buildConfig } from 'payload'
 import { fontsPlugin } from '@pro-laico/fonts'
-import { sqliteAdapter } from '@payloadcms/db-sqlite'
+
+import { Users } from '@/collections/users'
+import { FONT_STATIC_DIR } from '@/lib/fontDir'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -20,14 +20,14 @@ export default buildConfig({
   graphQL: { disable: true },
   secret: process.env.PAYLOAD_SECRET || '',
   // The Font upload collection + the standalone `fontSet` global (the active
-  // sans/serif/mono/display selection — the analog of an iconSet). `fontOverride`
+  // sans/serif/mono/display selection — the analog of an iconSet). `fontOptions`
   // keeps the package's default (auth-gated) access and pins a known `staticDir`
   // so the frontend can read the uploaded bytes back. No cache hooks are needed —
   // the home route is `force-dynamic` and reads the global fresh each render.
   plugins: [
     fontsPlugin({
-      global: true,
-      fontOverride: {
+      includeFontSet: true,
+      fontOptions: {
         upload: { mimeTypes: ['font/ttf', 'font/woff', 'font/woff2', 'font/otf'], staticDir: FONT_STATIC_DIR },
       },
     }),

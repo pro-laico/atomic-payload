@@ -59,7 +59,7 @@ import { fontsPlugin } from '@pro-laico/fonts'
 export default buildConfig({ plugins: [fontsPlugin()] })
 
 // Standalone — register the `fontSet` global to pick the active fonts:
-export default buildConfig({ plugins: [fontsPlugin({ global: true })] })
+export default buildConfig({ plugins: [fontsPlugin({ includeFontSet: true })] })
 ```
 
 ## Options
@@ -69,8 +69,9 @@ export default buildConfig({ plugins: [fontsPlugin({ global: true })] })
 <TypeTable
   type={{
     enabled: { type: 'boolean', default: 'true', description: 'Set false to no-op the plugin.' },
-    fontOverride: { type: 'Partial<CollectionConfig>', description: 'Deep-merged onto the Font collection — upload, access, and hooks merge onto the base (e.g. upload.staticDir keeps the base mimeTypes); fields replaces wholesale.' },
-    global: { type: 'boolean | Partial<GlobalConfig>', default: 'false', description: 'true registers the standalone fontSet global; pass a partial GlobalConfig to override. fields are appended to the base font slots and access is deep-merged; other top-level keys replace.' },
+    fontOptions: { type: 'Partial<CollectionConfig>', description: 'Deep-merged onto the Font collection — upload, access, and hooks merge onto the base (e.g. upload.staticDir keeps the base mimeTypes) and fields are appended.' },
+    includeFontSet: { type: 'boolean', default: 'false', description: 'When true, registers the standalone fontSet global — the active sans/serif/mono/display selection.' },
+    fontSetOptions: { type: 'Partial<GlobalConfig>', description: 'Merged onto the fontSet global when includeFontSet is true — fields are appended to the base font slots and access is deep-merged; other top-level keys replace.' },
   }}
 />
 

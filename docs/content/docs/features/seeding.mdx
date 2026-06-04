@@ -54,7 +54,7 @@ import { seed } from '@/endpoints/seed'
 seedPlugin({ enabled: true, seed })
 ```
 
-The plugin also accepts `endpointPath` (default `/seed`, so the endpoint resolves to `/api/seed`), `registerBeforeDashboard` (default `true`, whether to inject the admin banner), and `authorize` — a predicate run after the auth check to further restrict who can seed. Since the seed wipes and recreates the whole database, pass a role test for `authorize` in multi-user / production apps rather than leaving it open to any authenticated user.
+The plugin also accepts `endpointPath` (default `/seed`, so the endpoint resolves to `/api/seed`), `includeBeforeDashboard` (default `true`, whether to inject the admin banner), and `authorize` — a predicate run after the auth check to further restrict who can seed. Since the seed wipes and recreates the whole database, pass a role test for `authorize` in multi-user / production apps rather than leaving it open to any authenticated user.
 
 Slug overrides are handled separately from the plugin options: the bundled `seed()` takes an optional second `slugConfig` argument (`seed(args, slugConfig)`) for remapping the collection and global slugs it writes to. See the seed plugin for the full option table, and [Slugs](/docs/concepts/slugs) for how the seeded globals and collections are addressed.
 

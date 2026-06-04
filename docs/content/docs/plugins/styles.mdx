@@ -55,7 +55,7 @@ export default buildConfig({
       // getCached: yourGetCached,              // attaches the standalone cssHook (CSS without @pro-laico/atomic)
       // cssHookOptions: { ... },               // forwarded to createCssHook when getCached is set
       // enabled: true,                         // false makes the whole plugin a no-op
-      // storageGlobals: true,                  // false skips the draft/published CSS storage globals
+      // includeStorageGlobals: true,           // false skips the draft/published CSS storage globals
       // registerTypescriptSchema: true,        // false if you already wire @pro-laico/zap's schema yourself
       designSet: {
         // false (or { enabled: false }) to omit the designSet collection entirely
@@ -85,7 +85,7 @@ Row-label and admin component paths default to template-provided `@/ui/...` stri
     enabled: { type: 'boolean', default: 'true', description: 'When false, the whole plugin is a no-op.' },
     getCached: { type: 'CssProcessorGetCached', description: 'Optional. Attaches the standalone cssHook, producing CSS without @pro-laico/atomic.' },
     cssHookOptions: { type: 'CssHookOptions', description: 'Optional. Forwarded to createCssHook when getCached is set (slug/global overrides).' },
-    storageGlobals: { type: 'boolean', default: 'true', description: 'When false, the plugin does not register the draft/published CSS storage globals.' },
+    includeStorageGlobals: { type: 'boolean', default: 'true', description: 'When false, the plugin does not register the draft/published CSS storage globals.' },
     registerTypescriptSchema: { type: 'boolean', default: 'true', description: "When true, appends @pro-laico/zap's toJSONSchemaExtensions to config.typescript.schema so generate:types resolves the designSet field $refs. Set false if you already wire the zap schema yourself." },
     designSet: { type: 'object | false', description: 'The designSet collection config. Pass false (or { enabled: false }) to omit the collection. Nested keys: enabled (boolean, default true), access, collection (shallow-merged per-collection settings), and fontField (a Payload Field for the Fonts tab, e.g. @pro-laico/fonts fontUploadField()).' },
     shortcutSet: { type: 'object | false', description: 'The shortcutSet collection config. Pass false (or { enabled: false }) to omit it. Nested keys: enabled (boolean, default true), access, collection (same as designSet), plus defaultShortcuts (read-only rows shown in admin).' },

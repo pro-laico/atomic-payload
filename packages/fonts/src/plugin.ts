@@ -1,63 +1,43 @@
+import type { CollectionConfig, Config, GlobalConfig, Plugin } from 'payload'
+
+import { mergeCollection, mergeGlobal } from '@pro-laico/core'
+
 import { Font } from './collections/font'
 import { FontSet } from './globals/fontSet'
 
-import { mergeHooks } from '@pro-laico/core'
-import type { CollectionConfig, Config, GlobalConfig, Plugin } from 'payload'
-
 export interface FontsPluginOptions {
+  /** When false, the plugin is a no-op. Defaults to true. */
   enabled?: boolean
   /**
    * Merged onto the `Font` collection. Top-level keys replace, but `upload`,
    * `access`, and `hooks` are deep-merged onto the base (so e.g.
    * `upload: { staticDir }` keeps the base `mimeTypes` whitelist and extra hooks
-   * are appended, not dropped). `fields` still replaces wholesale.
+   * are appended, not dropped), and `fields` are appended.
    */
-  fontOverride?: Partial<CollectionConfig>
+  fontOptions?: Partial<CollectionConfig>
   /**
    * Register the standalone `fontSet` global — the active font selection for
-   * projects that don't use `@pro-laico/styles`'s designSet. `true` registers
-   * the default global; pass a partial `GlobalConfig` to override. `fields` are
-   * APPENDED to the base font slots and `access` is deep-merged; other top-level
-   * keys replace. Defaults to `false` (the designSet's `font` group is the source).
+   * projects that don't use `@pro-laico/styles`'s designSet. Defaults to `false`
+   * (the designSet's `font` group is the source). Pair with {@link fontSetOptions}
+   * to extend the registered global.
    */
-  global?: boolean | Partial<GlobalConfig>
+  includeFontSet?: boolean
+  /**
+   * Merged onto the `fontSet` global when {@link includeFontSet} is true.
+   * `fields` are APPENDED to the base font slots and `access` is deep-merged;
+   * other top-level keys replace.
+   */
+  fontSetOptions?: Partial<GlobalConfig>
 }
 
 export const fontsPlugin =
   (opts: FontsPluginOptions = {}): Plugin =>
   (config: Config): Config => {
-    const { enabled = true, fontOverride, global } = opts
+    const { enabled = true, fontOptions, includeFontSet = false, fontSetOptions } = opts
     if (!enabled) return config
 
-    const fontCollection: CollectionConfig = fontOverride
-      ? {
-          ...Font,
-          ...fontOverride,
-          // Deep-merge the nested keys a top-level spread would otherwise clobber.
-          access: { ...Font.access, ...fontOverride.access },
-          upload:
-            fontOverride.upload && typeof fontOverride.upload === 'object' && typeof Font.upload === 'object'
-              ? { ...Font.upload, ...fontOverride.upload }
-              : (fontOverride.upload ?? Font.upload),
-          hooks: fontOverride.hooks ? mergeHooks(Font.hooks ?? {}, fontOverride.hooks) : Font.hooks,
-        }
-      : Font
-    const collections = [...(config.collections ?? []), fontCollection]
-
-    let globals = config.globals
-    if (global) {
-      const merged: GlobalConfig =
-        typeof global === 'object'
-          ? {
-              ...FontSet,
-              ...global,
-              // Append extra fields to the base font slots; deep-merge access.
-              fields: [...FontSet.fields, ...(global.fields ?? [])],
-              access: { ...FontSet.access, ...global.access },
-            }
-          : FontSet
-      globals = [...(config.globals ?? []), merged]
-    }
+    const collections = [...(config.collections ?? []), mergeCollection(Font, fontOptions)]
+    const globals = includeFontSet ? [...(config.globals ?? []), mergeGlobal(FontSet, fontSetOptions)] : config.globals
 
     return { ...config, collections, globals }
   }

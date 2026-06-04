@@ -84,8 +84,8 @@ const SiteMetaData = {
   type={{
     enabled: { type: 'boolean', default: 'true', description: 'When false, the plugin is a no-op.' },
     includeFavicons: { type: 'boolean', default: 'true', description: 'When true, registers the Favicons collection alongside Images.' },
-    imagesOverride: { type: 'Partial<CollectionConfig>', description: "Override for the Images collection. Top-level keys replace, but upload/access/admin are deep-merged and fields/hooks are merged — so a partial override can't silently drop the base imageSizes, mimeTypes, alt field, or access rules." },
-    faviconsOverride: { type: 'Partial<CollectionConfig>', description: 'Override for the Favicons collection (same deep-merge semantics as imagesOverride).' },
+    imagesOptions: { type: 'Partial<CollectionConfig>', description: "Override for the Images collection. Top-level keys replace, but upload/access/admin are deep-merged and fields/hooks are merged — so a partial override can't silently drop the base imageSizes, mimeTypes, alt field, or access rules." },
+    faviconsOptions: { type: 'Partial<CollectionConfig>', description: 'Override for the Favicons collection (same deep-merge semantics as imagesOptions).' },
   }}
 />
 

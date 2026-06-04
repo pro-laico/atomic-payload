@@ -46,7 +46,7 @@ The styles plugin registers the `designSet` and `shortcutSet` collections (each 
 - `enabled` — defaults to `true`; set `false` to make the whole plugin a no-op.
 - `getCached` — optional; attaches the standalone `cssHook`, producing CSS without `@pro-laico/atomic`.
 - `cssHookOptions` — optional; forwarded to `createCssHook` when `getCached` is set (slug/global overrides).
-- `storageGlobals` — defaults to `true`; set `false` to skip registering the draft/published CSS storage globals.
+- `includeStorageGlobals` — defaults to `true`; set `false` to skip registering the draft/published CSS storage globals.
 - `registerTypescriptSchema` — defaults to `true`; appends `@pro-laico/zap`'s schema so `generate:types` resolves the designSet field `$ref`s. Set `false` if you already wire the zap schema yourself.
 - `designSet` — pass `false` (or `{ enabled: false }`) to omit the collection; pass `access` / `collection` to shallow-merge per-collection settings, and `fontField` (a Payload Field) to populate the Fonts tab.
 - `shortcutSet` — same pattern as `designSet` (including the nested `enabled` toggle), and additionally accepts `defaultShortcuts` (read-only rows shown in the admin).

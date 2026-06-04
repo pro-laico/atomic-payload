@@ -1,12 +1,13 @@
 import type { Config, Plugin } from 'payload'
 
-import { Settings } from './globals/settings'
-import { SiteMetaData } from './globals/siteMetaData'
-import { Pages } from './collections/pages/collection'
 import { Footer } from './collections/footers/collection'
 import { Header } from './collections/headers/collection'
+import { Pages } from './collections/pages/collection'
+import { Settings } from './globals/settings'
+import { SiteMetaData } from './globals/siteMetaData'
 
-export type SitePluginOptions = {
+export interface SitePluginOptions {
+  /** When false, the plugin is a no-op. Defaults to true. */
   enabled?: boolean
 }
 
@@ -17,14 +18,16 @@ export type SitePluginOptions = {
  *  left to the template's plugin-composition layer so the package stays
  *  unopinionated about how those are configured. */
 export const sitePlugin =
-  (options: SitePluginOptions = {}): Plugin =>
+  (opts: SitePluginOptions = {}): Plugin =>
   (config: Config): Config => {
-    if (options.enabled === false) return config
+    const { enabled = true } = opts
+    if (!enabled) return config
 
-    config.collections = [...(config.collections ?? []), Pages, Header, Footer]
-    config.globals = [...(config.globals ?? []), Settings, SiteMetaData]
-
-    return config
+    return {
+      ...config,
+      collections: [...(config.collections ?? []), Pages, Header, Footer],
+      globals: [...(config.globals ?? []), Settings, SiteMetaData],
+    }
   }
 
 export default sitePlugin

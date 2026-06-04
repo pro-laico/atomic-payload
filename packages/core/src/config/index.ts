@@ -28,7 +28,11 @@ interface ConfigRegistry {
 
 function getRegistry(): ConfigRegistry {
   const scope = globalThis as unknown as Record<symbol, ConfigRegistry | undefined>
-  return (scope[REGISTRY_KEY] ??= {})
+  const existing = scope[REGISTRY_KEY]
+  if (existing) return existing
+  const created: ConfigRegistry = {}
+  scope[REGISTRY_KEY] = created
+  return created
 }
 
 /** Register the host project's Payload config (or its resolution promise).

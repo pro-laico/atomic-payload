@@ -65,7 +65,7 @@ export default buildConfig({ plugins: [muxVideoPlugin()] })
   type={{
     enabled: { type: 'boolean', default: 'true', description: 'No-op the plugin entirely.' },
     includeCollection: { type: 'boolean', default: 'true', description: 'Register the bundled mux-video extension collection. Disable if you supply your own with the same slug.' },
-    collectionOverride: { type: 'CollectionConfig', description: 'Override the bundled collection. Top-level keys replace, but access/admin are deep-merged, fields are appended, and hooks are merged per phase — so a partial override can\'t silently drop the collection\'s access rules or fields.' },
+    collectionOptions: { type: 'Partial<CollectionConfig>', description: 'Override the bundled collection. Top-level keys replace, but access/admin are deep-merged, fields are appended, and hooks are merged per phase — so a partial override can\'t silently drop the collection\'s access rules or fields.' },
     adminThumbnail: { type: "'image' | 'gif' | 'none'", default: "'image'", description: 'What to show in the admin list view.' },
     uploadSettings: { type: '{ cors_origin: string }', default: 'from NEXT_PUBLIC_SERVER_URL', description: 'Passed to upstream.' },
     initSettings: { type: '{ tokenId: string; tokenSecret: string; webhookSecret: string }', default: 'from env', description: 'Mux credentials.' },

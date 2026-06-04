@@ -83,7 +83,7 @@ The plugin wires a `POST /api/seed` endpoint that runs whatever `seed` function 
     seed: { type: 'SeedFn', default: 'bundled default', description: 'The function the endpoint calls.' },
     endpointPath: { type: 'string', default: '/seed', description: 'Path under /api (so the default resolves to /api/seed).' },
     authorize: { type: 'SeedAuthorize', default: 'allow any authenticated user', description: 'Predicate run after the auth check to further restrict who can seed. Receives the authenticated user, returns boolean | Promise<boolean>. The seed wipes and recreates the whole DB, so pass a role test in production (e.g. (user) => user.roles?.includes("admin")).' },
-    registerBeforeDashboard: { type: 'boolean', default: 'true', description: 'Whether to inject the admin banner.' },
+    includeBeforeDashboard: { type: 'boolean', default: 'true', description: 'Whether to inject the admin banner.' },
   }}
 />
 

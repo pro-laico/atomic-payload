@@ -83,8 +83,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 <TypeTable
   type={{
     enabled: { type: 'boolean', default: 'true', description: 'Set to false to no-op the plugin entirely.' },
-    addPropertyCollection: { type: 'boolean', default: 'true', description: 'Register the PostHogProperty collection.' },
-    addTrackingGlobal: { type: 'boolean', default: 'true', description: 'Register the Tracking global.' },
+    includePropertyCollection: { type: 'boolean', default: 'true', description: 'Register the PostHogProperty collection.' },
+    includeTrackingGlobal: { type: 'boolean', default: 'true', description: 'Register the Tracking global.' },
   }}
 />
 

@@ -102,7 +102,6 @@ Resolution happens server-side via `@pro-laico/core`'s cached `iconSet` + `icon`
     includeIconSet: { type: 'boolean', default: 'true', description: 'When `false`, only `Icon` is registered (the `IconSet` grouping collection is skipped).' },
     iconOptions: { type: 'IconCollectionOptions', description: 'Additive config for the `Icon` collection.' },
     iconSetOptions: { type: 'IconSetCollectionOptions', description: 'Additive config for the `IconSet` collection.' },
-    iconCollection: { type: 'Partial<CollectionConfig>', description: 'Deprecated. Legacy shallow-merge override of the entire `Icon` collection, applied after `iconOptions`. Touching `fields`/`hooks` here replaces the built-ins. Prefer `iconOptions.collection`.' },
   }}
 />
 

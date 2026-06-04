@@ -53,22 +53,6 @@ export interface IconsPluginOptions {
    * See {@link IconSetCollectionOptions} for the full surface.
    */
   iconSetOptions?: IconSetCollectionOptions
-  /**
-   * Legacy shallow-merge override of the entire `Icon` collection.
-   *
-   * @remarks
-   * Touching `fields` or `hooks` here REPLACES the built-ins
-   * (`formatSVGHook`, `revalidateCacheCollection`, `revalidateCacheOnDelete`)
-   * because a shallow merge clobbers nested arrays. Applied AFTER
-   * {@link iconOptions}, so it still wins when both are provided.
-   *
-   * @deprecated Prefer the additive options on {@link iconOptions}:
-   * {@link IconCollectionOptions.fields},
-   * {@link IconCollectionOptions.hooks},
-   * or {@link IconCollectionOptions.collection} for the same escape-hatch
-   * behavior scoped to a single key.
-   */
-  iconCollection?: Partial<CollectionConfig>
 }
 
 /**
@@ -113,12 +97,10 @@ export interface IconsPluginOptions {
 export const iconsPlugin =
   (opts: IconsPluginOptions = {}): Plugin =>
   (config: Config): Config => {
-    const { enabled = true, iconOptions, iconCollection, includeIconSet = true, iconSetOptions } = opts
+    const { enabled = true, iconOptions, includeIconSet = true, iconSetOptions } = opts
     if (!enabled) return config
 
-    const built = createIconCollection(iconOptions)
-    const icon: CollectionConfig = iconCollection ? { ...built, ...iconCollection } : built
-    const additions: CollectionConfig[] = [icon]
+    const additions: CollectionConfig[] = [createIconCollection(iconOptions)]
     if (includeIconSet) additions.push(createIconSetCollection(iconSetOptions))
 
     return { ...config, collections: [...(config.collections ?? []), ...additions] }

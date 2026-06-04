@@ -23,5 +23,5 @@ Forward-looking backlog distilled from `AUDIT.md`. These items are intentionally
 
 ## Notes / intentional-for-now
 
-- **`Font` collection `authd` access** — fonts are licensed binaries, so authenticated-only read/write is appropriate; the shared `authd` now carries a JSDoc on tightening via `fontOverride.access` / `global.access`. The package ships no role model. (AUDIT.md → Medium.)
+- **`Font` collection `authd` access** — fonts are licensed binaries, so authenticated-only read/write is appropriate; the shared `authd` now carries a JSDoc on tightening via `fontOptions.access` / `fontSetOptions.access`. The package ships no role model. (AUDIT.md → Medium.)
 - **Schema stubs fall back to `Record<string, any>`** — intentional so the package compiles without the consumer's generated types; augmenting core's `PayloadAugment` removes the casts. Pairs with the `PayloadSDK<any>` item. (AUDIT.md → Low.)

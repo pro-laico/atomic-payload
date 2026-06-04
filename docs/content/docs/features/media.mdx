@@ -67,9 +67,9 @@ const SiteMetaData = {
 }
 ```
 
-`imagesPlugin(options?)` accepts `enabled` (no-op the plugin), `includeFavicons` (register the bundled `Favicons` collection alongside `Images`, default `true`), `imagesOverride` (override the `Images` collection — top-level keys replace, but `upload`/`access`/`admin` are deep-merged and `fields`/`hooks` are merged, so a partial override can't silently drop the base `imageSizes`, `mimeTypes`, `alt` field, or access rules), and `faviconsOverride` (override the `Favicons` collection with the same deep-merge semantics).
+`imagesPlugin(options?)` accepts `enabled` (no-op the plugin), `includeFavicons` (register the bundled `Favicons` collection alongside `Images`, default `true`), `imagesOptions` (override the `Images` collection — top-level keys replace, but `upload`/`access`/`admin` are deep-merged and `fields`/`hooks` are merged, so a partial override can't silently drop the base `imageSizes`, `mimeTypes`, `alt` field, or access rules), and `faviconsOptions` (override the `Favicons` collection with the same deep-merge semantics).
 
-`muxVideoPlugin(options?)` accepts `enabled` (no-op the plugin), `includeCollection` (register the bundled `mux-video` extension collection; disable if you supply your own with the same slug), `collectionOverride` (override the bundled collection — top-level keys replace, but `access`/`admin` are deep-merged, `fields` are appended, and `hooks` are merged per phase), `adminThumbnail` (`'image' | 'gif' | 'none'`, default `'image'`), `uploadSettings`, and `initSettings`.
+`muxVideoPlugin(options?)` accepts `enabled` (no-op the plugin), `includeCollection` (register the bundled `mux-video` extension collection; disable if you supply your own with the same slug), `collectionOptions` (override the bundled collection — top-level keys replace, but `access`/`admin` are deep-merged, `fields` are appended, and `hooks` are merged per phase), `adminThumbnail` (`'image' | 'gif' | 'none'`, default `'image'`), `uploadSettings`, and `initSettings`.
 
 Mux credentials and the upload origin are picked up automatically from the environment:
 

@@ -121,8 +121,9 @@ export { generateLivePreviewPath } from './utilities/generatePreviewPath'
 export { getImageUrl } from './utilities/getImageURL'
 export { getClientSideURL, getServerSideURL } from './utilities/getURL'
 // /////////////////////////////////////
-// Hook composition
+// Hook + config composition
 // /////////////////////////////////////
+export { mergeCollection, mergeGlobal } from './utilities/mergeConfig'
 export { mergeHooks } from './utilities/mergeHooks'
 export { type NameKebabOptions, toKebabCase } from './utilities/toKebabCase'
 // /////////////////////////////////////

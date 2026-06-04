@@ -1,5 +1,6 @@
-import { mergeHooks } from '@pro-laico/core'
 import type { CollectionConfig, Config, Plugin } from 'payload'
+
+import { mergeCollection } from '@pro-laico/core'
 
 import { Favicons } from './collections/favicons'
 import { Images } from './collections/images'
@@ -15,27 +16,10 @@ export interface ImagesPluginOptions {
    * so a partial override can't silently drop the base `imageSizes`, `mimeTypes`,
    * `alt` field, or access rules.
    */
-  imagesOverride?: Partial<CollectionConfig>
-  /** Override for the Favicons collection (same deep-merge semantics as {@link imagesOverride}). */
-  faviconsOverride?: Partial<CollectionConfig>
+  imagesOptions?: Partial<CollectionConfig>
+  /** Override for the Favicons collection (same deep-merge semantics as {@link imagesOptions}). */
+  faviconsOptions?: Partial<CollectionConfig>
 }
-
-/** Merge an override onto a base collection without clobbering nested config. */
-const mergeCollection = (base: CollectionConfig, override?: Partial<CollectionConfig>): CollectionConfig =>
-  override
-    ? {
-        ...base,
-        ...override,
-        access: { ...base.access, ...override.access },
-        admin: { ...base.admin, ...override.admin },
-        fields: [...base.fields, ...(override.fields ?? [])],
-        upload:
-          override.upload && typeof override.upload === 'object' && typeof base.upload === 'object'
-            ? { ...base.upload, ...override.upload }
-            : (override.upload ?? base.upload),
-        hooks: override.hooks ? mergeHooks(base.hooks ?? {}, override.hooks) : base.hooks,
-      }
-    : base
 
 /**
  * Registers the bundled `Images` and `Favicons` upload collections.
@@ -58,11 +42,11 @@ const mergeCollection = (base: CollectionConfig, override?: Partial<CollectionCo
 export const imagesPlugin =
   (opts: ImagesPluginOptions = {}): Plugin =>
   (config: Config): Config => {
-    const { enabled = true, includeFavicons = true, imagesOverride, faviconsOverride } = opts
+    const { enabled = true, includeFavicons = true, imagesOptions, faviconsOptions } = opts
     if (!enabled) return config
 
-    const images = mergeCollection(Images, imagesOverride)
-    const favicons = mergeCollection(Favicons, faviconsOverride)
+    const images = mergeCollection(Images, imagesOptions)
+    const favicons = mergeCollection(Favicons, faviconsOptions)
 
     return { ...config, collections: [...(config.collections ?? []), images, ...(includeFavicons ? [favicons] : [])] }
   }

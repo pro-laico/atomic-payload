@@ -1,10 +1,10 @@
-import { toJSONSchemaExtensions } from '@pro-laico/zap'
-
 import type { CollectionBeforeChangeHook, Config, PayloadRequest, Plugin } from 'payload'
 
+import { toJSONSchemaExtensions } from '@pro-laico/zap'
+
+import type { CssProcessorGetCached } from './cssProcessor'
 import { baseStorage } from './globals/storage'
 import { type CssHookOptions, createCssHook } from './hooks/cssHook'
-import type { CssProcessorGetCached } from './cssProcessor'
 import { createDesignSetCollection, type DesignSetCollectionOptions } from './designSet/createCollection'
 import { createShortcutSetCollection, type ShortcutSetCollectionOptions } from './shortcutSet/createCollection'
 
@@ -24,7 +24,7 @@ export type StylesShortcutSetOptions = Partial<Omit<ShortcutSetCollectionOptions
   enabled?: boolean
 }
 
-export type StylesPluginOptions = {
+export interface StylesPluginOptions {
   /** Wired to both collections' `hooks.beforeChange` (typically the project `atomicHook`). */
   atomicHook?: CollectionBeforeChangeHook
   /** Same contract as the template `generateLivePreviewPath` helper. Shared by both collections. */
@@ -52,7 +52,7 @@ export type StylesPluginOptions = {
   /** Forwarded to `createCssHook` when `getCached` is set (slug/global overrides). */
   cssHookOptions?: CssHookOptions
   /** When false, the plugin does not register the draft/published CSS storage globals. Defaults to true. */
-  storageGlobals?: boolean
+  includeStorageGlobals?: boolean
   /**
    * When true (default), the plugin appends `@pro-laico/zap`'s
    * `toJSONSchemaExtensions` to `config.typescript.schema`, so `payload
@@ -87,7 +87,7 @@ export const stylesPlugin =
       shortcutSet: shortcutSetOpt,
       getCached,
       cssHookOptions,
-      storageGlobals = true,
+      includeStorageGlobals = true,
       registerTypescriptSchema = true,
     } = opts
     if (!enabled) return config
@@ -130,7 +130,7 @@ export const stylesPlugin =
       }
     }
 
-    const globals = storageGlobals ? [...(config.globals ?? []), baseStorage('draft'), baseStorage('published')] : config.globals
+    const globals = includeStorageGlobals ? [...(config.globals ?? []), baseStorage('draft'), baseStorage('published')] : config.globals
 
     // Inject the zap schema dumper so `generate:types` resolves the designSet
     // field `$ref`s without the consumer importing zap. The zap registry is

@@ -9,7 +9,7 @@ A minimal Atomic Payload template that exercises **`@pro-laico/fonts`** on its o
 
 The only `@pro-laico` dependencies are **`@pro-laico/fonts`** and **`@pro-laico/core`**, so you see the fonts plugin in isolation:
 
-- `fontsPlugin({ global: true })` registers the **`Font` upload collection** (slug `font`: `title` + `family` + the font file, woff/woff2/ttf/otf) **and** the **`fontSet` global** — the active `sans` / `serif` / `mono` / `display` selection (the font analog of an active icon set). The template pins a known `staticDir` so the bytes can be read back.
+- `fontsPlugin({ includeFontSet: true })` registers the **`Font` upload collection** (slug `font`: `title` + `family` + the font file, woff/woff2/ttf/otf) **and** the **`fontSet` global** — the active `sans` / `serif` / `mono` / `display` selection (the font analog of an active icon set). The template pins a known `staticDir` so the bytes can be read back.
 - `POST /api/seed` uploads four bundled open-source Google fonts (one per role) **and points the `fontSet` global at them**. It's auth-gated and idempotent by title, run from the admin dashboard.
 - **Two delivery paths, one page.** The layout serves each active role via a `--font-<role>` CSS variable, resolved one of two ways:
   - **Inline (default).** With no download, the layout reads the active font's bytes server-side (auth-gated, `overrideAccess`) and inlines them as `@font-face { src: url(data:…) }`. The browser gets inlined bytes — never a `/api/font/file/…` URL. Works in plain local dev with no extra setup.
@@ -103,7 +103,7 @@ The key files to read, from the template's layout:
 
 | File | What's there |
 | --- | --- |
-| `src/payload.config.ts` | `buildConfig` — `fontsPlugin({ global: true })` + `staticDir` |
+| `src/payload.config.ts` | `buildConfig` — `fontsPlugin({ includeFontSet: true })` + `staticDir` |
 | `src/lib/fontDir.ts` | `FONT_STATIC_DIR` + `fontFamilyName` (pure, no `@payload-config`) |
 | `src/lib/fonts.ts` | `getActiveFonts()` [fontSet meta] + `readFontDataUrl()` [inline bytes] |
 | `src/seed/sampleFonts.ts` | manifest mapping bundled files → `title` + role (`family`) |

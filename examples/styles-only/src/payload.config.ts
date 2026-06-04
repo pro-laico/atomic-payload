@@ -1,14 +1,13 @@
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-import { sqliteAdapter } from '@payloadcms/db-sqlite'
-
 import sharp from 'sharp'
-import { getServerSideURL, revalidateTag } from '@pro-laico/core'
-import { type CssProcessorGetCached, createCssHook, stylesPlugin } from '@pro-laico/styles'
-
 import { buildConfig } from 'payload'
 import type { CollectionAfterChangeHook, Config, Plugin, SharpDependency } from 'payload'
+import { sqliteAdapter } from '@payloadcms/db-sqlite'
+
+import { getServerSideURL, revalidateTag } from '@pro-laico/core'
+import { type CssProcessorGetCached, createCssHook, stylesPlugin } from '@pro-laico/styles'
 
 import { createPages } from '@/collections/pages'
 import { Users } from '@/collections/users'
@@ -82,7 +81,7 @@ export default buildConfig({
   secret: process.env.PAYLOAD_SECRET || '',
   // No `atomicHook` here — passing `getCached` attaches the standalone `cssHook`,
   // so this plugin processes CSS entirely on its own (no `@pro-laico/atomic`).
-  // `storageGlobals` (default true) registers the `draftStorage` /
+  // `includeStorageGlobals` (default true) registers the `draftStorage` /
   // `publishedStorage` globals the generated CSS is written to.
   plugins: [
     // Only `styles` + `core` are needed. We pass no `fontField`, so the

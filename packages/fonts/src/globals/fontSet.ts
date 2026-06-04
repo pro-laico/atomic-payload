@@ -14,7 +14,7 @@ export const FONT_SET_SLUG = 'fontSet'
  * The `atomic-fonts-download` CLI prefers the active design set's `font` group
  * and falls back to this global when no design set is found, so a fonts-only
  * project can still drive `next/font/local`. Register it with
- * `fontsPlugin({ global: true })`.
+ * `fontsPlugin({ includeFontSet: true })`.
  */
 export const createFontSetGlobal = ({ fontSlug = 'font' }: { fontSlug?: string } = {}): GlobalConfig => ({
   slug: FONT_SET_SLUG,
