@@ -30,7 +30,7 @@ This template intentionally drops two things that used to be required:
 <Tab value="pnpm">
 
 ```bash
-pnpm create @pro-laico/atomic-payload my-styles --template styles-only
+pnpm dlx @pro-laico/create-atomic-payload my-styles --template styles-only
 ```
 
 </Tab>
@@ -46,7 +46,7 @@ npx @pro-laico/create-atomic-payload my-styles --template styles-only
 <Tab value="yarn">
 
 ```bash
-yarn create @pro-laico/atomic-payload my-styles --template styles-only
+yarn dlx @pro-laico/create-atomic-payload my-styles --template styles-only
 ```
 
 </Tab>
@@ -98,7 +98,7 @@ page (blocks) ─save─▶ cssHook (beforeChange)
 
 ```
 src/
-  payload.config.ts                     # buildConfig — fonts + styles plugins, page cssHook, revalidation
+  payload.config.ts                     # buildConfig — styles plugin, page cssHook, revalidation
   collections/
     users.ts                            # auth collection (required by Payload)
     pages.ts                            # createPages(cssHook) — blocks + storedAtomicClasses + revalidation

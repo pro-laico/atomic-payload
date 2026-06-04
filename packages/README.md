@@ -1,10 +1,10 @@
 # Packages
 
-This directory contains the publishable packages that make up Atomic Payload. Each one is its own scope of responsibility and has its own README — start there if you're new to a package. This file is the map.
+This directory contains the publishable packages that make up Atomic Payload. Each one is its own scope of responsibility and ships a lean README — a one-line description, its `@pro-laico` dependencies, and what it exports — that links to the full documentation at [atomicpayload.com](https://atomicpayload.com/docs). This file is the map; the docs site is the manual.
 
 ## Reading order for newcomers
 
-If you've never touched this repo before, read the READMEs in roughly this order:
+If you've never touched this repo before, work through the packages (and their [docs](https://atomicpayload.com/docs)) in roughly this order:
 
 1. **[`zap`](./zap)** — the shared Zod-based schema registry. Everything else types itself against it.
 2. **[`core`](./core)** — the kernel: shared types, APF runtime, cache helpers, JSON-schema generation, common fields.
