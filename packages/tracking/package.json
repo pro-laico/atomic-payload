@@ -1,7 +1,7 @@
 {
   "name": "@pro-laico/tracking",
   "version": "0.1.0",
-  "description": "Atomic Payload tracking integration. Home for all tracking-related functionality (Tracking global, PostHog property collection + tab + provider, Google Tag Manager tab + provider, Vercel Analytics provider, composite TrackingProvider) plugged into atomic-payload.",
+  "description": "Atomic Payload tracking integration. Home for all tracking-related functionality (Tracking global, PostHog autocapture provider, Google Tag Manager tab + provider, Vercel Analytics provider, composite TrackingProvider) plugged into atomic-payload.",
   "license": "MIT",
   "type": "module",
   "publishConfig": {

@@ -1,9 +1,11 @@
 ---
 title: "@pro-laico/atomic"
-description: "The runtime that turns Payload content into a working website — action blocks, the beforeChange CSS/UnoCSS hook, the form pipeline, and child blocks, in one package with four namespaces."
+description: "Turns the nested blocks editors build in the Payload admin into a working, interactive website — reusable content blocks, point-and-click actions, and a complete form pipeline."
 ---
 
-`@pro-laico/atomic` is the engine that turns what editors build in the admin into a real, interactive website. It powers recursive content blocks you can nest and reuse, point-and-click interactivity like dialogs, popovers, and dark-mode toggles, and a complete form pipeline with built-in sanitation, validation, and rate limiting.
+`@pro-laico/atomic` turns what editors build in the Payload admin into a real, interactive website. It powers reusable content blocks you can nest inside one another, point-and-click interactivity like dialogs, popovers, and theme toggles, and a full form pipeline with built-in sanitation, validation, and rate limiting.
+
+This is foundational tooling. You rarely install it on its own — the [atomic-payload template](/docs/templates/atomic-payload) and the other `@pro-laico/*` plugins bring it along, and a lot of its work happens behind the scenes when content is saved. But it also ships the React pieces your own app renders with — the block renderer, the form submission action, and the client store behind interactive blocks — so this page covers that frontend surface too.
 
 ## Installation
 
@@ -36,89 +38,269 @@ yarn add @pro-laico/atomic
 </Tabs>
 
 <Callout type="info">
-  `payload`, `next`, `react`, `react-dom`, `server-only`, `@payloadcms/ui`, and `@payloadcms/richtext-lexical` are required peers you already have in a Payload + Next.js app. The integrations below are **optional** — install only the ones you turn on.
+  `payload`, `next`, `react`, `react-dom`, `server-only`, `@payloadcms/ui`, and `@payloadcms/richtext-lexical` are peers you already have in a Payload + Next.js app. `unocss` (CSS generation), `zustand` (the client store behind interactive blocks), and `@mux/blurup` (Mux video placeholders) are optional — install them only if you use those features.
 </Callout>
-
-Optional peer dependencies:
-
-| Peer | Needed when |
-| --- | --- |
-| `@mux/blurup` | Mux video blur-up placeholders are used |
-| `@pro-laico/tracking` | The tracking integration is enabled |
-| `unocss` | The UnoCSS processor is enabled |
-| `zustand` | The client-side `AtomicStore` is used |
 
 ## Setup
 
-The four plugin factories register independently in your Payload config:
+The package is organized into four areas you wire up in your Payload config — actions, the save-time hook, forms, and child blocks. Each registers independently, so you can add only the ones you need.
+
+<Tabs items={['Standalone', 'With the atomic-payload template']}>
+
+<Tab value="Standalone">
+
+Wiring atomic into your own Payload + Next.js project.
+
+<Steps>
+
+<Step>
+### Register the block plugins
+
+Add the actions, forms, and child-blocks plugins to your config. Each prepends its blocks to `config.blocks`; order matters, so keep them in this sequence (child blocks first in the merged list, then actions, then form blocks):
 
 ```ts
 import { buildConfig } from 'payload'
-import { actionsPlugin } from '@pro-laico/atomic/actions'
-import { atomicHookPlugin } from '@pro-laico/atomic/hook'
 import { formsPlugin } from '@pro-laico/atomic/forms'
+import { actionsPlugin } from '@pro-laico/atomic/actions'
 import { childBlocksPlugin } from '@pro-laico/atomic/children'
 
 export default buildConfig({
   plugins: [
-    actionsPlugin(),
-    atomicHookPlugin({ /* getCached, livePreviewUrl, etc */ }),
     formsPlugin(),
+    actionsPlugin(),
     childBlocksPlugin(),
   ],
 })
 ```
 
-You can also import all four from the package root — the root barrel re-exports the plugin factories and a curated set of value/type exports. For everything else, prefer the namespaced subpaths.
+- `childBlocksPlugin()` registers the nestable content blocks editors build pages from (Atomic, SimpleText, RichText, Image, Video, Icon, SVG).
+- `actionsPlugin()` registers the built-in action blocks (theme toggle, cookie consent, form submit, dynamic store, portal open).
+- `formsPlugin()` registers the default submit-form processing blocks (rate limiting, sanitation, validation).
+</Step>
 
-Child blocks no longer hard-depend on `@pro-laico/styles`. Wire fields in per block via `blockFields` on the children plugin (keyed by block slug):
+<Step>
+### Add fields to the child blocks (optional)
+
+The child blocks ship with no styling fields of their own, so they don't depend on `@pro-laico/styles`. Use `blockFields` (keyed by block slug) to prepend or append your own fields per block — for example, the `@pro-laico/styles` `ClassNameField` so editors can type utility classes:
 
 ```ts
-import { childBlocksPlugin } from '@pro-laico/atomic/children'
 import { ClassNameField } from '@pro-laico/styles'
+import { childBlocksPlugin } from '@pro-laico/atomic/children'
 
 childBlocksPlugin({
   blockFields: {
     SVGChild: { prependFields: [ClassNameField({ label: 'SVG Atomic Classes' })] },
     ImageChild: { prependFields: [ClassNameField({ label: 'Image Atomic Classes' })] },
-    // …other blocks, any fields you like
+    // …any other block, any fields you like
   },
 })
 ```
 
 <Callout type="info">
-  `AtomicChild` is a special case, intentionally left on the older `classNameField` passthrough for now. Pass `classNameField: ClassNameField` to supply it.
+  `AtomicChild` is a special case — it stays on a dedicated `classNameField` option rather than `blockFields`. Pass `classNameField: ClassNameField` to wire it up.
 </Callout>
+</Step>
+
+<Step>
+### Attach the save-time hook
+
+When a page is saved, atomic walks its blocks once to collect the styles, actions, and forms the frontend needs, generate the CSS, and revalidate caches. `createAtomicHook` builds that `beforeChange` hook from your cache reader and the action storage processor; `atomicHookPlugin` attaches it to the collections you name:
+
+```ts
+import { buildConfig } from 'payload'
+import getCached from '@pro-laico/core/cache/auto'
+import { atomicHookPlugin, createAtomicHook } from '@pro-laico/atomic/hook'
+import { ActionBlockStorageProcessor } from '@pro-laico/atomic/actions/processor'
+
+const atomicHook = createAtomicHook({ getCached, ActionBlockStorageProcessor })
+
+export default buildConfig({
+  plugins: [
+    atomicHookPlugin({ hook: atomicHook, collectionSlugs: ['pages'] }),
+  ],
+})
+```
+
+The ready-made `atomicHook` export wires those dependencies lazily for you (using the template's conventional slug names), so you can pass it straight through — that's what the template does (see the other tab).
+</Step>
+
+<Step>
+### Render the blocks on the frontend
+
+`RenderChildren` walks a saved block tree and renders each block (Server Component). Pass it the `children` array from a page you fetched:
+
+```tsx
+// app/(frontend)/[...slug]/page.tsx
+import { RenderChildren } from '@pro-laico/atomic/children/render'
+
+export default async function Page() {
+  const page = await getPage() // however you load your page
+
+  return (
+    <main>
+      <RenderChildren blocks={page.children} />
+    </main>
+  )
+}
+```
+</Step>
+
+<Step>
+### Wrap your app with the client store
+
+Interactive blocks (dialogs, popovers, theme toggles, the dynamic store) read their state from a client store. Wrap your frontend in `AtomicStoreProvider`, seeding it with the actions atomic stored for the page:
+
+```tsx
+// app/(frontend)/layout.tsx
+import { AtomicStoreProvider } from '@pro-laico/atomic/hook/client'
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en">
+      <body>
+        <AtomicStoreProvider initialState={storedAtomicActions}>{children}</AtomicStoreProvider>
+      </body>
+    </html>
+  )
+}
+```
+</Step>
+
+<Step>
+### Use the form submission action
+
+Forms rendered by `RenderChildren` submit through atomic's `submitForm` server action, which runs the stored rate-limiting, sanitation, and validation pipeline before writing the submission. Import it from its own subpath (kept separate so it isn't pulled into config evaluation):
+
+```ts
+import { submitForm } from '@pro-laico/atomic/forms/submitForm/serverFunction'
+```
+
+For form submissions to reach the right URL in production, set the [environment variables](#environment-variables) below.
+</Step>
+
+</Steps>
+
+</Tab>
+
+<Tab value="With the atomic-payload template">
+
+The [atomic-payload template](/docs/templates/atomic-payload) already wires all of this — the plugins, the save-time hook, the renderer, the client store, and the form action. You usually don't touch any of it; you just build pages in the admin.
+
+<Steps>
+
+<Step>
+### It's already registered
+
+The template's plugin list adds `formsPlugin`, `actionsPlugin`, and `childBlocksPlugin`, and weaves the `@pro-laico/styles` `ClassNameField` into the child blocks for you. The save-time hook is the ready-made `atomicHook`, handed to `@pro-laico/styles` so it runs on the content collections.
+
+```ts
+import { atomicHook } from '@pro-laico/atomic/hook'
+import { stylesPlugin } from '@pro-laico/styles'
+
+stylesPlugin({ atomicHook /* …other options */ })
+```
+</Step>
+
+<Step>
+### Build pages in the admin
+
+Open a page in the admin and assemble it from the child blocks (text, images, icons, rich text, video) and action blocks (theme toggle, cookie consent, form submit, dynamic store, portals). Saving runs the hook, which generates the styles and stores the actions and forms the frontend needs.
+</Step>
+
+<Step>
+### The frontend is already wired
+
+The template's `[...slug]/page.tsx` renders pages with `RenderChildren`, its `(frontend)/layout.tsx` wraps the app in `AtomicStoreProvider`, and forms submit through the `submitForm` server action. Set [`NEXT_PUBLIC_SERVER_URL`](#environment-variables) so submissions resolve correctly in production.
+</Step>
+
+</Steps>
+
+</Tab>
+
+</Tabs>
+
+## Options
+
+Each plugin factory takes its own options object. All accept `enabled` (set `false` to turn it off).
+
+`actionsPlugin(options?)`:
+
+<TypeTable
+  type={{
+    enabled: { type: 'boolean', default: 'true', description: 'Set false to skip registering the action blocks.' },
+    actionBlocks: { type: 'Block[]', description: 'Extra Payload blocks merged after the built-in action blocks and before any blocks already on your config.' },
+  }}
+/>
+
+`formsPlugin(options?)`:
+
+<TypeTable
+  type={{
+    enabled: { type: 'boolean', default: 'true', description: 'Set false to skip registering the submit-form blocks.' },
+    formBlocks: { type: 'Block[]', description: 'Extra form / input processing blocks merged after the package defaults and before any blocks already on your config.' },
+  }}
+/>
+
+`childBlocksPlugin(options?)`:
+
+<TypeTable
+  type={{
+    enabled: { type: 'boolean', default: 'true', description: 'Set false to skip registering the child blocks.' },
+    childBlocks: { type: 'Block[]', description: 'Extra Payload blocks to register as child blocks, merged after the defaults.' },
+    blockFields: { type: 'Partial<Record<GenericChildBlockSlug, BlockFieldExtensions>>', description: 'Per-block fields to prepend or append, keyed by block slug — e.g. wiring the @pro-laico/styles ClassNameField onto SVGChild or ImageChild.' },
+    classNameField: { type: 'ClassNameFieldWrapper', description: 'The class-name field for the AtomicChild block (its special case, not covered by blockFields).' },
+  }}
+/>
+
+`atomicHookPlugin(options)`:
+
+<TypeTable
+  type={{
+    enabled: { type: 'boolean', default: 'true', description: 'Set false to skip attaching the hook.' },
+    hook: { type: 'CollectionBeforeChangeHook', description: 'The hook to attach — build it with createAtomicHook, or pass the ready-made atomicHook export.' },
+    collectionSlugs: { type: 'string[]', description: 'The collections that should run the hook on save.' },
+  }}
+/>
+
+## Environment variables
+
+Atomic reads these when resolving the URL form submissions POST to. They're optional in development (it falls back to `http://localhost:3000`), but a production deploy should set one.
+
+| Variable | Purpose |
+| --- | --- |
+| `NEXT_PUBLIC_SERVER_URL` | The public URL of your site — used to build the form submission endpoint. |
+| `VERCEL_PROJECT_PRODUCTION_URL` | Fallback on Vercel when `NEXT_PUBLIC_SERVER_URL` isn't set; atomic prefixes it with `https://`. |
 
 ## Exports
 
-**Subpath imports**
+Atomic exposes most of its surface through namespaced subpaths (`@pro-laico/atomic/{actions,hook,forms,children}` and their sub-subpaths). The package root re-exports the four plugin factories plus a curated set of values and types; the full subpath list is in the package's `package.json` `exports`. The key public pieces:
 
-| Subpath | What's there |
-| --- | --- |
-| `@pro-laico/atomic` | Root barrel — the four plugin factories plus a curated set of value/type exports |
-| `@pro-laico/atomic/actions` | Action blocks, the storage processor, filters, and shared field builders |
-| `@pro-laico/atomic/actions/blocks` | Block factories |
-| `@pro-laico/atomic/actions/fields/strict/registry/*` | Strict typed registry entries (`theme`, `cookieConsent`) |
-| `@pro-laico/atomic/hook` | The `beforeChange` orchestrator (`atomicHookPlugin`, `createAtomicHook`) |
-| `@pro-laico/atomic/hook/client` | The zustand `AtomicStore` binding for React |
-| `@pro-laico/atomic/forms` | Form & input submission — server action and `formProcessor` |
-| `@pro-laico/atomic/forms/submitForm/serverFunction` | The server action that runs form submission |
-| `@pro-laico/atomic/forms/submitForm/formProcessor` | The processor invoked after SVR passes |
-| `@pro-laico/atomic/children` | The child blocks plugin (`childBlocksPlugin`), render component, and field utilities |
-| `@pro-laico/atomic/children/render` | Front-end renderer that walks the tree and renders each child |
-| `@pro-laico/atomic/children/admin/*` | Admin row labels and select widgets |
-| `@pro-laico/atomic/children/fields/*` | Reusable field configs (`coloredEnd`, `tagType`, `settings` tab) |
-
-The full list is in `package.json` `exports`.
-
-**By kind**
-
-- **Blocks** — built-in action blocks (theme toggle, form submit, cookie consent, dynamicStore, portal); `AllActionBlocks`; the `AtomicChild` and `SimpleTextChild` child blocks; the `submit-form` action block and `input/*` child blocks
-- **Fields** — `coloredEnd`, `tagType`, the `settings` tab, and shared action field builders
-- **Hooks** — `atomicHookPlugin` / `createAtomicHook` (the `beforeChange` orchestrator)
-- **Components** — `@pro-laico/atomic/children/render` (front-end child renderer); admin row labels and select widgets under `/children/admin/*`
-- **Utilities** — `ActionBlockStorageProcessor`, `ActionFilters`, `formProcessor`, and the form helpers under `/forms/utilities/*`
+<ExportTable
+  exports={{
+    childBlocksPlugin: { type: 'plugin', location: '@pro-laico/atomic/children', description: 'Registers the nestable content child blocks (Atomic, SimpleText, RichText, Image, Video, Icon, SVG). Also re-exported from the root.' },
+    actionsPlugin: { type: 'plugin', location: '@pro-laico/atomic/actions', description: 'Registers the built-in action blocks (theme toggle, cookie consent, form submit, dynamic store, portal). Also re-exported from the root.' },
+    formsPlugin: { type: 'plugin', location: '@pro-laico/atomic/forms', description: 'Registers the default submit-form processing blocks (rate limiting, sanitation, validation). Also re-exported from the root.' },
+    atomicHookPlugin: { type: 'plugin', location: '@pro-laico/atomic/hook', description: "Attaches the save-time hook to your content collections' beforeChange. Also re-exported from the root." },
+    'ActionsPluginOptions / FormsPluginOptions / ChildBlocksPluginOptions / AtomicHookPluginOptions': { type: 'type', location: '@pro-laico/atomic', description: 'The options types for each plugin factory.' },
+    createAtomicHook: { type: 'function', location: '@pro-laico/atomic/hook', description: 'Builds the save-time beforeChange hook from your cache reader and action storage processor.' },
+    atomicHook: { type: 'function', location: '@pro-laico/atomic/hook', description: "The ready-made hook using the template's conventional slug names — pass it straight to atomicHookPlugin (or stylesPlugin) without configuring dependencies." },
+    unsetActive: { type: 'function', location: '@pro-laico/atomic/hook', description: 'Helper that clears the previously-active document when a new one is marked active.' },
+    RenderChildren: { type: 'component', location: '@pro-laico/atomic/children/render', description: "The frontend renderer — a Server Component that walks a page's saved block tree and renders each block." },
+    AtomicStoreProvider: { type: 'component', location: '@pro-laico/atomic/hook/client', description: 'Client provider that holds the state behind interactive blocks (dialogs, popovers, theme toggles, dynamic store). Wrap your frontend in it.' },
+    useAtomicStore: { type: 'function', location: '@pro-laico/atomic/hook/client', description: 'Hook to read from the client store inside your own components.' },
+    submitForm: { type: 'function', location: '@pro-laico/atomic/forms/submitForm/serverFunction', description: 'The server action that runs the stored rate-limit / sanitation / validation pipeline and writes the submission.' },
+    formProcessor: { type: 'function', location: '@pro-laico/atomic/forms/submitForm/formProcessor', description: 'The processor invoked after a submission passes its checks — exported for advanced use.' },
+    buildChildBlocks: { type: 'function', location: '@pro-laico/atomic/children', description: 'Builds the default child block configs directly, for when you compose blocks yourself instead of using the plugin.' },
+    childBlocks: { type: 'object', location: '@pro-laico/atomic/children', description: 'The default child block definitions.' },
+    ChildrenBlocksField: { type: 'field', location: '@pro-laico/atomic/children', description: 'The reusable blocks field that holds nested child blocks — drop it into your own collection or block.' },
+    AllActionBlocks: { type: 'object', location: '@pro-laico/atomic/actions', description: 'The array of built-in action block definitions actionsPlugin registers.' },
+    ActionOptions: { type: 'object', location: '@pro-laico/atomic/actions', description: 'The option definitions for each built-in action.' },
+    ActionFilters: { type: 'object', location: '@pro-laico/atomic/actions', description: 'Filters that constrain which actions apply where.' },
+    ActionBlockStorageProcessor: { type: 'function', location: '@pro-laico/atomic/actions/processor', description: 'Collects the action data from a page tree at save time — passed into createAtomicHook.' },
+    defaultSubmitFormBlocks: { type: 'object', location: '@pro-laico/atomic/forms', description: 'The default array of submit-form processing blocks formsPlugin registers.' },
+    'Schema types': { type: 'type', location: '@pro-laico/atomic/{actions,hook,forms,children}/schema', description: 'Per-area TypeScript types for typed access to stored actions, forms, and child block data.' },
+  }}
+/>
 
 ## Related
 
@@ -126,4 +308,5 @@ The full list is in `package.json` `exports`.
   <Card title="Atomic Blocks" href="/docs/features/atomic-blocks" />
   <Card title="Actions" href="/docs/features/actions" />
   <Card title="Forms" href="/docs/features/forms" />
+  <Card title="Styles" href="/docs/plugins/styles" />
 </Cards>

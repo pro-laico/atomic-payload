@@ -1,9 +1,9 @@
 ---
 title: "@pro-laico/icons"
-description: "Custom SVG icons in Payload — optimized on upload, grouped into icon sets, and surfaced as child blocks and an AtomicIcon component."
+description: "Manage your SVG icons in the Payload admin — upload them, group them into reusable sets, and render any icon by name on your site."
 ---
 
-`@pro-laico/icons` makes your SVG icons part of the CMS. Upload an icon and it's automatically cleaned up and optimized; group icons into reusable sets; then drop them into any block or render them on the frontend — all from the admin.
+`@pro-laico/icons` makes your SVG icons part of the CMS. Upload an icon and it's cleaned up and optimized automatically; group icons into named sets you can swap from the admin; then render any icon by name on your site. Editors can change which icons your pages use without touching code.
 
 ## Installation
 
@@ -36,131 +36,204 @@ yarn add @pro-laico/icons
 </Tabs>
 
 <Callout type="info">
-  `@payloadcms/ui`, `next`, `payload`, and `react` are required peers you already have in a Payload + Next.js app. `svgo` and `svg-path-bbox` are **optional** — install them only if you upload SVGs through the format hook.
+  `payload`, `next`, `react`, and `@payloadcms/ui` are peers you already have in a Payload + Next.js app. `svgo` and `svg-path-bbox` are **optional** — they power the upload-time cleanup and `viewBox` tightening, so install them if you want SVGs optimized on upload.
 </Callout>
-
-Optional peer dependencies:
-
-| Peer | Needed when |
-| --- | --- |
-| `svgo` | You upload SVGs through `formatSVGHook` (cleanup) |
-| `svg-path-bbox` | You upload SVGs through `formatSVGHook` (`viewBox` tightening) |
 
 ## Setup
 
-Add the plugin to your Payload config:
+<Tabs items={['Standalone', 'With the atomic-payload template']}>
+
+<Tab value="Standalone">
+
+Adding icons to your own Payload + Next.js project.
+
+<Steps>
+
+<Step>
+### Add the plugin to your Payload config
 
 ```ts
 import { buildConfig } from 'payload'
 import { iconsPlugin } from '@pro-laico/icons'
 
 export default buildConfig({
-  plugins: [
-    iconsPlugin({
-      iconSetOptions: {
-        livePreviewUrl: yourPreview,
-        extraSettingsFields: [
-          // e.g. a test path relationship
-        ],
-      },
-    }),
-  ],
+  plugins: [iconsPlugin()],
 })
 ```
 
-Cache revalidation comes from `@pro-laico/core` hooks (`revalidateCacheCollectionAfterChange` on save, `revalidateCacheOnDelete` on delete). The `Icon`/`IconSet` collections themselves carry no dependency on `@pro-laico/atomic`, but the package as a whole does depend on it — the `IconChild`/`SVGChild` block components render via `@pro-laico/atomic/children`. If you want the atomicHook snapshot behavior on `IconSet`, attach it explicitly through the additive `hooks` option:
+This registers two collections: **Icon** (where you upload SVG files) and **IconSet** (where you group icons under a named set and mark one set active). To register only the upload collection and skip the grouping concept, pass `includeIconSet: false`.
 
-```ts
-import { atomicHook } from '@pro-laico/atomic/hook'
+<Callout type="info">
+  Want live preview on icon sets? Pass `iconSetOptions.livePreviewUrl` — see [Options](#options). The [atomic-payload template](/docs/templates/atomic-payload) wires this up for you (see the other tab).
+</Callout>
+</Step>
 
-iconsPlugin({
-  iconSetOptions: {
-    hooks: { beforeChange: [atomicHook] },
-  },
-})
+<Step>
+### Regenerate the admin import map
+
+The IconSet editor uses a custom row label component that Payload loads through its import map. After adding the plugin, regenerate the map so the admin can find it:
+
+```bash
+pnpm payload generate:importmap
 ```
 
-For the common case of "look up an icon by name from the active set and render it inline", import the `<Icon>` server component:
+Run this again whenever you add or remove plugins that contribute admin components.
+</Step>
+
+<Step>
+### Upload icons and build your sets in the admin
+
+1. Open the **Icon** collection and upload your SVG files. Each upload is cleaned up and its `viewBox` tightened automatically.
+2. Open the **IconSet** collection, create a named set (for example "Nav" or "Social"), add icons to it by name, and mark the set **active**. Only one set is active at a time, and that's the set your site renders from.
+</Step>
+
+<Step>
+### Render icons in your app
+
+Render an icon by name from the active set with the `<Icon>` server component, imported from the `/Icon` subpath:
+
+```tsx
+import { Icon } from '@pro-laico/icons/Icon'
+
+export function Toolbar() {
+  return (
+    <nav>
+      <Icon name="arrow-right" />
+      <Icon name="arrow-right" className="size-6 text-primary" />
+      <Icon name="logo" fallback={myCustomSvgString} />
+    </nav>
+  )
+}
+```
+
+`name` looks the icon up in the active icon set; any JSX props you pass (`className`, `style`, `width`, …) are applied to the rendered `<svg>` and win over the source's intrinsic attributes; `fallback` is a raw SVG string used when no icon matches the name (otherwise a small warning glyph shows). Because lookups go through `@pro-laico/core`'s cached getters, swapping the active set or editing one icon in the admin invalidates just the affected `<svg>`, not the whole page.
+</Step>
+
+</Steps>
+
+</Tab>
+
+<Tab value="With the atomic-payload template">
+
+The [atomic-payload template](/docs/templates/atomic-payload) already registers the **Icon** and **IconSet** collections (with live preview wired up) and includes the import map. You just manage your icons and render them.
+
+<Steps>
+
+<Step>
+### Upload and group your icons
+
+Open the **Icon** collection and upload your SVG files, then open the **IconSet** collection, create a named set, add your icons to it, and mark the set **active**.
+</Step>
+
+<Step>
+### Place icons in content
+
+The template registers the **IconChild** and **SVGChild** content blocks through `@pro-laico/atomic`'s children system, so editors can drop an icon (picked from the active set) or paste raw SVG straight into a page's content — no code needed.
+</Step>
+
+<Step>
+### Render icons in code
+
+To render an icon by name from your own components, use the bundled `<Icon>` server component:
 
 ```tsx
 import { Icon } from '@pro-laico/icons/Icon'
 
 <Icon name="arrow-right" />
 <Icon name="arrow-right" className="size-6 text-primary" />
+```
+
+It resolves from the active icon set, so switching the active set in the admin restyles every icon your site renders by that name.
+</Step>
+
+</Steps>
+
+</Tab>
+
+</Tabs>
+
+## Using it in your app
+
+The package's main frontend piece is the `<Icon>` server component at the `@pro-laico/icons/Icon` subpath. It looks an icon up **by name** in the currently active icon set and inlines it as an `<svg>`:
+
+```tsx
+import { Icon } from '@pro-laico/icons/Icon'
+
+<Icon name="check" />
+<Icon name="check" className="size-6 text-primary" />
 <Icon name="logo" fallback={myCustomSvgString} />
 ```
 
-Resolution happens server-side via `@pro-laico/core`'s cached `iconSet` + `icon` getters, so revalidating either tag invalidates just the rendered `<svg>`, not the surrounding page. JSX props always win over the SVG source's intrinsic attributes.
+Because resolution is bound to the active `IconSet`, picking a different set in the admin re-routes every `<Icon>` to the new artwork without a code change. Keep icon names consistent across your sets so they stay interchangeable — if a name isn't found in the active set, the `fallback` SVG (or a built-in warning glyph) renders instead.
+
+In a project that uses `@pro-laico/atomic`'s children system, editors can also place icons in content through two blocks — **IconChild** (picks an icon from the `Icon` collection) and **SVGChild** (pastes raw SVG). Both render through the frontend renderer in `@pro-laico/atomic/children`.
 
 ## Options
 
-`iconsPlugin(options)` accepts top-level toggles plus two additive option bags. User hooks always run **after** the built-ins (so `formatSVGHook` and the revalidation hooks always run first).
+`iconsPlugin(options?)` accepts top-level toggles plus two additive option bags. Your own hooks always run **after** the built-ins, so the SVG cleanup and cache-revalidation hooks always run first.
 
 <TypeTable
   type={{
-    enabled: { type: 'boolean', default: 'true', description: 'When `false`, the plugin is a no-op — neither `Icon` nor `IconSet` is registered. Useful behind a feature flag.' },
-    includeIconSet: { type: 'boolean', default: 'true', description: 'When `false`, only `Icon` is registered (the `IconSet` grouping collection is skipped).' },
-    iconOptions: { type: 'IconCollectionOptions', description: 'Additive config for the `Icon` collection.' },
-    iconSetOptions: { type: 'IconSetCollectionOptions', description: 'Additive config for the `IconSet` collection.' },
+    enabled: { type: 'boolean', default: 'true', description: 'Set false to turn the plugin off — neither Icon nor IconSet is registered. Useful behind a feature flag.' },
+    includeIconSet: { type: 'boolean', default: 'true', description: 'When false, only the Icon upload collection is registered and the IconSet grouping collection is skipped.' },
+    iconOptions: { type: 'IconCollectionOptions', description: 'Tweaks for the Icon collection — appended fields, additive hooks, and a final shallow-merge escape hatch.' },
+    iconSetOptions: { type: 'IconSetCollectionOptions', description: 'Tweaks for the IconSet collection — live preview, additive hooks, set-level fields, per-icon-row fields, and admin label overrides.' },
   }}
 />
 
-`iconOptions` — additive config for the `Icon` collection:
+`iconOptions` — extending the **Icon** collection:
 
 <TypeTable
   type={{
-    fields: { type: 'Field[]', description: 'Appended to top-level Icon fields, after `optimized` + `svgString`.' },
-    hooks: { type: 'CollectionConfig["hooks"]', description: 'Merged additively with the built-in Icon hooks.' },
-    collection: { type: 'Partial<CollectionConfig>', description: 'Escape hatch: shallow-merged onto the built collection after `fields`/`hooks`. Use for non-additive overrides (admin, access, upload, versions).' },
+    fields: { type: 'Field[]', description: 'Extra fields appended after the built-in optimized + svgString fields.' },
+    hooks: { type: "CollectionConfig['hooks']", description: 'Extra hooks merged in after the built-in cleanup and revalidation hooks.' },
+    collection: { type: 'Partial<CollectionConfig>', description: 'Escape hatch shallow-merged onto the collection last — use for non-additive overrides like admin, access, upload, or versions.' },
   }}
 />
 
-`iconSetOptions` — additive config for the `IconSet` collection:
+`iconSetOptions` — extending the **IconSet** collection:
 
 <TypeTable
   type={{
-    livePreviewUrl: { type: 'string | function', description: 'Live preview URL for the IconSet collection.' },
-    extraSettingsFields: { type: 'Field[]', description: 'Compact, in-row injection next to title/active.' },
-    useAsTitle: { type: 'string', default: "'title'", description: 'Override the `admin.useAsTitle` setting.' },
-    group: { type: 'string', default: "'Sets'", description: 'Override the `admin.group` label shown in the Payload sidebar.' },
-    fields: { type: 'Field[]', description: 'Full-width set-level fields, appended below the title/active row.' },
-    iconRowFields: { type: 'Field[]', description: 'Per-icon metadata appended to each row inside `iconsArray`.' },
-    hooks: { type: 'CollectionConfig["hooks"]', description: 'Additional hooks (afterChange, afterRead, etc.) merged with the built-ins.' },
+    livePreviewUrl: { type: 'function', description: 'Builds the live preview URL for IconSet edits — typically delegates to your project’s live-preview path helper.' },
+    extraSettingsFields: { type: 'Field[]', description: 'Compact fields packed into the row next to the title and active toggle.' },
+    fields: { type: 'Field[]', description: 'Full-width, set-level fields appended below the title/active row.' },
+    iconRowFields: { type: 'Field[]', description: 'Per-icon fields appended to each row in the set (e.g. aliases, category).' },
+    hooks: { type: "CollectionConfig['hooks']", description: 'Extra hooks merged in after the built-in revalidation hooks — also where you opt into the atomicHook snapshot behavior.' },
+    useAsTitle: { type: 'string', default: "'title'", description: 'Field shown as the document title in the admin.' },
+    group: { type: 'string', default: "'Sets'", description: 'Sidebar group label for the IconSet collection.' },
   }}
 />
 
 ## Exports
 
-**Subpath imports**
-
-| Subpath | What's there |
-| --- | --- |
-| `@pro-laico/icons` | The plugin, `Icon` + `IconSet` collections, child blocks, and utilities |
-| `@pro-laico/icons/schema` | `zap` registry augmentations |
-| `@pro-laico/icons/Icon` | `<Icon name="..." />` server component (resolves from the active IconSet) |
-| `@pro-laico/icons/AtomicIcon` | `AtomicIcon` admin marker glyph for atomic block types |
-| `@pro-laico/icons/admin/iconRowLabel` | Admin row label (loaded via import map) |
-| `@pro-laico/icons/admin/iconSelect` | `createIconSelect` factory |
-| `@pro-laico/icons/iconSet/defaults` | Name presets for seeding/docs |
-| `@pro-laico/icons/blocks/iconChild` | `IconChild` block config (exported `Icon` const) |
-| `@pro-laico/icons/blocks/iconChild/component` | `IconChild` block renderer |
-| `@pro-laico/icons/blocks/svgChild` | `SVGChild` block config (exported `SVGBlock` const) |
-| `@pro-laico/icons/blocks/svgChild/component` | `SVGChild` block renderer |
-
-**By kind**
-
-- **Collections** — `Icon` (upload, SVG-optimizing), `IconSet` (groups icons under a named bucket), plus the `createIconCollection` and `createIconSetCollection` factories
-- **Components** — `AtomicIcon` (admin marker glyph), `<Icon>` (from `/Icon`, resolves by name from the active set), `createIconSelect` (from `/admin/iconSelect`, factory for the admin select widget)
-- **Blocks** — `IconChild` (exported `Icon` const, picks from the `Icon` collection), `SVGChild` (exported `SVGBlock` const, pastes raw SVG)
-- **Utilities** — `extractSvgContent`, `extractSvgProps` (pull `<path>` data and attrs out of a serialized SVG), `formatSvg` / `formatSVGHook` (svgo + `viewBox` tightening)
-- **Defaults** — name presets at `/iconSet/defaults` for seeding or docs
-
-<Callout type="info">
-  `createIconSelect` is **intentionally not** re-exported from the package root, and `<Icon>` lives at the `/Icon` subpath rather than the root barrel — that keeps client-bundle imports of `extractSvgProps`, `IconLabelPath`, and `AtomicIcon` from dragging admin or `server-only` code along.
-</Callout>
+<ExportTable
+  exports={{
+    iconsPlugin: { type: 'plugin', location: '@pro-laico/icons', description: 'The plugin itself — registers the Icon collection and, by default, the IconSet collection. Default and named export.' },
+    IconsPluginOptions: { type: 'type', location: '@pro-laico/icons', description: "The TypeScript type for the plugin's options." },
+    Icon: { type: 'collection', location: '@pro-laico/icons', description: 'The SVG upload collection your icons live in — import it to register or extend the collection yourself.' },
+    createIconCollection: { type: 'function', location: '@pro-laico/icons', description: 'Factory for a customized Icon collection — appended fields, additive hooks, and a shallow-merge escape hatch.' },
+    IconCollectionOptions: { type: 'type', location: '@pro-laico/icons', description: 'The options type for createIconCollection (and the plugin’s iconOptions).' },
+    IconSet: { type: 'collection', location: '@pro-laico/icons', description: 'The grouping collection that buckets icons under a named, versioned, draft-enabled set with an active toggle.' },
+    createIconSetCollection: { type: 'function', location: '@pro-laico/icons', description: 'Factory for a customized IconSet collection — wire live preview, extra fields, per-icon-row fields, and additive hooks.' },
+    IconSetCollectionOptions: { type: 'type', location: '@pro-laico/icons', description: 'The options type for createIconSetCollection (and the plugin’s iconSetOptions).' },
+    'Icon (component)': { type: 'component', location: '@pro-laico/icons/Icon', description: 'Server component that renders an icon by name from the active set, with cached lookup and a fallback. The main way to use icons on the frontend.' },
+    AtomicIcon: { type: 'component', location: '@pro-laico/icons', description: 'Small marker glyph used in the admin to label atomic block types (tag / form / input / button / portal).' },
+    createIconSelect: { type: 'function', location: '@pro-laico/icons/admin/iconSelect', description: 'Factory that builds the admin select field for picking an icon by name — you pass it your app’s cached fetcher.' },
+    formatSVGHook: { type: 'function', location: '@pro-laico/icons', description: 'The beforeChange hook that optimizes an uploaded SVG (svgo cleanup + viewBox tightening). Wired onto the Icon collection automatically.' },
+    formatSvg: { type: 'function', location: '@pro-laico/icons', description: 'The SVG optimization step as a standalone function — run it on an SVG string outside the hook.' },
+    extractSvgContent: { type: 'function', location: '@pro-laico/icons', description: 'Pulls the inner markup out of an SVG string (everything between the <svg> tags).' },
+    extractSvgProps: { type: 'function', location: '@pro-laico/icons', description: 'Pulls the attributes (viewBox, fill, …) off an SVG’s root tag as a props object.' },
+    defaultIconNameList: { type: 'constant', location: '@pro-laico/icons/iconSet/defaults', description: 'Preset icon-name list (general / interface / social / shapes / brand) handy for seeding a starter set.' },
+    IconLabelPath: { type: 'constant', location: '@pro-laico/icons', description: 'The admin import-map path for the IconSet row label component.' },
+    'Icon / IconSet (types)': { type: 'type', location: '@pro-laico/icons/schema', description: 'TypeScript types for typed access to your Icon and IconSet documents.' },
+  }}
+/>
 
 ## Related
 
 <Cards>
   <Card title="Icons" href="/docs/features/icons" />
+  <Card title="@pro-laico/styles" href="/docs/plugins/styles" />
+  <Card title="@pro-laico/atomic" href="/docs/plugins/atomic" />
 </Cards>

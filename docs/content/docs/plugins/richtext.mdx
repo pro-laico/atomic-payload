@@ -1,9 +1,9 @@
 ---
 title: "@pro-laico/richtext"
-description: "The rich-text child block for Atomic Payload, plus a default Lexical editor preset and a JSX renderer for serialized Lexical content."
+description: "A ready-to-use rich-text block for Atomic Payload — a Lexical editor for writing formatted content in the admin and a renderer that turns it into clean React on your site."
 ---
 
-`@pro-laico/richtext` adds a rich-text block to your pages: a ready-to-use [Lexical](https://lexical.dev/) editor for writing formatted content in the admin, plus a renderer that turns it into clean React on the frontend.
+`@pro-laico/richtext` gives you a rich-text block for your pages. Editors get a ready-to-use [Lexical](https://lexical.dev/) editor for writing formatted content in the Payload admin, and the package ships a renderer that turns that content into clean React on the frontend. It bundles three pieces: the `RichTextChild` block, the `defaultLexical` editor preset, and a JSX renderer.
 
 ## Installation
 
@@ -36,72 +36,128 @@ yarn add @pro-laico/richtext
 </Tabs>
 
 <Callout type="info">
-  `@payloadcms/richtext-lexical`, `payload`, and `react` are required peers. Keeping the Lexical dependency isolated in this package means bigger packages don't pay that bundle cost unless they actually use rich text.
+  `@payloadcms/richtext-lexical` (the Lexical editor package), `payload`, and `react` are required peers — you install the Lexical package alongside this one. Keeping the Lexical dependency here means other Atomic Payload packages don't pay that bundle cost unless they actually use rich text.
 </Callout>
 
 ## Setup
 
-Add the `RichText` block to a `blocks` field, using `defaultLexical` as the editor preset:
+This package isn't a `buildConfig` plugin you add to the `plugins` array. Instead it hands you the pieces to wire rich text into your project yourself: an editor preset for the whole admin, a block your editors can drop into a page, and a renderer for the frontend.
+
+<Steps>
+
+<Step>
+### Set the default editor
+
+`defaultLexical` is an opinionated Lexical preset (bold/italic/headings/lists/links and a fixed + inline toolbar) tuned for Atomic Payload. Set it as the `editor` in your Payload config so every rich-text field in the admin uses it:
 
 ```ts
-import { RichText, defaultLexical } from '@pro-laico/richtext'
+import { buildConfig } from 'payload'
+import { defaultLexical } from '@pro-laico/richtext/default-lexical'
+
+export default buildConfig({
+  editor: defaultLexical,
+  // ...
+})
+```
+
+Want internal links to point at collections other than `pages`? Build the preset with the `createDefaultLexical` factory and pass `enabledCollections`:
+
+```ts
+import { createDefaultLexical } from '@pro-laico/richtext/default-lexical'
+
+const editor = createDefaultLexical({ enabledCollections: ['pages', 'posts'] })
+```
+</Step>
+
+<Step>
+### Add the rich-text block
+
+`RichText` is a ready-made Payload block (slug `RichTextChild`) you can drop into any `blocks` field. It carries a **Content** tab with a required rich-text area:
+
+```ts
+import { RichText } from '@pro-laico/richtext'
 
 const PageBlocks = {
-  name: 'blocks',
+  name: 'children',
   type: 'blocks',
-  blocks: [
-    RichText({ editor: defaultLexical }),
-    // ...
-  ],
+  blocks: [RichText],
 }
 ```
 
-Then render serialized Lexical content on the front-end with `RichTextChild`. It is a child-block renderer wired into the children render pipeline, not a standalone `content`-prop component — the pipeline hands it a `RenderChild<RichTextChild>`: a `block` (whose `.richText` holds the serialized Lexical state) plus the `pt` pass-through. Register it as the renderer for the `RichTextChild` block:
-
-```tsx
-import { RichTextChild } from '@pro-laico/richtext'
-
-const childRenderers = {
-  RichTextChild,
-  // ...other child-block renderers
-}
-```
-
-The component itself is essentially:
-
-```tsx
-const RichTextChild = ({ block: { richText }, pt }) => (
-  <div {...pt.c.p}>{richText && <RichText data={richText} />}</div>
-)
-```
-
-To extend the block's admin fields, use the `createRichTextBlock` factory instead of the pre-built `RichText` value, passing `prependFields` / `appendFields` (the `RichTextBlockOptions` type) to spread fields into the Content tab:
+To add your own fields to the Content tab — for example a CSS class field — use the `createRichTextBlock` factory instead of the pre-built `RichText` value. Pass `prependFields` / `appendFields` (the `RichTextBlockOptions` type) and they're spread at the start / end of the tab:
 
 ```ts
 import { createRichTextBlock } from '@pro-laico/richtext'
 
-const RichTextWithClassName = createRichTextBlock({ appendFields: [ClassNameField] })
+const RichTextWithClassName = createRichTextBlock({ prependFields: [ClassNameField()] })
 ```
+
+<Callout type="info">
+  Using the [`@pro-laico/atomic`](/docs/plugins/atomic) child-blocks plugin? It already includes `RichTextChild` as one of its default blocks and lets you weave fields in through its `blockFields` option — you don't register the block separately.
+</Callout>
+</Step>
+
+<Step>
+### Render it on the frontend
+
+The package ships `RichTextChild`, a React component that renders the block's serialized Lexical content as JSX (it uses `@payloadcms/richtext-lexical/react` under the hood and resolves internal links to their `href`). It's a child-block renderer: the render pipeline hands it the `block` (whose `.richText` holds the serialized state) plus a `pt` pass-through, so you don't pass content into it by hand.
+
+If you're using [`@pro-laico/atomic`](/docs/plugins/atomic), this is already wired up — `RichTextChild` is registered as the renderer for the `RichTextChild` block, so rendering a page's `children` through atomic's `RenderChildren` draws your rich text automatically:
+
+```tsx
+import { RenderChildren } from '@pro-laico/atomic/children/render'
+
+export default function Page({ page }: { page: { children: any } }) {
+  return (
+    <main>
+      <RenderChildren blocks={page.children} />
+    </main>
+  )
+}
+```
+
+The component sets no styling of its own, so reach for Tailwind's typography (`prose`) classes — via a class field on the block or your own wrapper — to style the output.
+</Step>
+
+</Steps>
+
+## Options
+
+`createRichTextBlock(options?)` accepts:
+
+<TypeTable
+  type={{
+    prependFields: { type: 'Field[]', default: '[]', description: "Extra Payload fields added at the start of the block's Content tab — e.g. a CSS class field." },
+    appendFields: { type: 'Field[]', default: '[]', description: "Extra Payload fields added at the end of the block's Content tab." },
+  }}
+/>
+
+`createDefaultLexical(options?)` accepts:
+
+<TypeTable
+  type={{
+    enabledCollections: { type: 'string[]', default: "['pages']", description: 'The collections the editor’s internal-link feature can target. Set it to include any collection editors should be able to link to.' },
+  }}
+/>
 
 ## Exports
 
-**Subpath imports**
-
-| Subpath | What's there |
-| --- | --- |
-| `@pro-laico/richtext` | The `RichText` block, its `createRichTextBlock` factory + `RichTextBlockOptions` type, the `RichTextChild` renderer, and the `defaultLexical` preset |
-| `@pro-laico/richtext/default-lexical` | The `defaultLexical` preset, plus the `createDefaultLexical` factory and its `DefaultLexicalOptions` type — these are **not** re-exported from the root barrel |
-
-**By kind**
-
-- **Blocks** — `RichText` — the pre-built Payload block config; drop into a `blocks` field to give editors a Lexical rich-text area
-- **Factories** — `createRichTextBlock(options?)` — builds the `RichTextChild` block; `RichTextBlockOptions` (`prependFields` / `appendFields`) spread extra fields into the Content tab
-- **Components** — `RichTextChild` — the child-block renderer for the children render pipeline; receives a `block` (with `.richText`) and a `pt` pass-through and renders JSX
-- **Editor presets** — `defaultLexical` — an opinionated `lexicalEditor({ ... })` preset (features, toolbar groups) tuned for Atomic Payload's use cases
-- **Editor factories** (`./default-lexical` subpath) — `createDefaultLexical(options?)` — builds the preset; `DefaultLexicalOptions.enabledCollections` (default `['pages']`) points the internal-link feature at a different set of collections
+<ExportTable
+  exports={{
+    RichText: { type: 'block', location: '@pro-laico/richtext', description: 'The pre-built Payload rich-text block (slug RichTextChild). Drop it into a blocks field to give editors a Lexical content area.' },
+    createRichTextBlock: { type: 'function', location: '@pro-laico/richtext', description: 'Factory that builds the rich-text block, taking prependFields / appendFields to add your own fields to its Content tab.' },
+    RichTextBlockOptions: { type: 'type', location: '@pro-laico/richtext', description: 'The options type for createRichTextBlock (prependFields / appendFields).' },
+    RichTextChild: { type: 'component', location: '@pro-laico/richtext', description: 'The frontend renderer for the block — turns the saved Lexical content into React. Wired into the @pro-laico/atomic render pipeline automatically.' },
+    defaultLexical: { type: 'constant', location: '@pro-laico/richtext', description: 'The opinionated Lexical editor preset. Set it as your Payload config’s editor. Also available from the /default-lexical subpath.' },
+    createDefaultLexical: { type: 'function', location: '@pro-laico/richtext/default-lexical', description: 'Factory for the Lexical preset — pass enabledCollections to point internal links at a different set of collections.' },
+    DefaultLexicalOptions: { type: 'type', location: '@pro-laico/richtext/default-lexical', description: 'The options type for createDefaultLexical (enabledCollections).' },
+  }}
+/>
 
 ## Related
 
 <Cards>
   <Card title="Atomic Blocks" href="/docs/features/atomic-blocks" />
+  <Card title="@pro-laico/atomic" href="/docs/plugins/atomic" />
+  <Card title="@pro-laico/styles" href="/docs/plugins/styles" />
 </Cards>

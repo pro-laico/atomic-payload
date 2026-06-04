@@ -1,9 +1,9 @@
 ---
 title: "@pro-laico/tracking"
-description: "Analytics and tag-manager integration — one Tracking global and composable React providers."
+description: "Turn analytics on and off from the Payload admin — flip a switch for PostHog, Google Tag Manager, or Vercel Analytics and the right scripts load on your site."
 ---
 
-`@pro-laico/tracking` turns analytics on and off from the Payload admin. Enable PostHog, Google Tag Manager, or Vercel Analytics with a toggle and add the keys right in the dashboard — no juggling environment variables across every deployment.
+`@pro-laico/tracking` lets you manage analytics from the Payload admin instead of your environment. Toggle PostHog, Google Tag Manager, or Vercel Analytics on, paste in the keys right in the dashboard, and a provider you add once at your app root loads exactly the tools you've turned on.
 
 ## Installation
 
@@ -36,45 +36,106 @@ yarn add @pro-laico/tracking
 </Tabs>
 
 <Callout type="info">
-  `next`, `payload`, and `react` are required peers you already have in a Payload + Next.js app. The provider SDKs are **optional** — install only the ones you turn on.
+  `payload`, `next`, and `react` are peers you already have in a Payload + Next.js app. The analytics SDKs are **optional peers** — install only the ones you turn on: `posthog-js` for PostHog, `@next/third-parties` for Google Tag Manager, `@vercel/analytics` for Vercel Analytics.
 </Callout>
-
-Optional peer dependencies:
-
-| Peer | Needed when |
-| --- | --- |
-| `posthog-js` | PostHog is enabled |
-| `@next/third-parties` | Google Tag Manager is enabled |
-| `@vercel/analytics` | Vercel Analytics is enabled |
 
 ## Setup
 
-Add the plugin to your Payload config:
+<Tabs items={['Standalone', 'With the atomic-payload template']}>
+
+<Tab value="Standalone">
+
+Adding analytics to your own Payload + Next.js project.
+
+<Steps>
+
+<Step>
+### Add the plugin to your Payload config
 
 ```ts
-import { trackingPlugin } from '@pro-laico/tracking'
 import { buildConfig } from 'payload'
+import { trackingPlugin } from '@pro-laico/tracking'
 
 export default buildConfig({
   plugins: [trackingPlugin()],
 })
 ```
 
-Then mount the composite provider at your app root, passing in the `Tracking` global. Without it, every provider short-circuits and nothing loads, so fetch it server-side and thread it down:
+This registers the **Tracking** global, where you turn each analytics tool on and enter its keys.
+</Step>
+
+<Step>
+### Turn on the tools you want in the admin
+
+Open the **Tracking** global (under the *Tracking* admin group). Each tool has its own toggle in the sidebar; flipping one on reveals its settings:
+
+- **PostHog** — enter the project public key and host (defaults to `https://us.i.posthog.com`). Autocapture is on by default; you can narrow it with optional URL allow / ignore lists.
+- **Google Tag Manager** — enter your container ID (`GTM-XXXXXXX`).
+- **Vercel Analytics** — just the toggle; it has no keys.
+
+Each tool's keys are required only when its toggle is on, so you can save the global with anything you're not using turned off.
+</Step>
+
+<Step>
+### Add the provider to your app root
+
+The keys live in the **Tracking** global, so nothing loads until you fetch that global on the server and hand it to `TrackingProvider`. Wrap your frontend layout with it — it reads the toggles and renders only the providers you enabled (and renders nothing at all if `tracking` is missing):
 
 ```tsx
 // app/(frontend)/layout.tsx — a Server Component
-import config from '@payload-config'
-import { TrackingProvider } from '@pro-laico/tracking/provider'
 import { getPayload } from 'payload'
+import { TrackingProvider } from '@pro-laico/tracking/provider'
+
+import config from '@payload-config'
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const payload = await getPayload({ config })
   const tracking = await payload.findGlobal({ slug: 'tracking' })
 
-  return <TrackingProvider tracking={tracking}>{children}</TrackingProvider>
+  return (
+    <html lang="en">
+      <body>
+        <TrackingProvider tracking={tracking}>{children}</TrackingProvider>
+      </body>
+    </html>
+  )
 }
 ```
+
+`TrackingProvider` is a client component that pulls in the optional SDKs, which is why it lives behind the `/provider` subpath — server tooling never has to load `posthog-js` or the others. You fetch the global on the server and thread it down as a prop.
+</Step>
+
+</Steps>
+
+</Tab>
+
+<Tab value="With the atomic-payload template">
+
+The [atomic-payload template](/docs/templates/atomic-payload) already includes the plugin and wires `TrackingProvider` into the frontend layout (reading the **Tracking** global through its cached getter). You just choose what to enable.
+
+<Steps>
+
+<Step>
+### Turn on the tools you want
+
+Open the **Tracking** global in the admin. Flip on PostHog, Google Tag Manager, or Vercel Analytics, and fill in the keys each one asks for — the PostHog public key and host, or your Google Tag Manager ID.
+</Step>
+
+<Step>
+### Save and reload
+
+The layout reads the global on each request, so once you save your changes the enabled tools load on the next page view. No build step or environment variables to set.
+</Step>
+
+</Steps>
+
+</Tab>
+
+</Tabs>
+
+<Callout type="info">
+  PostHog initialises once on the first non-admin page view and relies on **autocapture** for events — it records pageviews and interactions automatically. (The earlier custom-property collection and field were removed; the only PostHog tuning is the optional URL allow / ignore lists for autocapture.)
+</Callout>
 
 ## Options
 
@@ -82,34 +143,35 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
 <TypeTable
   type={{
-    enabled: { type: 'boolean', default: 'true', description: 'Set to false to no-op the plugin entirely.' },
-    includeTrackingGlobal: { type: 'boolean', default: 'true', description: 'Register the Tracking global.' },
+    enabled: { type: 'boolean', default: 'true', description: 'Set false to turn the plugin off entirely.' },
+    includeTrackingGlobal: { type: 'boolean', default: 'true', description: 'Registers the Tracking global where you toggle each tool and enter its keys. Turn off if you compose your own global from the exported field groups.' },
   }}
 />
 
+## Environment variables
+
+This plugin reads **no** environment variables. Every key — the PostHog public key and host, the Google Tag Manager ID — is entered and stored in the **Tracking** global in the admin, so the same build works across deployments without juggling per-environment keys.
+
 ## Exports
 
-**Subpath imports**
-
-| Subpath | What's there |
-| --- | --- |
-| `@pro-laico/tracking` | The plugin, `Tracking` global, and provider field groups |
-| `@pro-laico/tracking/provider` | The React providers (client) |
-| `@pro-laico/tracking/schema` | Payload `Tracking` type augmentation stub |
-
-**By kind**
-
-- **Globals** — `Tracking`
-- **Providers** (from `/provider`) — `TrackingProvider`, `PostHogProvider`, `GoogleTagManagerProvider`, `VercelProvider`
-- **Fields** — `postHogGroup()`, `googleTagManagerGroup()` — drop-in provider field groups for composing your own Tracking global
-
-<Callout type="info">
-  The providers live behind `/provider` because they're client components that pull in the optional SDKs, which aren't safe to load on the server. Keeping them off the main barrel means the server-resolved entry (e.g. for `payload generate:importmap`) never reaches them.
-</Callout>
+<ExportTable
+  exports={{
+    trackingPlugin: { type: 'plugin', location: '@pro-laico/tracking', description: 'The plugin itself — registers the Tracking global. Default and named export.' },
+    TrackingPluginOptions: { type: 'type', location: '@pro-laico/tracking', description: "The TypeScript type for the plugin's options." },
+    Tracking: { type: 'global', location: '@pro-laico/tracking', description: 'The Tracking global config — the toggles and key fields for PostHog, Google Tag Manager, and Vercel Analytics. Import it to register or extend it yourself.' },
+    postHogGroup: { type: 'function', location: '@pro-laico/tracking', description: 'Builds the PostHog settings field group (public key, host, autocapture) for composing your own Tracking global.' },
+    googleTagManagerGroup: { type: 'function', location: '@pro-laico/tracking', description: 'Builds the Google Tag Manager settings field group (container ID) for composing your own Tracking global.' },
+    TrackingProvider: { type: 'function', location: '@pro-laico/tracking/provider', description: 'The composite client provider for your app root — reads the Tracking global and renders only the tools you enabled. Client component.' },
+    PostHogProvider: { type: 'function', location: '@pro-laico/tracking/provider', description: 'The PostHog-only client provider, in case you wire providers individually.' },
+    GoogleTagManagerProvider: { type: 'function', location: '@pro-laico/tracking/provider', description: 'The Google Tag Manager-only client provider.' },
+    VercelProvider: { type: 'function', location: '@pro-laico/tracking/provider', description: 'The Vercel Analytics-only client provider.' },
+    'Tracking (type)': { type: 'type', location: '@pro-laico/tracking/schema', description: 'The TypeScript type for the Tracking global, for typed access to your tracking settings.' },
+  }}
+/>
 
 ## Related
 
 <Cards>
-  <Card title="Tracking — feature guide" href="/docs/features/tracking" />
+  <Card title="Tracking" href="/docs/features/tracking" />
   <Card title="Add to an existing project" href="/docs/getting-started/existing-project" />
 </Cards>

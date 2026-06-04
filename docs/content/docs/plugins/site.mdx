@@ -1,9 +1,9 @@
 ---
 title: "@pro-laico/site"
-description: "The opinionated site-shape package — Pages, Header, Footer collections plus the SiteMetaData and Settings globals, all registered by a single sitePlugin()."
+description: "The ready-made site shape for Atomic Payload — Pages, Header, and Footer collections plus site-wide Settings and SEO metadata, all from one sitePlugin()."
 ---
 
-`@pro-laico/site` gives you the bones of a website out of the box: Pages, a Header, a Footer, and site-wide Settings and SEO/metadata. Instead of remodeling the same collections on every project, you start with a sensible, ready-to-edit site structure.
+`@pro-laico/site` gives you the bones of a website out of the box: a **Pages** collection, editable **Header** and **Footer**, site-wide **Settings**, and **SEO / metadata** defaults. Instead of remodeling the same collections on every project, you start with a sensible, ready-to-edit site structure. It's a Tool package — most people get it through the [atomic-payload template](/docs/templates/atomic-payload), which wires it up alongside the other plugins, rather than installing it on its own.
 
 ## Installation
 
@@ -36,12 +36,21 @@ yarn add @pro-laico/site
 </Tabs>
 
 <Callout type="info">
-  `@payloadcms/plugin-nested-docs`, `payload`, and `react` are required peers you already have in a Payload + Next.js app.
+  `payload` and `react` are peers you already have in a Payload + Next.js app. `@payloadcms/plugin-nested-docs` is also required — the **Pages** collection uses it for parent/child page nesting (it powers the page tree and breadcrumbs). Add it and wire it for the `pages` collection (see Setup).
 </Callout>
 
 ## Setup
 
-Add the plugin to your Payload config:
+<Tabs items={['Standalone', 'With the atomic-payload template']}>
+
+<Tab value="Standalone">
+
+Adding the site shape to your own Payload + Next.js project.
+
+<Steps>
+
+<Step>
+### Add the plugin to your Payload config
 
 ```ts
 import { buildConfig } from 'payload'
@@ -52,29 +61,149 @@ export default buildConfig({
 })
 ```
 
-That's the whole API. The plugin is intentionally unopinionated about cross-package wiring (atomicHook callback, nested-docs plugin, live-preview URL, JSON-schema setup) — that's the template's job, because those choices depend on what other plugins you've enabled.
+This registers everything in one go:
+
+- **Pages** — your routable pages, with a title, slug, derived `href`, a published-at date, parent/child nesting, page content, an **SEO** tab, and per-page settings.
+- **Header** and **Footer** — single-purpose collections for the site chrome you render around every page, each with its own content and an `active` toggle.
+- **Settings** — a site-wide global for the persistent store version (draft and published).
+- **Site MetaData** — site-wide SEO fallbacks: site name, default description, default Open Graph image, and light/dark favicons.
+
+All four collections and both globals show up under a **Website** admin group.
+</Step>
+
+<Step>
+### Wire up nested-docs for pages
+
+The **Pages** collection uses `@payloadcms/plugin-nested-docs` for its parent field and breadcrumbs, so add that plugin and point it at `pages`:
+
+```ts
+import { buildConfig } from 'payload'
+import { nestedDocsPlugin } from '@payloadcms/plugin-nested-docs'
+import { sitePlugin } from '@pro-laico/site'
+
+export default buildConfig({
+  plugins: [
+    sitePlugin(),
+    nestedDocsPlugin({
+      collections: ['pages'],
+      parentFieldSlug: 'parent',
+      breadcrumbsFieldSlug: 'breadcrumbs',
+      generateURL: (docs) => docs.reduce((url, doc) => `${url}/${doc.slug}`, ''),
+      generateLabel: (docs) => docs.reduce((url, doc) => `${url}/${doc.slug}`, ''),
+    }),
+  ],
+})
+```
+
+`@pro-laico/site` stays deliberately unopinionated about this and other cross-package choices (which collections run the atomic hook, the live-preview URL, JSON-schema type generation) so it doesn't force a wiring on you — those depend on what other plugins you've enabled.
+</Step>
+
+<Step>
+### Add content in the admin
+
+Open the **Pages**, **Header**, and **Footer** collections to build out your site, fill in **Site MetaData** for your SEO fallbacks, and leave **Settings** at its defaults unless you need to reset the persistent store.
+</Step>
+
+<Step>
+### Render the header, footer, and pages in your app
+
+Use it in your app — see [Using it in your app](#using-it-in-your-app) below.
+</Step>
+
+</Steps>
+
+</Tab>
+
+<Tab value="With the atomic-payload template">
+
+The [atomic-payload template](/docs/templates/atomic-payload) already includes `@pro-laico/site` and wires it up for you — the plugin, the nested-docs configuration for pages, and the frontend layout that renders the header, footer, and page content. You just edit content in the admin.
+
+<Steps>
+
+<Step>
+### Build your site in the admin
+
+Add pages under the **Pages** collection (nest them with the parent field to build your URL tree), edit the **Header** and **Footer**, and set your SEO fallbacks in **Site MetaData** — all under the **Website** admin group.
+</Step>
+
+<Step>
+### Let the layout render it
+
+The template's frontend layout already pulls the active header and footer and the page content and renders them, so your edits show up on the site without any extra wiring.
+</Step>
+
+</Steps>
+
+</Tab>
+
+</Tabs>
+
+## Using it in your app
+
+The package ships ready-made **Header** and **Footer** renderers at `@pro-laico/site/components/frontend`. They're server components: hand each one the matching document and it renders that document's blocks. Place them around your page content in the root layout:
+
+```tsx
+// app/(frontend)/layout.tsx
+import { Footer, Header } from '@pro-laico/site/components/frontend'
+
+export default async function RootLayout({
+  children,
+  header,
+  footer,
+}: {
+  children: React.ReactNode
+  header: HeaderDoc
+  footer: FooterDoc
+}) {
+  return (
+    <html lang="en">
+      <body>
+        <Header header={header} />
+        {children}
+        <Footer footer={footer} />
+      </body>
+    </html>
+  )
+}
+```
+
+The template fetches the active `header` and `footer` documents (and the page content) through the cache and passes them in — see the [template's layout](/docs/templates/atomic-payload) for the full wiring. Each component renders that document's `children` blocks and applies its class name; if no document is found it falls back to an empty header / footer.
+
+## Options
+
+`sitePlugin(options?)` accepts:
+
+<TypeTable
+  type={{
+    enabled: { type: 'boolean', default: 'true', description: 'Set false to turn the plugin off — it leaves your config untouched and registers nothing.' },
+  }}
+/>
 
 ## Exports
 
-**Subpath imports**
-
-| Subpath | What's there |
-| --- | --- |
-| `@pro-laico/site` | `sitePlugin`, the `Pages`/`Header`/`Footer` collections, the `Settings`/`SiteMetaData` globals, tab fields, and utilities |
-| `@pro-laico/site/schema` | `zap` registry augmentations |
-| `@pro-laico/site/zap` | The zap helpers for site types |
-| `@pro-laico/site/components/frontend` | Frontend React components |
-
-**By kind**
-
-- **Collections** — `Pages`, `Header`, `Footer`
-- **Globals** — `SiteMetaData`, `Settings`
-- **Fields** — `SEOTab`, `SettingsTab` — drop-in tabs for composing site collections
-- **Components** (from `/components/frontend`) — Frontend React components (`Header` and `Footer` renderers)
-- **Utilities** — `COLLECTION_SLUGS_WITH_ATOMIC_HOOK` — the explicit list of collections the atomic hook should run on; keep `@pro-laico/atomic/hook`'s wiring in sync with this
+<ExportTable
+  exports={{
+    sitePlugin: { type: 'plugin', location: '@pro-laico/site', description: 'The plugin itself — registers the Pages / Header / Footer collections and the Settings / SiteMetaData globals. Default and named export.' },
+    SitePluginOptions: { type: 'type', location: '@pro-laico/site', description: "The TypeScript type for the plugin's options." },
+    Pages: { type: 'collection', location: '@pro-laico/site', description: 'The routable pages collection (title, slug, href, parent nesting, content, SEO, and settings) — import it to register or extend it yourself.' },
+    Header: { type: 'collection', location: '@pro-laico/site', description: 'The header collection for the chrome rendered above every page.' },
+    Footer: { type: 'collection', location: '@pro-laico/site', description: 'The footer collection for the chrome rendered below every page.' },
+    Settings: { type: 'global', location: '@pro-laico/site', description: 'The site-wide Settings global (the draft / published persistent store version).' },
+    SiteMetaData: { type: 'global', location: '@pro-laico/site', description: 'The site-wide SEO fallbacks global — site name, default description, default Open Graph image, and light/dark favicons.' },
+    SEOTab: { type: 'field', location: '@pro-laico/site', description: 'The drop-in SEO tab (title, description, image, favicons, indexing and sitemap settings) — compose it into your own page-like collections.' },
+    SettingsTab: { type: 'field', location: '@pro-laico/site', description: 'The drop-in page settings tab (dev mode, breadcrumbs, and the page-function storage fields) for composing your own page-like collections.' },
+    COLLECTION_SLUGS_WITH_ATOMIC_HOOK: { type: 'constant', location: '@pro-laico/site', description: 'The list of collection slugs that should run the atomic hook (pages / header / footer plus the styles and icons sets) — keep your atomic-hook wiring in sync with this.' },
+    'Header / Footer (components)': { type: 'component', location: '@pro-laico/site/components/frontend', description: 'Server components that render a header or footer document’s blocks — pass the matching document and place them around your page content.' },
+    'CollectionSchemas (+ slug schemas)': { type: 'object', location: '@pro-laico/site/zap', description: 'The zap registry schemas for the site collection slugs — register them before generating types (the JSON-schema step uses these). Default export, with the individual slug schemas named.' },
+    'Page / Header / Footer / SiteMetaDatum (types)': { type: 'type', location: '@pro-laico/site/schema', description: 'TypeScript types for typed access to your pages, header, footer, and site-metadata documents.' },
+  }}
+/>
 
 ## Related
 
 <Cards>
   <Card title="Pages, Header, Footer & SEO" href="/docs/features/site" />
+  <Card title="@pro-laico/styles" href="/docs/plugins/styles" />
+  <Card title="@pro-laico/atomic" href="/docs/plugins/atomic" />
+  <Card title="atomic-payload template" href="/docs/templates/atomic-payload" />
 </Cards>

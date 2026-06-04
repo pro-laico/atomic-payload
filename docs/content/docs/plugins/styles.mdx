@@ -1,9 +1,9 @@
 ---
 title: "@pro-laico/styles"
-description: "The single home for all CSS handling in Atomic Payload — the designSet + shortcutSet collections and the runtime UnoCSS processor."
+description: "Manage your whole design system from the Payload admin — write Tailwind on your blocks and author colors, tokens, reusable shortcuts, and swappable design sets as content, with no config file to edit and no redeploy to restyle your site."
 ---
 
-`@pro-laico/styles` brings your whole design system into the Payload admin. Write Tailwind directly on your blocks, and manage colors, spacing, animations, reusable shortcuts, and entire swappable design sets as content — with no `tailwind.config` to edit and no redeploy to restyle your site.
+`@pro-laico/styles` brings your design system into the Payload admin. Write Tailwind classes directly on your blocks and author colors, spacing, animations, reusable shortcuts, and entire swappable design sets as content. There's no `tailwind.config` to edit and no redeploy to restyle your site — saving in the admin regenerates the stylesheet your frontend serves.
 
 ## Installation
 
@@ -36,43 +36,193 @@ yarn add @pro-laico/styles
 </Tabs>
 
 <Callout type="info">
-  `@payloadcms/ui`, `payload`, `react`, and `unocss` are all **required** peers — `unocss` included, since it powers the runtime CSS processor.
+  `payload`, `@payloadcms/ui`, and `react` are peers you already have in a Payload app. `unocss` is also a required peer — it's the engine that turns your authored classes and design set into CSS, so install it if you don't have it yet.
 </Callout>
+
+## How the CSS reaches your app
+
+The plugin registers two collections you edit in the admin — **`designSet`** (your theme: colors, spacing, animations, prose, and other tokens) and **`shortcutSet`** (reusable class groupings, like a Tailwind component class) — plus two hidden **CSS storage globals** (`draftStorage` and `publishedStorage`).
+
+When you save a design set, shortcut set, or any document that carries authored classes, a `beforeChange` hook regenerates the stylesheet with UnoCSS and writes it into those storage globals. Your frontend reads the stored CSS and injects it into the page `<head>`, and reads the active design set for its `<html>` / `<body>` class names. Switching which design set is active swaps your whole look — no rebuild.
+
+You wire the CSS hook one of two ways, and the Setup tabs below show both:
+
+- **Standalone** — pass a `getCached` getter and the plugin attaches its own `cssHook`, so this package processes CSS entirely on its own.
+- **With the template** — pass the project's `atomicHook` (from `@pro-laico/atomic`), which handles CSS along with the rest of the runtime.
 
 ## Setup
 
-Add the plugin to your Payload config:
+<Tabs items={['Standalone', 'With the atomic-payload template']}>
+
+<Tab value="Standalone">
+
+Adding styles to your own Payload + Next.js project, with no `@pro-laico/atomic`.
+
+<Steps>
+
+<Step>
+### Add the plugin to your Payload config
+
+`stylesPlugin` always needs a `generateLivePreviewPath` (it's shared by both collections for live preview). Pass a `getCached` getter to attach the standalone CSS hook so this package generates the stylesheet itself:
 
 ```ts
 import { buildConfig } from 'payload'
-import { stylesPlugin } from '@pro-laico/styles'
+import { stylesPlugin, type CssProcessorGetCached } from '@pro-laico/styles'
+
+// Reads the active designSet / shortcutSet, the generated site-css, and the
+// page atomic-classes — see the next step.
+const getCached: CssProcessorGetCached = async (tag, draft) => {
+  const mod = await import('@/cache/getCached')
+  return mod.default(tag, draft)
+}
 
 export default buildConfig({
   plugins: [
     stylesPlugin({
-      generateLivePreviewPath: yourPreviewUrl,  // REQUIRED — shared by both collections
-      atomicHook: yourBeforeChangeHook,         // optional; from @pro-laico/atomic/hook
-      // getCached: yourGetCached,              // attaches the standalone cssHook (CSS without @pro-laico/atomic)
-      // cssHookOptions: { ... },               // forwarded to createCssHook when getCached is set
-      // enabled: true,                         // false makes the whole plugin a no-op
-      // includeStorageGlobals: true,           // false skips the draft/published CSS storage globals
-      // registerTypescriptSchema: true,        // false if you already wire @pro-laico/zap's schema yourself
-      designSet: {
-        // false (or { enabled: false }) to omit the designSet collection entirely
-        // access, collection — shallow-merged per-collection settings
-        // fontField — a Payload Field (e.g. @pro-laico/fonts' fontUploadField()) for the Fonts tab
-      },
-      shortcutSet: {
-        // false (or { enabled: false }) to omit shortcutSet entirely
-        // defaultShortcuts: [...]   read-only rows shown in admin
-        // access, collection — same pattern as designSet
-      },
+      generateLivePreviewPath: yourPreviewUrl,
+      getCached,
     }),
   ],
 })
 ```
 
-Row-label and admin component paths default to template-provided `@/ui/...` strings resolved via your app's `importMap`.
+This registers the **`designSet`** and **`shortcutSet`** collections and the `draftStorage` / `publishedStorage` globals the generated CSS is written to.
+
+<Callout type="info">
+  Pairing this with [`@pro-laico/fonts`](/docs/plugins/fonts)? Pass `designSet: { fontField: fontUploadField() }` so the design set's **Fonts** tab gets the font picker — that's how the template wires the two together (see the other tab).
+</Callout>
+</Step>
+
+<Step>
+### Provide the `getCached` getter
+
+The CSS processor needs a getter that resolves the active design set, the active shortcut set, the generated `site-css`, and the page `atomic-classes`. Build it from `@pro-laico/core`'s stock registry and only override what your project doesn't have (e.g. header / footer collections):
+
+```ts
+// src/cache/getCached.ts
+import { cache } from 'react'
+import configPromise from '@payload-config'
+import 'server-only'
+import { createGetCached, defaultGetRegistry, type GetRegistry } from '@pro-laico/core/cache'
+
+const registry: GetRegistry = {
+  ...defaultGetRegistry,
+  header: (async () => undefined) as GetRegistry['header'],
+  footer: (async () => undefined) as GetRegistry['footer'],
+}
+
+export default cache(createGetCached(configPromise, registry))
+```
+
+Each getter is wrapped with revalidation tags, so editing a design set or shortcut set in the admin flows through to your page (and to live preview).
+</Step>
+
+<Step>
+### Let your blocks carry classes
+
+The class textarea field — where you type Tailwind/UnoCSS classes — ships in this package. Add `ClassNameField` to any collection whose documents should feed the stylesheet (e.g. your `pages` blocks). When such a document is saved, the standalone hook collects every `*ClassName` value (including those nested in blocks), stores them, and regenerates the CSS:
+
+```ts
+import { ClassNameField } from '@pro-laico/styles/fields/className'
+
+// inside a collection's fields:
+ClassNameField({ namePrefix: 'main', defaultValue: 'mx-auto max-w-3xl px-6 py-12' })
+```
+
+Attach the same standalone hook to that collection's `beforeChange` so saving a page regenerates the stylesheet with its classes — `createCssHook(getCached)` builds it.
+</Step>
+
+<Step>
+### Render the generated stylesheet on your frontend
+
+Your frontend reads the generated CSS from the storage globals via `getCached('site-css', draft)` and injects it into `<head>`. Read the active design set too, for its `<html>` / `<body>` / wrapper class names:
+
+```tsx
+// app/(frontend)/layout.tsx
+import { draftMode } from 'next/headers'
+
+import getCached from '@/cache/getCached'
+
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const { isEnabled: draft } = await draftMode()
+
+  const css = await getCached('site-css', draft)
+  const ds = await getCached('designSet', draft)
+
+  return (
+    <html lang="en" className={ds?.htmlClassName ?? undefined}>
+      <head>
+        <style id="atomic-generated" type="text/css" dangerouslySetInnerHTML={{ __html: css || '' }} />
+      </head>
+      <body className={ds?.bodyClassName || undefined}>
+        <div className={`${ds?.wrapperClassName ?? ''} isolate`}>{children}</div>
+      </body>
+    </html>
+  )
+}
+```
+
+Now picking a different design set in the admin restyles the whole site on the next request — the design set's tokens become the `var(--…)` values your classes resolve against.
+</Step>
+
+<Step>
+### Author your design in the admin
+
+Open the **`designSet`** collection and edit its tabs — colors, sizes, animations, prose, and other tokens — then mark one set active. Author reusable class groupings in the **`shortcutSet`** collection. Only one design set is active at a time, so you can keep alternates as drafts and switch the active set to swap the whole look.
+</Step>
+
+</Steps>
+
+The [`styles-only` example](/docs/examples/styles-only) wires this exact standalone path end to end.
+
+</Tab>
+
+<Tab value="With the atomic-payload template">
+
+The [atomic-payload template](/docs/templates/atomic-payload) already wires everything — the `designSet` + `shortcutSet` collections, the CSS hook (through `@pro-laico/atomic`'s `atomicHook`), the storage globals, and the layout that serves the generated stylesheet. The template uses the shared `atomicHook` instead of a `getCached` getter, and turns on the font picker:
+
+```ts
+// src/plugins/styles.ts
+import { stylesPlugin } from '@pro-laico/styles'
+import { fontUploadField } from '@pro-laico/fonts'
+import { atomicHook } from '@pro-laico/atomic/hook'
+import { generateLivePreviewPath } from '@pro-laico/core'
+
+export const stylesPluginConfig = stylesPlugin({
+  atomicHook,
+  generateLivePreviewPath,
+  designSet: { fontField: fontUploadField() },
+  registerTypescriptSchema: false,
+})
+```
+
+You just author your design and build.
+
+<Steps>
+
+<Step>
+### Author your design set
+
+Open the **`designSet`** collection and edit its tabs — colors, sizes, animations, prose, and other tokens. If you've also set up [`@pro-laico/fonts`](/docs/plugins/fonts), the **Fonts** tab is where you pick the active faces.
+</Step>
+
+<Step>
+### Add reusable shortcuts
+
+In the **`shortcutSet`** collection, author reusable UnoCSS shortcuts — a class grouping you name once and reuse anywhere. The built-in default shortcuts show as read-only rows for reference.
+</Step>
+
+<Step>
+### Mark a set active and save
+
+Mark one design set active and save. The `atomicHook` regenerates the stylesheet into the storage globals, and the template's frontend layout already serves it — reload to see the new design. Keep alternates as drafts and switch the active set to swap the whole look, no redeploy needed.
+</Step>
+
+</Steps>
+
+</Tab>
+
+</Tabs>
 
 ## Options
 
@@ -80,59 +230,47 @@ Row-label and admin component paths default to template-provided `@/ui/...` stri
 
 <TypeTable
   type={{
-    generateLivePreviewPath: { type: '(args) => Promise<string> | string', description: 'Required. Generates the live-preview URL for the active design set. Shared by both collections.' },
-    atomicHook: { type: 'CollectionBeforeChangeHook', description: 'Optional. The beforeChange hook that wraps createCssProcessor + processDesignSet (from @pro-laico/atomic/hook).' },
-    enabled: { type: 'boolean', default: 'true', description: 'When false, the whole plugin is a no-op.' },
-    getCached: { type: 'CssProcessorGetCached', description: 'Optional. Attaches the standalone cssHook, producing CSS without @pro-laico/atomic.' },
-    cssHookOptions: { type: 'CssHookOptions', description: 'Optional. Forwarded to createCssHook when getCached is set (slug/global overrides).' },
-    includeStorageGlobals: { type: 'boolean', default: 'true', description: 'When false, the plugin does not register the draft/published CSS storage globals.' },
-    registerTypescriptSchema: { type: 'boolean', default: 'true', description: "When true, appends @pro-laico/zap's toJSONSchemaExtensions to config.typescript.schema so generate:types resolves the designSet field $refs. Set false if you already wire the zap schema yourself." },
-    designSet: { type: 'object | false', description: 'The designSet collection config. Pass false (or { enabled: false }) to omit the collection. Nested keys: enabled (boolean, default true), access, collection (shallow-merged per-collection settings), and fontField (a Payload Field for the Fonts tab, e.g. @pro-laico/fonts fontUploadField()).' },
-    shortcutSet: { type: 'object | false', description: 'The shortcutSet collection config. Pass false (or { enabled: false }) to omit it. Nested keys: enabled (boolean, default true), access, collection (same as designSet), plus defaultShortcuts (read-only rows shown in admin).' },
+    generateLivePreviewPath: { type: '(args) => Promise<string> | string', description: 'Required. Builds the live-preview URL for the active set. Shared by both collections.' },
+    atomicHook: { type: 'CollectionBeforeChangeHook', description: "Wire the project's all-in-one hook (from @pro-laico/atomic) to handle CSS — and forms / actions — for both collections." },
+    getCached: { type: 'CssProcessorGetCached', description: 'Provide a getter for the active sets and stored classes to attach the standalone cssHook, so this package generates CSS on its own without @pro-laico/atomic.' },
+    cssHookOptions: { type: 'CssHookOptions', description: 'Forwarded to the standalone cssHook when getCached is set — override the slugs and storage globals it reads and writes.' },
+    designSet: { type: 'false | object', default: 'enabled', description: "The designSet collection. Pass false (or { enabled: false }) to skip it. Object keys: access, collection (merged onto the collection), and fontField (a Payload Field for the Fonts tab — e.g. @pro-laico/fonts' fontUploadField())." },
+    shortcutSet: { type: 'false | object', default: 'enabled', description: 'The shortcutSet collection. Pass false (or { enabled: false }) to skip it. Object keys: access, collection (same as designSet), and defaultShortcuts (read-only rows shown in the admin).' },
+    includeStorageGlobals: { type: 'boolean', default: 'true', description: 'Set false to skip registering the draft / published CSS storage globals.' },
+    registerTypescriptSchema: { type: 'boolean', default: 'true', description: "Appends @pro-laico/zap's schema extensions to config.typescript.schema so payload generate:types resolves the design-set field references. Set false if you already wire that schema yourself (e.g. via @pro-laico/core)." },
+    enabled: { type: 'boolean', default: 'true', description: 'Set false to turn the whole plugin off.' },
   }}
 />
 
 ## Exports
 
-**Subpath imports**
-
-| Subpath | What's there |
-| --- | --- |
-| `@pro-laico/styles` | The `stylesPlugin`, `designSet` + `shortcutSet` collections, CSS storage globals, fields, and utilities |
-| `@pro-laico/styles/schema` | `zap` registry augmentations |
-| `@pro-laico/styles/cssProcessor` | `createCssProcessor` directly |
-| `@pro-laico/styles/processDesignSet` | `processDesignSet` directly |
-| `@pro-laico/styles/designSet/tabs/colors` | Color tab + `UnoColors` directly |
-| `@pro-laico/styles/designSet/defaults` | Built-in atomic class defaults |
-| `@pro-laico/styles/fields/value` | Token value fields |
-| `@pro-laico/styles/fields/className` | The className field |
-| `@pro-laico/styles/globals/storage` | CSS storage globals |
-| `@pro-laico/styles/hooks/cssHook` | The standalone `cssHook` |
-| `@pro-laico/styles/ui/rowLabels/*` | Admin row-label React components (`shortcut`, `color`, `animation`, `designToken`) |
-
-**By kind**
-
-- **Collections** — `designSet`, `shortcutSet` (each toggleable)
-- **Globals** — CSS storage globals (from `/globals/storage`)
-- **Fields** — token value fields (from `/fields/value`: `TokenString`, `TokenStringArray`, `ValueField`); the `className` field (from `/fields/className`)
-- **Components** — admin row-labels (from `/ui/rowLabels/*`): `shortcut`, `color`, `animation`, `designToken`
-- **Utilities** — `createCssProcessor` (from `/cssProcessor`), `processDesignSet` (from `/processDesignSet`), `UnoColors` (from `/designSet/tabs/colors`), `defaultAtomicClasses` (from `/designSet/defaults`)
-
-## Slug configuration
-
-Slugs are configured in two different places, depending on whether you mean the **collection** slug or the slugs the **CSS processor** reads/writes.
-
-**Collection slugs.** The `designSet` and `shortcutSet` collections take their slug (and other Payload collection config) from the nested `collection` override on the plugin's `designSet` / `shortcutSet` options — it's shallow-merged on top of the defaults. Pass `false` (or `{ enabled: false }`) to omit a collection entirely; pass `access` to merge access settings; `designSet` additionally accepts a `fontField` Field and `shortcutSet` a `defaultShortcuts` array (read-only rows shown in the admin).
-
-**CSS-processor slugs.** `createCssProcessor` (and the standalone `cssHook` it backs) resolves which documents to read and where to write generated CSS through its `CssProcessorOptions`:
-
-- **`cssCacheTagBySlug`** — a `Record<string, string>` mapping slug → cached-tag key used by `getCached`. The processor reads four entries: `header`, `footer`, `designSet`, and `shortcutSet`, each defaulting to its own name. Override an entry to point the processor at a differently-named collection/global.
-- **`cssStorageGlobals`** — `{ draft, published }` global slugs the generated CSS is written to.
-
-When the plugin wires the standalone hook (via `getCached`), these are passed through `cssHookOptions` (`CssHookOptions`), which forwards `cssCacheTagBySlug`, `cssStorageGlobals`, `designSetSlug`, and `cssProcessorSkipSlugs` to `createCssHook`.
+<ExportTable
+  exports={{
+    stylesPlugin: { type: 'plugin', location: '@pro-laico/styles', description: 'The plugin itself — registers the designSet + shortcutSet collections and the CSS storage globals. Default and named export.' },
+    'StylesPluginOptions / StylesDesignSetOptions / StylesShortcutSetOptions': { type: 'type', location: '@pro-laico/styles', description: 'TypeScript types for the plugin options and the per-collection designSet / shortcutSet settings.' },
+    createDesignSetCollection: { type: 'function', location: '@pro-laico/styles', description: 'Factory for the designSet collection — use it to build or customize the collection yourself instead of letting the plugin register it. DesignSetCollectionOptions types its argument.' },
+    createShortcutSetCollection: { type: 'function', location: '@pro-laico/styles', description: 'Factory for the shortcutSet collection. ShortcutSetCollectionOptions types its argument.' },
+    baseStorage: { type: 'function', location: '@pro-laico/styles', description: 'Factory for a CSS storage global — the hidden draft / published globals the generated stylesheet is written to.' },
+    ClassNameField: { type: 'field', location: '@pro-laico/styles/fields/className', description: 'The atomic-classes textarea field — add it to a collection so authors can type Tailwind / UnoCSS classes that feed the generated stylesheet.' },
+    'TokenString / TokenStringArray / TokenValueArrayField / TokenValuesArrayField / ValueField / ValuesField': { type: 'field', location: '@pro-laico/styles/fields/value', description: 'The design-token value fields used on the design set tabs (single values, name/value pairs, and arrays of them).' },
+    createCssProcessor: { type: 'function', location: '@pro-laico/styles/cssProcessor', description: 'Builds the UnoCSS processor that reads the active sets and stored classes and writes the generated stylesheet into the storage globals.' },
+    'CssProcessorOptions / CssProcessorGetCached': { type: 'type', location: '@pro-laico/styles/cssProcessor', description: 'Types for the processor options and the cached getter it calls.' },
+    createCssHook: { type: 'function', location: '@pro-laico/styles/hooks/cssHook', description: 'Builds the standalone beforeChange hook that regenerates the stylesheet without @pro-laico/atomic. CssHookOptions types its options.' },
+    processDesignSet: { type: 'function', location: '@pro-laico/styles/processDesignSet', description: 'Compiles a design-set document (tokens, colors, prose, preflights) into its storage fields before CSS generation.' },
+    defaultAtomicClasses: { type: 'constant', location: '@pro-laico/styles/designSet/defaults', description: 'The built-in classes always included in the generated CSS, alongside defaultAria.' },
+    'UnoColors / designSetColors': { type: 'object', location: '@pro-laico/styles/designSet/tabs/colors', description: 'The color schema definitions used by the design set Colors tab.' },
+    unoThemeAnimation: { type: 'object', location: '@pro-laico/styles', description: 'The animation schema definition used by the design set Animations tab.' },
+    defaultShortcuts: { type: 'constant', location: '@pro-laico/styles', description: 'The built-in shortcut rows shown read-only in the shortcutSet admin.' },
+    shortcutProtectedNames: { type: 'constant', location: '@pro-laico/styles', description: 'Reserved HTML element names that a shortcut name may not collide with.' },
+    'ColorLabelPath / AnimationLabelPath / DesignTokenLabelPath / ShortcutLabelPath': { type: 'constant', location: '@pro-laico/styles', description: 'Import-map paths for the admin row-label components used by the design set / shortcut set arrays.' },
+    'DesignSet / CSS slug types': { type: 'type', location: '@pro-laico/styles/schema', description: 'TypeScript types for typed access to your design-set data and the CSS-processor slugs.' },
+  }}
+/>
 
 ## Related
 
 <Cards>
   <Card title="Styles" href="/docs/features/styles" />
+  <Card title="@pro-laico/fonts" href="/docs/plugins/fonts" />
+  <Card title="styles-only example" href="/docs/examples/styles-only" />
 </Cards>
