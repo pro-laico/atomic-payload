@@ -133,10 +133,6 @@
         "types": "./dist/children/render/index.d.ts",
         "default": "./dist/children/render/index.js"
       },
-      "./children/fields/trackingTab": {
-        "types": "./dist/children/fields/trackingTab.d.ts",
-        "default": "./dist/children/fields/trackingTab.js"
-      },
       "./children/fields/coloredEnd": {
         "types": "./dist/children/fields/coloredEnd.d.ts",
         "default": "./dist/children/fields/coloredEnd.js"
@@ -310,10 +306,6 @@
       "types": "./src/children/render/index.ts",
       "default": "./src/children/render/index.ts"
     },
-    "./children/fields/trackingTab": {
-      "types": "./src/children/fields/trackingTab.ts",
-      "default": "./src/children/fields/trackingTab.ts"
-    },
     "./children/fields/coloredEnd": {
       "types": "./src/children/fields/coloredEnd.ts",
       "default": "./src/children/fields/coloredEnd.ts"
@@ -389,7 +381,6 @@
     "@mux/blurup": ">=1.0.0",
     "@payloadcms/richtext-lexical": ">=3.0.0",
     "@payloadcms/ui": ">=3.0.0",
-    "@pro-laico/tracking": "workspace:*",
     "next": ">=15.0.0",
     "payload": ">=3.0.0",
     "react": ">=19.0.0",
@@ -400,9 +391,6 @@
   },
   "peerDependenciesMeta": {
     "@mux/blurup": {
-      "optional": true
-    },
-    "@pro-laico/tracking": {
       "optional": true
     },
     "unocss": {
@@ -416,7 +404,6 @@
     "@mux/blurup": "^1.0.2",
     "@payloadcms/richtext-lexical": "^3.79.0",
     "@payloadcms/ui": "^3.79.0",
-    "@pro-laico/tracking": "workspace:*",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@types/traverse": "^0.6.37",

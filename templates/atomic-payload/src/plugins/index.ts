@@ -2,10 +2,10 @@ import type { Plugin } from 'payload'
 
 import { seedPlugin } from '@pro-laico/seed'
 import { sitePlugin } from '@pro-laico/site'
-import { revalidationPlugin } from '@pro-laico/core'
-import { trackingPlugin } from '@pro-laico/tracking'
-import { actionsPlugin } from '@pro-laico/atomic/actions'
 import { formsPlugin } from '@pro-laico/atomic/forms'
+import { trackingPlugin } from '@pro-laico/tracking'
+import { revalidationPlugin } from '@pro-laico/core'
+import { actionsPlugin } from '@pro-laico/atomic/actions'
 
 import { fontsPluginConfig } from './fonts'
 import { iconsPluginConfig } from './icons'
@@ -24,8 +24,8 @@ import { vercelBlobStoragePluginConfig } from './vercelBlobStorage'
 // - `Icon` and `iconSet` are registered via `iconsPlugin` (see `./icons`).
 // - The `designSet` and `shortcutSet` collections (each individually toggleable) plus the
 //   draftStorage / publishedStorage CSS globals are registered via `stylesPlugin` (see `./designSets`).
-// - `trackingPlugin` registers the `Tracking` global (GTM + PostHog tabs + analytics toggles)
-//   and the `posthogProperty` collection — both used to live in the template.
+// - `trackingPlugin` registers the `Tracking` global (GTM + PostHog autocapture tabs +
+//   analytics toggles) — it used to live in the template.
 // - `seedPlugin` mounts `POST /api/seed` and the `BeforeDashboard` SEED DATABASE
 //   banner. The bundled atomic-payload seed runs by default; pass `seed: …` to
 //   override. Gate registration on `INCLUDE_SEED`.

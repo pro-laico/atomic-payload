@@ -472,55 +472,6 @@ export type ThemeKeys = 'mode';
  */
 export type ThemeListen = 'mode';
 /**
- * Type: {@link AttributerType}
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "AttributerType".
- */
-export type AttributerType = 'AttCCToDA' | 'AttBoolToDA' | 'AttTextToDA' | 'AttFormErrorToDA' | 'AttFormStatusToDA';
-/**
- * Type: {@link RunnerType}
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "RunnerType".
- */
-export type RunnerType = 'RunSetCC' | 'RunSetTheme' | 'RunCycleText' | 'RunSetBool' | 'RunResetForm' | 'RunSubmitForm';
-/**
- * Type: {@link FormRateLimitBlockType}
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "FormRateLimitBlockType".
- */
-export type FormRateLimitBlockType = 'FrlSimpleSlidingWindow';
-/**
- * Type: {@link FormSanitationBlockType}
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "FormSanitationBlockType".
- */
-export type FormSanitationBlockType = 'FsCombineTwoFields';
-/**
- * Type: {@link FormValidationBlockType}
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "FormValidationBlockType".
- */
-export type FormValidationBlockType = 'FvIsUnique';
-/**
- * Type: {@link InputSanitationBlockType}
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "InputSanitationBlockType".
- */
-export type InputSanitationBlockType = 'IsTrimText';
-/**
- * Type: {@link InputValidationBlockType}
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "InputValidationBlockType".
- */
-export type InputValidationBlockType = 'IvContains' | 'IvDoesNotContain';
-/**
  * Type: {@link CollectionThatUsesAtomicHookSlug}
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -555,6 +506,55 @@ export type CollectionWithStoredAtomicFormsSlug = 'pages' | 'header' | 'footer';
  * via the `definition` "CollectionWithStoredAtomicActionsSlug".
  */
 export type CollectionWithStoredAtomicActionsSlug = 'pages' | 'header' | 'footer';
+/**
+ * Type: {@link RunnerType}
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "RunnerType".
+ */
+export type RunnerType = 'RunSetCC' | 'RunSetTheme' | 'RunCycleText' | 'RunSetBool' | 'RunResetForm' | 'RunSubmitForm';
+/**
+ * Type: {@link AttributerType}
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AttributerType".
+ */
+export type AttributerType = 'AttCCToDA' | 'AttBoolToDA' | 'AttTextToDA' | 'AttFormErrorToDA' | 'AttFormStatusToDA';
+/**
+ * Type: {@link InputSanitationBlockType}
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "InputSanitationBlockType".
+ */
+export type InputSanitationBlockType = 'IsTrimText';
+/**
+ * Type: {@link InputValidationBlockType}
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "InputValidationBlockType".
+ */
+export type InputValidationBlockType = 'IvContains' | 'IvDoesNotContain';
+/**
+ * Type: {@link FormRateLimitBlockType}
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FormRateLimitBlockType".
+ */
+export type FormRateLimitBlockType = 'FrlSimpleSlidingWindow';
+/**
+ * Type: {@link FormSanitationBlockType}
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FormSanitationBlockType".
+ */
+export type FormSanitationBlockType = 'FsCombineTwoFields';
+/**
+ * Type: {@link FormValidationBlockType}
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FormValidationBlockType".
+ */
+export type FormValidationBlockType = 'FvIsUnique';
 /**
  * Type: {@link ChildBlockType}
  *
@@ -647,7 +647,6 @@ export interface Config {
     pages: Page;
     header: Header;
     footer: Footer;
-    posthogProperty: PosthogProperty;
     font: Font;
     icon: Icon;
     iconSet: IconSet;
@@ -670,7 +669,6 @@ export interface Config {
     pages: PagesSelect<false> | PagesSelect<true>;
     header: HeaderSelect<false> | HeaderSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
-    posthogProperty: PosthogPropertySelect<false> | PosthogPropertySelect<true>;
     font: FontSelect<false> | FontSelect<true>;
     icon: IconSelect<false> | IconSelect<true>;
     iconSet: IconSetSelect<false> | IconSetSelect<true>;
@@ -835,8 +833,6 @@ export interface AtomicChild {
   pops?: PopoverSettings;
   triggerStaticDataAttributes?: StaticDataAttributes;
   staticDataAttributes?: StaticDataAttributes;
-  contentPostHogProperty?: (string | PosthogProperty)[] | null;
-  triggerPostHogProperty?: (string | PosthogProperty)[] | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'AtomicChild';
@@ -910,8 +906,6 @@ export interface SimpleTextChild {
    */
   cid?: string | null;
   staticDataAttributes?: StaticDataAttributes;
-  contentPostHogProperty?: (string | PosthogProperty)[] | null;
-  triggerPostHogProperty?: (string | PosthogProperty)[] | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'SimpleTextChild';
@@ -1279,41 +1273,6 @@ export interface AttFormStatusToDA {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "posthogProperty".
- */
-export interface PosthogProperty {
-  id: string;
-  title: string;
-  description?: string | null;
-  /**
-   * What this should be used for. e.g marketing, user flow, etc.
-   */
-  purpose: string;
-  /**
-   * The formal property name. e.g page_name
-   */
-  propertyFormal: string;
-  /**
-   * The obfuscated property name. e.g page_name_obfuscated
-   */
-  propertyObfuscated: string;
-  /**
-   * The formal value. e.g Home
-   */
-  valueFormal: string;
-  /**
-   * The obfuscated value. e.g Home_obfuscated
-   */
-  valueObfuscated: string;
-  /**
-   * Where this should be used. e.g page, component, global
-   */
-  location: 'page' | 'component' | 'global';
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "RichTextChild".
  */
 export interface RichTextChild {
@@ -1341,8 +1300,6 @@ export interface RichTextChild {
    */
   cid?: string | null;
   staticDataAttributes?: StaticDataAttributes;
-  contentPostHogProperty?: (string | PosthogProperty)[] | null;
-  triggerPostHogProperty?: (string | PosthogProperty)[] | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'RichTextChild';
@@ -1365,7 +1322,7 @@ export interface ImageChild {
    */
   version?: ('thumbnail' | 'square' | 'small' | 'medium' | 'large' | 'xlarge' | 'og') | null;
   /**
-   * Defaults to alt set on the image asset. But you can add an alt for this instance here.
+   * Defaults to the alt set on the image asset; add an instance-specific alt here. Leave blank only for decorative images — non-decorative images need alt text for accessibility.
    */
   alt?: string | null;
   /**
@@ -1405,8 +1362,6 @@ export interface ImageChild {
    */
   cid?: string | null;
   staticDataAttributes?: StaticDataAttributes;
-  contentPostHogProperty?: (string | PosthogProperty)[] | null;
-  triggerPostHogProperty?: (string | PosthogProperty)[] | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'ImageChild';
@@ -1417,7 +1372,7 @@ export interface ImageChild {
  */
 export interface Image {
   id: string;
-  alt?: string | null;
+  alt: string;
   blurDataUrl?: string | null;
   updatedAt: string;
   createdAt: string;
@@ -1503,7 +1458,7 @@ export interface VideoChild {
   /**
    * Default is metadata. Controls when the video starts loading.
    */
-  preload?: ('none' | 'metadata' | 'auto') | null;
+  preload: 'none' | 'metadata' | 'auto';
   /**
    * Default is false. If true, the video will autoplay, which also forces muted to be true.
    */
@@ -1537,8 +1492,6 @@ export interface VideoChild {
    */
   cid?: string | null;
   staticDataAttributes?: StaticDataAttributes;
-  contentPostHogProperty?: (string | PosthogProperty)[] | null;
-  triggerPostHogProperty?: (string | PosthogProperty)[] | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'VideoChild';
@@ -1594,8 +1547,6 @@ export interface IconChild {
    */
   cid?: string | null;
   staticDataAttributes?: StaticDataAttributes;
-  contentPostHogProperty?: (string | PosthogProperty)[] | null;
-  triggerPostHogProperty?: (string | PosthogProperty)[] | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'IconChild';
@@ -1630,8 +1581,6 @@ export interface SVGChild {
    */
   cid?: string | null;
   staticDataAttributes?: StaticDataAttributes;
-  contentPostHogProperty?: (string | PosthogProperty)[] | null;
-  triggerPostHogProperty?: (string | PosthogProperty)[] | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'SVGChild';
@@ -1674,6 +1623,7 @@ export interface PageSEO {
  */
 export interface Favicon {
   id: string;
+  label: string;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -2284,10 +2234,7 @@ export interface UnoThemeAnimation {
   keyframes?: RSS;
   durations?: RSS;
   timingFns?: RSS;
-  properties?: RSRSS;
-  counts?: {
-    [k: string]: string | number;
-  };
+  counts?: RSS;
 }
 /**
  * Type: {@link RSRSS} Record<string, Record<string, string>>
@@ -2539,10 +2486,6 @@ export interface PayloadLockedDocument {
         value: string | Footer;
       } | null)
     | ({
-        relationTo: 'posthogProperty';
-        value: string | PosthogProperty;
-      } | null)
-    | ({
         relationTo: 'font';
         value: string | Font;
       } | null)
@@ -2744,22 +2687,6 @@ export interface FooterSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "posthogProperty_select".
- */
-export interface PosthogPropertySelect<T extends boolean = true> {
-  title?: T;
-  description?: T;
-  purpose?: T;
-  propertyFormal?: T;
-  propertyObfuscated?: T;
-  valueFormal?: T;
-  valueObfuscated?: T;
-  location?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "font_select".
  */
 export interface FontSelect<T extends boolean = true> {
@@ -2914,6 +2841,7 @@ export interface ImagesSelect<T extends boolean = true> {
  * via the `definition` "favicons_select".
  */
 export interface FaviconsSelect<T extends boolean = true> {
+  label?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;
@@ -3437,12 +3365,9 @@ export interface Tracking {
   postHogEnabled?: boolean | null;
   vercelAnalyticsEnabled?: boolean | null;
   googleTagManagerId?: string | null;
-  postHogPublicKey: string;
-  postHogHost: string;
+  postHogPublicKey?: string | null;
+  postHogHost?: string | null;
   enableAutoCapture?: boolean | null;
-  disableSessionRecording?: boolean | null;
-  disableSurveys?: boolean | null;
-  capturePerformance?: boolean | null;
   postHogAutoCaptureSettings?: {
     urlAllowList?:
       | {
@@ -3531,9 +3456,6 @@ export interface TrackingSelect<T extends boolean = true> {
   postHogPublicKey?: T;
   postHogHost?: T;
   enableAutoCapture?: T;
-  disableSessionRecording?: T;
-  disableSurveys?: T;
-  capturePerformance?: T;
   postHogAutoCaptureSettings?:
     | T
     | {
@@ -3641,13 +3563,6 @@ export interface AtomicRegistry {
   SOSA: SOSA;
   RSRSS: RSRSS;
   RSSOSA: RSSOSA;
-  CookieConsentPreferenceKeys: CookieConsentPreferenceKeys;
-  CookieConsentListen: CookieConsentListen;
-  CookieConsentPerform: CookieConsentPerform;
-  ThemeKeys: ThemeKeys;
-  ThemeListen: ThemeListen;
-  ThemePerform: ThemePerform;
-  ActionBlockType: ActionBlockType;
   TokenString?: TokenString;
   TokenStringArray?: TokenStringArray;
   UnoThemeAnimation: UnoThemeAnimation;
@@ -3655,33 +3570,40 @@ export interface AtomicRegistry {
   DesignSetColors: DesignSetColors;
   TokenStorage: TokenStorage;
   ProseColorStorage: ProseColorStorage;
-  AttBoolToDA: AttBoolToDA;
-  AttCCToDA: AttCCToDA;
-  AttFormErrorToDA: AttFormErrorToDA;
-  AttFormStatusToDA: AttFormStatusToDA;
-  AttTextToDA: AttTextToDA;
-  Attributer: Attributer;
-  Attributers: Attributers;
-  AttributerType: AttributerType;
-  RunCycleText: RunCycleText;
-  RunResetForm: RunResetForm;
-  RunSetBool: RunSetBool;
-  RunSetCC: RunSetCC;
-  RunSetTheme: RunSetTheme;
-  RunSubmitForm: RunSubmitForm;
-  Runner: Runner;
-  Runners: Runners;
-  RunnerType: RunnerType;
-  FormRateLimitBlockType: FormRateLimitBlockType;
-  FormSanitationBlockType: FormSanitationBlockType;
-  FormValidationBlockType: FormValidationBlockType;
-  InputSanitationBlockType: InputSanitationBlockType;
-  InputValidationBlockType: InputValidationBlockType;
+  ThemeKeys: ThemeKeys;
+  ThemeListen: ThemeListen;
+  ThemePerform: ThemePerform;
+  CookieConsentPreferenceKeys: CookieConsentPreferenceKeys;
+  CookieConsentListen: CookieConsentListen;
+  CookieConsentPerform: CookieConsentPerform;
+  ActionBlockType: ActionBlockType;
   CollectionThatUsesAtomicHookSlug: CollectionThatUsesAtomicHookSlug;
   CollectionWithStoredAtomicClassesSlug: CollectionWithStoredAtomicClassesSlug;
   CollectionThatUsesCSSProcessorSlug: CollectionThatUsesCSSProcessorSlug;
   CollectionWithStoredAtomicFormsSlug: CollectionWithStoredAtomicFormsSlug;
   CollectionWithStoredAtomicActionsSlug: CollectionWithStoredAtomicActionsSlug;
+  RunSetCC: RunSetCC;
+  RunSetBool: RunSetBool;
+  RunCycleText: RunCycleText;
+  RunSetTheme: RunSetTheme;
+  RunResetForm: RunResetForm;
+  RunSubmitForm: RunSubmitForm;
+  Runner: Runner;
+  Runners: Runners;
+  RunnerType: RunnerType;
+  AttCCToDA: AttCCToDA;
+  AttBoolToDA: AttBoolToDA;
+  AttTextToDA: AttTextToDA;
+  AttFormErrorToDA: AttFormErrorToDA;
+  AttFormStatusToDA: AttFormStatusToDA;
+  Attributer: Attributer;
+  Attributers: Attributers;
+  AttributerType: AttributerType;
+  InputSanitationBlockType: InputSanitationBlockType;
+  InputValidationBlockType: InputValidationBlockType;
+  FormRateLimitBlockType: FormRateLimitBlockType;
+  FormSanitationBlockType: FormSanitationBlockType;
+  FormValidationBlockType: FormValidationBlockType;
   ChildBlockType: ChildBlockType;
   NonRecursiveChildBlockType: NonRecursiveChildBlockType;
   BackdropChildSlug: BackdropChildSlug;

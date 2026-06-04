@@ -1,7 +1,4 @@
 import type { Access } from 'payload'
 
-/**
- * Any authenticated user. Shared by the `Tracking` global and the
- * `PostHogProperty` collection so the two never drift.
- */
+/** Any authenticated user. Used by the `Tracking` global's read/update access. */
 export const authd: Access = ({ req }) => Boolean(req.user)

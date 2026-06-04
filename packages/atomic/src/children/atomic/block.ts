@@ -3,12 +3,11 @@ import type { ClassNameFieldWrapper } from '@pro-laico/core'
 import type { DepthControls } from '@pro-laico/atomic/children'
 import type { NonRecursiveChildBlockType } from '@pro-laico/atomic/children/schema'
 
-import { AtomicBlockControlBar } from './controlBar'
-import { AtomicRowLabelPath as AtomicPath } from '../components/admin'
 import { ColoredEnd } from '../fields/coloredEnd'
-import { TrackingTab } from '../fields/trackingTab'
+import { AtomicRowLabelPath as AtomicPath } from '../components/admin'
 import { ChildsSettingsTab } from '../fields/tabs/settings'
 import { inputTab } from '../fields/tabs/submitForm/input'
+import { AtomicBlockControlBar } from './controlBar'
 import { ContentActionsTab, TriggerActionsTab } from '../fields/tabs/actions'
 import { formRateLimitTab, formSanitationTab, formValidationTab } from '../fields/tabs/submitForm/form'
 
@@ -125,7 +124,6 @@ export function AtomicBlockFactory({ depthControls, classNameField }: AtomicBloc
           { label: 'Actions', admin: { description: d.actions }, fields: [TriggerActionsTab, ContentActionsTab] },
           { label: 'SVR', admin: { description: d.svr }, fields: [formRateLimitTab, formSanitationTab, formValidationTab, inputTab] },
           ChildsSettingsTab('AtomicChild', { classNameField }),
-          TrackingTab,
         ],
       },
       ColoredEnd,

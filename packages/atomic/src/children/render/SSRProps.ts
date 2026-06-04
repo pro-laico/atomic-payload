@@ -2,7 +2,6 @@ import 'server-only' //DO NOT REMOVE
 import { createBlurUp } from '@mux/blurup'
 
 import type { PassThroughs } from '@pro-laico/atomic/children'
-import { postHogPropertyApplicator } from '@pro-laico/tracking'
 import type { ChildBlocks } from '@pro-laico/atomic/children/schema'
 import type { StaticDataAttributes } from '@pro-laico/atomic/actions/schema'
 
@@ -32,7 +31,7 @@ const breakpoints = {
 
 /** Securely generates all props that should be generated server side. */
 export async function SSRProps<T extends ChildBlocks[number]>(block: T): Promise<PassThroughs> {
-  const { blockType, cid, contentPostHogProperty, ClassName } = block
+  const { blockType, cid, ClassName } = block
 
   /** Content Pass Throughs */
   const c: PassThrough & { children?: React.ReactNode } = { p: {}, da: {} }
@@ -48,7 +47,6 @@ export async function SSRProps<T extends ChildBlocks[number]>(block: T): Promise
   // Universal Static Props
   if (cid) c.p.id = cid
   if (ClassName) c.p.className = ClassName
-  if (contentPostHogProperty) c.p = { ...c.p, ...postHogPropertyApplicator(contentPostHogProperty) }
 
   if ('staticDataAttributes' in block && block.staticDataAttributes && Object.keys(block.staticDataAttributes).length > 0) {
     const dataAttributes = formatStaticDataAttributes(block.staticDataAttributes)
@@ -67,7 +65,7 @@ export async function SSRProps<T extends ChildBlocks[number]>(block: T): Promise
           break
         }
         case 'button': {
-          const { buttonType, triggerClassName, triggerPostHogProperty } = block
+          const { buttonType, triggerClassName } = block
 
           if (block?.triggerStaticDataAttributes && Object.keys(block.triggerStaticDataAttributes).length > 0) {
             const dataAttributes = formatStaticDataAttributes(block.triggerStaticDataAttributes)
@@ -75,7 +73,6 @@ export async function SSRProps<T extends ChildBlocks[number]>(block: T): Promise
           }
 
           if (triggerClassName) t.p.className = triggerClassName
-          if (triggerPostHogProperty) t.p = { ...t.p, ...postHogPropertyApplicator(triggerPostHogProperty) }
           if ('backdropClassName' in block && block.backdropClassName) b.p.className = block.backdropClassName
 
           switch (buttonType) {

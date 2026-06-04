@@ -108,14 +108,14 @@ childBlocksPlugin({
 | `@pro-laico/atomic/children` | The child blocks plugin (`childBlocksPlugin`), render component, and field utilities |
 | `@pro-laico/atomic/children/render` | Front-end renderer that walks the tree and renders each child |
 | `@pro-laico/atomic/children/admin/*` | Admin row labels and select widgets |
-| `@pro-laico/atomic/children/fields/*` | Reusable field configs (`trackingTab`, `coloredEnd`, `tagType`, `settings` tab) |
+| `@pro-laico/atomic/children/fields/*` | Reusable field configs (`coloredEnd`, `tagType`, `settings` tab) |
 
 The full list is in `package.json` `exports`.
 
 **By kind**
 
 - **Blocks** — built-in action blocks (theme toggle, form submit, cookie consent, dynamicStore, portal); `AllActionBlocks`; the `AtomicChild` and `SimpleTextChild` child blocks; the `submit-form` action block and `input/*` child blocks
-- **Fields** — `trackingTab`, `coloredEnd`, `tagType`, the `settings` tab, and shared action field builders
+- **Fields** — `coloredEnd`, `tagType`, the `settings` tab, and shared action field builders
 - **Hooks** — `atomicHookPlugin` / `createAtomicHook` (the `beforeChange` orchestrator)
 - **Components** — `@pro-laico/atomic/children/render` (front-end child renderer); admin row labels and select widgets under `/children/admin/*`
 - **Utilities** — `ActionBlockStorageProcessor`, `ActionFilters`, `formProcessor`, and the form helpers under `/forms/utilities/*`

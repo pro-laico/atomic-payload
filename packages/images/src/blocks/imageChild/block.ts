@@ -1,9 +1,8 @@
 import type { Block } from 'payload'
+import type { BlockFieldExtensions } from '@pro-laico/core'
 
 import type { Image as ImageType } from '../../types/payload-augment'
 
-import type { BlockFieldExtensions } from '@pro-laico/core'
-import { TrackingTab } from '@pro-laico/atomic/children/fields/trackingTab'
 import { ColoredEnd } from '@pro-laico/atomic/children/fields/coloredEnd'
 import { ChildsSettingsTab } from '@pro-laico/atomic/children/fields/tabs/settings'
 
@@ -89,7 +88,6 @@ export const createImageBlock = ({ prependFields = [], appendFields = [] }: Imag
           ],
         },
         ChildsSettingsTab('ImageChild'),
-        TrackingTab,
       ],
     },
     ColoredEnd,

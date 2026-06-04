@@ -16,7 +16,6 @@ The runtime that turns Payload content into a working website — action blocks,
 - `@pro-laico/richtext` — `RichTextChild` block factory in the default child set.
 - `@pro-laico/site` — collection shapes the runtime attaches to.
 - `@pro-laico/zap` — zap schemas for blocks.
-- `@pro-laico/tracking` — _optional peer_; tracking integration for child blocks.
 
 ## Exports
 

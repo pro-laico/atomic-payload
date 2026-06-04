@@ -1,9 +1,8 @@
 import type { Block } from 'payload'
-
 import type { BlockFieldExtensions } from '@pro-laico/core'
+
 import { IconSelectPath } from '@pro-laico/atomic/children/admin'
 import { ColoredEnd } from '@pro-laico/atomic/children/fields/coloredEnd'
-import { TrackingTab } from '@pro-laico/atomic/children/fields/trackingTab'
 import { ChildsSettingsTab } from '@pro-laico/atomic/children/fields/tabs/settings'
 
 const d = {
@@ -48,7 +47,6 @@ export const createIconBlock = ({ prependFields = [], appendFields = [] }: IconB
           ],
         },
         ChildsSettingsTab('IconChild'),
-        TrackingTab,
       ],
     },
     ColoredEnd,

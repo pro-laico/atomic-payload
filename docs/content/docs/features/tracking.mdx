@@ -11,11 +11,10 @@ Flipping a provider on or off, or changing its keys, is an edit in the admin rat
 
 ## How it works
 
-Three pieces work together:
+Two pieces work together:
 
-- **The `Tracking` global** — one document in the admin with a tab per provider (PostHog, Google Tag Manager, Vercel Analytics) and a per-provider enable toggle. This is the single source of truth for what's on and how it's configured.
+- **The `Tracking` global** — one document in the admin with a tab per provider (PostHog, Google Tag Manager, Vercel Analytics) and a per-provider enable toggle. This is the single source of truth for what's on and how it's configured. The PostHog tab carries the public key, host, and autocapture settings (an enable toggle plus URL allow/ignore lists).
 - **The composite `TrackingProvider`** — a React provider you mount once at your app root. It reads the `Tracking` global and picks which provider components to render based on the global's flags. Internally it composes the per-provider providers (`PostHogProvider`, `GoogleTagManagerProvider`, `VercelProvider`), each of which conditionally loads its own script only when its toggle is enabled.
-- **The `PostHogProperty` collection** — lets editors define PostHog user/group properties as content. Paired with the `postHogPropertyApplicator` utility, these documents hydrate the PostHog client's `identify` calls.
 
 Because the providers short-circuit when the global says a provider is off, nothing loads unless it's explicitly enabled in the admin.
 
@@ -23,13 +22,11 @@ Because the providers short-circuit when the global says a provider is off, noth
 
 **Enable and configure providers in the admin.** Open the **Tracking** global and switch to the tab for the provider you want — PostHog, Google Tag Manager, or Vercel Analytics. Turn on its toggle and fill in the keys or IDs it needs. Repeat for each provider you want active. Turning a toggle off stops that provider's script from loading without removing its settings.
 
-**Define PostHog properties (optional).** Use the **PostHogProperty** collection to author PostHog user/group properties as content. These feed the PostHog client through `postHogPropertyApplicator`.
-
 **Mount the provider at your app root.** The `TrackingProvider` needs the `Tracking` global threaded in as a prop — fetch it server-side in your root layout and pass it down, otherwise every provider short-circuits and nothing loads. For the exact setup code (fetching the global and wrapping your layout), see the plugin page's Setup section.
 
 ## Configuration
 
-The `Tracking` global and `PostHogProperty` collection are registered by the tracking plugin, and you can control which pieces it registers. See the [plugin options](/docs/plugins/tracking#options) for the full list.
+The `Tracking` global is registered by the tracking plugin, and you can control which pieces it registers. See the [plugin options](/docs/plugins/tracking#options) for the full list.
 
 ## Provided by
 

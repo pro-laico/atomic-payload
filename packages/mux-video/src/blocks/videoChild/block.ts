@@ -1,9 +1,8 @@
 import type { Block } from 'payload'
-
 import type { BlockFieldExtensions } from '@pro-laico/core'
+
 import { ColoredEnd } from '@pro-laico/atomic/children/fields/coloredEnd'
 import { TagTypeField } from '@pro-laico/atomic/children/fields/tagType'
-import { TrackingTab } from '@pro-laico/atomic/children/fields/trackingTab'
 import { ChildsSettingsTab } from '@pro-laico/atomic/children/fields/tabs/settings'
 
 const d = {
@@ -83,7 +82,6 @@ export const createVideoBlock = ({ prependFields = [], appendFields = [] }: Vide
           ],
         },
         ChildsSettingsTab('VideoChild'),
-        TrackingTab,
       ],
     },
     ColoredEnd,

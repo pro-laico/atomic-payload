@@ -1,7 +1,6 @@
 import type { Block } from 'payload'
 
 import { ColoredEnd } from '@pro-laico/atomic/children/fields/coloredEnd'
-import { TrackingTab } from '@pro-laico/atomic/children/fields/trackingTab'
 import type { BlockFieldExtensions } from '@pro-laico/core'
 import { ChildsSettingsTab } from '@pro-laico/atomic/children/fields/tabs/settings'
 
@@ -41,7 +40,6 @@ export const createSvgBlock = ({ prependFields = [], appendFields = [] }: SvgBlo
           ],
         },
         ChildsSettingsTab('SVGChild'),
-        TrackingTab,
       ],
     },
     ColoredEnd,

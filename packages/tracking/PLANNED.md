@@ -2,18 +2,6 @@
 
 Forward-looking backlog distilled from `AUDIT.md`. These items are intentionally **not** done today — each needs a breaking migration, a build artifact, or has low marginal benefit. The corresponding `AUDIT.md` checkbox stays `[ ]` with an inline annotation.
 
-## Breaking migrations
-
-### Rename `posthogProperty` slug → kebab-case
-- **What:** Collection slug `posthogProperty` produces the non-standard `/api/posthogProperty`; convention is `posthog-property`.
-- **Why deferred:** Breaking migration for any existing install — changes the REST path and the stored collection. Needs a dedicated migration script + docs; not a safe in-place cleanup. Use `posthog-property` for new installs.
-- **Source:** `src/collections/posthogProperty.ts:14` · AUDIT.md → Low.
-
-### `posthogProperty` `timestamps: false`
-- **What:** Drop the unused `createdAt`/`updatedAt` columns on this pure-reference collection.
-- **Why deferred:** Setting `timestamps: false` drops two existing columns — a schema migration for any live install — for a marginal at-scale gain.
-- **Source:** `src/collections/posthogProperty.ts:14` · AUDIT.md → Low.
-
 ## RSC / bundle optimization
 
 ### `./provider` `react-server` stub

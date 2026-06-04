@@ -1,13 +1,12 @@
-import type { BlockFieldExtensions } from '@pro-laico/core'
 import type { Block } from 'payload'
+import type { BlockFieldExtensions } from '@pro-laico/core'
 
-import { SimpleTextRowLabelPath as SimpleTextLabelPath } from '../components/admin'
 import { ColoredEnd } from '../fields/coloredEnd'
 import { ForField } from '../fields/for'
+import { TagTypeField } from '../fields/tagType'
+import { SimpleTextRowLabelPath as SimpleTextLabelPath } from '../components/admin'
 import { ContentActionsTab } from '../fields/tabs/actions'
 import { ChildsSettingsTab } from '../fields/tabs/settings'
-import { TagTypeField } from '../fields/tagType'
-import { TrackingTab } from '../fields/trackingTab'
 
 const ds = {
   text: 'The text content to display. Use {{data attribute name}} to display the data attributes value.',
@@ -43,7 +42,6 @@ export const createSimpleTextBlock = ({ prependFields = [], appendFields = [] }:
         },
         { label: 'Actions', fields: [ContentActionsTab] },
         ChildsSettingsTab('SimpleTextChild'),
-        TrackingTab,
       ],
     },
     ColoredEnd,

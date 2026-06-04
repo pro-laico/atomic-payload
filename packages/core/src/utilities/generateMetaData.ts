@@ -1,13 +1,17 @@
 import type { Metadata } from 'next'
 
 import type { PageReturn } from '../types/cache'
-import type { Image } from '@pro-laico/images/schema'
+
 import type { SiteMetaDatum } from '@pro-laico/site/schema'
 
 type GenerateMetaDataArgs = { page?: PageReturn; siteMetadata?: SiteMetaDatum }
 type GenerateMetaDataFn = (args: GenerateMetaDataArgs) => Metadata
 
-const processImageUrl = (image: Image | string | null | undefined): string | undefined => {
+/** Minimal shape shared by Image and Favicon media docs — enough to pull a URL.
+ *  Favicons carry only `url` (no `og` size), so `sizes` is optional. */
+type MediaUrlSource = { url?: string | null; sizes?: { og?: { url?: string | null } | null } | null }
+
+const processImageUrl = (image: MediaUrlSource | string | null | undefined): string | undefined => {
   if (!image || typeof image === 'string') return
   const url = image.sizes?.og?.url || image.url
   return url || undefined

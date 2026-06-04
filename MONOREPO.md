@@ -43,7 +43,7 @@ atomic-payload/
 | `@pro-laico/images`                | Images + Favicons collections + FaviconField + blur integration                              |
 | `@pro-laico/fonts`                 | fontsPlugin + Font collection + font download CLI / API                                      |
 | `@pro-laico/mux-video`             | MuxVideo extension collection + plugin wrapper                                               |
-| `@pro-laico/tracking`              | trackingPlugin: Tracking global (GTM + PostHog tabs + toggles), PostHogProperty collection, GTM/PostHog/Vercel/composite providers |
+| `@pro-laico/tracking`              | trackingPlugin: Tracking global (GTM + PostHog tabs + toggles), GTM/PostHog/Vercel/composite providers |
 | `@pro-laico/richtext`              | RichTextChild block + default Lexical editor preset + JSX renderer for serialized Lexical    |
 | `@pro-laico/seed`                  | seedPlugin: opinionated seed data + `POST /api/seed` endpoint + BeforeDashboard admin banner |
 

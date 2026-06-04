@@ -2,7 +2,6 @@
 
 import { useEffect } from 'react'
 import { usePathname } from 'next/navigation'
-
 import posthog from 'posthog-js'
 import { PostHogProvider as PHProvider } from 'posthog-js/react'
 
@@ -12,15 +11,7 @@ export function PostHogProvider({ children, tracking }: { children: React.ReactN
   const pathname = usePathname()
   useEffect(() => {
     if (!tracking) return
-    const {
-      postHogPublicKey,
-      postHogHost,
-      disableSessionRecording,
-      disableSurveys,
-      capturePerformance,
-      enableAutoCapture,
-      postHogAutoCaptureSettings,
-    } = tracking
+    const { postHogPublicKey, postHogHost, enableAutoCapture, postHogAutoCaptureSettings } = tracking
     if (!postHogPublicKey || !postHogHost) return
 
     // Initialise at most once. PostHog is a singleton — re-running init on every
@@ -44,9 +35,6 @@ export function PostHogProvider({ children, tracking }: { children: React.ReactN
           url_ignorelist: postHogAutoCaptureSettings?.urlIgnoreList?.map((item: { url?: string | null }) => item.url ?? '').filter(Boolean),
         },
       }),
-      ...(disableSessionRecording && { disable_session_recording: disableSessionRecording }),
-      ...(disableSurveys && { disable_surveys: disableSurveys }),
-      ...(capturePerformance && { capture_performance: capturePerformance }),
     })
   }, [pathname, tracking])
 
