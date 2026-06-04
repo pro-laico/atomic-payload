@@ -1,4 +1,5 @@
 import type React from 'react'
+import { extractFonts } from '@pro-laico/fonts'
 
 import definitionFonts from '@/app/definition'
 
@@ -53,15 +54,12 @@ const demoChrome = `
 `
 
 export default function FrontendLayout({ children }: { children: React.ReactNode }) {
-  // The `.variable` classes `next/font/local` generates — present only for fonts
-  // `pnpm generate:fonts` has written into `definition.ts`.
-  const fontVariables = Object.values(definitionFonts)
-    .map((font) => font.variable)
-    .filter(Boolean)
-    .join(' ')
+  // The `next/font/local` variable classes for the fonts `pnpm setup:fonts` has
+  // written into `definition.ts` (undefined until then).
+  const fontVariables = extractFonts(definitionFonts)
 
   return (
-    <html lang="en" className={fontVariables || undefined}>
+    <html lang="en" className={fontVariables}>
       <head>
         <style id="fonts-demo" dangerouslySetInnerHTML={{ __html: demoChrome }} />
       </head>

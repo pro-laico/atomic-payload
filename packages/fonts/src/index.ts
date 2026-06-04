@@ -1,4 +1,5 @@
 export { Font } from './collections/font'
+export { extractFonts } from './extractFonts'
 export { fontUploadField, fontUploadFields } from './fields/font'
 export { createFontSetGlobal, FONT_SET_SLUG, FontSet } from './globals/fontSet'
 

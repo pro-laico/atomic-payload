@@ -112,17 +112,17 @@ src/app/definition.ts
 <Step>
 ### Use the fonts in your app
 
-The generated `definition.ts` exports your fonts as `next/font/local` objects, each with a CSS variable (`--font-setSans`, `--font-setSerif`, and so on). Apply those variables once on your root layout, and the rest of your styles can reference them:
+The generated `definition.ts` default-exports your fonts as `next/font/local` objects, each carrying a CSS variable (`--font-setSans`, `--font-setSerif`, and so on). Pass that export through the package's `extractFonts` helper to get the combined `className` for your root `<html>` — it returns `undefined` until the fonts are generated — and the rest of your styles can reference the variables:
 
 ```tsx
 // app/(frontend)/layout.tsx
+import { extractFonts } from '@pro-laico/fonts'
+
 import fonts from '@/app/definition'
 
-const fontVariables = Object.values(fonts)
-  .map((font) => ('variable' in font ? font.variable : ''))
-  .join(' ')
-
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  const fontVariables = extractFonts(fonts)
+
   return (
     <html lang="en" className={fontVariables}>
       <body>{children}</body>
@@ -227,6 +227,7 @@ It needs `start-server-and-test` and `cross-env` as dev dependencies. Set `SCRIP
     FONT_SET_SLUG: { type: 'constant', location: '@pro-laico/fonts', description: 'The slug string for the fontSet global ("fontSet") — handy when querying it.' },
     fontUploadField: { type: 'function', location: '@pro-laico/fonts', description: "Builds the font group field for a @pro-laico/styles design set's Fonts tab." },
     fontUploadFields: { type: 'function', location: '@pro-laico/fonts', description: 'Builds the four upload slot fields (sans / serif / mono / display) shared by the global and the design-set group.' },
+    extractFonts: { type: 'function', location: '@pro-laico/fonts', description: 'Turns the generated definition.ts export into the space-separated next/font className for your root <html> — returns undefined before the fonts are generated.' },
     runDownloadFonts: { type: 'function', location: '@pro-laico/fonts/scripts/downloadFonts', description: 'The font download step as a function — call it from your own build script instead of the generate:fonts command.' },
     'Font / FontSet (types)': { type: 'type', location: '@pro-laico/fonts/schema', description: 'TypeScript types for typed access to your font data and the active selection.' },
   }}
