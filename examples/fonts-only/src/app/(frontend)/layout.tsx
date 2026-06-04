@@ -1,10 +1,8 @@
 import type React from 'react'
 
 import definitionFonts from '@/app/definition'
-import { fontFamilyName } from '@/lib/fontDir'
-import { type FontRole, getActiveFonts, readFontDataUrl } from '@/lib/fonts'
 
-/** Payload-backed layout needs a live DB; avoid static prerender at build time. */
+/** The page reads the active selection from Payload, so render dynamically. */
 export const dynamic = 'force-dynamic'
 
 export const metadata = {
@@ -12,22 +10,15 @@ export const metadata = {
   description: 'A minimal showcase of the @pro-laico/fonts plugin.',
 }
 
-/** CSS `format()` hint for an `@font-face` src, derived from the upload mimeType. */
-const formatFor = (mime: string): string =>
-  mime.includes('woff2') ? 'woff2' : mime.includes('woff') ? 'woff' : mime.includes('ttf') ? 'truetype' : mime.includes('otf') ? 'opentype' : 'woff2'
-
-/** Per-role keys in the generated `definition.ts` and the CSS variables that
- *  `next/font/local` defines for each (set by `download:fonts`). */
-const DEFINITION_KEY: Record<FontRole, string> = { sans: 'fontSans', serif: 'fontSerif', mono: 'fontMono', display: 'fontDisplay' }
-const NEXT_FONT_VAR: Record<FontRole, string> = {
-  sans: '--font-setSans',
-  serif: '--font-setSerif',
-  mono: '--font-setMono',
-  display: '--font-setDisplay',
-}
-
-/** Static demo chrome. Body text uses the active sans font, falling back to system UI. */
+/** Maps each role variable to the `next/font/local` variable that
+ *  `pnpm generate:fonts` writes into `definition.ts`, plus the demo's page styling. */
 const demoChrome = `
+  :root {
+    --font-display: var(--font-setDisplay);
+    --font-sans: var(--font-setSans);
+    --font-serif: var(--font-setSerif);
+    --font-mono: var(--font-setMono);
+  }
   *, *::before, *::after { box-sizing: border-box; }
   html, body { margin: 0; padding: 0; }
   body {
@@ -42,6 +33,9 @@ const demoChrome = `
   .demo-lead { color: #a1a1a1; margin: 0 0 24px; }
   .demo-muted { color: #a1a1a1; }
   .demo-card { background: #171717; border: 1px solid #2a2a2a; border-radius: 12px; padding: 20px; margin-bottom: 16px; }
+  .demo-notice { background: #221b06; border: 1px solid #6b5300; color: #f3d07a; border-radius: 12px; padding: 16px 20px; margin-bottom: 16px; }
+  .demo-notice code { background: #2e2408; border-color: #6b5300; color: #f3d07a; }
+  .demo-notice a { color: #f3d07a; text-decoration: underline; }
   .demo-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
   .demo-btn { background: #4ade80; color: #0a0a0a; border: 0; border-radius: 8px; padding: 10px 16px; font-weight: 600; cursor: pointer; font-size: 0.95rem; }
   .demo-btn:hover { filter: brightness(1.1); }
@@ -58,39 +52,18 @@ const demoChrome = `
   .specimen__glyphs { color: #cfcfcf; margin-top: 12px; word-break: break-word; }
 `
 
-export default async function FrontendLayout({ children }: { children: React.ReactNode }) {
-  const active = await getActiveFonts()
-  const definition = definitionFonts as Record<string, { variable?: string } | undefined>
-
-  // next/font/local className(s) — present only for fonts `download:fonts` wrote.
-  const nextFontClasses = Object.values(definition)
-    .map((f) => f?.variable)
+export default function FrontendLayout({ children }: { children: React.ReactNode }) {
+  // The `.variable` classes `next/font/local` generates — present only for fonts
+  // `pnpm generate:fonts` has written into `definition.ts`.
+  const fontVariables = Object.values(definitionFonts)
+    .map((font) => font.variable)
     .filter(Boolean)
     .join(' ')
 
-  // Resolve each active role to `--font-<role>`: prefer the downloaded next/font
-  // variable; otherwise inline the bytes as a data: URL `@font-face`.
-  const faceRules: string[] = []
-  const rootVars: string[] = []
-  for (const font of active) {
-    const downloaded = definition[DEFINITION_KEY[font.role]]?.variable
-    if (downloaded) {
-      rootVars.push(`--font-${font.role}:var(${NEXT_FONT_VAR[font.role]});`)
-    } else {
-      const dataUrl = await readFontDataUrl(font.filename, font.mimeType)
-      if (!dataUrl) continue
-      const family = fontFamilyName(font.role)
-      faceRules.push(`@font-face{font-family:"${family}";src:url("${dataUrl}") format("${formatFor(font.mimeType)}");font-display:swap;}`)
-      rootVars.push(`--font-${font.role}:"${family}";`)
-    }
-  }
-
-  const inlineCss = `${faceRules.join('\n')}\n:root{${rootVars.join('')}}\n${demoChrome}`
-
   return (
-    <html lang="en" className={nextFontClasses || undefined}>
+    <html lang="en" className={fontVariables || undefined}>
       <head>
-        <style id="fonts-inline" dangerouslySetInnerHTML={{ __html: inlineCss }} />
+        <style id="fonts-demo" dangerouslySetInnerHTML={{ __html: demoChrome }} />
       </head>
       <body>{children}</body>
     </html>

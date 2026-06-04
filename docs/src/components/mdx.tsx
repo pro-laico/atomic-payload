@@ -6,6 +6,8 @@ import { TypeTable } from 'fumadocs-ui/components/type-table'
 import defaultMdxComponents from 'fumadocs-ui/mdx'
 import type { MDXComponents } from 'mdx/types'
 
+import { ExportTable } from './ExportTable'
+
 // Shared components registered globally so docs pages use them without per-page
 // imports (see the per-type page templates in the plan). `Callout` is already
 // part of the Fumadocs defaults.
@@ -13,6 +15,7 @@ export function getMDXComponents(components?: MDXComponents) {
   return {
     ...defaultMdxComponents,
     TypeTable,
+    ExportTable,
     Steps,
     Step,
     Tabs,

@@ -1,15 +1,16 @@
 {
   "name": "fonts-only",
   "version": "0.1.0",
-  "description": "Minimal Atomic Payload template demonstrating @pro-laico/fonts in isolation. Upload font files to the Font collection, then render specimens on a page — the fonts are read server-side and inlined (never served publicly).",
+  "description": "Minimal Atomic Payload template demonstrating @pro-laico/fonts in isolation — upload fonts to the Font collection, pick the active set, and serve them with next/font/local.",
   "license": "MIT",
   "type": "module",
   "exports": {},
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "prebuild": "pnpm download:fonts",
-    "download:fonts": "pnpm exec tsx node_modules/@pro-laico/fonts/src/scripts/cli.ts",
+    "prebuild": "pnpm generate:fonts",
+    "generate:fonts": "pnpm exec tsx node_modules/@pro-laico/fonts/src/scripts/cli.ts",
+    "setup:fonts": "cross-env LIVE_SITE_URL=http://localhost:3000 start-server-and-test dev http://localhost:3000 generate:fonts",
     "start": "next start",
     "lint": "biome lint .",
     "format": "biome format --write .",
@@ -39,6 +40,7 @@
     "@types/node": "^22.19.15",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
+    "start-server-and-test": "^2.0.0",
     "typescript": "5.8.3"
   },
   "engines": {

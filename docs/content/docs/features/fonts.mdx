@@ -13,11 +13,11 @@ Fonts lets admins manage the site's typefaces from the CMS instead of hard-codin
 
 `next/font` only loads fonts from the filesystem — it can't fetch them from object storage at request time. This feature bridges that gap with three pieces:
 
-- **The `Font` collection** — an upload collection where admins add font files (woff/woff2/ttf/otf). Where the binaries live is Payload's job: the collection's `upload.staticDir` (local disk) or whatever storage plugin (`@payloadcms/storage-*`) is configured at the config level.
+- **The `Font` collection** — an upload collection where admins add font files (woff/woff2/ttf/otf). Where the font files live is Payload's job: the collection's `upload.staticDir` (local disk) or whatever storage plugin (`@payloadcms/storage-*`) is configured at the config level.
 - **The active selection** — which font fills each role (sans/serif/mono/display) is resolved in order: the active `designSet`'s `font` group first, then the standalone `fontSet` global. So a Styles project and a standalone fonts project both work the same way.
-- **The download CLI** — a storage-agnostic build-time script that reads the active selection, pulls each font's binary out of storage using the `url` Payload reports (local disk, Vercel Blob, S3, or any adapter — no storage-specific token needed), and writes the files to disk. Relative URLs (local storage) are resolved against `LIVE_SITE_URL` and fetched with the script's auth token; absolute CDN URLs are fetched as-is.
+- **The download step** — a storage-agnostic build-time script that reads the active selection, pulls each font file out of storage using the `url` Payload reports (local disk, Vercel Blob, S3, or any adapter — no storage-specific token needed), and writes the files to disk. Relative URLs (local storage) are resolved against `LIVE_SITE_URL` and fetched with the script's auth token; absolute CDN URLs are fetched as-is.
 
-The CLI delivers the fonts in two outputs: the binaries land in `public/fonts`, and a generated definition module (`./src/app/definition.ts` by default, overridable via `ATOMIC_FONTS_DEFINITION_FILE`) declares each `localFont(...)` call (along with CSS custom properties per slot) that your app imports to wire the fonts into `next/font/local`. The download intentionally runs at build time (or during scaffolding), not at request time, because `next/font`'s bundling expects file paths it can resolve at compile.
+The download delivers the fonts in two outputs: the font files land in `public/fonts`, and a generated definition module (`./src/app/definition.ts` by default, overridable via `ATOMIC_FONTS_DEFINITION_FILE`) declares each `localFont(...)` call (along with CSS custom properties per slot) that your app imports to wire the fonts into `next/font/local`. The download intentionally runs at build time (or during scaffolding), not at request time, because `next/font`'s bundling expects file paths it can resolve at compile.
 
 ## Using it
 
@@ -26,31 +26,23 @@ The CLI delivers the fonts in two outputs: the binaries land in `public/fonts`, 
 1. Upload your font files into the **Font** collection.
 2. Pick the active fonts for each role (sans/serif/mono/display) — in the active design set's font group when using Styles, or in the `fontSet` global when running standalone.
 
-**Running the download CLI:**
+**Running the download:**
 
-After selecting fonts, run the download step to pull the binaries to disk and regenerate the definition module. Published consumers run the `atomic-fonts-download` bin:
+After selecting fonts, run the download step to pull the files to disk and regenerate the definition module. The [fonts plugin's Setup](/docs/plugins/fonts) wires this up as a `generate:fonts` script:
 
 ```bash
-npx atomic-fonts-download
+pnpm generate:fonts
 ```
 
-Or call it programmatically (e.g. from your own build script):
-
-```ts
-import { runDownloadFonts } from '@pro-laico/fonts/scripts/downloadFonts'
-
-await runDownloadFonts()
-```
-
-This writes the font binaries to `public/fonts` and the generated definition module (`./src/app/definition.ts` by default) that `next/font/local` consumes. Re-run it whenever the active font selection changes.
+It reads the active selection from a **running, reachable Payload instance** (it signs in over HTTP), downloads the font files to `public/fonts`, and writes the generated `definition.ts` that `next/font/local` consumes. It runs automatically on every build via `prebuild`, and you can re-run it any time the active selection changes.
 
 <Callout type="info">
-  `pnpm download:fonts` is an in-repo development shortcut that runs the un-built TypeScript source with `tsx`; it only works inside this monorepo. Published consumers should use the `atomic-fonts-download` bin or `runDownloadFonts` above.
+  `generate:fonts` needs a Payload instance to read from. In CI or on a deploy, point `LIVE_SITE_URL` at your deployed site. For **local development**, before anything's deployed, a `setup:fonts` wrapper boots a temporary dev server, runs the download against it, and shuts it down — see the [fonts plugin Notes](/docs/plugins/fonts#notes).
 </Callout>
 
 ## Configuration
 
-The download CLI reads the active selection and resolves binaries using these environment variables:
+The download reads the active selection and downloads the font files using these environment variables:
 
 | Variable | Purpose |
 | --- | --- |

@@ -18,8 +18,8 @@ const BeforeDashboard: React.FC = () => {
         <h4>Welcome to the Atomic Payload fonts demo</h4>
       </Banner>
       <p className={`${baseClass}__lead`}>
-        Seed four sample fonts into the <code>Font</code> collection (one per family), then view the specimens on the site. The fonts are read
-        server-side and inlined into the page — they are never served from a public URL.
+        Seed four sample fonts into the <code>Font</code> collection (one per family) and set them as the active set, then run{' '}
+        <code>pnpm generate:fonts</code> to serve them with <code>next/font/local</code> and view the specimens on the site.
       </p>
       <SeedControls />
       <p className={`${baseClass}__footer`}>

@@ -1,3 +1,4 @@
+import definitionFonts from '@/app/definition'
 import { type ActiveFont, getActiveFonts } from '@/lib/fonts'
 
 const PANGRAM = 'The quick brown fox jumps over the lazy dog'
@@ -5,7 +6,7 @@ const RAMP = [14, 18, 24, 36]
 const GLYPHS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 0123456789 & ? ! @ # %'
 
 function Specimen({ font }: { font: ActiveFont }) {
-  // Resolved by the layout to the downloaded next/font family or an inlined one.
+  // Resolved by the layout to the downloaded next/font family (or a system fallback).
   const ff = `var(--font-${font.role})`
   return (
     <div className="specimen">
@@ -35,16 +36,21 @@ function Specimen({ font }: { font: ActiveFont }) {
 export default async function HomePage() {
   const fonts = await getActiveFonts()
 
+  // Fonts can be selected in the `fontSet` global but not yet downloaded into
+  // `definition.ts` by `generate:fonts` — in which case the specimens render in
+  // system fonts. Detect that gap so we can tell the reader to run the step.
+  const downloaded = Object.values(definitionFonts).filter((font) => font.variable).length
+  const needsGenerate = fonts.length > 0 && downloaded < fonts.length
+
   return (
     <main className="demo-shell">
       <h1 className="demo-h1" style={{ fontFamily: 'var(--font-display, inherit)' }}>
         Atomic Payload — Fonts Demo
       </h1>
       <p className="demo-lead">
-        This template showcases <code>@pro-laico/fonts</code> on its own. Upload font files to the <code>Font</code> collection, then pick the active{' '}
-        <strong>sans / serif / mono / display</strong> in the <code>fontSet</code> global (the font analog of an icon set). The layout serves each
-        active role two ways: if <code>pnpm download:fonts</code> has run it uses <code>next/font/local</code>; otherwise it reads the font
-        server-side and inlines it as a <code>data:</code> URL. Either way the specimens below resolve via <code>var(--font-&lt;role&gt;)</code>.
+        This template showcases <code>@pro-laico/fonts</code> on its own. Upload font files to the <code>Font</code> collection, pick the active{' '}
+        <strong>sans / serif / mono / display</strong> in the <code>fontSet</code> global, then run <code>pnpm setup:fonts</code> to download them and
+        wire them into <code>next/font/local</code>. The specimens below resolve via <code>var(--font-&lt;role&gt;)</code>.
       </p>
 
       <div className="demo-card">
@@ -62,10 +68,19 @@ export default async function HomePage() {
         </p>
       </div>
 
+      {needsGenerate && (
+        <div className="demo-notice">
+          <strong>Don't see your fonts?</strong> {downloaded === 0 ? 'None of' : `Only ${downloaded} of`} the {fonts.length} selected{' '}
+          {fonts.length === 1 ? 'font has' : 'fonts have'} been downloaded for <code>next/font/local</code> yet, so the specimens below fall back to
+          system fonts. Run <code>pnpm setup:fonts</code> and reload this page — it boots a temporary server, downloads the active fonts, and shuts it
+          down. (See the <a href="https://atomicpayload.com/docs/examples/fonts-only">fonts-only docs</a>.)
+        </div>
+      )}
+
       {fonts.length === 0 ? (
         <p className="demo-muted" style={{ fontStyle: 'italic' }}>
-          No active fonts yet. Open the <a href="/admin">admin dashboard</a>, click <strong>Seed sample fonts</strong> — then come back here to see
-          the four fonts in action.
+          No active fonts yet. Open the <a href="/admin">admin dashboard</a>, click <strong>Seed sample fonts</strong>, then run{' '}
+          <code>pnpm setup:fonts</code> to download them — and come back here to see the four fonts in action.
         </p>
       ) : (
         <>
@@ -76,17 +91,17 @@ export default async function HomePage() {
 
           <h2 className="demo-h2">Use them together</h2>
           <p className="demo-lead">
-            Each active role is wired to a CSS variable (<code>--font-display</code>, <code>--font-sans</code>, <code>--font-serif</code>,{' '}
-            <code>--font-mono</code>) in the layout, so a real layout mixes them by role — swap a font in the <code>fontSet</code> global and
-            everything below re-renders with it.
+            Each role is wired to a CSS variable (<code>--font-display</code>, <code>--font-sans</code>, <code>--font-serif</code>,{' '}
+            <code>--font-mono</code>) in the layout, so a real layout mixes them by role — swap a font in the <code>fontSet</code> global and re-run{' '}
+            <code>pnpm setup:fonts</code> to update them.
           </p>
           <article className="demo-card">
             <h3 style={{ fontFamily: 'var(--font-display, inherit)', fontSize: '2.25rem', margin: '0 0 12px', lineHeight: 1.15 }}>
               Typography that ships from the dashboard
             </h3>
             <p style={{ fontFamily: 'var(--font-sans, inherit)', fontSize: '1.05rem', margin: '0 0 16px' }}>
-              Body copy in the sans role. Editors upload fonts in Payload and choose the active set; the site picks them up on the next render — no
-              rebuild required for the inline path.
+              Body copy in the sans role. Editors upload fonts in Payload and choose the active set; running <code>pnpm setup:fonts</code> downloads
+              them and serves them through <code>next/font/local</code>.
             </p>
             <blockquote
               style={{
