@@ -1,10 +1,100 @@
 ---
 title: "Caching & revalidation"
-description: "Cache helpers and tag-based revalidation."
+description: "Fast, tag-based reads for Payload content with correct invalidation on save and delete — powered by @pro-laico/core."
 ---
 
-import { Callout } from 'fumadocs-ui/components/callout';
+Atomic Payload reads content through a cache layer so frontend pages stay fast without re-querying Payload on every request, and stay correct because each cached read is wired to the tags that revalidate it. All of these helpers live in **`@pro-laico/core`**.
 
-Use the core cache helpers and revalidate hooks for fast, correctly-invalidated reads.
+## What & why
 
-<Callout type="info">This page is part of the docs skeleton — full content is coming soon.</Callout>
+Server components fetch globals and collections (pages, header, footer, icons, design sets, forms, …) constantly. Hitting Payload on every render is slow, but a naive cache goes stale the moment an editor saves. The `core` cache layer solves both: reads go through Next.js `unstable_cache` keyed and tagged per entity, and Payload hooks call `revalidateTag` when the underlying document changes.
+
+The pieces are split across two server-only entry points so they never leak into client bundles:
+
+- `@pro-laico/core/cache` — the `getCached` factories and getter registry.
+- `@pro-laico/core` — the revalidation hooks and their factories.
+
+<Callout type="info">
+  `createGetCached` imports `server-only`, which is why the cache helpers are exposed at `@pro-laico/core/cache` rather than the package barrel. Stick to the documented subpaths and bundlers won't fight you.
+</Callout>
+
+## How it works
+
+### Reads — `getCached`
+
+You build a project-bound `getCached` function with `createGetCached(configPromise, getRegistry)`. It takes a tag (plus an optional id and a draft flag), looks up the matching getter in the registry, and wraps it in `unstable_cache` with the right dependency tags computed for you:
+
+```ts
+import { createDefaultGetRegistry, createGetCached } from '@pro-laico/core/cache'
+import configPromise from '@payload-config'
+
+const getCached = createGetCached(configPromise, createDefaultGetRegistry())
+
+// later, in a Server Component:
+const header = await getCached('header')
+const page = await getCached('page', '/about')
+```
+
+### The getter registry — `createDefaultGetRegistry`
+
+The registry maps each cache tag (`pages`, `page`, `header`, `footer`, `icon`, `iconSet`, `tracking`, `site-css`, `designSet`, `shortcutSet`, the forms tags, …) to the function that actually queries Payload. `createDefaultGetRegistry` returns the stock registry bound to the atomic-payload-conventional slugs, and accepts slug overrides so the page- and forms-bound getters can target your collections:
+
+```ts
+import { createDefaultGetRegistry } from '@pro-laico/core/cache'
+
+const registry = createDefaultGetRegistry({
+  pagesSlug: 'articles',
+  formsSlug: 'forms',
+})
+```
+
+If you only need the standard behavior, `createDefaultGetCached(configPromise)` is the shortcut — it is equivalent to `createGetCached(configPromise, defaultGetRegistry)` and accepts the same slug options. For per-render memoization, `@pro-laico/core/cache/react` wraps a default `getCached` in React's `cache()` so the same tag requested twice in one render only fetches once.
+
+### Revalidation — hooks & factories
+
+Cached reads only stay correct because Payload hooks bust the matching tags when documents change. `core` ships two factories:
+
+- **`createRevalidateCache(handlers)`** — builds a `beforeChange` hook that dispatches to a per-slug handler when a document is written, revalidating the tags that depend on it.
+- **`createRevalidateCacheOnDelete(handlers)`** — the `afterDelete` counterpart, for revalidating when a document is removed.
+
+Each takes a `slug → handler` map, so you wire revalidation for exactly the collections you have:
+
+```ts
+import { createRevalidateCache, createRevalidateCacheOnDelete } from '@pro-laico/core'
+
+const revalidateCache = createRevalidateCache({
+  pages: async ({ data }) => {
+    await revalidateTag('pages', false)
+    await revalidateTag('page', data?.href, false)
+  },
+})
+
+const revalidateCacheOnDelete = createRevalidateCacheOnDelete({
+  pages: async ({ doc }) => {
+    await revalidateTag('pages', false)
+    await revalidateTag('page', doc?.href, false)
+  },
+})
+```
+
+Default exports (`revalidateCache`, `revalidateCacheOnDelete`) stay bound to the conventional slug set, so existing imports keep working unchanged. The simplest path of all is the bundled `revalidationPlugin` (the default export of `@pro-laico/core`), which wires the standard collection and global revalidation hooks for you.
+
+## Notes
+
+<Callout type="warn">
+  Prefer revalidating in `afterChange` over `beforeChange` for plain collections. Busting the cache in `beforeChange` runs *before* the write commits, so a concurrent read can re-cache the **old** document. The `afterChange` variant (`createRevalidateCacheAfterChange` / `revalidateCacheCollectionAfterChange`) runs after commit, where the persisted state is available.
+</Callout>
+
+<Callout type="info">
+  Revalidation handlers no-op while seeding — the dispatchers skip when `context.isSeed` is set, so a seed run doesn't trigger a storm of cache invalidations.
+</Callout>
+
+<Callout type="info">
+  `getCached` automatically derives dependency tags from the tag, id, and draft flag (including the merged `draft` / `published` tags), so a single cached read is invalidated by every tag that should affect it — you don't tag entries by hand.
+</Callout>
+
+## Related
+
+<Cards>
+  <Card title="@pro-laico/core" href="/docs/plugins/core" />
+</Cards>

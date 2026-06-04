@@ -1,10 +1,131 @@
 ---
 title: "Contributing"
-description: "Monorepo structure and local development."
+description: "Work on the Atomic Payload monorepo — its workspace layout, local development commands, and the standard plugin shape."
 ---
 
-import { Callout } from 'fumadocs-ui/components/callout';
+Atomic Payload is a pnpm workspace: the publishable `@pro-laico/*` packages, a full starter template, minimal example apps, release tooling, and these docs all live in one repo. This page is the map for contributors and maintainers.
 
-How the monorepo is organized and how to develop the packages locally.
+## Monorepo structure
 
-<Callout type="info">This page is part of the docs skeleton — full content is coming soon.</Callout>
+```
+atomic-payload/
+├── packages/
+│   ├── create-atomic-payload/   # CLI that scaffolds new projects
+│   ├── core/                    # Kernel (PayloadAugment, Get<>, ExtractOrDefault), revalidate hooks, cache helpers, APF runtime, plugin
+│   ├── zap/                     # zod + AtomicRegistry helper
+│   ├── atomic/                  # actions, hook (createAtomicHook + cssProcessor), forms, children — runtime + admin UI
+│   ├── site/                    # sitePlugin: Pages, Header, Footer, SiteMetaData, Settings, Storage globals
+│   ├── styles/                  # stylesPlugin: designSet + shortcutSet collections, className field, CSS storage globals, token fields, cssProcessor + cssHook + processDesignSet (all CSS handling)
+│   ├── icons/                   # iconsPlugin: Icon + iconSet collections, formatSVG, AtomicIcon
+│   ├── images/                  # Images + Favicons collections + FaviconField + blur integration
+│   ├── fonts/                   # fontsPlugin + Font collection + font download CLI
+│   ├── mux-video/               # MuxVideo wrapper plugin
+│   ├── tracking/                # trackingPlugin: Tracking global + GTM/PostHog/Vercel providers
+│   ├── richtext/                # RichTextChild block + default Lexical editor + JSX renderer
+│   └── seed/                    # seedPlugin: opinionated seed data + /api/seed endpoint
+├── templates/
+│   └── atomic-payload/          # Full Atomic Payload starter (Payload + Next.js + Tailwind)
+├── examples/                    # Minimal single-plugin demo apps (not full templates)
+│   ├── fonts-only/              # Exercises @pro-laico/fonts in isolation
+│   ├── icons-only/              # Exercises @pro-laico/icons in isolation
+│   └── styles-only/             # Exercises @pro-laico/styles in isolation
+└── package.json                 # Workspace root
+```
+
+<Callout type="info">
+  The publishable packages live in `packages/*`. `templates/*`, `examples/*`, and `tools/*` are never published — they exist for local dev, regression testing, and release automation.
+</Callout>
+
+## Local development
+
+All commands run from the monorepo root.
+
+<Tabs groupId="dev-task" items={['Setup', 'Whole monorepo', 'Per package', 'Template']}>
+
+<Tab value="Setup">
+
+```bash
+# Install all workspace deps
+pnpm install
+```
+
+</Tab>
+
+<Tab value="Whole monorepo">
+
+```bash
+# Typecheck every package, template, and example (stops at first failure)
+pnpm typecheck
+
+# Keep going on failure so you see every package's errors in one run
+pnpm -r --no-bail typecheck
+
+# Run all typechecks concurrently (faster, interleaved output)
+pnpm -r --parallel typecheck
+
+# Lint every workspace project
+pnpm lint
+```
+
+</Tab>
+
+<Tab value="Per package">
+
+```bash
+# Typecheck a single package by name
+pnpm --filter @pro-laico/core typecheck
+
+# Typecheck only the @pro-laico/* packages
+pnpm --filter "@pro-laico/*" typecheck
+
+# Typecheck only the templates / examples (path globs)
+pnpm --filter "./templates/*" typecheck
+pnpm --filter "./examples/*" typecheck
+
+# Build a single package (the ones that emit a dist/)
+pnpm --filter @pro-laico/core build
+```
+
+</Tab>
+
+<Tab value="Template">
+
+```bash
+# next dev in templates/atomic-payload (the main reference template)
+pnpm dev
+
+# next build (includes the prebuild font download)
+pnpm build
+
+# Regenerate payload-types.ts + the augment .d.ts
+pnpm generate:types
+
+# Regenerate the admin importmap
+pnpm generate:importmap
+```
+
+</Tab>
+
+</Tabs>
+
+The template at `templates/atomic-payload` wires up every plugin, so running `pnpm dev` is the fastest way to see a change end-to-end against a real Payload + Next.js app.
+
+## Adding a plugin
+
+New plugins live in `packages/` and follow one standard shape — the same one every existing package uses, so the cleanest reference is any sibling package.
+
+- The package can be **used independently** (`pnpm add @pro-laico/<name>`) or **via the template**, referenced with `workspace:*` for local dev. The CLI's `prepack` step rewrites those `workspace:*` deps to caret-pinned versions when it bundles the scaffold tarball.
+- The standard shape: a `(opts) => (config) => config` plugin factory exported as **both** the default and a named export, with the raw collections / hooks / fields / components also exported as named imports for advanced consumers.
+- A `schema` subpath exports `payload-augment` types so `zap` knows about the package's block shapes, and the `index.ts` barrel stays safe to import from `payload.config.ts` (no client-only code) — client components and server-only utilities sit behind subpaths.
+
+For how these pieces fit together at runtime, see the architecture guide.
+
+<Cards>
+  <Card title="Architecture" href="/docs/concepts/architecture" />
+</Cards>
+
+## Related
+
+<Cards>
+  <Card title="Releasing" href="/docs/contributing/releasing" />
+</Cards>

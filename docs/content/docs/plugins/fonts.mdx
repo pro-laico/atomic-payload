@@ -1,10 +1,112 @@
 ---
 title: "@pro-laico/fonts"
-description: "The Font collection and the font-download CLI."
+description: "Manages custom fonts in Payload and ships them to disk for next/font/local — a Font upload collection, an optional fontSet global, and a storage-agnostic download CLI."
 ---
 
-import { Callout } from 'fumadocs-ui/components/callout';
+Manages custom fonts in Payload and ships them to disk for `next/font/local`. It registers an upload collection (`Font`) for woff/woff2/ttf/otf files, optionally registers a `fontSet` global picking the active sans/serif/mono/display fonts, and ships a build-time CLI (`atomic-fonts-download`) that pulls the active font files out of storage and writes them to disk where `next/font/local` can pick them up.
 
-The Font collection and the font-download CLI. Install, exports, API, and slug configuration for @pro-laico/fonts.
+## Installation
 
-<Callout type="info">This page is part of the docs skeleton — full content is coming soon.</Callout>
+<Tabs groupId="package-manager" items={['pnpm', 'npm', 'yarn']}>
+
+<Tab value="pnpm">
+
+```bash
+pnpm add @pro-laico/fonts
+```
+
+</Tab>
+
+<Tab value="npm">
+
+```bash
+npm install @pro-laico/fonts
+```
+
+</Tab>
+
+<Tab value="yarn">
+
+```bash
+yarn add @pro-laico/fonts
+```
+
+</Tab>
+
+</Tabs>
+
+<Callout type="info">
+  `payload` (`>=3.0.0`) is a required peer you already have in a Payload app. `@payloadcms/sdk` and `dotenv` are **optional** — only needed when running the download script.
+</Callout>
+
+Peer dependencies:
+
+| Peer | Version | Needed when |
+| --- | --- | --- |
+| `payload` | `>=3.0.0` | Always (required peer) |
+| `@payloadcms/sdk` | `>=3.0.0` | Running the download script (optional) |
+| `dotenv` | `>=16.0.0` | Running the download script (optional) |
+
+## Setup
+
+Add the plugin to your Payload config:
+
+```ts
+import { buildConfig } from 'payload'
+import { fontsPlugin } from '@pro-laico/fonts'
+
+// With @pro-laico/styles — fonts come from the active designSet's `font` group:
+export default buildConfig({ plugins: [fontsPlugin()] })
+
+// Standalone — register the `fontSet` global to pick the active fonts:
+export default buildConfig({ plugins: [fontsPlugin({ global: true })] })
+```
+
+## Options
+
+`fontsPlugin(options?)` accepts:
+
+<TypeTable
+  type={{
+    enabled: { type: 'boolean', default: 'true', description: 'Set false to no-op the plugin.' },
+    fontOverride: { type: 'Partial<CollectionConfig>', description: 'Deep-merged onto the Font collection — upload, access, and hooks merge onto the base (e.g. upload.staticDir keeps the base mimeTypes); fields replaces wholesale.' },
+    global: { type: 'boolean | Partial<GlobalConfig>', default: 'false', description: 'true registers the standalone fontSet global; pass a partial GlobalConfig to override. fields are appended to the base font slots and access is deep-merged; other top-level keys replace.' },
+  }}
+/>
+
+## Exports
+
+**Subpath imports**
+
+| Subpath | What's there |
+| --- | --- |
+| `@pro-laico/fonts` | The plugin, the `Font` collection, font upload fields, and the `fontSet` global |
+| `@pro-laico/fonts/schema` | `Font` / `FontSet` schema stubs |
+| `@pro-laico/fonts/scripts/downloadFonts` | `runDownloadFonts` — the programmatic download entry |
+
+**By kind**
+
+- **Plugin** — `fontsPlugin` (default)
+- **Collections** — `Font` — the upload collection config
+- **Globals** — `FontSet`, `createFontSetGlobal`, `FONT_SET_SLUG` — the standalone font-selection global
+- **Fields** — `fontUploadField` (the `font` group field for the designSet's Fonts tab), `fontUploadFields` (the four upload slots shared by the group and the global)
+- **Scripts** (from `/scripts/downloadFonts`) — `runDownloadFonts` — selection resolution + storage-agnostic download + definition generation
+- **Bin** — `atomic-fonts-download` — the published CLI (requires the package to be built)
+
+## Environment variables
+
+The download CLI reads the active font selection and resolves binaries using:
+
+| Variable | Purpose |
+| --- | --- |
+| `LIVE_SITE_URL` | Site to read the active designSet / `fontSet` global from, and the base for resolving relative (local-storage) font URLs. |
+| `SCRIPT_USER_EMAIL` | Payload user to authenticate as (needed to read auth-gated fonts and, for local storage, the file route). |
+| `SCRIPT_USER_PASSWORD` | Password for that user. |
+
+No storage token is required — the downloader uses whatever URL Payload reports for each font.
+
+## Related
+
+<Cards>
+  <Card title="Fonts" href="/docs/features/fonts" />
+</Cards>

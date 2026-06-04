@@ -1,10 +1,106 @@
 ---
 title: "@pro-laico/mux-video"
-description: "The MuxVideo collection and plugin wrapper."
+description: "Mux video upload + playback for Atomic Payload — a local extension collection plus a VideoChild block."
 ---
 
-import { Callout } from 'fumadocs-ui/components/callout';
+Mux video upload + playback for Atomic Payload. A thin wrapper around `@oversightstudio/mux-video` that adds a local extension collection and a `VideoChild` block.
 
-The MuxVideo collection and plugin wrapper. Install, exports, API, and slug configuration for @pro-laico/mux-video.
+## Installation
 
-<Callout type="info">This page is part of the docs skeleton — full content is coming soon.</Callout>
+<Tabs groupId="package-manager" items={['pnpm', 'npm', 'yarn']}>
+
+<Tab value="pnpm">
+
+```bash
+pnpm add @pro-laico/mux-video
+```
+
+</Tab>
+
+<Tab value="npm">
+
+```bash
+npm install @pro-laico/mux-video
+```
+
+</Tab>
+
+<Tab value="yarn">
+
+```bash
+yarn add @pro-laico/mux-video
+```
+
+</Tab>
+
+</Tabs>
+
+<Callout type="info">
+  `next`, `payload`, and `react` are required peers you already have in a Payload + Next.js app. `@oversightstudio/mux-video` is the upstream plugin this package wraps — install it too. The Mux player itself, `@mux/mux-video-react`, ships as a bundled dependency, so you don't install it separately.
+</Callout>
+
+Peer dependencies:
+
+| Peer | Range | Needed when |
+| --- | --- | --- |
+| `@oversightstudio/mux-video` | `>=1.0.0` | Always — this package composes the upstream plugin |
+| `next` | `>=15.0.0` | Always — already present in a Payload + Next.js app |
+| `payload` | `>=3.0.0` | Always — already present in a Payload app |
+| `react` | `>=19.0.0` | Always — already present in a Next.js app |
+
+## Setup
+
+```ts
+import { buildConfig } from 'payload'
+import { muxVideoPlugin } from '@pro-laico/mux-video'
+
+export default buildConfig({ plugins: [muxVideoPlugin()] })
+```
+
+## Options
+
+`muxVideoPlugin(options?)` accepts:
+
+<TypeTable
+  type={{
+    enabled: { type: 'boolean', default: 'true', description: 'No-op the plugin entirely.' },
+    includeCollection: { type: 'boolean', default: 'true', description: 'Register the bundled mux-video extension collection. Disable if you supply your own with the same slug.' },
+    collectionOverride: { type: 'CollectionConfig', description: 'Override the bundled collection. Top-level keys replace, but access/admin are deep-merged, fields are appended, and hooks are merged per phase — so a partial override can\'t silently drop the collection\'s access rules or fields.' },
+    adminThumbnail: { type: "'image' | 'gif' | 'none'", default: "'image'", description: 'What to show in the admin list view.' },
+    uploadSettings: { type: '{ cors_origin: string }', default: 'from NEXT_PUBLIC_SERVER_URL', description: 'Passed to upstream.' },
+    initSettings: { type: '{ tokenId: string; tokenSecret: string; webhookSecret: string }', default: 'from env', description: 'Mux credentials.' },
+  }}
+/>
+
+## Exports
+
+**Subpath imports**
+
+| Subpath | What's there |
+| --- | --- |
+| `@pro-laico/mux-video` | The `muxVideoPlugin` and the bundled `mux-video` extension collection |
+| `@pro-laico/mux-video/blocks/videoChild` | The `VideoChild` block — exports the `createVideoBlock` factory, the built `Video` block, and the `VideoBlockOptions` type (they are intentionally **not** re-exported from the root) |
+| `@pro-laico/mux-video/blocks/videoChild/component` | Child block renderer (`VideoChild`), which mounts the `@mux/mux-video-react` player |
+
+**By kind**
+
+- **Plugin** — `muxVideoPlugin`
+- **Collections** — the local `mux-video` extension collection
+- **Blocks** (from `/blocks/videoChild`) — the `createVideoBlock` factory, the built `Video` block (slug/`interfaceName` `VideoChild`), and the `VideoBlockOptions` type
+
+## Environment variables
+
+All picked up automatically:
+
+| Env | Purpose |
+| --- | --- |
+| `NEXT_PUBLIC_SERVER_URL` | Used as the `cors_origin` for Mux uploads. Falls back to `http://localhost:3000`. |
+| `MUX_TOKEN_ID` | Mux API token ID. |
+| `MUX_TOKEN_SECRET` | Mux API token secret. |
+| `MUX_WEBHOOK_SIGNING_SECRET` | Mux webhook signing secret. |
+
+## Related
+
+<Cards>
+  <Card title="Images & Video" href="/docs/features/media" />
+</Cards>

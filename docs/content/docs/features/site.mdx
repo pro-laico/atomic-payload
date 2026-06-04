@@ -1,10 +1,60 @@
 ---
 title: "Pages, Header, Footer & SEO"
-description: "The site-structure globals and collections."
+description: "The site-shape surface — Pages, Header, and Footer collections plus the SiteMetaData and Settings globals that give every project the structure of a website."
 ---
 
-import { Callout } from 'fumadocs-ui/components/callout';
+## Overview
 
-Manage Pages, Header, Footer, Settings, and SEO/site metadata for your site.
+Where every other feature contributes one capability, the **site** feature contributes the **shape** of an Atomic Payload site. It registers the collections and globals every project needs to look like a website:
 
-<Callout type="info">This page is part of the docs skeleton — full content is coming soon.</Callout>
+- **`Pages`** — the main content collection.
+- **`Header`** — site-wide navigation.
+- **`Footer`** — site-wide footer.
+- **`SiteMetaData`** global — the single source of truth for site-level metadata (SEO).
+- **`Settings`** global — site-wide settings, one row per site.
+
+Locking this shape down means every project models Pages, Header, and Footer the same way, so navigation wires up consistently and seeding has a known set of slugs to populate.
+
+## How it works
+
+Each piece owns a distinct part of the site:
+
+- **`Pages`** is the main content collection. Each page carries an SEO tab and a settings tab, plus a children-blocks field for Atomic content — so a page is composed from the same atomic blocks you build elsewhere in the admin.
+- **`Header`** is site-wide navigation. It's modeled as a collection rather than a global, so you can keep multiple versions and reference them per page when you need to.
+- **`Footer`** follows the same pattern as Header — a collection, so multiple versions can coexist and be referenced per page.
+- **`SiteMetaData`** is a global holding title, description, favicon, default OpenGraph image, and the rest of your site-level metadata. It's the single source of truth for SEO defaults across the site.
+- **`Settings`** is a global for anything that's "one row per site" — auth pages, theme-toggle defaults, and similar site-wide options.
+
+Together these compose the site: pages supply the content, the header and footer frame it as navigation and chrome, and the globals supply the metadata and settings that apply site-wide.
+
+<Callout type="info">
+  The draft/published CSS storage globals that previously lived here now ship from `@pro-laico/styles` — the site feature no longer registers them.
+</Callout>
+
+## Using it
+
+Everything is managed from the Payload admin:
+
+- **Pages** — create and edit pages in the `Pages` collection. Fill in the page's content with atomic child blocks, set per-page options in its settings tab, and override SEO in its SEO tab.
+- **Header** — edit the `Header` collection to manage site-wide navigation. Because it's a collection, you can maintain more than one and point pages at the version they should use.
+- **Footer** — manage the `Footer` collection the same way as the header.
+- **Settings** — open the `Settings` global to adjust site-wide options like auth pages and theme-toggle defaults.
+- **SEO / metadata** — open the `SiteMetaData` global to set your site title, description, favicon, and default OpenGraph image. These act as the defaults that a page's own SEO tab can override.
+
+## Configuration
+
+The site feature is registered by a single `sitePlugin()`, with no required options — adding the plugin wires up all the collections and globals above. The plugin is intentionally unopinionated about cross-package wiring (the atomic-hook callback, the nested-docs plugin, the live-preview URL, JSON-schema setup) — that's the template's job, because those choices depend on which other plugins you've enabled.
+
+For collection and global slugs, subpath imports, and the full export list, see the site plugin reference.
+
+## Provided by
+
+<Cards>
+  <Card title="@pro-laico/site" href="/docs/plugins/site" />
+</Cards>
+
+## Related
+
+<Cards>
+  <Card title="Atomic Blocks" href="/docs/features/atomic-blocks" />
+</Cards>

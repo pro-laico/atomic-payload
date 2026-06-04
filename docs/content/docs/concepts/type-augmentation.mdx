@@ -1,10 +1,73 @@
 ---
 title: "Type augmentation"
-description: "Generating payload-types and filling the augment interface."
+description: "How Atomic Payload packages ship type stubs against one PayloadAugment interface, and how your project fills it in once so they resolve to concrete shapes."
 ---
 
-import { Callout } from 'fumadocs-ui/components/callout';
+## What & why
 
-Run generate:types and the augment step so every package schema stub resolves to your concrete shapes.
+Atomic Payload is plugin-based, but the packages can't hard-code the types of the project that consumes them — every app generates its own `payload-types.ts` with its own block, collection, and global shapes. To stay decoupled, each domain package (`atomic`, `site`, `styles`, …) ships **schema stubs** written as `Get<'X', Default>` against the single `PayloadAugment` interface in `@pro-laico/core/kernel`.
 
-<Callout type="info">This page is part of the docs skeleton — full content is coming soon.</Callout>
+`PayloadAugment` is an indirection layer. The packages reference it; they never reference your generated types directly. Your project then **fills that interface in once**, and every package's stub resolves to your project's concrete shape.
+
+<Callout type="info">
+  `Get<K, F>` returns the fallback `F` when the key isn't augmented. So packages typecheck on their own — before any augmentation exists, stubs simply resolve to their defaults.
+</Callout>
+
+## How it works
+
+The augmentation file is produced by chaining two commands: first Payload generates the project types, then `core-augment-types` (the binary shipped by `@pro-laico/core`) writes the project-specific `PayloadAugment` augmentation alongside them as `payload-types.augment.d.ts`.
+
+<Steps>
+
+<Step>
+
+### Generate Payload's types
+
+Run Payload's own type generator to produce `payload-types.ts` from your current config.
+
+```bash
+pnpm payload generate:types
+```
+
+</Step>
+
+<Step>
+
+### Augment `PayloadAugment`
+
+Run the `core-augment-types` binary. It reads the freshly generated types and writes `payload-types.augment.d.ts`, filling the `PayloadAugment` interface so every package's `Get<>` stubs resolve to your concrete shapes.
+
+```bash
+pnpm core-augment-types
+```
+
+</Step>
+
+<Step>
+
+### Or run both at once
+
+The template's `generate:types` script chains the two steps, regenerating `payload-types.ts` and appending `payload-types.augment.d.ts` in one go.
+
+```bash
+pnpm generate:types
+```
+
+</Step>
+
+</Steps>
+
+For `Extract<T, { discriminant: K }>` patterns whose `T` is a default fallback like `DefaultBlock`, packages use `ExtractOrDefault<T, V>` (also exported from `@pro-laico/core/kernel`) — it falls back to `T & V` rather than collapsing to `never` when the augmentation is missing.
+
+## Notes
+
+<Callout type="warn">
+  Re-run the augment step whenever your schema changes — adding a collection or global, editing block fields, or installing a plugin that registers new schema. The augmentation is only as fresh as the last `payload generate:types` run, so stale types are a sign you need to regenerate.
+</Callout>
+
+## Related
+
+<Cards>
+  <Card title="The kernel" href="/docs/concepts/kernel" />
+  <Card title="Add to an existing project" href="/docs/getting-started/existing-project" />
+</Cards>

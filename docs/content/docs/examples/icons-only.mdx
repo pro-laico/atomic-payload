@@ -1,10 +1,94 @@
 ---
 title: "icons-only"
-description: "Minimal example — @pro-laico/icons in isolation."
+description: "Minimal example — @pro-laico/icons in isolation, with the Icon and IconSet collections and a small page that renders them."
 ---
 
-import { Callout } from 'fumadocs-ui/components/callout';
+A minimal Atomic Payload template that exercises the **`@pro-laico/icons`** plugin on its own — no design sets, child blocks, forms, tracking, or other Atomic Payload framework. Just the `Icon` and `IconSet` collections plus a small Next.js page that renders them.
 
-A minimal app exercising @pro-laico/icons on its own, and how to scaffold it via the CLI.
+## What it shows
 
-<Callout type="info">This page is part of the docs skeleton — full content is coming soon.</Callout>
+This example demonstrates **`@pro-laico/icons`** in isolation:
+
+- `iconsPlugin({ enabled: true })` registered in `payload.config.ts` adds the `icon` and `iconSet` collections to the admin UI.
+- `POST /api/seed` creates 6 sample SVG icons plus a "Demo Icon Set" that groups them. It is auth-gated to logged-in admins and idempotent.
+- `/` renders every `Icon` doc inline by inlining its `svgString` field, and renders each `IconSet` as a labelled grid.
+- Live preview is wired for `iconSet` edits — open any iconSet in the admin, click the **Live Preview** tab, and edits propagate to the home page in real time via `<LivePreviewListener>` and the `/next/preview` route handler.
+
+## Scaffold it
+
+<Tabs groupId="package-manager" items={['npm', 'pnpm']}>
+
+<Tab value="npm">
+
+```bash
+npx @pro-laico/create-atomic-payload my-icons --template icons-only
+```
+
+</Tab>
+
+<Tab value="pnpm">
+
+```bash
+pnpm create @pro-laico/atomic-payload my-icons --template icons-only
+```
+
+</Tab>
+
+</Tabs>
+
+Then set up and run it:
+
+```bash
+cp .env.example .env       # set a long PAYLOAD_SECRET (DATABASE_URI is optional)
+cp gitignore.template .gitignore
+pnpm install
+pnpm generate:types        # generates src/payload-types.ts + augment
+pnpm generate:importmap    # populates src/app/(payload)/admin/importMap.js
+pnpm dev
+```
+
+<Callout type="info">
+  The demo ships with the SQLite adapter (`@payloadcms/db-sqlite`) wired to a local file at `./icons-only.db` — no database server required. Swap to Postgres or MongoDB by changing the import + `db:` call in `src/payload.config.ts` and installing the matching `@payloadcms/db-*` package.
+</Callout>
+
+## How it works
+
+1. Open `http://localhost:3000/admin` and create your first user.
+2. Go back to `http://localhost:3000`. The seed button is now visible — click it to create the sample icons + set.
+3. The page now renders the icons. Refresh after editing in the admin to see updates.
+
+A few details worth knowing:
+
+- The seed endpoint uses Payload's local API (`payload.create`) and feeds the SVG bytes directly via the `file` argument, so the upload pipeline (including ap-icons's `formatSVGHook`) runs end-to-end.
+- The page uses `dangerouslySetInnerHTML` to inline each icon's `svgString` field. Because the icons are uploaded SVGs that pass through `formatSVGHook`, the strings are already optimized and stripped of script tags by SVGO.
+- Workspace dependency direction: this template depends on `@pro-laico/icons`, which transitively pulls in `@pro-laico/ap-utils` (for revalidation hooks), `@pro-laico/ap-apf` (for the IconSet's APField wiring), and `@pro-laico/ap-types` (kernel).
+
+## What to look at
+
+```
+src/
+  payload.config.ts                     # buildConfig — the only place iconsPlugin runs
+  collections/users.ts                  # auth collection (required by Payload)
+  seed/sampleIcons.ts                   # bundled SVG strings + IconSet entries
+  app/
+    (frontend)/
+      layout.tsx                        # plain HTML layout, no design system
+      page.tsx                          # demo page: lists icons + sets, seed button
+    (payload)/
+      layout.tsx                        # Payload admin RootLayout
+      custom.scss                       # admin overrides (empty)
+      admin/
+        importMap.js                    # `pnpm generate:importmap` populates this
+        [[...segments]]/
+          page.tsx                      # Payload admin entry
+          not-found.tsx
+      api/
+        [...slug]/route.ts              # Payload REST endpoint
+        seed/route.ts                   # POST /api/seed → seeds sample data
+```
+
+## Related
+
+<Cards>
+  <Card title="Icons — feature guide" href="/docs/features/icons" />
+</Cards>

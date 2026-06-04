@@ -1,10 +1,77 @@
 ---
 title: "Fonts"
-description: "Local fonts managed from the CMS."
+description: "Manage next/font local fonts (sans, serif, mono, display) from the CMS."
 ---
 
-import { Callout } from 'fumadocs-ui/components/callout';
+Upload and pick the active sans, serif, mono, and display fonts from the admin, then ship them to disk so Next.js renders them with `next/font/local`.
 
-Manage next/font local fonts across sans, serif, mono, and display roles from the admin.
+## Overview
 
-<Callout type="info">This page is part of the docs skeleton — full content is coming soon.</Callout>
+Fonts lets admins manage the site's typefaces from the CMS instead of hard-coding them in the codebase. Font files (woff/woff2/ttf/otf) are uploaded into a `Font` collection, and the active **sans**, **serif**, **mono**, and **display** roles are chosen in the admin — either from the active design set (when paired with [Styles](/docs/features/styles)) or from a standalone `fontSet` global. A build-time download step then turns those CMS selections into real local fonts, so the rendered site gets every `next/font/local` performance benefit (subset preloading, layout-shift prevention).
+
+## How it works
+
+`next/font` only loads fonts from the filesystem — it can't fetch them from object storage at request time. This feature bridges that gap with three pieces:
+
+- **The `Font` collection** — an upload collection where admins add font files (woff/woff2/ttf/otf). Where the binaries live is Payload's job: the collection's `upload.staticDir` (local disk) or whatever storage plugin (`@payloadcms/storage-*`) is configured at the config level.
+- **The active selection** — which font fills each role (sans/serif/mono/display) is resolved in order: the active `designSet`'s `font` group first, then the standalone `fontSet` global. So a Styles project and a standalone fonts project both work the same way.
+- **The download CLI** — a storage-agnostic build-time script that reads the active selection, pulls each font's binary out of storage using the `url` Payload reports (local disk, Vercel Blob, S3, or any adapter — no storage-specific token needed), and writes the files to disk. Relative URLs (local storage) are resolved against `LIVE_SITE_URL` and fetched with the script's auth token; absolute CDN URLs are fetched as-is.
+
+The CLI delivers the fonts in two outputs: the binaries land in `public/fonts`, and a generated definition module (`./src/app/definition.ts` by default, overridable via `ATOMIC_FONTS_DEFINITION_FILE`) declares each `localFont(...)` call (along with CSS custom properties per slot) that your app imports to wire the fonts into `next/font/local`. The download intentionally runs at build time (or during scaffolding), not at request time, because `next/font`'s bundling expects file paths it can resolve at compile.
+
+## Using it
+
+**In the admin:**
+
+1. Upload your font files into the **Font** collection.
+2. Pick the active fonts for each role (sans/serif/mono/display) — in the active design set's font group when using Styles, or in the `fontSet` global when running standalone.
+
+**Running the download CLI:**
+
+After selecting fonts, run the download step to pull the binaries to disk and regenerate the definition module. Published consumers run the `atomic-fonts-download` bin:
+
+```bash
+npx atomic-fonts-download
+```
+
+Or call it programmatically (e.g. from your own build script):
+
+```ts
+import { runDownloadFonts } from '@pro-laico/fonts/scripts/downloadFonts'
+
+await runDownloadFonts()
+```
+
+This writes the font binaries to `public/fonts` and the generated definition module (`./src/app/definition.ts` by default) that `next/font/local` consumes. Re-run it whenever the active font selection changes.
+
+<Callout type="info">
+  `pnpm download:fonts` is an in-repo development shortcut that runs the un-built TypeScript source with `tsx`; it only works inside this monorepo. Published consumers should use the `atomic-fonts-download` bin or `runDownloadFonts` above.
+</Callout>
+
+## Configuration
+
+The download CLI reads the active selection and resolves binaries using these environment variables:
+
+| Variable | Purpose |
+| --- | --- |
+| `LIVE_SITE_URL` | Site to read the active designSet / `fontSet` global from, and the base for resolving relative (local-storage) font URLs. |
+| `SCRIPT_USER_EMAIL` | Payload user to authenticate as (needed to read auth-gated fonts and, for local storage, the file route). |
+| `SCRIPT_USER_PASSWORD` | Password for that user. |
+
+No storage token is required — the downloader uses whatever URL Payload reports for each font.
+
+Optional overrides let you change where outputs go and which global to fall back to — for example `ATOMIC_FONTS_OUTPUT_DIR` (defaults to `./public/fonts`), `ATOMIC_FONTS_DEFINITION_FILE` (the generated `localFont(...)` module), `ATOMIC_FONTS_GLOBAL_SLUG` (the global to fall back to, `fontSet`), and `ATOMIC_FONTS_CSS_VAR_PREFIX` (prefix for the emitted CSS custom properties).
+
+For plugin options (`enabled`, `fontOverride`, `global`), the exported configs, and the full environment-variable reference, see the [fonts plugin](/docs/plugins/fonts).
+
+## Provided by
+
+<Cards>
+  <Card title="@pro-laico/fonts" href="/docs/plugins/fonts" />
+</Cards>
+
+## Related
+
+<Cards>
+  <Card title="Styles" href="/docs/features/styles" />
+</Cards>

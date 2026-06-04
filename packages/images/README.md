@@ -9,7 +9,7 @@ A Payload plugin that registers:
 - **`Images`** — the general-purpose upload collection. Comes with opinionated `formatOptions` (WebP) and a set of `imageSizes` covering the breakpoints the template renders at.
 - **`Favicons`** — a separate collection for favicons specifically. They have different size/format requirements and shouldn't live in the same bucket as content images.
 - **`FaviconField`** — a reusable field config for picking a favicon from `Favicons` (used in the `SiteMetaData` global).
-- **`imageChild`** block — child block that lets editors drop an image into Atomic blocks. Renders via `@pro-laico/atomic/children`.
+- **`ImageChild`** block — child block that lets editors drop an image into Atomic blocks. Exposed from the `./blocks/imageChild` subpath as `createImageBlock` (factory) and `Image` (the prebuilt block); it is **not** re-exported from the package root. Renders via `@pro-laico/atomic/children`.
 
 `@oversightstudio/blur-data-urls` is an optional peer. The plugin does **not** auto-wire it (pnpm doesn't hoist the optional peer next to this package, so a `require()` from here would silently fail). Register `blurDataUrlsPlugin` yourself after `imagesPlugin`, passing the exported `Images` collection — see the `imagesPlugin` JSDoc for the snippet.
 
@@ -29,6 +29,17 @@ export default buildConfig({
   plugins: [imagesPlugin({ enabled: true })],
 })
 ```
+
+### Plugin options
+
+`imagesPlugin(options?)` accepts:
+
+| Option | Type | Default | Purpose |
+| --- | --- | --- | --- |
+| `enabled` | `boolean` | `true` | When `false`, the plugin is a no-op. |
+| `includeFavicons` | `boolean` | `true` | When `true`, registers the `Favicons` collection alongside `Images`. |
+| `imagesOverride` | `Partial<CollectionConfig>` | — | Override for the `Images` collection. Top-level keys replace, but `upload`/`access`/`admin` are deep-merged and `fields`/`hooks` are merged — so a partial override can't silently drop the base `imageSizes`, `mimeTypes`, `alt` field, or access rules. |
+| `faviconsOverride` | `Partial<CollectionConfig>` | — | Override for the `Favicons` collection (same deep-merge semantics as `imagesOverride`). |
 
 To use the favicon picker in a global:
 
@@ -52,16 +63,16 @@ const SiteMetaData = {
 | `collections/images.ts` | The `Images` upload collection with default `formatOptions` + `imageSizes`. |
 | `collections/favicons.ts` | The `Favicons` upload collection. |
 | `fields/favicon.ts` | `FaviconField` — a reusable favicon-picker field. |
-| `blocks/imageChild/` | The `imageChild` block (component + block config). |
+| `blocks/imageChild/` | The `ImageChild` block — `createImageBlock` factory + `Image` block (component + block config). |
 | `access.ts` | Default access predicates. |
-| `types/payload-augment.ts` | `zap` registry augmentations. |
+| `types/payload-augment.ts` | `Image` schema type stub (resolves through the `@pro-laico/core` kernel). |
 
 ## Subpath imports
 
 | Subpath | What's there |
 | --- | --- |
-| `./schema` | `zap` registry augmentations |
-| `./blocks/imageChild` | Child block config |
+| `./schema` | `Image` schema type stub for the `@pro-laico/core` kernel |
+| `./blocks/imageChild` | `ImageChild` block — `createImageBlock` factory + prebuilt `Image` block |
 | `./blocks/imageChild/component` | Child block renderer |
 
 ## Peer dependencies
@@ -70,4 +81,4 @@ const SiteMetaData = {
 
 ## Where it sits in the monorepo
 
-Depends on `core` and `atomic`. Used by `children` (renders `imageChild`), `core` (icon for the image type), and `site` (favicon field in `SiteMetaData`).
+Depends on `core` and `atomic`. Consumed by `atomic` (renders `ImageChild` via its `children` subpath), `core` (which provides the cached image-URL getter for the `images` collection and lists `images` as an optional peer), and `site` (favicon field in `SiteMetaData` and the page SEO tab).

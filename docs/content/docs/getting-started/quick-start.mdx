@@ -1,10 +1,88 @@
 ---
 title: "Quick start"
-description: "Scaffold a new project with the create-atomic-payload CLI."
+description: "Scaffold a new Atomic Payload project with the CLI."
 ---
 
-import { Callout } from 'fumadocs-ui/components/callout';
+Scaffold a brand-new Atomic Payload project and land on a running dev server.
 
-Scaffold a full project (or an example) with the create-atomic-payload CLI and pick a template.
+## Prerequisites
 
-<Callout type="info">This page is part of the docs skeleton — full content is coming soon.</Callout>
+- **Node.js 18+**
+- **pnpm** (recommended) — `npm install -g pnpm`
+- A **MongoDB connection string** for your project's database
+
+## Scaffold
+
+<Steps>
+
+<Step>
+### Run the CLI
+
+Point the scaffolder at a new project directory (or `.` for the current one):
+
+<Tabs groupId="package-manager" items={['npm', 'pnpm']}>
+
+<Tab value="npm">
+
+```bash
+npx @pro-laico/create-atomic-payload my-project
+```
+
+</Tab>
+
+<Tab value="pnpm">
+
+```bash
+pnpm dlx @pro-laico/create-atomic-payload my-project
+```
+
+</Tab>
+
+</Tabs>
+
+To scaffold into the current directory instead, pass `.`:
+
+```bash
+npx @pro-laico/create-atomic-payload .
+```
+</Step>
+
+<Step>
+### Choose a scaffold
+
+The CLI prompts for which scaffold to create. Pick one, or skip the prompt with the `--template <name>` (`-t`) flag:
+
+| Scaffold | What you get |
+| --- | --- |
+| `atomic-payload` | Full starter — Payload + Next.js + Tailwind, every plugin (the default) |
+| `fonts-only` | Minimal example — `@pro-laico/fonts` in isolation |
+| `icons-only` | Minimal example — `@pro-laico/icons` in isolation |
+| `styles-only` | Minimal example — `@pro-laico/styles` in isolation |
+
+```bash
+npx @pro-laico/create-atomic-payload my-icons --template icons-only
+```
+
+<Callout type="info">
+  When no name is given, the project folder defaults to `my-<scaffold>`. Project names use only lowercase letters, numbers, and hyphens (or `.` for the current directory).
+</Callout>
+</Step>
+
+<Step>
+### Let it install and set up
+
+Once you've chosen a scaffold, the CLI does the rest:
+
+1. Copies the template into your target directory.
+2. Installs dependencies with `pnpm`.
+3. Rebuilds `sharp` for your platform.
+4. Downloads fonts (for scaffolds that ship a font step).
+
+It also copies `.env.example` to `.env` so the project is ready to run. When it finishes, you'll see the next steps printed in your terminal.
+</Step>
+
+</Steps>
+
+## Next
+
+Configure your database, Payload secret, and storage in [Environment & prerequisites](/docs/getting-started/environment).

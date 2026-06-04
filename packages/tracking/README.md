@@ -72,21 +72,26 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
 ## Subpath imports
 
-Why client components live behind a subpath: server tooling (e.g. `payload generate:importmap`) resolves the package under the `react-server` condition, where `posthog-js` / `@next/third-parties` / `@vercel/analytics` aren't safe to load.
+Why client components live behind a subpath: the providers are client components that pull in `posthog-js` / `@next/third-parties` / `@vercel/analytics`, which aren't safe to load on the server. Keeping them off the main barrel means the server-resolved entry (e.g. for `payload generate:importmap`) never reaches them.
 
 | Subpath | What's there |
 | --- | --- |
 | `./provider` | All React providers (`PostHogProvider`, `GoogleTagManagerProvider`, `VercelProvider`, `TrackingProvider`) |
-| `./schema` | `zap` registry augmentations |
+| `./schema` | Payload `Tracking` type augmentation stub |
 
-## Peer dependencies (all optional)
+## Peer dependencies
+
+The three provider SDKs are optional (marked `optional: true` in `peerDependenciesMeta`) — install only the ones whose providers you enable. `payload`, `next`, and `react` are required.
 
 | Peer | When you need it |
 | --- | --- |
-| `posthog-js` | If PostHog is enabled. |
-| `@next/third-parties` | If GTM is enabled. |
-| `@vercel/analytics` | If Vercel Analytics is enabled. |
+| `payload` (`>=3.0.0`) | Always — the global and collection are Payload configs. |
+| `next` (`>=15.0.0`) | Always — required by the GTM provider and the React/Next runtime. |
+| `react` (`>=19.0.0`) | Always — the `./provider` components are React components. |
+| `posthog-js` (`>=1.0.0`) | Optional — if PostHog is enabled. |
+| `@next/third-parties` (`>=15.0.0`) | Optional — if GTM is enabled. |
+| `@vercel/analytics` (`>=1.0.0`) | Optional — if Vercel Analytics is enabled. |
 
 ## Where it sits in the monorepo
 
-Depends on `core`. Optional peer of `children`. The template wires `TrackingProvider` into the root layout.
+Depends on `core`. Optional peer of `atomic` (its child blocks use the tracking integration). The template wires `TrackingProvider` into the root layout.

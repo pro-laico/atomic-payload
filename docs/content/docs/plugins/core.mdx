@@ -1,10 +1,135 @@
 ---
 title: "@pro-laico/core"
-description: "Kernel types, APF runtime, cache/revalidation helpers, and the JSON-schema plugin."
+description: "The foundation every Atomic Payload package builds on — kernel types, the APF runtime, cache + revalidation helpers, JSON-schema generation, and shared UI primitives."
 ---
 
-import { Callout } from 'fumadocs-ui/components/callout';
+`core` is the load-bearing base of the Atomic Payload monorepo — almost every other `@pro-laico/*` package imports something from it, consolidating what used to ship as three separate packages (`ap-types`, `ap-apf`, `ap-utils`) into one place.
 
-Kernel types, APF runtime, cache/revalidation helpers, and the JSON-schema plugin. Install, exports, API, and slug configuration for @pro-laico/core.
+## Installation
 
-<Callout type="info">This page is part of the docs skeleton — full content is coming soon.</Callout>
+<Tabs groupId="package-manager" items={['pnpm', 'npm', 'yarn']}>
+
+<Tab value="pnpm">
+
+```bash
+pnpm add @pro-laico/core
+```
+
+</Tab>
+
+<Tab value="npm">
+
+```bash
+npm install @pro-laico/core
+```
+
+</Tab>
+
+<Tab value="yarn">
+
+```bash
+yarn add @pro-laico/core
+```
+
+</Tab>
+
+</Tabs>
+
+<Callout type="info">
+  `@base-ui-components/react`, `@payloadcms/live-preview-react`, `@payloadcms/ui`, `next`, `payload`, `react`, and `server-only` are **required** peers you already have in a Payload + Next.js app. The sibling `@pro-laico/*` packages are **optional** — install only the ones you use.
+</Callout>
+
+Optional peer dependencies:
+
+| Peer | Needed when |
+| --- | --- |
+| `@pro-laico/atomic` | Using atomic blocks |
+| `@pro-laico/images` | Using image utilities |
+| `@pro-laico/site` | Using site primitives |
+| `@pro-laico/styles` | Using styles (e.g. `ClassNameField`) |
+| `@pro-laico/tracking` | Using tracking |
+
+## Setup
+
+The default export is `revalidationPlugin`. Most apps wire it in alongside the JSON-schema plugin:
+
+```ts
+import { buildConfig } from 'payload'
+import revalidationPlugin, { jsonSchemaPlugin } from '@pro-laico/core'
+
+export default buildConfig({
+  plugins: [
+    revalidationPlugin(),
+    jsonSchemaPlugin(),
+  ],
+})
+```
+
+Cache helpers and server-only utilities live behind subpath imports to keep client bundles clean:
+
+```ts
+import { createGetCached, createDefaultGetCached } from '@pro-laico/core/cache'  // server
+import { createReactCachedGetCached } from '@pro-laico/core/cache/react'         // React cache wrapper
+import { revalidationLogger } from '@pro-laico/core/logger'                      // server-only
+```
+
+This package also ships a `core-augment-types` binary. The template's `generate:types` script chains it after `payload generate:types` to write the project-specific `PayloadAugment` augmentation alongside `payload-types.ts`:
+
+```bash
+pnpm payload generate:types && pnpm core-augment-types
+```
+
+## Exports
+
+**Subpath imports**
+
+| Subpath | What's there |
+| --- | --- |
+| `@pro-laico/core` | `revalidationPlugin` (default), `jsonSchemaPlugin`, fields, hooks, and path constants |
+| `@pro-laico/core/kernel` | `PayloadAugment` interface, `Get<>` helper, default fallbacks |
+| `@pro-laico/core/cache` | `createGetCached` / `createDefaultGetCached` factories (server) |
+| `@pro-laico/core/cache/react` | `createReactCachedGetCached` — React `cache()` wrapper |
+| `@pro-laico/core/cache/auto` | Auto-keyed cache variants |
+| `@pro-laico/core/logger` | `revalidationLogger` (server-only) |
+| `@pro-laico/core/payload` | Payload instance helper |
+| `@pro-laico/core/auth/getMeUser` | `getMeUser` (uses `next/navigation`) |
+| `@pro-laico/core/next/preview` | `previewRouteHandler` |
+| `@pro-laico/core/next/exit-preview` | `exitPreviewRouteHandler` |
+| `@pro-laico/core/components/frontend/Toaster` | `Toaster` |
+| `@pro-laico/core/components/frontend/LivePreviewListener` | `LivePreviewListener` |
+| `@pro-laico/core/ui/fields/slug` | Slug admin field component |
+| `@pro-laico/core/ui/root/siteTriggers` | Site triggers admin component |
+| `@pro-laico/core/admin/controls` | APF controls component |
+| `@pro-laico/core/admin/field` | APF field component |
+| `@pro-laico/core/admin/label` | APF label component |
+| `@pro-laico/core/src` | Same surface as the root barrel (raw `src` entry) |
+| `@pro-laico/core/config` | Config entry |
+
+**By kind**
+
+- **Plugins** — `revalidationPlugin` (default export), `jsonSchemaPlugin`
+- **Fields** — `slugField`, `StorageTab`, `DevModeField`, `TestPathField`, `UniqueTitleField`
+- **Components** — `Toaster`, `LivePreviewListener` (frontend); slug and `siteTriggers` admin fields; APF `controls`/`field`/`label`
+- **Hooks** — collection / global / field hooks (`revalidateCache`, `sanitizeAfterRead`, `formatSlug`, etc.)
+- **Utilities** — `createGetCached` / `createDefaultGetCached` (via `@pro-laico/core/cache`), `revalidateTag` wrapper, `getServerSideURL`, `GenerateMetaData`, `deepMerge`, `formatSlugHook`, case converters, `revalidationLogger`
+
+<Callout type="info">
+  Modules like `@pro-laico/core/logger`, `@pro-laico/core/cache`, `@pro-laico/core/auth/getMeUser`, and the `admin/*` components are **subpath-only** (not re-exported from the barrel) because they import `server-only`, `next/navigation`, or load via Payload's import map. Stick to the subpaths in `package.json` `exports` and you won't fight bundlers.
+</Callout>
+
+Several admin components are referenced by string path (Payload's `importMap` resolves them at runtime). The constants live in the barrel:
+
+```ts
+APFControlsPath   // '@pro-laico/core/admin/controls'
+APFieldPath       // '@pro-laico/core/admin/field'
+APFieldLabelPath  // '@pro-laico/core/admin/label'
+SiteTriggersPath  // '@pro-laico/core/ui/root/siteTriggers'
+SlugPath          // '@pro-laico/core/ui/fields/slug'
+```
+
+## Related
+
+<Cards>
+  <Card title="The kernel: Get and PayloadAugment" href="/docs/concepts/kernel" />
+  <Card title="Caching & revalidation" href="/docs/concepts/caching" />
+</Cards>

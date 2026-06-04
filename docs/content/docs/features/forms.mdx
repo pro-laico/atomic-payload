@@ -1,10 +1,69 @@
 ---
 title: "Forms"
-description: "Custom forms with Sanitation, Validation, and Rate Limiting."
+description: "Build fully custom forms with per-field Sanitation, Validation, and Rate Limiting."
 ---
 
-import { Callout } from 'fumadocs-ui/components/callout';
+Build fully customizable forms directly in the Payload admin, with per-field **Sanitation, Validation, and Rate Limiting (SVR)** that runs server-side before a submission is accepted.
 
-Compose fully custom forms with per-field Sanitation, Validation, and Rate Limiting (SVR) blocks.
+## Overview
 
-<Callout type="info">This page is part of the docs skeleton — full content is coming soon.</Callout>
+Forms in Atomic Payload are built the same way as the rest of your site — out of blocks in the dashboard. A `submit-form` action block and matching `input/*` child blocks let you assemble a form, while SVR blocks attach Sanitation, Validation, and Rate Limiting to forms and their individual inputs.
+
+Because every part of the form is content, you can build fully customizable forms without touching code: lay out the fields, then add the SVR blocks that decide how each submission is cleaned, checked, and throttled.
+
+## How it works
+
+SVR is split into three concerns, each expressed as a block you attach to a form or an input:
+
+- **Sanitation** — cleans incoming values before they are checked or stored.
+- **Validation** — verifies values meet your rules and rejects bad submissions.
+- **Rate Limiting** — throttles how often a form can be submitted.
+
+Like Actions, **SVR's use a block structure, so you can extend them by adding a new SVR block.** The block list in the dashboard stays the source of truth for how a form behaves — there is no separate config to keep in sync.
+
+Submissions run through a validated, server-side pipeline. The `submit-form` action block and its `input/*` child blocks plug into a server function that runs Sanitation, Validation, and Rate Limiting through the attached SVR blocks before invoking `formProcessor`, which handles the submission once every SVR check has passed.
+
+## Using it
+
+In the Payload admin:
+
+1. Add a `submit-form` action block where you want the form, and add `input/*` child blocks for each field the form collects.
+2. Attach SVR blocks to the form and to individual inputs — a Sanitation block to clean a value, a Validation block to enforce rules, a Rate Limiting block to throttle submissions.
+3. To go beyond the built-ins, add a new SVR block; the pipeline picks it up automatically because the dashboard's block list drives behavior.
+
+All of this works alongside the rest of Atomic Payload's block functionality, so form fields can be styled and made interactive the same way as any other block.
+
+## Configuration
+
+Forms are provided by the `forms` namespace of `@pro-laico/atomic`, registered with `formsPlugin()`:
+
+```ts
+import { buildConfig } from 'payload'
+import { formsPlugin } from '@pro-laico/atomic/forms'
+
+export default buildConfig({
+  plugins: [formsPlugin()],
+})
+```
+
+Relevant exports:
+
+| Subpath | What's there |
+| --- | --- |
+| `@pro-laico/atomic/forms` | Form & input submission — the server action and `formProcessor` |
+| `@pro-laico/atomic/forms/submitForm/serverFunction` | The server action that runs form submission |
+| `@pro-laico/atomic/forms/submitForm/formProcessor` | The processor invoked after SVR passes |
+
+For installation, peers, and the full export surface, see the atomic plugin reference.
+
+## Provided by
+
+<Cards>
+  <Card title="@pro-laico/atomic" href="/docs/plugins/atomic" />
+</Cards>
+
+## Related
+
+<Cards>
+  <Card title="Actions" href="/docs/features/actions" />
+</Cards>

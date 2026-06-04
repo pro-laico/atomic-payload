@@ -1,10 +1,116 @@
 ---
 title: "@pro-laico/seed"
-description: "Opinionated seed data and the /api/seed endpoint."
+description: "One-click database seeding from the admin — a POST /api/seed endpoint and a SEED DATABASE dashboard button."
 ---
 
-import { Callout } from 'fumadocs-ui/components/callout';
+A Payload plugin that gives you a one-click way to populate a fresh database with the content needed to make Atomic Payload actually work: a starter design set, a default icon set, header/footer globals, site metadata, and more.
 
-Opinionated seed data and the /api/seed endpoint. Install, exports, API, and slug configuration for @pro-laico/seed.
+## Installation
 
-<Callout type="info">This page is part of the docs skeleton — full content is coming soon.</Callout>
+<Tabs groupId="package-manager" items={['pnpm', 'npm', 'yarn']}>
+
+<Tab value="pnpm">
+
+```bash
+pnpm add @pro-laico/seed
+```
+
+</Tab>
+
+<Tab value="npm">
+
+```bash
+npm install @pro-laico/seed
+```
+
+</Tab>
+
+<Tab value="yarn">
+
+```bash
+yarn add @pro-laico/seed
+```
+
+</Tab>
+
+</Tabs>
+
+<Callout type="info">
+  `@payloadcms/ui`, `next`, `payload`, and `react` are required peers you already have in a Payload + Next.js app.
+</Callout>
+
+## Setup
+
+Add the plugin to your Payload config. With no `seed` passed, it uses the bundled default seed:
+
+```ts
+import { buildConfig } from 'payload'
+import { seedPlugin } from '@pro-laico/seed'
+
+export default buildConfig({
+  plugins: [
+    seedPlugin({
+      enabled: process.env.INCLUDE_SEED === 'true',
+    }),
+  ],
+})
+```
+
+To pass your own seed function:
+
+```ts
+import { seedPlugin } from '@pro-laico/seed'
+import { seed } from '@/endpoints/seed'
+
+seedPlugin({ enabled: true, seed })
+```
+
+After enabling the plugin, run `pnpm payload generate:importmap` so Payload registers `@pro-laico/seed/admin/beforeDashboard` in its import map. Otherwise the dashboard banner won't render.
+
+The plugin wires a `POST /api/seed` endpoint that runs whatever `seed` function you give it. It's guarded — it returns 403 unless `req.user` is authenticated, and (when you pass an `authorize` predicate) unless that predicate also approves the user.
+
+<Callout type="warn">
+  The seed wipes and recreates the **entire database**. The endpoint is gated on "any authenticated user" by default, so in multi-user / production apps pass an `authorize` predicate (e.g. a role test) to restrict who can run it.
+</Callout>
+
+## Options
+
+`seedPlugin(options?)` accepts:
+
+<TypeTable
+  type={{
+    enabled: { type: 'boolean', default: 'true', description: 'Set to false to no-op the plugin entirely.' },
+    seed: { type: 'SeedFn', default: 'bundled default', description: 'The function the endpoint calls.' },
+    endpointPath: { type: 'string', default: '/seed', description: 'Path under /api (so the default resolves to /api/seed).' },
+    authorize: { type: 'SeedAuthorize', default: 'allow any authenticated user', description: 'Predicate run after the auth check to further restrict who can seed. Receives the authenticated user, returns boolean | Promise<boolean>. The seed wipes and recreates the whole DB, so pass a role test in production (e.g. (user) => user.roles?.includes("admin")).' },
+    registerBeforeDashboard: { type: 'boolean', default: 'true', description: 'Whether to inject the admin banner.' },
+  }}
+/>
+
+<Callout type="info">
+  **Slug overrides are not a plugin option.** The bundled `seed()` accepts an optional **second argument**, `slugConfig` (a `SeedSlugConfig`), letting you remap the collection/global slugs it writes to: `seed(args, slugConfig)`. To use it through the plugin, wrap the call: `seedPlugin({ seed: (args) => seed(args, { pages: 'my-pages' }) })`. See [Slugs](/docs/concepts/slugs) for how those globals and collections are addressed.
+</Callout>
+
+## Exports
+
+**Subpath imports**
+
+| Subpath | What's there |
+| --- | --- |
+| `@pro-laico/seed` | The `seedPlugin`, the bundled default `seed`, `createSeedEndpoint`, `BeforeDashboardPath`, and the types `SeedPluginOptions` / `SeedFn` / `SeedAuthorize` / `SeedSlugConfig` |
+| `@pro-laico/seed/admin/beforeDashboard` | The admin component (loaded via Payload's import map) |
+
+**By kind**
+
+- **Plugin** — `seedPlugin` — wires the `POST /api/seed` endpoint and the admin banner
+- **Seed** — `seed` — the bundled default seed (design set, icon set, header/footer, site metadata); override by passing your own. Accepts an optional second `slugConfig` argument
+- **Endpoint factory** — `createSeedEndpoint(seed, path?, authorize?)` — builds the auth-guarded Payload endpoint directly
+- **Admin component** (from `/admin/beforeDashboard`) — `BeforeDashboard` — the dashboard banner with the SEED DATABASE button
+- **Utilities** — `BeforeDashboardPath` — the string Payload's import map resolves
+- **Types** — `SeedPluginOptions`, `SeedFn`, `SeedAuthorize`, `SeedSlugConfig` (slug overrides for `seed()`)
+
+## Related
+
+<Cards>
+  <Card title="Seeding" href="/docs/features/seeding" />
+</Cards>

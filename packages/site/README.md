@@ -31,25 +31,37 @@ export default buildConfig({
 
 That's the whole API. The plugin is intentionally unopinionated about cross-package wiring (atomicHook callback, nested-docs plugin, live-preview URL, JSON-schema setup) — that's the template's job, because those choices depend on what other plugins you've enabled.
 
+## Plugin options
+
+| Option | Default | What it does |
+| --- | --- | --- |
+| `enabled` | `true` | When `false`, the plugin is a no-op and registers nothing. |
+
 ## What lives in `src/`
 
 | Path | What's there |
 | --- | --- |
-| `plugin.ts` | `sitePlugin` — registers all collections and globals. |
-| `collections/pages/` | The `Pages` collection, SEO tab, settings tab, atomic-hook slug map. |
-| `collections/headers/` | The `Header` collection. |
-| `collections/footers/` | The `Footer` collection. |
+| `plugin.ts` | `sitePlugin` + `SitePluginOptions` — registers the collections and globals. |
+| `collections/pages/collection.ts` | The `Pages` collection. |
+| `collections/pages/tabs/SEO.ts` | `SEOTab()` — the SEO tab used by `Pages`. |
+| `collections/pages/tabs/settings.ts` | `SettingsTab()` — the per-page settings tab. |
+| `collections/pages/atomicHookSlugs.ts` | `COLLECTION_SLUGS_WITH_ATOMIC_HOOK` — the slug list the atomic hook runs on. |
+| `collections/headers/collection.ts` | The `Header` collection. |
+| `collections/footers/collection.ts` | The `Footer` collection. |
+| `collections/{headers,footers}/component.tsx` | The `Header` / `Footer` frontend renderers (re-exported from `./components/frontend`). |
 | `globals/settings.ts` | The `Settings` global. |
 | `globals/siteMetaData.ts` | The `SiteMetaData` global. |
-| `access.ts` | Default access predicates. |
-| `components/frontend/` | Frontend React components (Header/Footer/Pages renderers). Lives at a subpath so server config doesn't import client code. |
-| `zap.ts` | `zap` registry augmentations + helpers. |
+| `access.ts` | Internal `authd` / `authenticatedOrPublished` access predicates (not exported). |
+| `zap.ts` | The site's atomic-hook / storage slug zod enums for the `zap` registry. |
+| `types/payload-augment.ts` | `Page` / `Header` / `Footer` / `SiteMetaDatum` / `ShortcutSet` type stubs (the `./schema` entry). |
+| `types/payload.ts` | Side-effect `RequestContext` augmentation, imported from `index.ts`. |
 
 ## Notable exports
 
 ```ts
 import {
   sitePlugin,
+  type SitePluginOptions,
   Pages, Header, Footer,
   Settings, SiteMetaData,
   SEOTab, SettingsTab,
@@ -63,10 +75,18 @@ import {
 
 | Subpath | What's there |
 | --- | --- |
-| `./schema` | `zap` registry augmentations |
-| `./zap` | The zap helpers for site types |
-| `./components/frontend` | Frontend React components |
+| `./schema` | The Payload type stubs (`Page`, `Header`, `Footer`, `SiteMetaDatum`, `ShortcutSet`). |
+| `./zap` | The site's slug zod enums (`CollectionThatUsesAtomicHookSlug`, `CollectionWithStoredAtomicClassesSlug`, etc.) for the `zap` registry. |
+| `./components/frontend` | The `Header` and `Footer` frontend React renderers. Kept off the main barrel so server-side config never imports client code. |
+
+## Peer dependencies
+
+| Peer | When you need it |
+| --- | --- |
+| `payload` (`>=3.0.0`) | Always — the collections and globals are Payload configs. |
+| `react` (`>=19.0.0`) | Always — the `./components/frontend` renderers are React components. |
+| `@payloadcms/plugin-nested-docs` (`>=3.0.0`) | Always — `Pages` uses its `createParentField` / `createBreadcrumbsField` for the page tree. |
 
 ## Where it sits in the monorepo
 
-Depends on `core`, `images` (for SiteMetaData's favicon field), `atomic`, and `zap`. Consumed by `styles`, `seed`, and almost every template page.
+Depends on `core`, `images` (for SiteMetaData's favicon field), `atomic`, `zap`, and `styles` (the last is a type-only / fields peer relationship). Consumed by `seed` and almost every template page.

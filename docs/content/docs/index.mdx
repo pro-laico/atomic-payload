@@ -1,10 +1,25 @@
 ---
 title: "Introduction"
-description: "Build websites in the Payload admin, powered by composable plugins."
+description: "A website builder on Payload CMS with a hard separation between front-end and backend — build entire sites in the admin from composable @pro-laico/* plugins."
 ---
 
-import { Callout } from 'fumadocs-ui/components/callout';
+**Atomic Payload** is a website builder built on [Payload CMS](https://payloadcms.com/) that draws a hard line between front-end development and the backend. Editors build their entire website directly in Payload's admin dashboard — without ever having to touch real code. That separation makes it easy to enforce best practices and achieve great performance out of the box.
 
-Atomic Payload is a website builder for Payload CMS — a hard separation between front-end and backend so you build entire sites in the admin, assembled from a family of composable @pro-laico/* plugins. These docs are developer-first: start with setup and the core concepts, then dive into features and the per-package reference.
+The building blocks come from a family of composable `@pro-laico/*` plugins: Tailwind styles written in the admin, recursive atomic blocks with copy-paste-duplicate, UnoCSS shortcuts, design tokens and swappable design sets, interactive actions, and custom forms with sanitation, validation, and rate limiting — plus images, fonts, icons, Mux video, and tracking.
 
-<Callout type="info">This page is part of the docs skeleton — full content is coming soon.</Callout>
+<Callout type="info">
+  Atomic Payload is not affiliated with Payload CMS in any capacity.
+</Callout>
+
+## How it's built
+
+Every feature ships as an independently-installable Payload plugin (`sitePlugin`, `stylesPlugin`, `iconsPlugin`, `fontsPlugin`, `trackingPlugin`, and more), all sitting on top of the **`@pro-laico/core`** kernel. Core provides the shared type machinery — the single `PayloadAugment` interface plus the `Get<>` and `ExtractOrDefault` helpers — so each package defines its schema as stubs that resolve to your project's concrete shapes once you generate types. The whole thing is distributed both as a full starter template (Payload + Next.js + Tailwind that uses every plugin) and as the individual plugins you can add to an existing project one at a time.
+
+## How these docs are organized
+
+<Cards>
+  <Card title="Getting Started" href="/docs/getting-started/quick-start" description="Scaffold a new project or add Atomic Payload to an existing one." />
+  <Card title="Core Concepts" href="/docs/concepts/architecture" description="The kernel, cross-package type augmentation, and the front-end / backend split." />
+  <Card title="Features" href="/docs/features/atomic-blocks" description="Atomic blocks, styles, design sets, actions, forms, and more." />
+  <Card title="Plugins" href="/docs/plugins" description="Reference for each independently-installable @pro-laico/* plugin." />
+</Cards>

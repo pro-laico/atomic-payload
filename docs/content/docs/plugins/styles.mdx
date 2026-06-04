@@ -1,10 +1,138 @@
 ---
 title: "@pro-laico/styles"
-description: "Design sets & shortcut sets, the className field, and CSS processing."
+description: "The single home for all CSS handling in Atomic Payload — the designSet + shortcutSet collections and the runtime UnoCSS processor."
 ---
 
-import { Callout } from 'fumadocs-ui/components/callout';
+A Payload plugin + runtime that owns all CSS handling in Atomic Payload: the **`designSet`** + **`shortcutSet`** collections (the Tailwind-config equivalent authored inside Payload), the token fields and admin row-labels, and the runtime UnoCSS processor (`createCssProcessor` + `processDesignSet`) that turns the active design set into CSS for both the frontend and Payload's admin.
 
-Design sets & shortcut sets, the className field, and CSS processing. Install, exports, API, and slug configuration for @pro-laico/styles.
+## Installation
 
-<Callout type="info">This page is part of the docs skeleton — full content is coming soon.</Callout>
+<Tabs groupId="package-manager" items={['pnpm', 'npm', 'yarn']}>
+
+<Tab value="pnpm">
+
+```bash
+pnpm add @pro-laico/styles
+```
+
+</Tab>
+
+<Tab value="npm">
+
+```bash
+npm install @pro-laico/styles
+```
+
+</Tab>
+
+<Tab value="yarn">
+
+```bash
+yarn add @pro-laico/styles
+```
+
+</Tab>
+
+</Tabs>
+
+<Callout type="info">
+  `@payloadcms/ui`, `payload`, `react`, and `unocss` are all **required** peers — `unocss` included, since it powers the runtime CSS processor.
+</Callout>
+
+## Setup
+
+Add the plugin to your Payload config:
+
+```ts
+import { buildConfig } from 'payload'
+import { stylesPlugin } from '@pro-laico/styles'
+
+export default buildConfig({
+  plugins: [
+    stylesPlugin({
+      generateLivePreviewPath: yourPreviewUrl,  // REQUIRED — shared by both collections
+      atomicHook: yourBeforeChangeHook,         // optional; from @pro-laico/atomic/hook
+      // getCached: yourGetCached,              // attaches the standalone cssHook (CSS without @pro-laico/atomic)
+      // cssHookOptions: { ... },               // forwarded to createCssHook when getCached is set
+      // enabled: true,                         // false makes the whole plugin a no-op
+      // storageGlobals: true,                  // false skips the draft/published CSS storage globals
+      // registerTypescriptSchema: true,        // false if you already wire @pro-laico/zap's schema yourself
+      designSet: {
+        // false (or { enabled: false }) to omit the designSet collection entirely
+        // access, collection — shallow-merged per-collection settings
+        // fontField — a Payload Field (e.g. @pro-laico/fonts' fontUploadField()) for the Fonts tab
+      },
+      shortcutSet: {
+        // false (or { enabled: false }) to omit shortcutSet entirely
+        // defaultShortcuts: [...]   read-only rows shown in admin
+        // access, collection — same pattern as designSet
+      },
+    }),
+  ],
+})
+```
+
+Row-label and admin component paths default to template-provided `@/ui/...` strings resolved via your app's `importMap`.
+
+## Options
+
+`stylesPlugin(options)` accepts:
+
+<TypeTable
+  type={{
+    generateLivePreviewPath: { type: '(args) => Promise<string> | string', description: 'Required. Generates the live-preview URL for the active design set. Shared by both collections.' },
+    atomicHook: { type: 'CollectionBeforeChangeHook', description: 'Optional. The beforeChange hook that wraps createCssProcessor + processDesignSet (from @pro-laico/atomic/hook).' },
+    enabled: { type: 'boolean', default: 'true', description: 'When false, the whole plugin is a no-op.' },
+    getCached: { type: 'CssProcessorGetCached', description: 'Optional. Attaches the standalone cssHook, producing CSS without @pro-laico/atomic.' },
+    cssHookOptions: { type: 'CssHookOptions', description: 'Optional. Forwarded to createCssHook when getCached is set (slug/global overrides).' },
+    storageGlobals: { type: 'boolean', default: 'true', description: 'When false, the plugin does not register the draft/published CSS storage globals.' },
+    registerTypescriptSchema: { type: 'boolean', default: 'true', description: "When true, appends @pro-laico/zap's toJSONSchemaExtensions to config.typescript.schema so generate:types resolves the designSet field $refs. Set false if you already wire the zap schema yourself." },
+    designSet: { type: 'object | false', description: 'The designSet collection config. Pass false (or { enabled: false }) to omit the collection. Nested keys: enabled (boolean, default true), access, collection (shallow-merged per-collection settings), and fontField (a Payload Field for the Fonts tab, e.g. @pro-laico/fonts fontUploadField()).' },
+    shortcutSet: { type: 'object | false', description: 'The shortcutSet collection config. Pass false (or { enabled: false }) to omit it. Nested keys: enabled (boolean, default true), access, collection (same as designSet), plus defaultShortcuts (read-only rows shown in admin).' },
+  }}
+/>
+
+## Exports
+
+**Subpath imports**
+
+| Subpath | What's there |
+| --- | --- |
+| `@pro-laico/styles` | The `stylesPlugin`, `designSet` + `shortcutSet` collections, CSS storage globals, fields, and utilities |
+| `@pro-laico/styles/schema` | `zap` registry augmentations |
+| `@pro-laico/styles/cssProcessor` | `createCssProcessor` directly |
+| `@pro-laico/styles/processDesignSet` | `processDesignSet` directly |
+| `@pro-laico/styles/designSet/tabs/colors` | Color tab + `UnoColors` directly |
+| `@pro-laico/styles/designSet/defaults` | Built-in atomic class defaults |
+| `@pro-laico/styles/fields/value` | Token value fields |
+| `@pro-laico/styles/fields/className` | The className field |
+| `@pro-laico/styles/globals/storage` | CSS storage globals |
+| `@pro-laico/styles/hooks/cssHook` | The standalone `cssHook` |
+| `@pro-laico/styles/ui/rowLabels/*` | Admin row-label React components (`shortcut`, `color`, `animation`, `designToken`) |
+
+**By kind**
+
+- **Collections** — `designSet`, `shortcutSet` (each toggleable)
+- **Globals** — CSS storage globals (from `/globals/storage`)
+- **Fields** — token value fields (from `/fields/value`: `TokenString`, `TokenStringArray`, `ValueField`); the `className` field (from `/fields/className`)
+- **Components** — admin row-labels (from `/ui/rowLabels/*`): `shortcut`, `color`, `animation`, `designToken`
+- **Utilities** — `createCssProcessor` (from `/cssProcessor`), `processDesignSet` (from `/processDesignSet`), `UnoColors` (from `/designSet/tabs/colors`), `defaultAtomicClasses` (from `/designSet/defaults`)
+
+## Slug configuration
+
+Slugs are configured in two different places, depending on whether you mean the **collection** slug or the slugs the **CSS processor** reads/writes.
+
+**Collection slugs.** The `designSet` and `shortcutSet` collections take their slug (and other Payload collection config) from the nested `collection` override on the plugin's `designSet` / `shortcutSet` options — it's shallow-merged on top of the defaults. Pass `false` (or `{ enabled: false }`) to omit a collection entirely; pass `access` to merge access settings; `designSet` additionally accepts a `fontField` Field and `shortcutSet` a `defaultShortcuts` array (read-only rows shown in the admin).
+
+**CSS-processor slugs.** `createCssProcessor` (and the standalone `cssHook` it backs) resolves which documents to read and where to write generated CSS through its `CssProcessorOptions`:
+
+- **`cssCacheTagBySlug`** — a `Record<string, string>` mapping slug → cached-tag key used by `getCached`. The processor reads four entries: `header`, `footer`, `designSet`, and `shortcutSet`, each defaulting to its own name. Override an entry to point the processor at a differently-named collection/global.
+- **`cssStorageGlobals`** — `{ draft, published }` global slugs the generated CSS is written to.
+
+When the plugin wires the standalone hook (via `getCached`), these are passed through `cssHookOptions` (`CssHookOptions`), which forwards `cssCacheTagBySlug`, `cssStorageGlobals`, `designSetSlug`, and `cssProcessorSkipSlugs` to `createCssHook`.
+
+## Related
+
+<Cards>
+  <Card title="Styles" href="/docs/features/styles" />
+</Cards>

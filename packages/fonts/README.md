@@ -38,7 +38,7 @@ export default buildConfig({ plugins: [fontsPlugin({ global: true })] })
 | Option | Purpose |
 | --- | --- |
 | `enabled` | Set `false` to no-op the plugin. Default `true`. |
-| `fontOverride` | Shallow-merged onto the `Font` collection — e.g. `upload.staticDir` (local storage location), `access`, `hooks`. |
+| `fontOverride` | Deep-merged onto the `Font` collection — `upload`, `access`, and `hooks` merge onto the base (e.g. `upload.staticDir` keeps the base `mimeTypes`); `fields` replaces wholesale. |
 | `global` | `true` registers the standalone `fontSet` global; pass a partial `GlobalConfig` to override. Default `false`. |
 
 > **Where are fonts stored?** That's Payload's job: the `Font` collection's `upload.staticDir` (local) or a storage plugin (`@payloadcms/storage-*`) you add at the config level. The downloader just follows the `url` Payload produces, so you don't configure storage twice.
@@ -79,7 +79,7 @@ No storage token is required — the downloader uses whatever URL Payload report
 | Variable | `runDownloadFonts` option | Default behavior |
 | --- | --- | --- |
 | `ATOMIC_FONTS_OUTPUT_DIR` | `fontsOutputDir` | Where to write font binaries (`./public/fonts`). |
-| `ATOMIC_FONTS_DEFINITION_FILE` | `definitionFile` | The generated module declaring each `localFont(...)` call. |
+| `ATOMIC_FONTS_DEFINITION_FILE` | `definitionFile` | The generated module declaring each `localFont(...)` call (`./src/app/definition.ts`). |
 | `ATOMIC_FONTS_ENV_FILE` | `envFile` | `.env` file to load before running. |
 | `ATOMIC_FONTS_SRC_PREFIX` | `localFontSrcPrefix` | Path prepended to each `src` in the definition file. |
 | `ATOMIC_FONTS_GLOBAL_SLUG` | `fontSetGlobalSlug` | Slug of the global to fall back to (`fontSet`). |
@@ -103,6 +103,7 @@ No storage token is required — the downloader uses whatever URL Payload report
 | `collections/font.ts` | The `Font` upload collection config. |
 | `globals/fontSet.ts` | The standalone `fontSet` global. |
 | `fields/font.ts` | `fontUploadField` / `fontUploadFields`. |
+| `access/authd.ts` | `authd` — default authenticated-user access for the `Font` collection and `fontSet` global. |
 | `scripts/cli.ts` | CLI entry; thin wrapper around `runDownloadFonts`. |
 | `scripts/downloadFonts.ts` | Selection resolution + storage-agnostic download + definition generation. |
 | `types/payload-augment.ts` | `Font` / `FontSet` schema stubs. |

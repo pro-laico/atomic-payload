@@ -1,10 +1,80 @@
 ---
 title: "@pro-laico/site"
-description: "Pages/Header/Footer collections and the SiteMetaData/Settings/Storage globals."
+description: "The opinionated site-shape package — Pages, Header, Footer collections plus the SiteMetaData and Settings globals, all registered by a single sitePlugin()."
 ---
 
-import { Callout } from 'fumadocs-ui/components/callout';
+Where every other plugin contributes one feature, `site` contributes the **shape** of an Atomic Payload site — registering the **`Pages`**, **`Header`**, and **`Footer`** collections plus the **`SiteMetaData`** and **`Settings`** globals that every project needs to look like a website.
 
-Pages/Header/Footer collections and the SiteMetaData/Settings/Storage globals. Install, exports, API, and slug configuration for @pro-laico/site.
+## Installation
 
-<Callout type="info">This page is part of the docs skeleton — full content is coming soon.</Callout>
+<Tabs groupId="package-manager" items={['pnpm', 'npm', 'yarn']}>
+
+<Tab value="pnpm">
+
+```bash
+pnpm add @pro-laico/site
+```
+
+</Tab>
+
+<Tab value="npm">
+
+```bash
+npm install @pro-laico/site
+```
+
+</Tab>
+
+<Tab value="yarn">
+
+```bash
+yarn add @pro-laico/site
+```
+
+</Tab>
+
+</Tabs>
+
+<Callout type="info">
+  `@payloadcms/plugin-nested-docs`, `payload`, and `react` are required peers you already have in a Payload + Next.js app.
+</Callout>
+
+## Setup
+
+Add the plugin to your Payload config:
+
+```ts
+import { buildConfig } from 'payload'
+import { sitePlugin } from '@pro-laico/site'
+
+export default buildConfig({
+  plugins: [sitePlugin()],
+})
+```
+
+That's the whole API. The plugin is intentionally unopinionated about cross-package wiring (atomicHook callback, nested-docs plugin, live-preview URL, JSON-schema setup) — that's the template's job, because those choices depend on what other plugins you've enabled.
+
+## Exports
+
+**Subpath imports**
+
+| Subpath | What's there |
+| --- | --- |
+| `@pro-laico/site` | `sitePlugin`, the `Pages`/`Header`/`Footer` collections, the `Settings`/`SiteMetaData` globals, tab fields, and utilities |
+| `@pro-laico/site/schema` | `zap` registry augmentations |
+| `@pro-laico/site/zap` | The zap helpers for site types |
+| `@pro-laico/site/components/frontend` | Frontend React components |
+
+**By kind**
+
+- **Collections** — `Pages`, `Header`, `Footer`
+- **Globals** — `SiteMetaData`, `Settings`
+- **Fields** — `SEOTab`, `SettingsTab` — drop-in tabs for composing site collections
+- **Components** (from `/components/frontend`) — Frontend React components (`Header` and `Footer` renderers)
+- **Utilities** — `COLLECTION_SLUGS_WITH_ATOMIC_HOOK` — the explicit list of collections the atomic hook should run on; keep `@pro-laico/atomic/hook`'s wiring in sync with this
+
+## Related
+
+<Cards>
+  <Card title="Pages, Header, Footer & SEO" href="/docs/features/site" />
+</Cards>

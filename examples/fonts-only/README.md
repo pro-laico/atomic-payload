@@ -26,9 +26,10 @@ active four in the `fontSet` global, and the site renders them.
 - **Two delivery paths, one page.** The layout serves each active role via a
   `--font-<role>` CSS variable, resolved one of two ways:
   - **Inline (default).** With no download, the layout reads the active font's
-    bytes server-side (auth-gated, `overrideAccess`) and inlines them as
-    `@font-face { src: url(data:…) }`. The browser gets inlined bytes — never a
-    `/api/font/file/…` URL. Works in plain local dev with no extra setup.
+    bytes off disk server-side (`readFontDataUrl` from `FONT_STATIC_DIR`) and
+    inlines them as `@font-face { src: url(data:…) }`. The browser gets inlined
+    bytes — never a `/api/font/file/…` URL. Works in plain local dev with no
+    extra setup.
   - **`next/font/local` (optimized).** If `pnpm download:fonts` has run, the
     fonts live in `public/fonts` and `src/app/definition.ts` declares them; the
     layout applies the `next/font` classes and `--font-<role>` points at the
@@ -42,7 +43,7 @@ active four in the `fontSet` global, and the site renders them.
 ## Quick start
 
 ```bash
-cp .env.example .env       # set a long PAYLOAD_SECRET
+cp .env.example .env       # set a long PAYLOAD_SECRET; NEXT_PUBLIC_SERVER_URL is preset
 cp gitignore.template .gitignore
 pnpm install
 pnpm generate:types        # generates src/payload-types.ts + augment
@@ -51,7 +52,8 @@ pnpm dev
 ```
 
 Ships with SQLite (`@payloadcms/db-sqlite`) at `./font-only.db` — no DB server.
-Swap adapters by editing `src/payload.config.ts`.
+`DATABASE_URI` is optional (defaults to `file:./font-only.db`); swap adapters by
+editing `src/payload.config.ts` and setting the matching connection string.
 
 ### Optional: the `next/font/local` path
 

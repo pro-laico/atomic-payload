@@ -1,10 +1,156 @@
 ---
 title: "@pro-laico/zap"
-description: "Zod plus the AtomicRegistry helper."
+description: "Zod with Atomic Payload extensions — a registry-aware schema layer shared across every @pro-laico/* package and the starter template."
 ---
 
-import { Callout } from 'fumadocs-ui/components/callout';
+`zap` is the schema vocabulary for Atomic Payload: it re-exports Zod and bolts on a tiny class (`z.ap`) that lets every package register its own Zod schemas into a single global registry keyed by string ID.
 
-Zod plus the AtomicRegistry helper. Install, exports, API, and slug configuration for @pro-laico/zap.
+## Installation
 
-<Callout type="info">This page is part of the docs skeleton — full content is coming soon.</Callout>
+<Tabs groupId="package-manager" items={['pnpm', 'npm', 'yarn']}>
+
+<Tab value="pnpm">
+
+```bash
+pnpm add @pro-laico/zap
+```
+
+</Tab>
+
+<Tab value="npm">
+
+```bash
+npm install @pro-laico/zap
+```
+
+</Tab>
+
+<Tab value="yarn">
+
+```bash
+yarn add @pro-laico/zap
+```
+
+</Tab>
+
+</Tabs>
+
+<Callout type="info">
+  `zap` bundles its own dependencies — including Zod, pinned to `zod@4.1.11`. There are no peer dependencies to install separately.
+</Callout>
+
+## Usage
+
+`zap` re-exports Zod with a `z.ap` registry attached. Register a schema under a known ID, then retrieve it — or its type — elsewhere:
+
+```ts
+import { z } from '@pro-laico/zap'
+
+// Register a schema
+export const MySlug = z.ap.add(z.enum(['a', 'b']), { id: 'MySlug' })
+
+// Retrieve it elsewhere
+const slug = z.ap.get('MySlug')
+
+// Use the type alias
+const value: z.ap.Type<'MySlug'> = 'a'
+```
+
+## The `AtomicRegistry` type
+
+The TypeScript side of the registry lives in `@pro-laico/zap/schema` as a **type alias** — not an interface. It routes through the `@pro-laico/core` kernel:
+
+```ts
+// @pro-laico/zap/schema
+import type { Get } from '@pro-laico/core'
+
+export type AtomicRegistry = Get<'AtomicRegistry', Record<string, any>>
+```
+
+<Callout type="warn">
+  Because `AtomicRegistry` is a `type` alias, you **cannot** declaration-merge it — interface merging does not apply to type aliases. There is no `declare module '@pro-laico/zap/schema'` augmentation. `Get<'AtomicRegistry', …>` looks up the `AtomicRegistry` key on the single `PayloadAugment` interface in `@pro-laico/core`, falling back to `Record<string, any>` when unaugmented.
+</Callout>
+
+### How registration actually works
+
+Concrete types flow in through Payload's type generation, not a hand-written interface:
+
+1. **Register at runtime** — each package calls `z.ap.add(schema, { id })` to publish a Zod schema under a string ID.
+2. **Emit JSON Schema** — `toJSONSchemaExtensions` (via `ap.toJSONSchema()`) aggregates every registered schema into one `AtomicRegistry` definition and feeds it to Payload's `typescript.schema`.
+3. **Payload generates types** — it writes `export interface AtomicRegistry { … }` into the project's `payload-types.ts`, one member per registered ID.
+4. **The kernel is augmented once** — the generated `payload-types.augment.d.ts` augments `@pro-laico/core` (not `zap`):
+
+   ```ts
+   // src/payload-types.augment.d.ts (auto-generated — do not edit by hand)
+   import type * as G from './payload-types'
+
+   declare module '@pro-laico/core' {
+     interface PayloadAugment {
+       AtomicRegistry: G.AtomicRegistry
+     }
+   }
+   ```
+
+5. **Stubs resolve** — `zap`'s `Get<'AtomicRegistry', …>` now resolves to the project's generated shape, so `z.ap.get(id)` and `z.ap.Type<id>` are concretely typed.
+
+To register your own schema in an app, add it at runtime and re-run type generation — you do not (and cannot) declare-merge `AtomicRegistry`:
+
+```ts
+import { z } from '@pro-laico/zap'
+
+// The ID becomes a member of AtomicRegistry after `pnpm generate:types`.
+export const MySlug = z.ap.add(z.enum(['a', 'b']), { id: 'MySlug' })
+```
+
+## Exports
+
+**Subpath imports**
+
+| Subpath | What's there |
+| --- | --- |
+| `@pro-laico/zap` | Zod re-exported with the `z.ap` registry helper attached |
+| `@pro-laico/zap/schema` | The `AtomicRegistry` type alias (resolves through the `@pro-laico/core` kernel) |
+| `@pro-laico/zap/src` | The package source entry |
+
+**Key named exports**
+
+- **`z`** (default + named) — Zod, re-exported, with the `z.ap` (`AtomicPayloadZodClass`) registry attached: `add`, `get`, `type`, and `toJSONSchema`
+- **`AtomicPayloadZodClass`** — the class behind `z.ap`, exported for typing/extension. The shared singleton is `z.ap`; you normally don't instantiate it yourself.
+- **`toJSONSchemaExtensions`** — the Payload-integration helper. Spread it into your `typescript.schema` extension to add every registered schema (via `ap.toJSONSchema()`) to the generated JSON schema's `definitions`:
+
+  ```ts
+  // payload.config.ts
+  import { toJSONSchemaExtensions } from '@pro-laico/zap'
+
+  typescript: {
+    schema: [({ jsonSchema }) => toJSONSchemaExtensions({ jsonSchema })],
+  }
+  ```
+
+- **`generateBlocksType`** — builds a JSON-schema entry describing a `oneOf` union of block `$ref`s, used alongside `toJSONSchemaExtensions` in a `typescript.schema` function:
+
+  ```ts
+  import { generateBlocksType } from '@pro-laico/zap'
+
+  generateBlocksType({ name: 'MyBlocks', refs: ['HeroBlock', 'CtaBlock'] })
+  ```
+
+- **`GenerateBlocksTypeProps`** (type) — the argument shape for `generateBlocksType`: `{ name: string; refs: (string | undefined)[] }`
+- **`AtomicRegistry`** (type, from `/schema`) — the `Get<'AtomicRegistry', …>` alias that resolves to a project's generated registry shape
+
+## Gotchas
+
+<Callout type="warn">
+  **Pinned to `zod@4.1.11`.** There's a known regression on newer versions that breaks handling of registered schemas. Do not upgrade Zod here without verifying.
+</Callout>
+
+<Callout type="warn">
+  **`server-only`.** The registry imports `server-only` and is populated at config-resolution time on the server — do not import `z.ap` from client components.
+</Callout>
+
+## Related
+
+<Cards>
+  <Card title="Type augmentation" href="/docs/concepts/type-augmentation" />
+  <Card title="The kernel: Get and PayloadAugment" href="/docs/concepts/kernel" />
+</Cards>

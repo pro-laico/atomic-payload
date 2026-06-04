@@ -1,10 +1,65 @@
 ---
 title: "Project structure"
-description: "A tour of what the template scaffolds."
+description: "A tour of the files and directories in a freshly scaffolded Atomic Payload project."
 ---
 
-import { Callout } from 'fumadocs-ui/components/callout';
+A scaffolded Atomic Payload project is a Payload + Next.js (App Router) app where almost everything ships as a plugin — here's where each piece lives.
 
-Understand the files and folders a scaffolded Atomic Payload project gives you.
+```text
+atomic-payload/
+├─ next.config.ts            # withPayload() wrapper + turbopack/monorepo root config
+├─ tailwind.config.js        # Tailwind config consumed by the design set
+├─ tsconfig.json             # `@/*` path alias → src/*
+├─ .env.example              # template for required env vars (copy to .env)
+├─ public/
+│  ├─ fonts/                 # display.woff2 / serif.woff2 / mono.woff2 — design-set fonts
+│  ├─ adminFavicon.svg       # admin panel favicon
+│  └─ ogImage.webp           # default Open Graph image
+└─ src/
+   ├─ payload.config.ts      # the Payload config — where plugins & collections are registered
+   ├─ instrumentation.ts     # Next.js instrumentation hook
+   ├─ payload-types.ts       # generated Payload types (do not edit)
+   ├─ payload-types.augment.d.ts  # hand-written type augmentations
+   ├─ app/
+   │  ├─ definition.ts       # localFont() declarations exposing the design-set font variables
+   │  ├─ (frontend)/         # public site route group (pages, layout, sitemap, preview)
+   │  │  ├─ layout.tsx       # root layout: fonts, design set, providers (Tracking, theme…)
+   │  │  ├─ page.tsx         # home page
+   │  │  ├─ [...slug]/       # catch-all for Pages documents
+   │  │  ├─ next/            # preview / exit-preview route handlers
+   │  │  ├─ sitemap.ts       # generated sitemap
+   │  │  └─ not-found.tsx    # 404 page
+   │  └─ (payload)/          # Payload admin route group
+   │     ├─ admin/           # the admin panel
+   │     ├─ api/[...slug]/   # Payload REST/API handlers
+   │     ├─ layout.tsx       # admin root layout
+   │     └─ custom.scss      # admin panel style overrides
+   ├─ plugins/               # one file per registered plugin + an index.ts that composes them
+   │  └─ index.ts            # the plugins array imported by payload.config.ts
+   ├─ collections/           # project-local collections (only Users — the rest come from plugins)
+   │  ├─ index.ts
+   │  └─ users.ts
+   ├─ access/                # shared access-control helpers (anyone / authenticated / …)
+   └─ ui/                    # admin graphics (Logo, Icon) and re-exported field component paths
+      ├─ index.ts
+      └─ assets/
+```
 
-<Callout type="info">This page is part of the docs skeleton — full content is coming soon.</Callout>
+## Key files
+
+- **`src/payload.config.ts`** — the heart of the project. It calls `buildConfig()`, wires the Mongo adapter and Lexical editor, and spreads `...plugins` and `...Collections`. Nearly every collection and global (Pages, Header, Footer, DesignSet, Font, Icon, Tracking, and more) is contributed by a plugin, so the `collections` array here only holds `Users`.
+
+- **`src/plugins/`** — each plugin gets its own config file (`fonts.ts`, `icons.ts`, `images.ts`, `styles.ts`, `muxVideo.ts`, `formBuilder.ts`, …) and `src/plugins/index.ts` assembles them into the `plugins` array that `payload.config.ts` imports. This is the place to add, remove, or reconfigure plugins.
+
+- **`(frontend)` vs `(payload)` route groups** — `src/app/` uses two Next.js route groups. `(frontend)` is your public-facing site (the root `layout.tsx`, the home `page.tsx`, the `[...slug]` catch-all that renders Pages, and the preview handlers). `(payload)` is Payload's own surface — the `/admin` panel and the `/api` handlers. They're separated so the site and the admin panel can have completely independent layouts.
+
+- **`next.config.ts`** — wraps the Next config in `withPayload()` and configures `turbopack` (including a `root` that points at the monorepo when one is detected). It also derives `remotePatterns` for `next/image` from your server URL.
+
+- **Design set & fonts** — `src/app/definition.ts` declares the three local fonts (`display`, `serif`, `mono`) from `public/fonts/` via `next/font/local`, exposing CSS variables. The `(frontend)` root layout pulls the cached `designSet` and applies its `htmlClassName` / `bodyClassName` / `defaultTheme` alongside those font variables — the design set itself is managed in the admin and registered by `stylesPlugin`.
+
+## Next
+
+<Cards>
+  <Card title="Plugins" href="/docs/plugins" />
+  <Card title="Atomic Blocks" href="/docs/features/atomic-blocks" />
+</Cards>

@@ -1,10 +1,88 @@
 ---
 title: "Slug configuration"
-description: "Override the conventional collection and global slugs."
+description: "Override every conventional collection and global slug through factories — with backward-compatible defaults so existing imports keep working."
 ---
 
-import { Callout } from 'fumadocs-ui/components/callout';
+Atomic Payload ships with a set of conventional collection and global slugs — `pages`, `header`, `footer`, `designSet`, `shortcutSet`, `iconSet`, `forms`, `draftStorage`, `publishedStorage`, and friends. None of them are hardcoded in the runtime. Every slug can be overridden through a factory, so you can rename `pages` to `articles` (or wire in your own collections) without forking the plugins.
 
-Every conventional slug can be overridden through factory options with backward-compatible defaults.
+## What & why
 
-<Callout type="info">This page is part of the docs skeleton — full content is coming soon.</Callout>
+The conventional slugs are convenient defaults, not requirements. Hooks, cache getters, revalidation handlers, admin fields, and the seed routine all read their slugs from a config object rather than a constant. That means:
+
+- You can rename or remap any conventional slug to match your project's collections.
+- The defaults stay intact — if you don't pass a slug config, everything behaves exactly as before.
+- Default exports remain bound to the conventional slugs, so existing imports never break.
+
+## How it works
+
+Each subsystem exposes a factory that takes a slug (or a slug-config object) and returns the configured artifact. The default exports are thin wrappers that call these factories with the conventional slugs.
+
+### Hooks — `atomicHookWith(slugConfig)`
+
+From `@pro-laico/atomic/hook`. Accepts `pagesSlug`, `designSetSlug`, `unsetActiveCleanup`, `cssProcessorSkipSlugs`, `cssCacheTagBySlug`, and `cssStorageGlobals`.
+
+```ts
+import { atomicHookWith } from '@pro-laico/atomic/hook'
+
+const hook = atomicHookWith({
+  pagesSlug: 'articles',
+  designSetSlug: 'theme',
+})
+```
+
+### Revalidation — `createRevalidateCache` / `createRevalidateCacheOnDelete`
+
+From `@pro-laico/core`. Each takes a per-slug handler map: `createRevalidateCache(handlers)` builds the `beforeChange` revalidation, and `createRevalidateCacheOnDelete(handlers)` builds the `afterDelete` counterpart.
+
+```ts
+import { createRevalidateCache, createRevalidateCacheOnDelete } from '@pro-laico/core'
+
+const revalidate = createRevalidateCache({ articles: revalidateArticles })
+const revalidateOnDelete = createRevalidateCacheOnDelete({ articles: revalidateArticles })
+```
+
+### Cache getters — `createDefaultGetRegistry` + per-getter factories
+
+From `@pro-laico/core/cache`. `createDefaultGetRegistry({ pagesSlug, formsSlug })` builds the full registry of cached getters, and per-getter factories like `createGetCachedPages('articles')` let you configure a single getter.
+
+```ts
+import { createDefaultGetRegistry, createGetCachedPages } from '@pro-laico/core/cache'
+
+const registry = createDefaultGetRegistry({ pagesSlug: 'articles', formsSlug: 'contactForms' })
+const getCachedArticles = createGetCachedPages('articles')
+```
+
+### Admin fields — `createTestPathField` / `createLinkControlBarFields`
+
+`createTestPathField(slug)` is from `@pro-laico/core`; `createLinkControlBarFields(slug)` is from `@pro-laico/atomic`. Each builds an admin field bound to the slug you pass.
+
+```ts
+import { createTestPathField } from '@pro-laico/core'
+import { createLinkControlBarFields } from '@pro-laico/atomic'
+
+const testPathField = createTestPathField('articles')
+const linkControlBarFields = createLinkControlBarFields('articles')
+```
+
+### Seeding — `seed({ payload, req }, slugConfig)`
+
+From `@pro-laico/seed`. Accepts the standard `{ payload, req }` context plus a full slug-config object so the seed data lands in your renamed collections.
+
+```ts
+import { seed } from '@pro-laico/seed'
+
+await seed({ payload, req }, { pagesSlug: 'articles' })
+```
+
+## Notes
+
+<Callout type="info">
+  The default exports — `atomicHook`, `revalidateCache`, `TestPathField`, `LinkControlBarFields`, `seed`, and the rest — stay bound to the atomic-payload-conventional slugs. Reach for the `*With` / `create*` factories only when you need to override a slug; otherwise the conventional defaults already do the right thing, and existing imports keep working unchanged.
+</Callout>
+
+## Related
+
+<Cards>
+  <Card title="@pro-laico/atomic" href="/docs/plugins/atomic" />
+  <Card title="@pro-laico/core" href="/docs/plugins/core" />
+</Cards>
