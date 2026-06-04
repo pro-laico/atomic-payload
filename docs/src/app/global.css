@@ -1,6 +1,6 @@
-@import 'tailwindcss';
-@import 'fumadocs-ui/css/neutral.css';
-@import 'fumadocs-ui/css/preset.css';
+@import "tailwindcss";
+@import "fumadocs-ui/css/neutral.css";
+@import "fumadocs-ui/css/preset.css";
 
 /*
  * Design tokens adapted from atomicpayload.com: a shadcn-neutral UI (handled by
@@ -35,6 +35,8 @@ html {
 }
 
 html > body[data-scroll-locked] {
+  /* biome-ignore-start lint/complexity/noImportantStyles: deliberately overrides the inline margin-right / --removed-body-scroll-bar-size that Fumadocs' scroll-lock (react-remove-scroll) injects on the body; `scrollbar-gutter: stable` already reserves the space, so without !important the page shifts when a dialog/sidebar opens */
   margin-right: 0px !important;
   --removed-body-scroll-bar-size: 0px !important;
+  /* biome-ignore-end lint/complexity/noImportantStyles: end scroll-lock override */
 }

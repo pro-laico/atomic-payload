@@ -1,12 +1,3 @@
 {
-  "pages": [
-    "index",
-    "getting-started",
-    "concepts",
-    "features",
-    "plugins",
-    "templates",
-    "examples",
-    "contributing"
-  ]
+  "pages": ["index", "getting-started", "concepts", "features", "plugins", "templates", "examples", "contributing"]
 }

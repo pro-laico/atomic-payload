@@ -1,7 +1,4 @@
 {
   "title": "Contributing",
-  "pages": [
-    "index",
-    "releasing"
-  ]
+  "pages": ["index", "releasing"]
 }

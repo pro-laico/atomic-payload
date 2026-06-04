@@ -51,6 +51,7 @@
     "parser": { "allowComments": true, "allowTrailingCommas": true }
   },
   "css": {
+    "parser": { "tailwindDirectives": true },
     "formatter": { "enabled": true, "quoteStyle": "double" }
   },
   "assist": {

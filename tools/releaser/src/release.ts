@@ -1,8 +1,8 @@
+import { parseArgs } from 'node:util'
+import { stdin, stdout } from 'node:process'
 import { execFileSync } from 'node:child_process'
 import { readFileSync, writeFileSync } from 'node:fs'
-import { stdin, stdout } from 'node:process'
 import { createInterface } from 'node:readline/promises'
-import { parseArgs } from 'node:util'
 
 import { getReleasablePackages, REPO_ROOT, ROOT_PACKAGE_JSON } from './getPackageDetails'
 
@@ -106,7 +106,7 @@ async function main(): Promise<void> {
     return
   }
 
-  if (!values.yes && !(await confirm('Write these versions' + (values['skip-git'] ? '' : ', commit, and tag') + '?'))) {
+  if (!values.yes && !(await confirm(`Write these versions${values['skip-git'] ? '' : ', commit, and tag'}?`))) {
     console.log('Aborted.')
     return
   }

@@ -1,6 +1,6 @@
-import type { BaseLayoutProps } from 'fumadocs-ui/layouts/shared';
-import { AtomicLogo } from '@/components/logo';
-import { appName, githubUrl } from './shared';
+import type { BaseLayoutProps } from 'fumadocs-ui/layouts/shared'
+import { AtomicLogo } from '@/components/logo'
+import { appName, githubUrl } from './shared'
 
 export function baseOptions(): BaseLayoutProps {
   return {
@@ -20,5 +20,5 @@ export function baseOptions(): BaseLayoutProps {
         active: 'nested-url',
       },
     ],
-  };
+  }
 }
