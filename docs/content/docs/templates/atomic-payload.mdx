@@ -60,20 +60,6 @@ Open `http://localhost:3000/admin` and create the first admin user.
 
 </Step>
 
-<Step>
-
-### Update environment variables
-
-Add the admin email and password you just created to `.env`:
-
-```bash
-# Script User Login
-SCRIPT_USER_EMAIL="chad@atomicpayload.com"
-SCRIPT_USER_PASSWORD="Password123"
-```
-
-</Step>
-
 </Steps>
 
 <Callout type="info">
@@ -152,10 +138,11 @@ Send emails programmatically on form submissions using Resend.
 
 ### Import your repo into Vercel
 
-Create a new project in Vercel by importing your repo — but before hitting **Create**, update your local `.env`:
+Create a new project in Vercel by importing your repo — but before hitting **Create**, point your local `.env` at the deployed URL so it's ready to copy into Vercel:
 
 ```bash
-LIVE_SITE_URL='https://<project-name>.vercel.app'
+NEXT_PUBLIC_SERVER_URL='https://<project-name>.vercel.app'
+FONT_DOWNLOAD_URL='https://<project-name>.vercel.app'   # the build's font download targets this
 ```
 
 </Step>
@@ -164,8 +151,8 @@ LIVE_SITE_URL='https://<project-name>.vercel.app'
 
 ### Configure Vercel environment variables
 
-- Copy all environment variables above and including `LIVE_SITE_URL` into the Vercel project settings.
-- In the Vercel environment variables, set `NEXT_PUBLIC_SERVER_URL` to the `LIVE_SITE_URL`.
+- Copy all environment variables above into the Vercel project settings.
+- Set both `NEXT_PUBLIC_SERVER_URL` and `FONT_DOWNLOAD_URL` to your deployed URL (e.g. `https://<project-name>.vercel.app`).
 
 </Step>
 

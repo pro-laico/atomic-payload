@@ -26,7 +26,7 @@ The #1 failure mode is guessing at setup/commands. Before writing setup or front
 - The package's `src/index.ts` (exports + subpaths), `src/plugin.ts` (the real options), `package.json` (`exports`, `bin`, `scripts`), and any `src/scripts/*`, `src/components/**`, `src/globals/**`.
 - **`templates/atomic-payload/` is the source of truth for HOW things are wired** — its `package.json` scripts, `.env.example`, and `src/app/**` show the canonical setup and frontend usage. Copy what it actually does.
 
-Example of getting this wrong: the fonts download step is **not** `npx atomic-fonts-download`. The template runs it as a `prebuild` script: `"prebuild": "pnpm generate:fonts"` → `"generate:fonts": "pnpm exec tsx node_modules/@pro-laico/fonts/src/scripts/cli.ts"`, which signs into the deployed site (`LIVE_SITE_URL` + `SCRIPT_USER_*`) and writes `public/fonts` + a generated `src/app/definition.ts`. Read the template; don't assume a published-bin flow exists.
+Example of getting this wrong: the fonts download step is **not** `npx atomic-fonts-download`. The template runs it as a `prebuild` script: `"prebuild": "pnpm generate:fonts"` → `"generate:fonts": "pnpm exec tsx node_modules/@pro-laico/fonts/src/scripts/cli.ts"`, which calls the plugin's `/api/fonts/export` endpoint at `FONT_DOWNLOAD_URL` (authenticating with `PAYLOAD_SECRET`) and writes `public/fonts` + a generated `src/app/definition.ts`. Read the template; don't assume a published-bin flow exists.
 
 ## Tone (plugin specifics)
 

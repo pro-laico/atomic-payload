@@ -2,8 +2,6 @@ import fs from 'node:fs'
 import path from 'node:path'
 
 import dotenv from 'dotenv'
-import { PayloadSDK } from '@payloadcms/sdk'
-import type { Font } from '@pro-laico/fonts/schema'
 
 const colors = {
   blue: (t: string) => `\x1b[34m${t}\x1b[0m`,
@@ -13,8 +11,11 @@ const colors = {
 }
 
 type GenericFontFamily = 'sans' | 'serif' | 'mono' | 'display'
-
 type FontExtensions = Record<GenericFontFamily, string>
+
+/** One font as returned by the plugin's `/api/fonts/export` endpoint. */
+type ExportedFont = { filename: string; extension: string; mimeType: string | null; data: string }
+type ExportFontsResponse = { fonts: Partial<Record<GenericFontFamily, ExportedFont>> }
 
 export type RunDownloadFontsOptions = {
   /** Directory for downloaded font files. Default `./public/fonts` or `ATOMIC_FONTS_OUTPUT_DIR`. */
@@ -29,17 +30,19 @@ export type RunDownloadFontsOptions = {
    */
   localFontSrcPrefix?: string
   /**
-   * Slug of the standalone font-selection global to fall back to when no active
-   * `designSet` is found. Default `fontSet` or `ATOMIC_FONTS_GLOBAL_SLUG`.
-   */
-  fontSetGlobalSlug?: string
-  /**
    * Prefix for the CSS custom properties emitted by the generated `localFont()`
    * calls. The slot name is appended capitalised (e.g. `--font-setSans`).
    * Default `--font-set` or `ATOMIC_FONTS_CSS_VAR_PREFIX`. Change it only if your
    * stylesheet references different variable names.
    */
   cssVariablePrefix?: string
+  /** Base URL of the running Payload instance to fetch from. Default `FONT_DOWNLOAD_URL`. */
+  siteUrl?: string
+  /**
+   * Path of the plugin's fonts export endpoint, resolved against the site URL.
+   * Default `/api/fonts/export` or `ATOMIC_FONTS_ENDPOINT`.
+   */
+  endpointPath?: string
 }
 
 function resolveOptions(overrides?: RunDownloadFontsOptions) {
@@ -48,8 +51,8 @@ function resolveOptions(overrides?: RunDownloadFontsOptions) {
     definitionFile: overrides?.definitionFile ?? process.env.ATOMIC_FONTS_DEFINITION_FILE ?? './src/app/definition.ts',
     envFile: overrides?.envFile ?? process.env.ATOMIC_FONTS_ENV_FILE ?? './.env',
     localFontSrcPrefix: overrides?.localFontSrcPrefix ?? process.env.ATOMIC_FONTS_SRC_PREFIX ?? '../../public/fonts',
-    fontSetGlobalSlug: overrides?.fontSetGlobalSlug ?? process.env.ATOMIC_FONTS_GLOBAL_SLUG ?? 'fontSet',
     cssVariablePrefix: overrides?.cssVariablePrefix ?? process.env.ATOMIC_FONTS_CSS_VAR_PREFIX ?? '--font-set',
+    endpointPath: overrides?.endpointPath ?? process.env.ATOMIC_FONTS_ENDPOINT ?? '/api/fonts/export',
   }
 }
 
@@ -57,37 +60,9 @@ export async function runDownloadFonts(overrides?: RunDownloadFontsOptions): Pro
   const opts = resolveOptions(overrides)
   dotenv.config({ path: opts.envFile })
 
-  let hasWarnings = false
-
-  function warn(message: string, error?: unknown) {
-    hasWarnings = true
-    console.warn(message)
-    if (error) console.warn(error)
-  }
-
-  const requiredEnvVars = {
-    LIVE_SITE_URL: process.env.LIVE_SITE_URL,
-    SCRIPT_USER_EMAIL: process.env.SCRIPT_USER_EMAIL,
-    SCRIPT_USER_PASSWORD: process.env.SCRIPT_USER_PASSWORD,
-  }
-
-  for (const [key, value] of Object.entries(requiredEnvVars)) {
-    if (!value) warn(colors.red(`Missing required environment variable: ${key}`))
-  }
-
-  const sdk = new PayloadSDK<any>({ baseURL: `${process.env.LIVE_SITE_URL}/api` })
-
   const FONT_FILES_DIR = opts.fontsOutputDir
   const FONT_DEFINITION_FILE = opts.definitionFile
   const localPrefix = opts.localFontSrcPrefix.replace(/\/$/, '')
-  const siteUrl = process.env.LIVE_SITE_URL || ''
-  const siteOrigin = (() => {
-    try {
-      return new URL(siteUrl).origin
-    } catch {
-      return ''
-    }
-  })()
 
   function generateFontDefinitions(extensions: FontExtensions): void {
     const cssVar = (type: GenericFontFamily) => `${opts.cssVariablePrefix}${type.charAt(0).toUpperCase()}${type.slice(1)}`
@@ -120,137 +95,73 @@ export default fonts
     )
   }
 
-  function ensureFontOutputs() {
+  function wipeFontFiles(): void {
     if (!fs.existsSync(FONT_FILES_DIR)) fs.mkdirSync(FONT_FILES_DIR, { recursive: true })
-
     // Only unlink files — a stray subdirectory would make unlinkSync throw EISDIR.
     for (const file of fs.readdirSync(FONT_FILES_DIR)) {
       const filePath = path.join(FONT_FILES_DIR, file)
       if (fs.statSync(filePath).isFile()) fs.unlinkSync(filePath)
     }
-
-    generateFontDefinitions({ sans: '', serif: '', mono: '', display: '' })
   }
 
-  // `fetch` handles both http and https (local dev vs deployed) and follows the
-  // redirects some storage adapters issue. Headers are only sent for same-origin
-  // (the Payload file route) requests.
-  async function downloadFile(fileUrl: string, outputPath: string, headers?: Record<string, string>): Promise<void> {
-    const res = await fetch(fileUrl, headers ? { headers } : undefined)
-    if (!res.ok) throw new Error(`HTTP ${res.status} ${res.statusText} for ${fileUrl}`)
-    fs.writeFileSync(outputPath, Buffer.from(await res.arrayBuffer()))
-  }
-
-  async function downloadFont(font: Font | string | null, fontType: GenericFontFamily): Promise<string | undefined> {
-    if (typeof font === 'string') {
-      warn(colors.orange(`The ${fontType} font is an unpopulated reference`))
-      return
-    }
-    const url = (font as { url?: string | null })?.url
-    if (!font?.filename || !url) {
-      warn(colors.orange(`No ${fontType} font found`))
-      return
-    }
-
-    try {
-      const extension = font.filename.split('.').pop()?.toLowerCase() || 'ttf'
-      // Piggyback off Payload's storage: `url` is set by whatever adapter the
-      // project uses (local disk, Vercel Blob, S3, …). Resolve relative URLs
-      // (local storage) against the site, and send auth only for same-origin —
-      // the Payload file route may be access-controlled, while external CDN URLs
-      // are public and fetched as-is.
-      const fileUrl = new URL(url, siteUrl || undefined).toString()
-      const sameOrigin = Boolean(siteOrigin) && new URL(fileUrl).origin === siteOrigin
-      await downloadFile(fileUrl, path.join(FONT_FILES_DIR, `${fontType}.${extension}`), sameOrigin ? { Authorization: `JWT ${token}` } : undefined)
-      console.log(`${colors.green('✓')} Downloaded ${fontType} font`)
-      return extension
-    } catch (err) {
-      warn(colors.red(`Failed to download ${fontType} font`), err)
-    }
+  function warnAndKeep(message: string, error?: unknown): void {
+    console.warn(colors.red(message))
+    if (error) console.warn(error)
+    console.warn(colors.orange('Font download failed — existing fonts left untouched'))
   }
 
   console.log(colors.blue('Starting Font Download...\n'))
 
-  // Validate config BEFORE touching disk. ensureFontOutputs() wipes the fonts
-  // directory, so bailing here on a missing env var preserves the previously
-  // downloaded fonts + definition instead of leaving the build font-less.
-  if (hasWarnings) {
-    console.warn(colors.orange('Font download failed — existing fonts left untouched'))
+  const siteUrl = overrides?.siteUrl ?? process.env.FONT_DOWNLOAD_URL
+  const secret = process.env.PAYLOAD_SECRET
+  // Validate config BEFORE touching disk so a missing var preserves any
+  // previously downloaded fonts + definition instead of leaving the build font-less.
+  if (!siteUrl || !secret) {
+    if (!siteUrl) console.warn(colors.red('Missing required environment variable: FONT_DOWNLOAD_URL'))
+    if (!secret) console.warn(colors.red('Missing required environment variable: PAYLOAD_SECRET'))
+    console.warn(colors.orange('Font download skipped — existing fonts left untouched'))
     return
   }
 
-  ensureFontOutputs()
-
-  let user: Awaited<ReturnType<typeof sdk.login>> | undefined
+  // Fetch the active fonts from the plugin's export endpoint, authenticating
+  // with the project's PAYLOAD_SECRET. Done BEFORE wiping disk so a failed
+  // request leaves any previously downloaded fonts in place.
+  const endpoint = new URL(opts.endpointPath, siteUrl).toString()
+  let manifest: ExportFontsResponse
   try {
-    user = await sdk.login({
-      collection: 'users',
-      data: {
-        email: process.env.SCRIPT_USER_EMAIL as string,
-        password: process.env.SCRIPT_USER_PASSWORD as string,
-      },
-    })
+    const res = await fetch(endpoint, { headers: { Authorization: `Bearer ${secret}` } })
+    if (!res.ok) {
+      warnAndKeep(`Font export endpoint returned HTTP ${res.status} ${res.statusText}`)
+      return
+    }
+    manifest = (await res.json()) as ExportFontsResponse
   } catch (err) {
-    warn(colors.red('Authentication failed'), err)
+    warnAndKeep(`Could not reach the font export endpoint at ${endpoint}`, err)
     return
   }
 
-  const token = (user as { token: string }).token
+  const fonts = manifest?.fonts ?? {}
+  const roles = Object.keys(fonts) as GenericFontFamily[]
 
-  const authInit = { headers: { Authorization: `JWT ${token}` } }
-  type FontSelection = Record<string, Font | string | null | undefined>
-
-  // Resolve the font selection: prefer the active designSet's `font` group, then
-  // fall back to the standalone `fontSet` global (for projects using
-  // @pro-laico/fonts without @pro-laico/styles). Each lookup is tolerant — a
-  // standalone app won't have a `designSet` collection, and a styles app won't
-  // have a `fontSet` global.
-  let fonts: FontSelection | undefined
-
-  try {
-    const designSet = await sdk.find({ collection: 'designSet', where: { active: { equals: true } }, limit: 1, depth: 1 }, authInit)
-    if (designSet.docs.length) {
-      fonts = (designSet.docs[0] as { font?: FontSelection }).font
-      if (fonts) console.log(colors.green('✓ Using fonts from the active design set\n'))
-    }
-  } catch {
-    // No `designSet` collection in this project — fall through to the global.
-  }
-
-  if (!fonts) {
-    try {
-      const global = (await sdk.findGlobal({ slug: opts.fontSetGlobalSlug, depth: 1 }, authInit)) as FontSelection
-      const picked: FontSelection = { sans: global?.sans, serif: global?.serif, mono: global?.mono, display: global?.display }
-      if (Object.values(picked).some((font) => typeof font === 'object' && font !== null)) {
-        fonts = picked
-        console.log(colors.green(`✓ Using fonts from the "${opts.fontSetGlobalSlug}" global\n`))
-      }
-    } catch {
-      // No `fontSet` global either.
-    }
-  }
-
-  if (!fonts) return warn(colors.red(`No active design set and no "${opts.fontSetGlobalSlug}" global — nothing to download`))
-
-  const hasProcessableFonts = Object.values(fonts).some((font) => typeof font === 'object' && font !== null && 'filename' in font)
-  if (!hasProcessableFonts) return console.log(colors.green('No valid fonts to process. Continuing build process.'))
-
-  console.log(colors.green('✓ Font configuration found\n'))
+  wipeFontFiles()
 
   const extensions: FontExtensions = { sans: '', serif: '', mono: '', display: '' }
-  const entries = Object.entries(fonts) as Array<[GenericFontFamily, Font | string | null]>
-
-  const results = await Promise.all(entries.map(([key, font]) => downloadFont(font, key)))
-
-  entries.forEach(([key], i) => {
-    extensions[key] = results[i] ?? ''
-  })
-
-  if (hasWarnings) {
-    console.warn(colors.orange('\n⚠ Warnings encountered — No fonts will be used.'))
-    return
+  for (const role of roles) {
+    const font = fonts[role]
+    if (!font?.data) continue
+    try {
+      const ext = font.extension || font.filename.split('.').pop()?.toLowerCase() || 'ttf'
+      fs.writeFileSync(path.join(FONT_FILES_DIR, `${role}.${ext}`), Buffer.from(font.data, 'base64'))
+      extensions[role] = ext
+      console.log(`${colors.green('✓')} Downloaded ${role} font`)
+    } catch (err) {
+      console.warn(colors.red(`Failed to write ${role} font`), err)
+    }
   }
 
   generateFontDefinitions(extensions)
-  console.log(colors.green('\n✓ Font definitions generated successfully\n'))
+
+  const count = Object.values(extensions).filter(Boolean).length
+  if (count === 0) console.log(colors.orange('\nNo active fonts returned — generated an empty definition.\n'))
+  else console.log(colors.green(`\n✓ Font definitions generated (${count} font${count === 1 ? '' : 's'})\n`))
 }

@@ -89,7 +89,7 @@ This registers the **Font** collection (where you upload font files) and the **`
 }
 ```
 
-Running it needs `tsx` installed (a dev dependency). When it runs, it signs in to a running Payload instance (your deploy, or a local dev server), looks up the active fonts, and:
+Running it needs `tsx` installed (a dev dependency). When it runs, it calls the fonts plugin's export endpoint on a running Payload instance (your deploy, or a local dev server) — authenticating with your `PAYLOAD_SECRET` — and:
 
 - Downloads the active font files into `public/fonts`.
 - Writes a small generated file at `src/app/definition.ts` that hooks those fonts into `next/font/local`.
@@ -189,31 +189,34 @@ It needs the [environment variables](#environment-variables) below set, so it ca
 
 ## Environment variables
 
-The download step reads your live site to find the active fonts and pull the files, using:
+The download step calls the plugin's `/api/fonts/export` endpoint to fetch the active fonts, using:
 
 | Variable | Purpose |
 | --- | --- |
-| `LIVE_SITE_URL` | The site to read the active fonts from, and the base URL the files are downloaded from. |
-| `SCRIPT_USER_EMAIL` | A Payload user to sign in as (so it can read your fonts). |
-| `SCRIPT_USER_PASSWORD` | That user's password. |
+| `FONT_DOWNLOAD_URL` | The running Payload instance to fetch from (your dev server or deploy). |
+| `PAYLOAD_SECRET` | Authenticates the request — sent as `Authorization: Bearer`, compared against the server's own secret. |
 
 You can change where the files and the generated module go with optional overrides — `ATOMIC_FONTS_OUTPUT_DIR` (default `./public/fonts`), `ATOMIC_FONTS_DEFINITION_FILE` (default `./src/app/definition.ts`), and `ATOMIC_FONTS_CSS_VAR_PREFIX` (default `--font-set`), among others.
 
 ## Notes
 
-`generate:fonts` reads the active fonts from a **running, reachable Payload instance** — it signs in to `LIVE_SITE_URL` over HTTP and downloads each font from the URL Payload reports, so it can't read them offline. In CI or on a deploy, point `LIVE_SITE_URL` at your deployed site and the `prebuild` script runs it on every build.
+`generate:fonts` fetches the active fonts from a **running, reachable Payload instance** — it calls the plugin's export endpoint at `FONT_DOWNLOAD_URL`, authenticating with `PAYLOAD_SECRET`, so it can't read them offline. In CI or on a deploy, point it at your site and the `prebuild` script runs it on every build.
 
 For **local development**, before anything's deployed, add a one-command wrapper that boots a temporary dev server, runs the download against it, then shuts it down:
 
 ```json
 {
   "scripts": {
-    "setup:fonts": "cross-env LIVE_SITE_URL=http://localhost:3000 start-server-and-test dev http://localhost:3000 generate:fonts"
+    "setup:fonts": "cross-env FONT_DOWNLOAD_URL=http://localhost:3000 start-server-and-test dev http://localhost:3000 generate:fonts"
   }
 }
 ```
 
-It needs `start-server-and-test` and `cross-env` as dev dependencies. Set `SCRIPT_USER_EMAIL` / `SCRIPT_USER_PASSWORD` in `.env` (an admin user that can read your fonts), then run `pnpm setup:fonts`. The [`fonts-only` example](/docs/examples/fonts-only) wires this up.
+It needs `start-server-and-test` and `cross-env` as dev dependencies. There are no credentials to set up — the download authenticates with your existing `PAYLOAD_SECRET` — so just run `pnpm setup:fonts`. The [`fonts-only` example](/docs/examples/fonts-only) wires this up.
+
+<Callout type="warn">
+  The request sends `PAYLOAD_SECRET` in the `Authorization` header, so point `FONT_DOWNLOAD_URL` at an **https** URL in production (http is fine on localhost). The endpoint exposes nothing beyond the active font bytes and rejects any request whose secret doesn't match.
+</Callout>
 
 ## Exports
 
@@ -227,6 +230,7 @@ It needs `start-server-and-test` and `cross-env` as dev dependencies. Set `SCRIP
     FONT_SET_SLUG: { type: 'constant', location: '@pro-laico/fonts', description: 'The slug string for the fontSet global ("fontSet") — handy when querying it.' },
     fontUploadField: { type: 'function', location: '@pro-laico/fonts', description: "Builds the font group field for a @pro-laico/styles design set's Fonts tab." },
     fontUploadFields: { type: 'function', location: '@pro-laico/fonts', description: 'Builds the four upload slot fields (sans / serif / mono / display) shared by the global and the design-set group.' },
+    exportFontsEndpoint: { type: 'function', location: '@pro-laico/fonts', description: 'Factory for the GET /api/fonts/export endpoint the plugin registers — resolves the active fonts and returns their bytes, secured by PAYLOAD_SECRET. Registered automatically; exported for advanced use.' },
     extractFonts: { type: 'function', location: '@pro-laico/fonts', description: 'Turns the generated definition.ts export into the space-separated next/font className for your root <html> — returns undefined before the fonts are generated.' },
     runDownloadFonts: { type: 'function', location: '@pro-laico/fonts/scripts/downloadFonts', description: 'The font download step as a function — call it from your own build script instead of the generate:fonts command.' },
     'Font / FontSet (types)': { type: 'type', location: '@pro-laico/fonts/schema', description: 'TypeScript types for typed access to your font data and the active selection.' },

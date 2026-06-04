@@ -61,7 +61,7 @@ The flow:
 1. Visit `/` — an explainer page. Logged out, it points you to the admin.
 2. Open `/admin`, create your first user.
 3. On the dashboard, click **Seed sample fonts** (or upload your own and pick them in the `fontSet` global).
-4. Set `SCRIPT_USER_EMAIL` / `SCRIPT_USER_PASSWORD` in `.env` (the user you just created), then run `pnpm setup:fonts` to download the active fonts for `next/font/local` — it boots a temporary server, runs the download, and shuts it down.
+4. Run `pnpm setup:fonts` to download the active fonts for `next/font/local` — it boots a temporary server, runs the download against it (authenticating with your `PAYLOAD_SECRET`), and shuts it down.
 5. Run `pnpm dev` again and open `/` to see the four active fonts rendered as specimens.
 
 ## How it works
@@ -72,7 +72,7 @@ upload Font (admin)  ──►  Payload stores the file (FONT_STATIC_DIR / ./med
 seed: POST /api/seed uploads public/seed-fonts/*.woff2
       then updateGlobal('fontSet', { sans, serif, mono, display })  ◄── active set
         │
-pnpm generate:fonts ── reads the fontSet global from LIVE_SITE_URL ──► public/fonts/* + src/app/definition.ts
+pnpm generate:fonts ── GET /api/fonts/export @ FONT_DOWNLOAD_URL ──► public/fonts/* + src/app/definition.ts
         │
 layout.tsx → applies the next/font variables from definition.ts to <html>,
              maps --font-<role>: var(--font-set<Role>)
@@ -85,18 +85,17 @@ The active selection lives in a **global** because it's the active-selection lay
 
 ## The download step
 
-`pnpm build` runs `prebuild` → `generate:fonts`, which reads the active `fontSet` from a **reachable Payload instance** and downloads the fonts to disk for `next/font/local`. Set these (see `.env.example`):
+`pnpm build` runs `prebuild` → `generate:fonts`, which calls the fonts plugin's export endpoint on a **reachable Payload instance** and writes the fonts to disk for `next/font/local`. It authenticates with `PAYLOAD_SECRET` and fetches from `FONT_DOWNLOAD_URL` — the running instance to pull the active fonts from (see `.env.example`):
 
 ```bash
-LIVE_SITE_URL=http://localhost:3000   # a running instance holding the active fonts
-SCRIPT_USER_EMAIL=admin@example.com
-SCRIPT_USER_PASSWORD=...
+FONT_DOWNLOAD_URL=http://localhost:3000   # the running instance to fetch from
+PAYLOAD_SECRET=...                        # authenticates the request
 ```
 
-Point `LIVE_SITE_URL` at your running dev server or a deploy. The download follows each font's URL as Payload reports it (local disk, Vercel Blob, S3, …), so no storage token is required. When the variables are unset the download is skipped (the build still succeeds) and the specimens fall back to system fonts until you run it.
+The endpoint reads each font server-side — from disk for local storage, or by fetching the URL Payload reports for cloud adapters (Vercel Blob, S3, …) — so there's no storage token or login to manage. When neither the URL nor the secret resolves, the download is skipped (the build still succeeds) and the specimens fall back to system fonts until you run it.
 
 <Callout type="info">
-  **Local dev — one command.** `generate:fonts` needs a running Payload to read from, which is awkward before anything's deployed. `pnpm setup:fonts` handles it: it boots a temporary `next dev` server, points `LIVE_SITE_URL` at it, runs the download, then shuts the server down. Just set `SCRIPT_USER_EMAIL` / `SCRIPT_USER_PASSWORD` in `.env` first.
+  **Local dev — one command.** `generate:fonts` needs a running Payload to fetch from, which is awkward before anything's deployed. `pnpm setup:fonts` handles it: it boots a temporary `next dev` server, points `FONT_DOWNLOAD_URL` at it, runs the download, then shuts the server down. No credentials needed — it authenticates with your existing `PAYLOAD_SECRET`.
 </Callout>
 
 ## What to look at

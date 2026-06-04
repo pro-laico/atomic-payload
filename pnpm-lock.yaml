@@ -433,9 +433,6 @@ importers:
         specifier: workspace:*
         version: link:../core
     devDependencies:
-      '@payloadcms/sdk':
-        specifier: ^3.79.0
-        version: 3.79.0(graphql@16.11.0)(typescript@5.8.3)
       dotenv:
         specifier: ^17.3.1
         version: 17.3.1

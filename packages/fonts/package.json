@@ -58,20 +58,15 @@
     "@pro-laico/core": "workspace:*"
   },
   "peerDependencies": {
-    "@payloadcms/sdk": ">=3.0.0",
     "dotenv": ">=16.0.0",
     "payload": ">=3.0.0"
   },
   "peerDependenciesMeta": {
-    "@payloadcms/sdk": {
-      "optional": true
-    },
     "dotenv": {
       "optional": true
     }
   },
   "devDependencies": {
-    "@payloadcms/sdk": "^3.79.0",
     "dotenv": "^17.3.1",
     "payload": "^3.79.0",
     "typescript": "5.8.3"

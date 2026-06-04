@@ -3,7 +3,8 @@ import type { CollectionConfig, Config, GlobalConfig, Plugin } from 'payload'
 import { mergeCollection, mergeGlobal } from '@pro-laico/core'
 
 import { Font } from './collections/font'
-import { FontSet } from './globals/fontSet'
+import { FontSet, FONT_SET_SLUG } from './globals/fontSet'
+import { exportFontsEndpoint } from './endpoints/exportFonts'
 
 export interface FontsPluginOptions {
   /** When false, the plugin is a no-op. Defaults to true. */
@@ -38,8 +39,9 @@ export const fontsPlugin =
 
     const collections = [...(config.collections ?? []), mergeCollection(Font, fontOptions)]
     const globals = includeFontSet ? [...(config.globals ?? []), mergeGlobal(FontSet, fontSetOptions)] : config.globals
+    const endpoints = [...(config.endpoints ?? []), exportFontsEndpoint({ fontSetGlobalSlug: FONT_SET_SLUG, fontCollectionSlug: Font.slug })]
 
-    return { ...config, collections, globals }
+    return { ...config, collections, globals, endpoints }
   }
 
 export default fontsPlugin

@@ -11,8 +11,8 @@ export const FONT_SET_SLUG = 'fontSet'
  * choices, for projects that use `@pro-laico/fonts` **without**
  * `@pro-laico/styles` (i.e. there is no `designSet` to carry the `font` group).
  *
- * The `atomic-fonts-download` CLI prefers the active design set's `font` group
- * and falls back to this global when no design set is found, so a fonts-only
+ * The fonts export endpoint prefers the active design set's `font` group and
+ * falls back to this global when no design set is found, so a fonts-only
  * project can still drive `next/font/local`. Register it with
  * `fontsPlugin({ includeFontSet: true })`.
  */

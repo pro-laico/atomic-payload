@@ -51,7 +51,7 @@ BLOB_READ_WRITE_TOKEN="vercel_blob_rw_..."
 
 ### `NEXT_PUBLIC_SERVER_URL`
 
-The public URL the app runs at — used to configure CORS, format links, and more. Use `http://localhost:3000` for local dev, and set it to your deployed `LIVE_SITE_URL` (e.g. `https://<project-name>.vercel.app`) in production. No trailing slash.
+The public URL the app runs at — used to configure CORS, format links, and more. Use `http://localhost:3000` for local dev, and set it to your deployed URL (e.g. `https://<project-name>.vercel.app`) in production. No trailing slash.
 
 ```bash
 NEXT_PUBLIC_SERVER_URL=http://localhost:3000
@@ -62,7 +62,7 @@ NEXT_PUBLIC_SERVER_URL=http://localhost:3000
 </Steps>
 
 <Callout type="info">
-  The template also ships `PREVIEW_SECRET` (validates draft-preview requests), `SCRIPT_USER_EMAIL` / `SCRIPT_USER_PASSWORD` (the admin login your seed scripts use), and `LIVE_SITE_URL` (your production URL). Generate the preview secret like `PAYLOAD_SECRET`, and add the script-user credentials after you create your first admin user at `/admin`.
+  The template also ships `PREVIEW_SECRET` (validates draft-preview requests) — generate it like `PAYLOAD_SECRET`. The font download (`generate:fonts`) needs no credentials of its own: it calls the fonts plugin's export endpoint at `FONT_DOWNLOAD_URL` and authenticates with `PAYLOAD_SECRET`.
 </Callout>
 
 ## Optional integrations

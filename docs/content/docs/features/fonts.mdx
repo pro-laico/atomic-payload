@@ -15,7 +15,7 @@ Fonts lets admins manage the site's typefaces from the CMS instead of hard-codin
 
 - **The `Font` collection** — an upload collection where admins add font files (woff/woff2/ttf/otf). Where the font files live is Payload's job: the collection's `upload.staticDir` (local disk) or whatever storage plugin (`@payloadcms/storage-*`) is configured at the config level.
 - **The active selection** — which font fills each role (sans/serif/mono/display) is resolved in order: the active `designSet`'s `font` group first, then the standalone `fontSet` global. So a Styles project and a standalone fonts project both work the same way.
-- **The download step** — a storage-agnostic build-time script that reads the active selection, pulls each font file out of storage using the `url` Payload reports (local disk, Vercel Blob, S3, or any adapter — no storage-specific token needed), and writes the files to disk. Relative URLs (local storage) are resolved against `LIVE_SITE_URL` and fetched with the script's auth token; absolute CDN URLs are fetched as-is.
+- **The export endpoint + download step** — the plugin registers a `GET /api/fonts/export` endpoint (secured by your `PAYLOAD_SECRET`) that resolves the active selection and reads each font's bytes server-side — straight from disk for local storage, or by fetching the `url` Payload reports for cloud adapters (Vercel Blob, S3, …). A build-time script (`generate:fonts`) calls that endpoint at `FONT_DOWNLOAD_URL` and writes the files to disk. Because the bytes are read inside Payload, there's no per-file storage token or login to manage.
 
 The download delivers the fonts in two outputs: the font files land in `public/fonts`, and a generated definition module (`./src/app/definition.ts` by default, overridable via `ATOMIC_FONTS_DEFINITION_FILE`) declares each `localFont(...)` call (along with CSS custom properties per slot) that your app imports to wire the fonts into `next/font/local`. The download intentionally runs at build time (or during scaffolding), not at request time, because `next/font`'s bundling expects file paths it can resolve at compile.
 
@@ -34,25 +34,24 @@ After selecting fonts, run the download step to pull the files to disk and regen
 pnpm generate:fonts
 ```
 
-It reads the active selection from a **running, reachable Payload instance** (it signs in over HTTP), downloads the font files to `public/fonts`, and writes the generated `definition.ts` that `next/font/local` consumes. It runs automatically on every build via `prebuild`, and you can re-run it any time the active selection changes.
+It fetches the active fonts from a **running, reachable Payload instance** — calling the plugin's export endpoint at `FONT_DOWNLOAD_URL` and authenticating with `PAYLOAD_SECRET` — then writes the font files to `public/fonts` and the generated `definition.ts` that `next/font/local` consumes. It runs automatically on every build via `prebuild`, and you can re-run it any time the active selection changes.
 
 <Callout type="info">
-  `generate:fonts` needs a Payload instance to read from. In CI or on a deploy, point `LIVE_SITE_URL` at your deployed site. For **local development**, before anything's deployed, a `setup:fonts` wrapper boots a temporary dev server, runs the download against it, and shuts it down — see the [fonts plugin Notes](/docs/plugins/fonts#notes).
+  `generate:fonts` needs a Payload instance to fetch from. In CI or on a deploy, point `FONT_DOWNLOAD_URL` at your site. For **local development**, before anything's deployed, a `setup:fonts` wrapper boots a temporary dev server, runs the download against it, and shuts it down — see the [fonts plugin Notes](/docs/plugins/fonts#notes).
 </Callout>
 
 ## Configuration
 
-The download reads the active selection and downloads the font files using these environment variables:
+The download calls the plugin's export endpoint using:
 
 | Variable | Purpose |
 | --- | --- |
-| `LIVE_SITE_URL` | Site to read the active designSet / `fontSet` global from, and the base for resolving relative (local-storage) font URLs. |
-| `SCRIPT_USER_EMAIL` | Payload user to authenticate as (needed to read auth-gated fonts and, for local storage, the file route). |
-| `SCRIPT_USER_PASSWORD` | Password for that user. |
+| `FONT_DOWNLOAD_URL` | The running Payload instance to fetch the fonts from (your dev server or deploy). |
+| `PAYLOAD_SECRET` | Authenticates the request to the export endpoint (sent as `Authorization: Bearer`). |
 
-No storage token is required — the downloader uses whatever URL Payload reports for each font.
+No storage token or script user is required — the endpoint reads each font's bytes server-side, from disk or the URL Payload reports.
 
-Optional overrides let you change where outputs go and which global to fall back to — for example `ATOMIC_FONTS_OUTPUT_DIR` (defaults to `./public/fonts`), `ATOMIC_FONTS_DEFINITION_FILE` (the generated `localFont(...)` module), `ATOMIC_FONTS_GLOBAL_SLUG` (the global to fall back to, `fontSet`), and `ATOMIC_FONTS_CSS_VAR_PREFIX` (prefix for the emitted CSS custom properties).
+Optional overrides let you change where outputs go — for example `ATOMIC_FONTS_OUTPUT_DIR` (defaults to `./public/fonts`), `ATOMIC_FONTS_DEFINITION_FILE` (the generated `localFont(...)` module), and `ATOMIC_FONTS_CSS_VAR_PREFIX` (prefix for the emitted CSS custom properties).
 
 For plugin options (`enabled`, `fontOptions`, `includeFontSet`, `fontSetOptions`), the exported configs, and the full environment-variable reference, see the [fonts plugin](/docs/plugins/fonts).
 

@@ -10,7 +10,7 @@
     "build": "next build",
     "prebuild": "pnpm generate:fonts",
     "generate:fonts": "pnpm exec tsx node_modules/@pro-laico/fonts/src/scripts/cli.ts",
-    "setup:fonts": "cross-env LIVE_SITE_URL=http://localhost:3000 start-server-and-test dev http://localhost:3000 generate:fonts",
+    "setup:fonts": "cross-env FONT_DOWNLOAD_URL=http://localhost:3000 start-server-and-test dev http://localhost:3000 generate:fonts",
     "start": "next start",
     "lint": "biome lint .",
     "format": "biome format --write .",

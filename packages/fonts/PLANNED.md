@@ -2,13 +2,6 @@
 
 Forward-looking backlog distilled from `AUDIT.md`. These items are intentionally **not** done today — each is publish-only or depends on the consumer's generated types. The corresponding `AUDIT.md` checkbox stays `[ ]` with an inline annotation.
 
-## CLI type safety
-
-### Replace `PayloadSDK<any>` with the consumer's generated types
-- **What:** The download CLI uses `PayloadSDK<any>`, which untypes every `sdk.find`/`sdk.findGlobal` response and forces the cast-heavy code below (e.g. `(user as { token: string }).token`).
-- **Why deferred:** The CLI talks to an arbitrary consumer's Payload instance, whose generated types this package can't import. Proper fix needs the consumer to supply their generated types (or a narrowing pass). The `token` cast is downstream of the same `any` — login has already succeeded, so `token` is present at runtime.
-- **Source:** `src/scripts/downloadFonts.ts:70,182` · AUDIT.md → Medium.
-
 ## External-publish readiness
 
 ### Point `main`/`types`/`exports` at `dist`
@@ -24,4 +17,4 @@ Forward-looking backlog distilled from `AUDIT.md`. These items are intentionally
 ## Notes / intentional-for-now
 
 - **`Font` collection `authd` access** — fonts are licensed binaries, so authenticated-only read/write is appropriate; the shared `authd` now carries a JSDoc on tightening via `fontOptions.access` / `fontSetOptions.access`. The package ships no role model. (AUDIT.md → Medium.)
-- **Schema stubs fall back to `Record<string, any>`** — intentional so the package compiles without the consumer's generated types; augmenting core's `PayloadAugment` removes the casts. Pairs with the `PayloadSDK<any>` item. (AUDIT.md → Low.)
+- **Schema stubs fall back to `Record<string, any>`** — intentional so the package compiles without the consumer's generated types; augmenting core's `PayloadAugment` removes the casts (the export endpoint casts slugs / docs for the same reason). (AUDIT.md → Low.)
