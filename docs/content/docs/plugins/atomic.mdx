@@ -108,14 +108,16 @@ childBlocksPlugin({
 <Step>
 ### Attach the save-time hook
 
-When a page is saved, atomic walks its blocks once to collect the styles, actions, and forms the frontend needs, generate the CSS, and revalidate caches. `createAtomicHook` builds that `beforeChange` hook from your cache reader and the action storage processor; `atomicHookPlugin` attaches it to the collections you name:
+When a page is saved, atomic walks its blocks once to collect the styles, actions, and forms the frontend needs, generate the CSS, and revalidate caches. `createAtomicHook` builds that `beforeChange` hook from a CSS getter and the action storage processor; `atomicHookPlugin` attaches it to the collections you name. The CSS getter comes from `createCssGetCached` (in `@pro-laico/styles/cache`), which uses styles' own getters and the injected `header` / `footer` getters from `@pro-laico/site/cache`:
 
 ```ts
 import { buildConfig } from 'payload'
-import getCached from '@pro-laico/core/cache/auto'
+import { createCssGetCached } from '@pro-laico/styles/cache'
+import { getCachedFooter, getCachedHeader } from '@pro-laico/site/cache'
 import { atomicHookPlugin, createAtomicHook } from '@pro-laico/atomic/hook'
 import { ActionBlockStorageProcessor } from '@pro-laico/atomic/actions/processor'
 
+const getCached = createCssGetCached({ getHeader: getCachedHeader, getFooter: getCachedFooter })
 const atomicHook = createAtomicHook({ getCached, ActionBlockStorageProcessor })
 
 export default buildConfig({
@@ -125,7 +127,7 @@ export default buildConfig({
 })
 ```
 
-The ready-made `atomicHook` export wires those dependencies lazily for you (using the template's conventional slug names), so you can pass it straight through — that's what the template does (see the other tab).
+The ready-made `atomicHook` export wires those dependencies lazily for you (using the template's conventional slug names), so you can pass it straight through. That's what the template does (see the other tab).
 </Step>
 
 <Step>

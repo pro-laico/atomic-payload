@@ -2,9 +2,8 @@ import type React from 'react'
 import { draftMode } from 'next/headers'
 import { ThemeProvider } from 'next-themes'
 
+import { getCachedDesignSet, getCachedSiteCSS } from '@pro-laico/styles/cache'
 import LivePreviewListener from '@pro-laico/core/components/frontend/LivePreviewListener'
-
-import getCached from '@/cache/getCached'
 
 /** Payload-backed layout needs a live DB; avoid static prerender at build time. */
 export const dynamic = 'force-dynamic'
@@ -76,8 +75,8 @@ export default async function FrontendLayout({ children }: { children: React.Rea
 
   // The generated stylesheet (written to the storage globals by the cssHook) and
   // the active design set (for its html / body / wrapper class names + theme).
-  const css = await getCached('site-css', draft)
-  const ds = await getCached('designSet', draft)
+  const css = await getCachedSiteCSS(draft)
+  const ds = await getCachedDesignSet(draft)
 
   return (
     <html lang="en" suppressHydrationWarning className={ds?.htmlClassName ?? undefined}>

@@ -213,13 +213,13 @@ export default async function HomePage() {
         exactly what the component encapsulates:
       </p>
       <CodeBlock lang="tsx">{`import { draftMode } from 'next/headers'
-import getCached from '@pro-laico/core/cache/auto'
+import { getCachedIconByName, getCachedIconSet } from '@pro-laico/icons/cache'
 import { extractSvgContent, extractSvgProps } from '@pro-laico/icons'
 
 async function IconByHand({ name }: { name: string }) {
   const { isEnabled: draft } = await draftMode()
-  const iconSet = await getCached('iconSet', draft)
-  const svg = await getCached('icon', name, draft, iconSet)
+  const iconSet = await getCachedIconSet(draft)
+  const svg = await getCachedIconByName(name, draft, iconSet)
   if (!svg) return <WarningFallback />
   return (
     <svg

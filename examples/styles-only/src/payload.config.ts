@@ -7,7 +7,8 @@ import type { CollectionAfterChangeHook, Config, Plugin, SharpDependency } from 
 import { sqliteAdapter } from '@payloadcms/db-sqlite'
 
 import { getServerSideURL, revalidateTag } from '@pro-laico/core'
-import { type CssProcessorGetCached, createCssHook, stylesPlugin } from '@pro-laico/styles'
+import { createCssHook, stylesPlugin } from '@pro-laico/styles'
+import { createCssGetCached } from '@pro-laico/styles/cache'
 
 import { createPages } from '@/collections/pages'
 import { Users } from '@/collections/users'
@@ -26,15 +27,13 @@ const stylesLivePreviewUrl = (): string => {
 }
 
 /**
- * The CSS processor (run inside the standalone `cssHook`) needs a getter for the
- * active designSet, the active shortcutSet, the header/footer atomic classes,
- * and the page `atomic-classes`. Our real `getCached` imports `@payload-config`,
- * so we defer loading it with a dynamic import — that avoids a config-load cycle.
+ * The standalone `cssHook` needs a `(tag, draft)` getter for the active
+ * designSet / shortcutSet and the page `atomic-classes`. `createCssGetCached`
+ * builds it from `@pro-laico/styles`'s own cache getters — this demo has no
+ * header/footer collections, so none are injected. The getters resolve the
+ * Payload config registered in `src/instrumentation.ts`.
  */
-const getCached: CssProcessorGetCached = async (tag, draft) => {
-  const mod = await import('@/cache/getCached')
-  return (mod.default as unknown as CssProcessorGetCached)(tag, draft)
-}
+const getCached = createCssGetCached()
 
 /**
  * A standalone `cssHook` for the `pages` collection. `stylesPlugin` attaches its

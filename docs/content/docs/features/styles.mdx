@@ -44,7 +44,7 @@ The styles plugin registers the `designSet` and `shortcutSet` collections (each 
 - `generateLivePreviewPath` — **required**; generates the live-preview URL for the active design set, shared by both collections.
 - `atomicHook` — optional `beforeChange` hook that wraps `createCssProcessor` + `processDesignSet`.
 - `enabled` — defaults to `true`; set `false` to make the whole plugin a no-op.
-- `getCached` — optional; attaches the standalone `cssHook`, producing CSS without `@pro-laico/atomic`.
+- `getCached` — optional; pass a `(tag, draft)` getter (build one with `createCssGetCached` from `@pro-laico/styles/cache`) to attach the standalone `cssHook`, producing CSS without `@pro-laico/atomic`.
 - `cssHookOptions` — optional; forwarded to `createCssHook` when `getCached` is set (slug/global overrides).
 - `includeStorageGlobals` — defaults to `true`; set `false` to skip registering the draft/published CSS storage globals.
 - `registerTypescriptSchema` — defaults to `true`; appends `@pro-laico/zap`'s schema so `generate:types` resolves the designSet field `$ref`s. Set `false` if you already wire the zap schema yourself.

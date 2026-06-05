@@ -2,8 +2,8 @@ import 'server-only'
 
 import type React from 'react'
 import { draftMode } from 'next/headers'
-import getCached from '@pro-laico/core/cache/auto'
 
+import { getCachedIconByName, getCachedIconSet } from '../../cache'
 import { extractSvgContent, extractSvgProps } from '../../utilities/extractSVG'
 
 /**
@@ -48,8 +48,8 @@ export interface IconProps extends React.SVGAttributes<SVGSVGElement> {
  */
 export const Icon: React.FC<IconProps> = async ({ name, fallback, ...svgProps }) => {
   const { isEnabled: draft } = await draftMode()
-  const iconSet = await getCached('iconSet', draft)
-  const svg = await getCached('icon', name, draft, iconSet)
+  const iconSet = await getCachedIconSet(draft)
+  const svg = await getCachedIconByName(name, draft, iconSet)
   const source = svg || fallback || FALLBACK_WARNING_SVG
 
   // Default to decorative (aria-hidden); callers announcing the icon override

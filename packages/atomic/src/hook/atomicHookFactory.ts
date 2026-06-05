@@ -13,13 +13,18 @@ import type { AtomicHookGetCached, AtomicHookSlugConfig } from './atomicHookType
  * still an async function and runs server-side.
  */
 async function buildHook(slugConfig: AtomicHookSlugConfig): Promise<CollectionBeforeChangeHook> {
-  const [hookMod, procMod, cacheMod] = await Promise.all([
+  const [hookMod, procMod, stylesCacheMod, siteCacheMod] = await Promise.all([
     import('./createAtomicHook'),
     import('@pro-laico/atomic/actions/processor'),
-    import('@pro-laico/core/cache/auto'),
+    import('@pro-laico/styles/cache'),
+    import('@pro-laico/site/cache'),
   ])
   return hookMod.createAtomicHook({
-    getCached: cacheMod.default as AtomicHookGetCached,
+    getCached: stylesCacheMod.createCssGetCached({
+      getHeader: siteCacheMod.getCachedHeader,
+      getFooter: siteCacheMod.getCachedFooter,
+      cssCacheTagBySlug: slugConfig.cssCacheTagBySlug,
+    }) as AtomicHookGetCached,
     ActionBlockStorageProcessor: procMod.ActionBlockStorageProcessor,
     ...slugConfig,
   })

@@ -2,8 +2,8 @@ import 'server-only'
 import { draftMode } from 'next/headers'
 
 import Warning from '@pro-laico/atomic/children/admin/warningIcon'
-import getCached from '@pro-laico/core/cache/auto'
 import { extractSvgContent, extractSvgProps } from '@pro-laico/icons'
+import { getCachedIconByName, getCachedIconSet } from '../../cache'
 import type { RenderChild } from '@pro-laico/atomic/children'
 import type { IconChild as IconChildType } from '@pro-laico/atomic/children/schema'
 
@@ -12,8 +12,8 @@ export const IconChild: React.FC<RenderChild<IconChildType>> = async ({ block: {
   if (!icon) return <svg {...pt?.c?.p} {...extractSvgProps(Warning)} dangerouslySetInnerHTML={{ __html: extractSvgContent(Warning) }} />
 
   // Ensures that if iconSet or the original icon doc is revalidated, the icon will be set as stale, but the page itself will not.
-  const iconSet = await getCached('iconSet', draft)
-  const svg = await getCached('icon', icon, draft, iconSet)
+  const iconSet = await getCachedIconSet(draft)
+  const svg = await getCachedIconByName(icon, draft, iconSet)
 
   return <svg {...pt?.c?.p} {...extractSvgProps(svg || Warning)} dangerouslySetInnerHTML={{ __html: extractSvgContent(svg || Warning) }} />
 }

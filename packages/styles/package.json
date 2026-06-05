@@ -17,6 +17,10 @@
         "types": "./dist/types/payload-augment.d.ts",
         "default": "./dist/types/payload-augment.js"
       },
+      "./cache": {
+        "types": "./dist/cache/index.d.ts",
+        "default": "./dist/cache/index.js"
+      },
       "./fields/className": {
         "types": "./dist/fields/className.d.ts",
         "default": "./dist/fields/className.js"
@@ -49,6 +53,10 @@
     "./schema": {
       "types": "./src/types/payload-augment.ts",
       "default": "./src/types/payload-augment.ts"
+    },
+    "./cache": {
+      "types": "./src/cache/index.ts",
+      "default": "./src/cache/index.ts"
     },
     "./fields/className": {
       "types": "./src/fields/className.ts",

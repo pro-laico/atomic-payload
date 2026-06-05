@@ -14,5 +14,5 @@ npx @pro-laico/create-atomic-payload my-styles --template styles-only
 
 ## Atomic Payload packages used
 
-- `@pro-laico/styles` — the `designSet` + `shortcutSet` collections, the `ClassNameField` input, the draft/published CSS globals, and the standalone `cssHook`.
-- `@pro-laico/core` — the kernel, `getCached` registry, and `core-augment-types` (used in `generate:types`).
+- `@pro-laico/styles` — the `designSet` + `shortcutSet` collections, the `ClassNameField` input, the draft/published CSS globals, the standalone `cssHook`, and the cache getters (`@pro-laico/styles/cache`: `getCachedDesignSet`, `getCachedSiteCSS`, `createCssGetCached`).
+- `@pro-laico/core` — the kernel, the `withCache` caching primitive, the config registry (`registerPayloadConfig`), and `core-augment-types` (used in `generate:types`).

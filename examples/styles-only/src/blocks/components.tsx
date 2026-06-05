@@ -1,4 +1,4 @@
-import getCached from '@/cache/getCached'
+import { getCachedDesignSet } from '@pro-laico/styles/cache'
 
 import type { ButtonRowData, CardGridData, HeroData, PaletteData, ProseData } from './configs'
 
@@ -83,7 +83,7 @@ type ColorRow = { name?: string | null }
 /** Async — reads the active design set to paint a swatch per token. Shows the
  *  read side of the plugin: the document driving the CSS is also queryable data. */
 export async function Palette({ block, draft }: { block: PaletteData; draft: boolean }) {
-  const ds = (await getCached('designSet', draft)) as { colors?: ColorRow[] | null } | null
+  const ds = (await getCachedDesignSet(draft)) as { colors?: ColorRow[] | null } | null
   const colors = ds?.colors ?? []
   return (
     <div>

@@ -79,7 +79,7 @@ function processProperty(input: TokenStringArrayRow[] | null | undefined): RSS {
 // per-design-set to vary, so the mapping is intentionally fixed. `fonts` is only
 // a presence gate: a design set with no font group emits no `font` theme key, so
 // UnoCSS keeps its own default families rather than referencing undefined vars.
-function generateUnoFonts(fonts: DesignSet['font'] | undefined): RSS {
+function generateUnoFonts(fonts: unknown): RSS {
   if (!fonts) return {}
   return { mono: `var(--font-setMono)`, sans: `var(--font-setSans)`, serif: `var(--font-setSerif)`, display: `var(--font-setDisplay)` }
 }
@@ -205,7 +205,7 @@ const processDesignSet = (ds: DesignSet): void => {
     container: processTokenString(ds?.container as TokenStringRow[] | null | undefined),
     breakpoint: processTokenString(ds?.breakpoint as TokenStringRow[] | null | undefined),
 
-    font: generateUnoFonts(ds?.font),
+    font: generateUnoFonts((ds as { font?: unknown })?.font),
     leading: processTokenString(ds?.leading as TokenStringRow[] | null | undefined),
     tracking: processTokenString(ds?.tracking as TokenStringRow[] | null | undefined),
     fontWeight: processTokenString(ds?.fontWeight as TokenStringRow[] | null | undefined),

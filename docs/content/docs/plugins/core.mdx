@@ -206,9 +206,8 @@ The rest of the package — fields, hooks, cache helpers, URL and metadata utili
 
 <ExportTable
   exports={{
-    'cache factories': { type: 'function', location: '@pro-laico/core/cache', description: 'createGetCached / createDefaultGetCached — server-side, tag-based cached read factories. Subpath-only because they import server-only.' },
-    'createReactCachedGetCached': { type: 'function', location: '@pro-laico/core/cache/react', description: 'A React cache() wrapper around the cached read factory.' },
-    'auto getCached': { type: 'function', location: '@pro-laico/core/cache/auto', description: 'An auto-keyed cached read, default-exported — what the template imports as getCached in pages and the layout.' },
+    withCache: { type: 'function', location: '@pro-laico/core/cache', description: 'The caching primitive every package getter wraps its fetch with. Derives the unstable_cache key and dependency tags from a tag, id, and draft flag, so read-side tags match the revalidate side. Subpath-only because it imports server-only.' },
+    mt: { type: 'function', location: '@pro-laico/core/cache', description: 'Merge-tags helper that joins a tag, id, and draft flag into a single dependency-tag string. Used by withCache and when a getter needs extra cross-tag dependencies.' },
   }}
 />
 

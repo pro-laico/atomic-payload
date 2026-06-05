@@ -1,6 +1,6 @@
 'use server'
 import { GenerateMetaData } from '@pro-laico/core'
-import getCached from '@pro-laico/core/cache/auto'
+import { getCachedPageByHref, getCachedPages, getCachedSiteMetadata } from '@pro-laico/site/cache'
 import { RenderChildren } from '@pro-laico/atomic/children/render'
 import LivePreviewListener from '@pro-laico/core/components/frontend/LivePreviewListener'
 
@@ -14,7 +14,7 @@ const slugJoin = (slug: string[] | undefined) => `/${slug?.join('/') || ''}`
 
 export async function generateStaticParams() {
   try {
-    const routes = await getCached('pages', false)
+    const routes = await getCachedPages(false)
     if (!routes || !Array.isArray(routes)) return []
     const returns = routes.filter((href) => href !== '/').map((href) => ({ slug: href.split('/').slice(1) }))
     return returns || []
@@ -27,9 +27,9 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params: paramsPromise }: Props): Promise<Metadata> {
   const { isEnabled: draft } = await draftMode()
   const { slug } = await paramsPromise
-  const pages = await getCached('pages', draft)
-  const page = await getCached('page', slugJoin(slug), draft, pages)
-  const siteMetadata = await getCached('site-metadata', draft)
+  const pages = await getCachedPages(draft)
+  const page = await getCachedPageByHref(slugJoin(slug), draft, pages)
+  const siteMetadata = await getCachedSiteMetadata(draft)
   const metadata = GenerateMetaData({ page, siteMetadata })
   return metadata
 }
@@ -38,8 +38,8 @@ export default async function Page({ params: paramsPromise }: Props) {
   const { isEnabled: draft } = await draftMode()
   const { slug } = await paramsPromise
 
-  const pages = await getCached('pages', draft)
-  const page = await getCached('page', slugJoin(slug), draft, pages)
+  const pages = await getCachedPages(draft)
+  const page = await getCachedPageByHref(slugJoin(slug), draft, pages)
   if (!page) return notFound()
 
   return (

@@ -10,7 +10,9 @@ export const unsetActive: UnsetActiveType = async ({ id, draft, req, slug }) => 
         req,
         draft,
         collection: slug,
-        data: { active: false },
+        // `active` isn't a field on every collection slug, so under a partial schema
+        // the bulk-update `data` type has no matching branch — cast past it.
+        data: { active: false } as unknown as never,
         where: { active: { equals: true }, id: { not_equals: id }, _status: { equals: draft ? 'draft' : 'published' } },
       })
       .then((res) => res?.docs.map((doc) => ('title' in doc ? doc?.title : doc?.id)))

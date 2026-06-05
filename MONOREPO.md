@@ -34,7 +34,7 @@ atomic-payload/
 | Package                            | Description                                                                                  |
 | ---------------------------------- | -------------------------------------------------------------------------------------------- |
 | `@pro-laico/create-atomic-payload` | CLI to scaffold new Atomic Payload projects                                                  |
-| `@pro-laico/core`                  | Kernel types (`PayloadAugment`, `Get<>`, `ExtractOrDefault`), revalidate hooks + factories (`createRevalidateCache`, `createRevalidateCacheOnDelete`), cache helpers + factories (`createDefaultGetRegistry`, `createGetCachedPages`, etc.), `generateLivePreviewPath`, `createTestPathField`, APF runtime, JSON-schema plugin |
+| `@pro-laico/core`                  | Kernel types (`PayloadAugment`, `Get<>`, `ExtractOrDefault`), revalidate hooks + factories (`createRevalidateCache`, `createRevalidateCacheOnDelete`), the `withCache` caching primitive (the data getters live in the packages that own their collections), `generateLivePreviewPath`, `createTestPathField`, APF runtime, JSON-schema plugin |
 | `@pro-laico/zap`                   | zod + AtomicRegistry helper                                                                  |
 | `@pro-laico/atomic`                | `actions` (action blocks + processor), `hook` (`createAtomicHook` + cssProcessor + slug config), `forms` (submit-form SVR blocks), `children` (childBlocksPlugin — `blockFields` prepends/appends generic fields per block; `classNameField` for the AtomicChild special case) |
 | `@pro-laico/site`                  | sitePlugin: Pages, Header, Footer collections + SiteMetaData / Settings / draft+published Storage globals |
@@ -129,7 +129,7 @@ Atomic-payload-conventional collection / global slugs (`pages`, `header`, `foote
 
 - `atomicHookWith(slugConfig)` (`@pro-laico/atomic/hook`) — `pagesSlug`, `designSetSlug`, `unsetActiveCleanup`, `cssProcessorSkipSlugs`, `cssCacheTagBySlug`, `cssStorageGlobals`.
 - `createRevalidateCache(handlers)` / `createRevalidateCacheOnDelete(handlers)` (`@pro-laico/core`) — per-slug `beforeChange` / `afterDelete` handler maps.
-- `createDefaultGetRegistry({ pagesSlug, formsSlug })` and per-getter factories like `createGetCachedPages('articles')` (`@pro-laico/core/cache`).
+- Per-package cache-getter factories like `createGetCachedPages('articles')` (`@pro-laico/site/cache`) and `createGetCachedBackendForms('contactForms')` (`@pro-laico/atomic/cache`).
 - `createTestPathField(slug)` (`@pro-laico/core`) and `createLinkControlBarFields(slug)` (`@pro-laico/atomic`).
 - `seed({ payload, req }, slugConfig)` (`@pro-laico/seed`) — full slug-config object.
 

@@ -2,7 +2,10 @@ import type React from 'react'
 import { draftMode } from 'next/headers'
 import { ThemeProvider } from 'next-themes'
 
-import getCached from '@pro-laico/core/cache/auto'
+import { getCachedDesignSet, getCachedSiteCSS } from '@pro-laico/styles/cache'
+import { getCachedFooter, getCachedHeader } from '@pro-laico/site/cache'
+import { getCachedTracking } from '@pro-laico/tracking/cache'
+import { getCachedAtomicActions } from '@pro-laico/atomic/cache'
 import { TrackingProvider } from '@pro-laico/tracking/provider'
 import { AtomicStoreProvider } from '@pro-laico/atomic/hook/client'
 import { Footer, Header } from '@pro-laico/site/components/frontend'
@@ -20,12 +23,12 @@ const fontVariables = Object.values(fonts)
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const { isEnabled: draft } = await draftMode()
 
-  const css = await getCached('site-css', draft)
-  const ds = await getCached('designSet', draft)
-  const header = await getCached('header', draft)
-  const footer = await getCached('footer', draft)
-  const tracking = await getCached('tracking', draft)
-  const storedAtomicActions = await getCached('atomic-actions', draft)
+  const css = await getCachedSiteCSS(draft)
+  const ds = await getCachedDesignSet(draft)
+  const header = await getCachedHeader(draft)
+  const footer = await getCachedFooter(draft)
+  const tracking = await getCachedTracking(draft)
+  const storedAtomicActions = await getCachedAtomicActions(draft)
 
   return (
     <html lang="en" suppressHydrationWarning className={`${ds?.htmlClassName} ${fontVariables}`}>

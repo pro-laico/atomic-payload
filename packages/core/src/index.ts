@@ -4,10 +4,10 @@
  *
  * Server-only carve-outs (intentionally NOT re-exported from this barrel):
  *
- * - `revalidationLogger` from `./utilities/log` and `createGetCached` from
- *   `./utilities/cache/getCached` — both have a top-level `import 'server-only'`
- *   and would poison any client component that imports this barrel (e.g. for
- *   the `revalidateTag` server action). Import them from
+ * - `revalidationLogger` from `./utilities/log` and the caching primitive
+ *   `withCache` from `./utilities/cache` — both have a top-level
+ *   `import 'server-only'` and would poison any client component that imports
+ *   this barrel (e.g. for the `revalidateTag` server action). Import them from
  *   `@pro-laico/core/logger` and `@pro-laico/core/cache` on the server.
  *
  * - `getMeUser` from `./utilities/getMeUser` — imports `next/navigation`

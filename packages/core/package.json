@@ -25,13 +25,9 @@
         "types": "./dist/utilities/cache/index.d.ts",
         "default": "./dist/utilities/cache/index.js"
       },
-      "./cache/react": {
-        "types": "./dist/utilities/cache/react.d.ts",
-        "default": "./dist/utilities/cache/react.js"
-      },
-      "./cache/auto": {
-        "types": "./dist/utilities/cache/auto.d.ts",
-        "default": "./dist/utilities/cache/auto.js"
+      "./cache/primitives": {
+        "types": "./dist/utilities/cache/withCache.d.ts",
+        "default": "./dist/utilities/cache/withCache.js"
       },
       "./payload": {
         "types": "./dist/utilities/getPayloadInstance.d.ts",
@@ -109,13 +105,9 @@
       "types": "./src/utilities/cache/index.ts",
       "default": "./src/utilities/cache/index.ts"
     },
-    "./cache/react": {
-      "types": "./src/utilities/cache/react.ts",
-      "default": "./src/utilities/cache/react.ts"
-    },
-    "./cache/auto": {
-      "types": "./src/utilities/cache/auto.ts",
-      "default": "./src/utilities/cache/auto.ts"
+    "./cache/primitives": {
+      "types": "./src/utilities/cache/withCache.ts",
+      "default": "./src/utilities/cache/withCache.ts"
     },
     "./payload": {
       "types": "./src/utilities/getPayloadInstance.ts",
@@ -191,43 +183,16 @@
     "@base-ui-components/react": ">=1.0.0-rc.0",
     "@payloadcms/live-preview-react": ">=3.0.0",
     "@payloadcms/ui": ">=3.0.0",
-    "@pro-laico/atomic": ">=0.1.0",
-    "@pro-laico/images": ">=0.1.0",
-    "@pro-laico/site": ">=0.1.0",
-    "@pro-laico/styles": ">=0.1.0",
-    "@pro-laico/tracking": ">=0.1.0",
     "next": ">=15.0.0",
     "payload": ">=3.0.0",
     "react": ">=19.0.0",
     "server-only": ">=0.0.1"
-  },
-  "peerDependenciesMeta": {
-    "@pro-laico/atomic": {
-      "optional": true
-    },
-    "@pro-laico/images": {
-      "optional": true
-    },
-    "@pro-laico/site": {
-      "optional": true
-    },
-    "@pro-laico/styles": {
-      "optional": true
-    },
-    "@pro-laico/tracking": {
-      "optional": true
-    }
   },
   "devDependencies": {
     "@base-ui-components/react": "1.0.0-rc.0",
     "@payloadcms/live-preview-react": "^3.79.0",
     "@payloadcms/translations": "^3.79.0",
     "@payloadcms/ui": "^3.79.0",
-    "@pro-laico/atomic": "workspace:*",
-    "@pro-laico/images": "workspace:*",
-    "@pro-laico/site": "workspace:*",
-    "@pro-laico/styles": "workspace:*",
-    "@pro-laico/tracking": "workspace:*",
     "@types/react": "^19.2.14",
     "@types/traverse": "^0.6.37",
     "next": "^16.1.6",

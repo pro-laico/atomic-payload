@@ -17,6 +17,10 @@
         "types": "./dist/types/payload-augment.d.ts",
         "default": "./dist/types/payload-augment.js"
       },
+      "./cache": {
+        "types": "./dist/cache/index.d.ts",
+        "default": "./dist/cache/index.js"
+      },
       "./src": {
         "types": "./dist/index.d.ts",
         "default": "./dist/index.js"
@@ -69,6 +73,10 @@
     "./schema": {
       "types": "./src/types/payload-augment.ts",
       "default": "./src/types/payload-augment.ts"
+    },
+    "./cache": {
+      "types": "./src/cache/index.ts",
+      "default": "./src/cache/index.ts"
     },
     "./src": {
       "types": "./src/index.ts",

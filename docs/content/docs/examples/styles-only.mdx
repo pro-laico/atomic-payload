@@ -9,9 +9,9 @@ A minimal Atomic Payload template that demonstrates the **`@pro-laico/styles`** 
 
 The template wires up `@pro-laico/styles` (plus `@pro-laico/core`, and `unocss` as a styles peer) and nothing else, so you can see the styling pipeline end to end:
 
-- `stylesPlugin({ getCached, generateLivePreviewPath })` in `payload.config.ts` registers the `designSet` + `shortcutSet` collections and the `draftStorage` / `publishedStorage` CSS globals. Passing `getCached` (and **no** `atomicHook`) attaches the standalone `cssHook`, so CSS is processed without the rest of the Atomic runtime.
+- `stylesPlugin({ getCached, generateLivePreviewPath })` in `payload.config.ts` registers the `designSet` + `shortcutSet` collections and the `draftStorage` / `publishedStorage` CSS globals. The `getCached` is `createCssGetCached()` (from `@pro-laico/styles/cache`); passing it (and **no** `atomicHook`) attaches the standalone `cssHook`, so CSS is processed without the rest of the Atomic runtime.
 - A `pages` collection houses example **blocks** (`hero`, `buttonRow`, `cardGrid`, `prose`, `palette`). Every visual choice in a block is a `ClassNameField` (the styles plugin's atomic-classes input), not a hard-coded class. The same standalone `cssHook` is attached to `pages`: on save it walks the document for every `*ClassName` value (including those nested in blocks), stores them in `storedAtomicClasses`, and regenerates the stylesheet.
-- `getCached('atomic-classes')` reads those `storedAtomicClasses` back off the pages — so authored classes become generated CSS with **no safelist**.
+- `getCachedAtomicClasses` reads those `storedAtomicClasses` back off the pages, so authored classes become generated CSS with **no safelist**.
 - A theme toggle flips the `dark` class to swap every token's light/dark value.
 
 <Callout type="info">
@@ -82,13 +82,13 @@ When a page (or the design set / shortcut set) is saved, the `cssHook` runs the 
 page (blocks) ─save─▶ cssHook (beforeChange)
                         ├─ collectClassNames(data)  → storedAtomicClasses on the page
                         └─ createCssProcessor → UnoCSS generate(
-                              defaultClasses + getCached('atomic-classes')  ◀─ reads every
+                              defaultClasses + getCachedAtomicClasses       ◀─ reads every
                               + active designSet tokens                        page's stored
                               + active shortcutSet shortcuts )                 classes
                                                      └─▶ writes layoutCSS to
                                                          draft/published storage globals
                                                                     │
-   frontend: getCached('site-css') → <style> in <head>  ◀───────────┘
+   frontend: getCachedSiteCSS → <style> in <head>  ◀────────────────┘
              RenderBlocks(page.layout)  → components apply the stored *ClassName values
 ```
 
@@ -106,7 +106,7 @@ src/
     configs.ts                          # Block configs (ClassNameField-driven) + data types — no React
     components.tsx                      # the matching render components (frontend only)
     RenderBlocks.tsx                    # blockType → component dispatcher
-  cache/getCached.ts                    # stock core registry + header/footer no-op overrides
+  instrumentation.ts                    # registerPayloadConfig — config for the cache getters
   seed/sampleSets.ts                    # authored designSet + shortcutSet + home page (blocks)
   app/
     (frontend)/

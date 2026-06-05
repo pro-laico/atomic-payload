@@ -4,17 +4,17 @@ Forward-looking backlog distilled from `AUDIT.md`. These items are intentionally
 
 ## Cache-tag integrity
 
-### Extract a shared `buildTags(tag, tid, draft)` helper
-- **What:** Unify the tag-string construction used by both `revalidateTag` and `createGetCached` so the revalidate-side and get-side tag strings can't drift (they must match exactly or revalidation silently misses).
-- **Why deferred:** Rewrites tag construction on both sides at once — a subtle mismatch would silently break cache invalidation. Worth doing deliberately with verification, not a drive-by. Current behavior appears correct; this hardens against future drift.
-- **Source:** `src/utilities/revalidateTag.ts:45-51`, `src/utilities/cache/getCached.ts:43-52` · AUDIT.md → Medium.
+### Share tag-string construction between `withCache` and `revalidateTag`
+- **What:** The get-side tag construction is now centralized in `withCache` (it derives the `unstable_cache` key + dependency tags from a tag, id, and draft flag). The remaining work is sharing that derivation with `revalidateTag` so the revalidate-side and get-side tag strings can't drift (they must match exactly or revalidation silently misses).
+- **Why deferred:** Rewriting tag construction on both sides at once is risky; a subtle mismatch would silently break cache invalidation. Worth doing deliberately with verification, not a drive-by. Current behavior appears correct; this hardens against future drift.
+- **Source:** `src/utilities/revalidateTag.ts:45-51`, `src/utilities/cache/withCache.ts` · AUDIT.md → Medium.
 
 ## Unfinished features
 
-### `getCachedAtomicActions` — finish or delete
-- **What:** The getter ships a large commented-out action-aggregation body and returns only `{ version }`, while the registry/types advertise `AtomicStoreInitialState`. Either delete the dead block or finish the implementation (and update the `dependencyTags` note referencing `settings`).
-- **Why deferred:** Reads as an unfinished feature, not obviously dead code — depends on whether atomic-actions caching is still planned. Needs intent before deleting a half-built feature.
-- **Source:** `src/utilities/cache/getAtomicActions.ts:19-45` · AUDIT.md → Low.
+### `getCachedAtomicActions` — finish or accept version-only
+- **What:** The getter moved to `@pro-laico/atomic/cache` in the cache-getter relocation; the large commented-out action-aggregation body was dropped in the move, so it now returns only `{ version }` while its type advertises `AtomicStoreInitialState`. Either finish the action aggregation or accept the version-only shape (and update the `settings`-tag note).
+- **Why deferred:** Reads as an unfinished feature, not obviously dead code; depends on whether atomic-actions caching is still planned. Needs intent before extending or trimming a half-built feature. Now an `@pro-laico/atomic` concern, not core's.
+- **Source:** `packages/atomic/src/cache/index.ts` (`getCachedAtomicActions`) · AUDIT.md → Low.
 
 ## Build / CI hardening
 
@@ -25,7 +25,7 @@ Forward-looking backlog distilled from `AUDIT.md`. These items are intentionally
 
 ## Cross-package: circular workspace deps (remaining)
 
-- **What:** Core's own half is **done** — `sanitizeData`/`manualLogger` moved into core, the five sibling deps reclassified from `dependencies` → optional `peerDependencies` + `devDependencies`, and `dist` verified free of `@pro-laico/*` runtime imports. The remaining `styles ↔ site` `ShortcutSet` type cycle is the same pattern and is tracked in `styles/PLANNED.md` / `site/PLANNED.md` (move shared stubs to a leaf package).
+- **What:** Core's own half is **done** and now complete: `sanitizeData`/`manualLogger` moved into core, and after the cache-getter relocation (the data getters left core for the packages that own their collections) core's source imports zero `@pro-laico/*` leaf packages, so the optional `peerDependencies` on the five siblings were dropped entirely. The remaining `styles → site` `ShortcutSet` type import is the same pattern and is tracked in `styles/PLANNED.md` / `site/PLANNED.md` (move shared stubs to a leaf package).
 - **Source:** `package.json` deps · AUDIT.md → Critical #2.
 
 ## Notes / intentional-for-now

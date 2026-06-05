@@ -5,7 +5,7 @@
 
 # Atomic Payload
 
-Originally built as a website builder, Atomic Payload is now a collection of plugins that together create a powerful website builder in Payload CMS. With the pluginifcation of the project, several aspects can now be used as standalone plugins.
+Originally built as a website builder utilizing recursive atomic blocks, Atomic Payload is now a collection of plugins that together create a powerful website builder in Payload CMS. With the pluginifcation of the project, several aspects can now be used as standalone plugins.
 
 The atomic-payload template is the fastest way to see everything at once — and a cool demo of what the plugins can do composed. The resulting websites built with Atomic Payload have excellent performance.
 
@@ -88,11 +88,11 @@ Required by every other package — the shared kernel everything builds on.
 
 | Package | What it does |
 | ------- | ------------ |
-| [`@pro-laico/core`](https://atomicpayload.com/docs/plugins/core) | Typed schema augmentation (`Get<>` / `PayloadAugment`), cache + revalidation hooks, and the APF runtime. |
+| [`core`](https://atomicpayload.com/docs/plugins/core) | Typed schema augmentation (`Get<>` / `PayloadAugment`), cache + revalidation hooks, and the APF runtime. |
 
 ### Standalones
 
-Self-contained plugins you can drop into any Payload + Next.js project on their own (alongside `@pro-laico/core`). If you're adding Atomic Payload to an existing project, start here.
+Self-contained plugins you can drop into any Payload + Next.js project on their own (alongside `@pro-laico/core`).
 
 | Plugin | What it does |
 | ------ | ------------ |
@@ -114,7 +114,7 @@ Building blocks consumed by the other packages and by the full [demo template](#
 | [`richtext`](https://atomicpayload.com/docs/plugins/richtext) | A Lexical rich-text block with a JSX renderer for the frontend. |
 | [`seed`](https://atomicpayload.com/docs/plugins/seed) | One-click database seeding via an admin banner and a `POST /api/seed` endpoint. |
 | [`zap`](https://atomicpayload.com/docs/plugins/zap) | A Zod schema registry and a Zod-schema-to-Payload-types helper. |
-| [`create-atomic-payload`](#getting-started) | CLI that scaffolds the full demo template. |
+| [`create-atomic-payload`](#getting-started) | CLI that scaffolds the full demo template and examples. |
 
 ## Documentation
 
@@ -122,4 +122,4 @@ Full documentation lives at [atomicpayload.com](https://atomicpayload.com).
 
 ## Contributing
 
-Contributions are welcome — we're looking for contributors! See [MONOREPO.md](MONOREPO.md) for repo structure, local development, publishing, and how to add a plugin.
+Contributions are welcome! See [MONOREPO.md](MONOREPO.md) for repo structure, local development, publishing, and how to add a plugin.

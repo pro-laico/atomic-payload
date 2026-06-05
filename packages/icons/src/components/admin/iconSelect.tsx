@@ -1,20 +1,16 @@
 import { SelectField } from '@payloadcms/ui'
-import type { IconSetReturn } from '@pro-laico/core'
 import type { SelectFieldServerComponent } from 'payload'
 
-/** `getCached` from the app (e.g. `@/utilities/get/cache/react`). */
-export type IconSelectGetCached = (tag: 'iconSet' | 'icon-options', draft: boolean, iconSet?: IconSetReturn | null | undefined) => Promise<unknown>
+import { getCachedIconOptions, getCachedIconSet } from '../../cache'
 
-export function createIconSelect(getCached: IconSelectGetCached): SelectFieldServerComponent {
-  return async function IconSelect({ clientField, path, schemaPath, permissions }) {
-    const iconSet = (await getCached('iconSet', true)) as IconSetReturn | null | undefined
-    const result = (await getCached('icon-options', true, iconSet)) as { label: string; value: string }[] | null | undefined
+/** Admin select field whose options are the active icon set's icons. Reads the
+ *  cached `iconSet` / `icon-options` getters directly (draft, since it runs in
+ *  the admin), so revalidating the icon set refreshes the options. */
+export const IconSelect: SelectFieldServerComponent = async ({ clientField, path, schemaPath, permissions }) => {
+  const iconSet = await getCachedIconSet(true)
+  const options = await getCachedIconOptions(true, iconSet)
 
-    if (!result) {
-      console.warn('Icon options fetch failed')
-      return <SelectField field={{ ...clientField, options: [] }} path={path} schemaPath={schemaPath} permissions={permissions} />
-    }
-
-    return <SelectField field={{ ...clientField, options: result || [] }} path={path} schemaPath={schemaPath} permissions={permissions} />
-  }
+  return <SelectField field={{ ...clientField, options }} path={path} schemaPath={schemaPath} permissions={permissions} />
 }
+
+export default IconSelect

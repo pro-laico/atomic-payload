@@ -2,15 +2,15 @@
 import Link from 'next/link'
 import { draftMode } from 'next/headers'
 
-import getCached from '@pro-laico/core/cache/auto'
+import { getCachedPageByHref, getCachedPages } from '@pro-laico/site/cache'
 import { RenderChildren } from '@pro-laico/atomic/children/render'
 
 //KNOWN ISSUE: 404 Page Does not display in production environment when directly viewing the /404 route.
 //Works in dev though, and works correctly when someone navigates to a non-existent page.
 export default async function NotFound() {
   const { isEnabled: draft } = await draftMode()
-  const pages = await getCached('pages', draft)
-  const page = await getCached('page', '/404', draft, pages)
+  const pages = await getCachedPages(draft)
+  const page = await getCachedPageByHref('/404', draft, pages)
 
   if (page) {
     return (

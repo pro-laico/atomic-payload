@@ -5,10 +5,11 @@ import type { CollectionBeforeChangeHook } from 'payload'
 import type { AtomicHookGetCached } from './atomicHookTypes'
 
 /**
- * Ready-made `atomicHook` whose dependencies (`getCached` / UnoCSS via
- * `@pro-laico/core/cache/auto`, and the actions `ActionBlockStorageProcessor`)
- * are dynamically imported on first invocation. This keeps Payload config +
- * zap schema generation from pulling UnoCSS at module-load time.
+ * Ready-made `atomicHook` whose dependencies (the CSS getter built from
+ * `@pro-laico/styles/cache` + `@pro-laico/site/cache`, and the actions
+ * `ActionBlockStorageProcessor`) are dynamically imported on first invocation.
+ * This keeps Payload config + zap schema generation from pulling UnoCSS at
+ * module-load time.
  *
  * This export uses the atomic-payload template's conventional slug names
  * (`pages`, `designSet`, `iconSet`, `draftStorage`, `publishedStorage`). To
@@ -24,13 +25,17 @@ let defaultInner: CollectionBeforeChangeHook | undefined
 
 export const atomicHook: CollectionBeforeChangeHook = async (args) => {
   if (!defaultInner) {
-    const [hookMod, procMod, cacheMod] = await Promise.all([
+    const [hookMod, procMod, stylesCacheMod, siteCacheMod] = await Promise.all([
       import('./createAtomicHook'),
       import('@pro-laico/atomic/actions/processor'),
-      import('@pro-laico/core/cache/auto'),
+      import('@pro-laico/styles/cache'),
+      import('@pro-laico/site/cache'),
     ])
     defaultInner = hookMod.createAtomicHook({
-      getCached: cacheMod.default as AtomicHookGetCached,
+      getCached: stylesCacheMod.createCssGetCached({
+        getHeader: siteCacheMod.getCachedHeader,
+        getFooter: siteCacheMod.getCachedFooter,
+      }) as AtomicHookGetCached,
       ActionBlockStorageProcessor: procMod.ActionBlockStorageProcessor,
     })
   }

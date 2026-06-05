@@ -122,7 +122,7 @@ export const exportFontsEndpoint = (opts: ExportFontsEndpointOptions = {}): Endp
           depth: 1,
           overrideAccess: true,
         })
-        if (designSet.docs.length) selection = (designSet.docs[0] as Record<string, unknown>)[designSetFontField] as FontSelection
+        if (designSet.docs.length) selection = (designSet.docs[0] as unknown as Record<string, unknown>)[designSetFontField] as FontSelection
       } catch {
         // no design-set collection in this project
       }

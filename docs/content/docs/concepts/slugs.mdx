@@ -41,15 +41,16 @@ const revalidate = createRevalidateCache({ articles: revalidateArticles })
 const revalidateOnDelete = createRevalidateCacheOnDelete({ articles: revalidateArticles })
 ```
 
-### Cache getters — `createDefaultGetRegistry` + per-getter factories
+### Per-getter cache factories
 
-From `@pro-laico/core/cache`. `createDefaultGetRegistry({ pagesSlug, formsSlug })` builds the full registry of cached getters, and per-getter factories like `createGetCachedPages('articles')` let you configure a single getter.
+A cached getter bound to a configurable collection ships a `create*` factory from the package that owns it, so you can point one at your slug. The default getter stays bound to the conventional slug.
 
 ```ts
-import { createDefaultGetRegistry, createGetCachedPages } from '@pro-laico/core/cache'
+import { createGetCachedPages } from '@pro-laico/site/cache'
+import { createGetCachedBackendForms } from '@pro-laico/atomic/cache'
 
-const registry = createDefaultGetRegistry({ pagesSlug: 'articles', formsSlug: 'contactForms' })
 const getCachedArticles = createGetCachedPages('articles')
+const getCachedContactForms = createGetCachedBackendForms('contactForms')
 ```
 
 ### Admin fields — `createTestPathField` / `createLinkControlBarFields`

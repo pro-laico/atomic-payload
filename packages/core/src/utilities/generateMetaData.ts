@@ -1,15 +1,34 @@
 import type { Metadata } from 'next'
 
-import type { PageReturn } from '../types/cache'
-
-import type { SiteMetaDatum } from '@pro-laico/site/schema'
-
-type GenerateMetaDataArgs = { page?: PageReturn; siteMetadata?: SiteMetaDatum }
-type GenerateMetaDataFn = (args: GenerateMetaDataArgs) => Metadata
-
 /** Minimal shape shared by Image and Favicon media docs — enough to pull a URL.
  *  Favicons carry only `url` (no `og` size), so `sizes` is optional. */
 type MediaUrlSource = { url?: string | null; sizes?: { og?: { url?: string | null } | null } | null }
+
+/** The page-meta slice this reads. Structural (duck-typed) so `@pro-laico/core`
+ *  needs no dependency on `@pro-laico/site`'s `Page` type — a host passes its
+ *  own page object and it just has to carry these fields. */
+type PageMetaSlice = {
+  meta?: {
+    title?: string | null
+    description?: string | null
+    noIndex?: boolean | null
+    image?: MediaUrlSource | string | null
+    lightFavicon?: MediaUrlSource | string | null
+    darkFavicon?: MediaUrlSource | string | null
+  } | null
+}
+
+/** The site-metadata slice this reads (structural, same rationale as above). */
+type SiteMetaSlice = {
+  siteName?: string | null
+  fallbackSiteDescription?: string | null
+  fallbackOGImage?: MediaUrlSource | string | null
+  fallbackLightFavicon?: MediaUrlSource | string | null
+  fallbackDarkFavicon?: MediaUrlSource | string | null
+}
+
+type GenerateMetaDataArgs = { page?: PageMetaSlice; siteMetadata?: SiteMetaSlice }
+type GenerateMetaDataFn = (args: GenerateMetaDataArgs) => Metadata
 
 const processImageUrl = (image: MediaUrlSource | string | null | undefined): string | undefined => {
   if (!image || typeof image === 'string') return

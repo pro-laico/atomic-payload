@@ -47,7 +47,7 @@ When you save a design set, shortcut set, or any document that carries authored 
 
 You wire the CSS hook one of two ways, and the Setup tabs below show both:
 
-- **Standalone**: pass a `getCached` getter and the plugin attaches its own `cssHook`, so this package processes CSS entirely on its own.
+- **Standalone**: pass a `getCached` getter (from `createCssGetCached`) and the plugin attaches its own `cssHook`, so this package processes CSS entirely on its own.
 - **With the template**: pass the project's `atomicHook` (from `@pro-laico/atomic`), which handles CSS along with the rest of the runtime.
 
 <Callout type="warn">
@@ -67,18 +67,17 @@ Adding styles to your own Payload + Next.js project, with no `@pro-laico/atomic`
 <Step>
 ### Add the plugin to your Payload config
 
-`stylesPlugin` always needs a `generateLivePreviewPath` (it's shared by both collections for live preview). Pass a `getCached` getter to attach the standalone CSS hook so this package generates the stylesheet itself:
+`stylesPlugin` always needs a `generateLivePreviewPath` (it's shared by both collections for live preview). Pass a `getCached` getter (built with `createCssGetCached`) to attach the standalone CSS hook so this package generates the stylesheet itself:
 
 ```ts
 import { buildConfig } from 'payload'
-import { stylesPlugin, type CssProcessorGetCached } from '@pro-laico/styles'
+import { stylesPlugin } from '@pro-laico/styles'
+import { createCssGetCached } from '@pro-laico/styles/cache'
 
-// Reads the active designSet / shortcutSet, the generated site-css, and the
-// page atomic-classes. See the next step.
-const getCached: CssProcessorGetCached = async (tag, draft) => {
-  const mod = await import('@/cache/getCached')
-  return mod.default(tag, draft)
-}
+// Resolves the active designSet / shortcutSet and the page atomic-classes from
+// this package's own getters. A standalone styles project has no header / footer
+// collections, so none are injected.
+const getCached = createCssGetCached()
 
 export default buildConfig({
   plugins: [
@@ -98,27 +97,23 @@ This registers the **`designSet`** and **`shortcutSet`** collections and the `dr
 </Step>
 
 <Step>
-### Provide the `getCached` getter
+### Register your Payload config
 
-The CSS processor needs a getter that resolves the active design set, the active shortcut set, the generated `site-css`, and the page `atomic-classes`. Build it from `@pro-laico/core`'s stock registry and only override what your project doesn't have (e.g. header / footer collections):
+`createCssGetCached` uses this package's own design-set / shortcut-set / atomic-class getters, which reach Payload's Local API through a config you register once at startup. Add an `instrumentation.ts` (the same registration the frontend getters rely on):
 
 ```ts
-// src/cache/getCached.ts
-import { cache } from 'react'
-import configPromise from '@payload-config'
-import 'server-only'
-import { createGetCached, defaultGetRegistry, type GetRegistry } from '@pro-laico/core/cache'
+// src/instrumentation.ts
+export async function register(): Promise<void> {
+  if (process.env.NEXT_RUNTIME !== 'nodejs') return
 
-const registry: GetRegistry = {
-  ...defaultGetRegistry,
-  header: (async () => undefined) as GetRegistry['header'],
-  footer: (async () => undefined) as GetRegistry['footer'],
+  const { registerPayloadConfig } = await import('@pro-laico/core/config')
+  const { default: configPromise } = await import('@payload-config')
+
+  registerPayloadConfig(configPromise)
 }
-
-export default cache(createGetCached(configPromise, registry))
 ```
 
-Each getter is wrapped with revalidation tags, so editing a design set or shortcut set in the admin flows through to your page (and to live preview).
+The getters are wrapped with revalidation tags, so editing a design set or shortcut set in the admin flows through to your page (and to live preview).
 </Step>
 
 <Step>
@@ -139,19 +134,19 @@ Attach the same standalone hook to that collection's `beforeChange` so saving a 
 <Step>
 ### Render the generated stylesheet on your frontend
 
-Your frontend reads the generated CSS from the storage globals via `getCached('site-css', draft)` and injects it into `<head>`. Read the active design set too, for its `<html>` / `<body>` / wrapper class names:
+Your frontend reads the generated CSS from the storage globals via `getCachedSiteCSS(draft)` and injects it into `<head>`. Read the active design set too, via `getCachedDesignSet(draft)`, for its `<html>` / `<body>` / wrapper class names:
 
 ```tsx
 // app/(frontend)/layout.tsx
 import { draftMode } from 'next/headers'
 
-import getCached from '@/cache/getCached'
+import { getCachedDesignSet, getCachedSiteCSS } from '@pro-laico/styles/cache'
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const { isEnabled: draft } = await draftMode()
 
-  const css = await getCached('site-css', draft)
-  const ds = await getCached('designSet', draft)
+  const css = await getCachedSiteCSS(draft)
+  const ds = await getCachedDesignSet(draft)
 
   return (
     <html lang="en" className={ds?.htmlClassName ?? undefined}>
@@ -236,7 +231,7 @@ Mark one design set active and save. The `atomicHook` regenerates the stylesheet
   type={{
     generateLivePreviewPath: { type: '(args) => Promise<string> | string', description: 'Required. Builds the live-preview URL for the active set. Shared by both collections.' },
     atomicHook: { type: 'CollectionBeforeChangeHook', description: "Wire the project's all-in-one hook (from @pro-laico/atomic) to handle CSS (plus forms / actions) for both collections." },
-    getCached: { type: 'CssProcessorGetCached', description: 'Provide a getter for the active sets and stored classes to attach the standalone cssHook, so this package generates CSS on its own without @pro-laico/atomic.' },
+    getCached: { type: 'CssProcessorGetCached', description: 'Provide a (tag, draft) getter (build one with createCssGetCached from @pro-laico/styles/cache) to attach the standalone cssHook, so this package generates CSS on its own without @pro-laico/atomic.' },
     cssHookOptions: { type: 'CssHookOptions', description: 'Forwarded to the standalone cssHook when getCached is set. Use it to override the slugs and storage globals it reads and writes.' },
     designSet: { type: 'false | object', default: 'enabled', description: "The designSet collection. Pass false (or { enabled: false }) to skip it. Object keys: access, collection (merged onto the collection), and fontField (a Payload Field for the Fonts tab, e.g. @pro-laico/fonts' fontUploadField())." },
     shortcutSet: { type: 'false | object', default: 'enabled', description: 'The shortcutSet collection. Pass false (or { enabled: false }) to skip it. Object keys: access, collection (same as designSet), and defaultShortcuts (read-only rows shown in the admin).' },
@@ -279,6 +274,18 @@ Everything `@pro-laico/styles` ships, grouped by what it's for.
     createCssHook: { type: 'function', location: '@pro-laico/styles', description: 'Builds the standalone beforeChange hook that regenerates the stylesheet without @pro-laico/atomic.' },
     CssHookOptions: { type: 'type', location: '@pro-laico/styles', description: 'The options type for createCssHook (the slugs and storage globals it reads and writes).' },
     processDesignSet: { type: 'function', location: '@pro-laico/styles', description: 'Compiles a design-set document (tokens, colors, prose, preflights) into its storage fields before CSS generation.' },
+  }}
+/>
+
+### Cache getters
+
+<ExportTable
+  exports={{
+    getCachedDesignSet: { type: 'function', location: '@pro-laico/styles/cache', description: 'Cached read of the active design set. Call it in a server component to style off the active tokens.' },
+    getCachedShortcutSet: { type: 'function', location: '@pro-laico/styles/cache', description: 'Cached read of the active shortcut set.' },
+    getCachedSiteCSS: { type: 'function', location: '@pro-laico/styles/cache', description: 'Cached read of the generated stylesheet from the draft / published CSS storage global.' },
+    getCachedAtomicClasses: { type: 'function', location: '@pro-laico/styles/cache', description: 'Cached read of every stored atomic class across page-like docs (drives the generated CSS safelist). createGetCachedAtomicClasses(slug) binds it to a different pages collection.' },
+    createCssGetCached: { type: 'function', location: '@pro-laico/styles/cache', description: 'Builds the (tag, draft) getter the CSS processor calls, from this package\'s own getters plus optional injected header / footer getters. Pass its result as the plugin\'s getCached option.' },
   }}
 />
 

@@ -2,9 +2,9 @@
 
 import { getSubmitFormProcessor } from './formProcessor'
 
-import getCached from '@pro-laico/core/cache/auto'
 import type { SubmitFormFunction } from '@pro-laico/atomic/forms'
 import { getPayloadInstance } from '@pro-laico/core/payload'
+import { getCachedAllForms, getCachedAtomicForms, getCachedBackendForms } from '@pro-laico/atomic/cache'
 
 import { draftMode, headers as nextHeaders } from 'next/headers'
 
@@ -15,11 +15,11 @@ export const submitForm: SubmitFormFunction = async (submissionData) => {
 
   try {
     // Get the stored form
-    const backendForms = await getCached('backend-forms')
+    const backendForms = await getCachedBackendForms()
     if (!backendForms) return { success: false, formData, submissionID, fm: 'No backend forms found.', im: {} }
-    const atomicForms = await getCached('atomic-forms', draft)
+    const atomicForms = await getCachedAtomicForms(draft)
     if (!atomicForms) return { success: false, formData, submissionID, fm: 'No stored atomic forms found.', im: {} }
-    const allForms = await getCached('all-forms', draft, atomicForms, backendForms)
+    const allForms = await getCachedAllForms(draft, atomicForms, backendForms)
     if (!allForms) return { success: false, formData, submissionID, fm: 'No all forms found.', im: {} }
     const storedForm = allForms.find((form) => form.id === blockID)
     if (!storedForm?.id) return { success: false, formData, submissionID, fm: 'No backend form found for this atomic form.', im: {} }

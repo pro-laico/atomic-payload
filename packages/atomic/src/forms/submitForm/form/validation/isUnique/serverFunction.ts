@@ -1,6 +1,6 @@
 'use server'
 
-import getCached from '@pro-laico/core/cache/auto'
+import { getCachedFormSubmissions } from '@pro-laico/atomic/cache'
 import type { FvIsUnique as FvIsUniqueType } from '@pro-laico/atomic/forms/schema'
 import type { FilterSubmissionsByFieldAndValue, FormFunction } from '@pro-laico/atomic/forms'
 
@@ -22,7 +22,7 @@ export const FvIsUnique: FormFunction<{ block: FvIsUniqueType }> = async (args) 
     return args
   }
 
-  const cachedSubmissions = await getCached('form-submissions', storedForm.backendForm)
+  const cachedSubmissions = await getCachedFormSubmissions(storedForm.backendForm)
   const submissions = filterSubmissionsByFieldAndValue({ submissions: cachedSubmissions, fieldName, fieldValue: formData.get(fieldName) })
 
   if (submissions.length > 0) {

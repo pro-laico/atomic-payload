@@ -52,7 +52,7 @@ A few conventions keep this consistent across every package:
 ## Notes
 
 <Callout type="info">
-  Atomic-payload-conventional slugs (`pages`, `header`, `footer`, `designSet`, `iconSet`, `forms`, and the rest) are **not** hardcoded. Every plugin's default export stays bound to those conventional slugs so existing imports keep working, but you can override them through factory variants like `atomicHookWith(slugConfig)`, `createRevalidateCache(handlers)`, and `createDefaultGetRegistry({ pagesSlug, formsSlug })`.
+  Atomic-payload-conventional slugs (`pages`, `header`, `footer`, `designSet`, `iconSet`, `forms`, and the rest) are **not** hardcoded. Every plugin's default export stays bound to those conventional slugs so existing imports keep working, but you can override them through factory variants like `atomicHookWith(slugConfig)`, `createRevalidateCache(handlers)`, and the per-package cache factories (`createGetCachedPages(slug)`).
 </Callout>
 
 <Callout type="info">

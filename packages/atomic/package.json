@@ -17,6 +17,10 @@
         "types": "./dist/index.d.ts",
         "default": "./dist/index.js"
       },
+      "./cache": {
+        "types": "./dist/cache/index.d.ts",
+        "default": "./dist/cache/index.js"
+      },
       "./actions": {
         "types": "./dist/actions/index.d.ts",
         "default": "./dist/actions/index.js"
@@ -189,6 +193,10 @@
     "./src": {
       "types": "./src/index.ts",
       "default": "./src/index.ts"
+    },
+    "./cache": {
+      "types": "./src/cache/index.ts",
+      "default": "./src/cache/index.ts"
     },
     "./actions": {
       "types": "./src/actions/index.ts",
