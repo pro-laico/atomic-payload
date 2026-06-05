@@ -1,6 +1,6 @@
 ---
 title: "@pro-laico/tracking"
-description: "Turn analytics on and off from the Payload admin — flip a switch for PostHog, Google Tag Manager, or Vercel Analytics and the right scripts load on your site."
+description: "Turn analytics on and off from the Payload admin: flip a switch for PostHog, Google Tag Manager, or Vercel Analytics and the right scripts load on your site."
 ---
 
 `@pro-laico/tracking` lets you manage analytics from the Payload admin instead of your environment. Toggle PostHog, Google Tag Manager, or Vercel Analytics on, paste in the keys right in the dashboard, and a provider you add once at your app root loads exactly the tools you've turned on.
@@ -36,7 +36,7 @@ yarn add @pro-laico/tracking
 </Tabs>
 
 <Callout type="info">
-  `payload`, `next`, and `react` are peers you already have in a Payload + Next.js app. The analytics SDKs are **optional peers** — install only the ones you turn on: `posthog-js` for PostHog, `@next/third-parties` for Google Tag Manager, `@vercel/analytics` for Vercel Analytics.
+  `payload`, `next`, and `react` are peers you already have in a Payload + Next.js app. The analytics SDKs are **optional peers**, so install only the ones you turn on: `posthog-js` for PostHog, `@next/third-parties` for Google Tag Manager, `@vercel/analytics` for Vercel Analytics.
 </Callout>
 
 ## Setup
@@ -69,9 +69,9 @@ This registers the **Tracking** global, where you turn each analytics tool on an
 
 Open the **Tracking** global (under the *Tracking* admin group). Each tool has its own toggle in the sidebar; flipping one on reveals its settings:
 
-- **PostHog** — enter the project public key and host (defaults to `https://us.i.posthog.com`). Autocapture is on by default; you can narrow it with optional URL allow / ignore lists.
-- **Google Tag Manager** — enter your container ID (`GTM-XXXXXXX`).
-- **Vercel Analytics** — just the toggle; it has no keys.
+- **PostHog**: enter the project public key and host (defaults to `https://us.i.posthog.com`). Autocapture is on by default; you can narrow it with optional URL allow / ignore lists.
+- **Google Tag Manager**: enter your container ID (`GTM-XXXXXXX`).
+- **Vercel Analytics**: just the toggle; it has no keys.
 
 Each tool's keys are required only when its toggle is on, so you can save the global with anything you're not using turned off.
 </Step>
@@ -79,18 +79,18 @@ Each tool's keys are required only when its toggle is on, so you can save the gl
 <Step>
 ### Add the provider to your app root
 
-The keys live in the **Tracking** global, so nothing loads until you fetch that global on the server and hand it to `TrackingProvider`. Wrap your frontend layout with it — it reads the toggles and renders only the providers you enabled (and renders nothing at all if `tracking` is missing):
+The keys live in the **Tracking** global, so nothing loads until you fetch that global on the server and hand it to `TrackingProvider`. Read it with the cached getter (`getCachedTracking`) so the page reads it once per request, and wrap your frontend layout with the provider. It reads the toggles and renders only the providers you enabled (and renders nothing at all if `tracking` is missing):
 
 ```tsx
-// app/(frontend)/layout.tsx — a Server Component
-import { getPayload } from 'payload'
+// app/(frontend)/layout.tsx (a Server Component)
+import { draftMode } from 'next/headers'
+
+import { getCachedTracking } from '@pro-laico/tracking/cache'
 import { TrackingProvider } from '@pro-laico/tracking/provider'
 
-import config from '@payload-config'
-
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  const payload = await getPayload({ config })
-  const tracking = await payload.findGlobal({ slug: 'tracking' })
+  const { isEnabled: draft } = await draftMode()
+  const tracking = await getCachedTracking(draft)
 
   return (
     <html lang="en">
@@ -102,7 +102,27 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 }
 ```
 
-`TrackingProvider` is a client component that pulls in the optional SDKs, which is why it lives behind the `/provider` subpath — server tooling never has to load `posthog-js` or the others. You fetch the global on the server and thread it down as a prop.
+`TrackingProvider` is a client component that pulls in the optional SDKs, which is why it lives behind the `/provider` subpath: server tooling never has to load `posthog-js` or the others. You fetch the global on the server and thread it down as a prop.
+</Step>
+
+<Step>
+### Register your Payload config
+
+`getCachedTracking` reaches Payload's Local API through a config you register once at startup. Add an `instrumentation.ts` so the cached getter can resolve the global:
+
+```ts
+// src/instrumentation.ts
+export async function register(): Promise<void> {
+  if (process.env.NEXT_RUNTIME !== 'nodejs') return
+
+  const { registerPayloadConfig } = await import('@pro-laico/core/config')
+  const { default: configPromise } = await import('@payload-config')
+
+  registerPayloadConfig(configPromise)
+}
+```
+
+Saving the **Tracking** global revalidates the `tracking` tag, so a change in the admin flows through to the next page view.
 </Step>
 
 </Steps>
@@ -118,7 +138,7 @@ The [atomic-payload template](/docs/templates/atomic-payload) already includes t
 <Step>
 ### Turn on the tools you want
 
-Open the **Tracking** global in the admin. Flip on PostHog, Google Tag Manager, or Vercel Analytics, and fill in the keys each one asks for — the PostHog public key and host, or your Google Tag Manager ID.
+Open the **Tracking** global in the admin. Flip on PostHog, Google Tag Manager, or Vercel Analytics, and fill in the keys each one asks for: the PostHog public key and host, or your Google Tag Manager ID.
 </Step>
 
 <Step>
@@ -134,7 +154,15 @@ The layout reads the global on each request, so once you save your changes the e
 </Tabs>
 
 <Callout type="info">
-  PostHog initialises once on the first non-admin page view and relies on **autocapture** for events — it records pageviews and interactions automatically. (The earlier custom-property collection and field were removed; the only PostHog tuning is the optional URL allow / ignore lists for autocapture.)
+  PostHog initialises once on the first non-admin page view and relies on **autocapture** for events: it records pageviews and interactions automatically. (The earlier custom-property collection and field were removed; the only PostHog tuning is the optional URL allow / ignore lists for autocapture.)
+</Callout>
+
+## Caching & revalidation
+
+The read this package ships, `getCachedTracking(draft)` from `@pro-laico/tracking/cache`, returns the **Tracking** global so your layout reads the toggles and keys once instead of re-querying Payload on every render. Saving the global in the admin revalidates the `tracking` tag, so the next page view loads exactly the tools you just changed.
+
+<Callout type="info">
+  This is the getter the template's layout uses to feed `TrackingProvider` (the standalone Setup above shows the same wiring). See [Caching & revalidation](/docs/concepts/caching) for how the tags and `withCache` work.
 </Callout>
 
 ## Options
@@ -148,9 +176,18 @@ The layout reads the global on each request, so once you save your changes the e
   }}
 />
 
+Both options are flat booleans, so there are no nested keys to expand. All options at their defaults, as a working starting point:
+
+```ts
+trackingPlugin({
+  enabled: true,
+  includeTrackingGlobal: true,
+})
+```
+
 ## Environment variables
 
-This plugin reads **no** environment variables. Every key — the PostHog public key and host, the Google Tag Manager ID — is entered and stored in the **Tracking** global in the admin, so the same build works across deployments without juggling per-environment keys.
+This plugin reads **no** environment variables. Every key (the PostHog public key and host, the Google Tag Manager ID) is entered and stored in the **Tracking** global in the admin, so the same build works across deployments without juggling per-environment keys.
 
 ## Exports
 
@@ -160,7 +197,21 @@ Everything `@pro-laico/tracking` exposes, grouped by where you reach for it.
 
 <ExportTable
   exports={{
-    trackingPlugin: { type: 'plugin', location: '@pro-laico/tracking', description: 'The plugin itself — registers the Tracking global. Default and named export.' },
+    trackingPlugin: {
+      type: 'plugin',
+      location: '@pro-laico/tracking',
+      description: 'The plugin itself. Registers the Tracking global where you toggle each tool and enter its keys. Default and named export.',
+      params: {
+        'options?': { type: 'TrackingPluginOptions', description: 'See the Options table above. Both keys are optional and default to `true`.' },
+      },
+      returns: { type: 'Plugin', description: 'A Payload config plugin you add to `buildConfig({ plugins: [...] })`.' },
+      example: `import { buildConfig } from 'payload'
+import { trackingPlugin } from '@pro-laico/tracking'
+
+export default buildConfig({
+  plugins: [trackingPlugin()],
+})`,
+    },
     TrackingPluginOptions: { type: 'type', location: '@pro-laico/tracking', description: "The TypeScript type for the plugin's options." },
   }}
 />
@@ -169,10 +220,106 @@ Everything `@pro-laico/tracking` exposes, grouped by where you reach for it.
 
 <ExportTable
   exports={{
-    TrackingProvider: { type: 'function', location: '@pro-laico/tracking/provider', description: 'The composite client provider for your app root — reads the Tracking global and renders only the tools you enabled. Client component.' },
-    PostHogProvider: { type: 'function', location: '@pro-laico/tracking/provider', description: 'The PostHog-only client provider, in case you wire providers individually.' },
-    GoogleTagManagerProvider: { type: 'function', location: '@pro-laico/tracking/provider', description: 'The Google Tag Manager-only client provider.' },
-    VercelProvider: { type: 'function', location: '@pro-laico/tracking/provider', description: 'The Vercel Analytics-only client provider.' },
+    TrackingProvider: {
+      type: 'function',
+      location: '@pro-laico/tracking/provider',
+      description: 'The composite client provider for your app root. Reads the Tracking global and renders only the tools you enabled, nesting each enabled provider around `children`. Renders just `children` when `tracking` is missing. Client component.',
+      params: {
+        tracking: { type: 'Tracking | undefined', description: 'The Tracking global, fetched on the server (with `getCachedTracking`). Its toggles decide which providers render.' },
+        children: { type: 'ReactNode', description: 'Your app tree, wrapped by every enabled provider.' },
+      },
+      returns: { type: 'JSX.Element', description: 'The children wrapped in the enabled analytics providers.' },
+      exampleLang: 'tsx',
+      example: `import { getCachedTracking } from '@pro-laico/tracking/cache'
+import { TrackingProvider } from '@pro-laico/tracking/provider'
+
+// app/(frontend)/layout.tsx
+export default async function RootLayout({ children }) {
+  const tracking = await getCachedTracking(false)
+  return (
+    <html lang="en">
+      <body>
+        <TrackingProvider tracking={tracking}>{children}</TrackingProvider>
+      </body>
+    </html>
+  )
+}`,
+    },
+    PostHogProvider: {
+      type: 'function',
+      location: '@pro-laico/tracking/provider',
+      description: 'The PostHog-only client provider, in case you wire providers individually. Initialises PostHog once on the first non-admin view using the key, host, and autocapture settings from the Tracking global.',
+      params: {
+        tracking: { type: 'Tracking | undefined', description: 'Supplies `postHogPublicKey`, `postHogHost`, and the optional autocapture allow / ignore lists.' },
+        children: { type: 'ReactNode', description: 'Your app tree, rendered inside PostHog provider.' },
+      },
+      returns: { type: 'JSX.Element', description: 'The children wrapped in PostHog provider.' },
+      exampleLang: 'tsx',
+      example: `import { getCachedTracking } from '@pro-laico/tracking/cache'
+import { PostHogProvider } from '@pro-laico/tracking/provider'
+
+// only the PostHog provider, wired by hand in a layout
+const tracking = await getCachedTracking(false)
+return <PostHogProvider tracking={tracking}>{children}</PostHogProvider>`,
+    },
+    GoogleTagManagerProvider: {
+      type: 'function',
+      location: '@pro-laico/tracking/provider',
+      description: 'The Google Tag Manager-only client provider. Renders the GTM script when `tracking.googleTagManagerId` is set.',
+      params: {
+        tracking: { type: 'Tracking | undefined', description: 'Supplies `googleTagManagerId` (the `GTM-XXXXXXX` container ID).' },
+        children: { type: 'ReactNode', description: 'Your app tree, rendered alongside the GTM script.' },
+      },
+      returns: { type: 'JSX.Element', description: 'The children plus the GTM script.' },
+      exampleLang: 'tsx',
+      example: `import { getCachedTracking } from '@pro-laico/tracking/cache'
+import { GoogleTagManagerProvider } from '@pro-laico/tracking/provider'
+
+const tracking = await getCachedTracking(false)
+return <GoogleTagManagerProvider tracking={tracking}>{children}</GoogleTagManagerProvider>`,
+    },
+    VercelProvider: {
+      type: 'function',
+      location: '@pro-laico/tracking/provider',
+      description: 'The Vercel Analytics-only client provider. Renders the `<Analytics />` component alongside your tree; it needs no keys.',
+      params: {
+        children: { type: 'ReactNode', description: 'Your app tree, rendered with the Vercel `<Analytics />` component.' },
+      },
+      returns: { type: 'JSX.Element', description: 'The children plus the Vercel `<Analytics />` component.' },
+      exampleLang: 'tsx',
+      example: `import { VercelProvider } from '@pro-laico/tracking/provider'
+
+// Vercel Analytics takes no keys, so it needs no tracking prop
+return <VercelProvider>{children}</VercelProvider>`,
+    },
+  }}
+/>
+
+### Cache getters
+
+<ExportTable
+  exports={{
+    getCachedTracking: {
+      type: 'function',
+      location: '@pro-laico/tracking/cache',
+      description: 'Cached read of the Tracking global. Wrapped in `withCache` under the `tracking` tag and revalidated when you save the global, so the layout reads it once per request instead of re-querying Payload on every render. This is what you pass to `TrackingProvider`.',
+      params: {
+        draft: { type: 'boolean', description: 'Read the draft (`true`) or published (`false`) variant of the global.' },
+      },
+      returns: { type: 'Promise<Tracking | undefined>', description: 'The Tracking global, or `undefined` if it has never been saved.' },
+      exampleLang: 'tsx',
+      example: `import { draftMode } from 'next/headers'
+
+import { getCachedTracking } from '@pro-laico/tracking/cache'
+import { TrackingProvider } from '@pro-laico/tracking/provider'
+
+// app/(frontend)/layout.tsx
+export default async function RootLayout({ children }) {
+  const { isEnabled: draft } = await draftMode()
+  const tracking = await getCachedTracking(draft)
+  return <TrackingProvider tracking={tracking}>{children}</TrackingProvider>
+}`,
+    },
   }}
 />
 

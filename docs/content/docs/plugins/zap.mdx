@@ -1,12 +1,12 @@
 ---
 title: "@pro-laico/zap"
-description: "Zod with Atomic Payload extensions — the shared schema layer that lets every @pro-laico package describe its data once and have those shapes flow into your generated Payload types."
+description: "Zod with Atomic Payload extensions: the shared schema layer that lets every @pro-laico package describe its data once and have those shapes flow into your generated Payload types."
 ---
 
-You rarely reach for `@pro-laico/zap` directly — the other `@pro-laico/*` packages depend on it and bring it along. It's the shared schema layer underneath them: [Zod](https://zod.dev/), re-exported with a small registry attached as `z.ap`. Each package describes its data shapes once and registers them under a string ID, and those shapes flow through Payload's type generation into your project's types. You'll usually only touch it when you're building your own package on top of Atomic Payload, or registering an extra schema of your own.
+You rarely reach for `@pro-laico/zap` directly, since the other `@pro-laico/*` packages depend on it and bring it along. It's the shared schema layer underneath them: [Zod](https://zod.dev/), re-exported with a small registry attached as `z.ap`. Each package describes its data shapes once and registers them under a string ID, and those shapes flow through Payload's type generation into your project's types. You'll usually only touch it when you're building your own package on top of Atomic Payload, or registering an extra schema of your own.
 
 <Callout type="info">
-  `@pro-laico/zap` is a Tool package — a building block of the Atomic Payload stack, meant to be used alongside `@pro-laico/core` and the other `@pro-laico/*` packages (most easily via the [atomic-payload template](/docs/templates/atomic-payload)), not on its own.
+  `@pro-laico/zap` is a Tool package, a building block of the Atomic Payload stack, meant to be used alongside `@pro-laico/core` and the other `@pro-laico/*` packages (most easily via the [atomic-payload template](/docs/templates/atomic-payload)), not on its own.
 </Callout>
 
 ## Installation
@@ -45,7 +45,7 @@ yarn add @pro-laico/zap
 
 ## Usage
 
-`zap` is a helper, not a Payload plugin — you don't add it to `buildConfig`. Instead, you import `z` from it (Zod, with the `z.ap` registry attached) and register a schema under a string ID. Other parts of your project can then look that schema — or its type — back up by ID.
+`zap` is a helper, not a Payload plugin, so you don't add it to `buildConfig`. Instead, you import `z` from it (Zod, with the `z.ap` registry attached) and register a schema under a string ID. Other parts of your project can then look that schema, or its type, back up by ID.
 
 ```ts
 import { z } from '@pro-laico/zap'
@@ -87,16 +87,69 @@ export const jsonSchemaPluginConfig = jsonSchemaPlugin({
 After that runs, the IDs you registered with `z.ap.add` show up as members of the generated `AtomicRegistry` type, so `z.ap.get(id)` and `z.ap.Type<id>` resolve to your project's real shapes.
 
 <Callout type="info">
-  The registry imports `server-only` and is populated while your Payload config resolves on the server. Register schemas in server-side modules — don't import `z.ap` into a client component.
+  The registry imports `server-only` and is populated while your Payload config resolves on the server. Register schemas in server-side modules, and don't import `z.ap` into a client component.
 </Callout>
 
 ## Exports
 
 <ExportTable
   exports={{
-    z: { type: 'object', location: '@pro-laico/zap', description: 'Zod, re-exported with the z.ap registry attached (add, get, type, and the z.ap.Type<id> type helper). Both the default export and a named export.' },
-    toJSONSchemaExtensions: { type: 'function', location: '@pro-laico/zap', description: 'Adds every registered schema to a generated JSON schema. Pass it to the core JSON-schema plugin (or spread it into your own Payload typescript.schema function) so the registered shapes become generated types.' },
-    generateBlocksType: { type: 'function', location: '@pro-laico/zap', description: 'Builds a JSON-schema entry describing a union of block references, used alongside toJSONSchemaExtensions to generate block-union types.' },
+    z: {
+      type: 'object',
+      location: '@pro-laico/zap',
+      description: 'Zod, re-exported with the `z.ap` registry attached. `z.ap.add(schema, { id })` registers a schema under a string ID (and returns the same schema, so you can export it); `z.ap.get(id)` looks the registered schema back up; and the `z.ap.Type<id>` type helper resolves the ID to its generated TypeScript type. Both the default export and a named export.',
+      example: `import { z } from '@pro-laico/zap'
+
+// Register a schema once, under a string ID, and export the schema as usual.
+export const DesignSetColors = z.ap.add(
+  z.array(z.object({ name: z.string(), light: z.string(), dark: z.string() })),
+  { id: 'DesignSetColors' },
+)
+
+// Anywhere else, look it back up by ID (returns the registered Zod schema)...
+const colors = z.ap.get('DesignSetColors')
+
+// ...or use its generated type in an annotation:
+const value: z.ap.Type<'DesignSetColors'> = []`,
+    },
+    toJSONSchemaExtensions: {
+      type: 'function',
+      location: '@pro-laico/zap',
+      description: 'Turns every schema registered with `z.ap.add` into a generated type. It merges all registered schemas into the `definitions` of the JSON schema Payload builds during `payload generate:types`. Pass it to the core JSON-schema plugin, or spread its result into your own Payload `typescript.schema` function.',
+      params: {
+        args: { type: '{ jsonSchema: JSONSchema4 }', description: 'The JSON schema Payload passes to each `typescript.schema` function.' },
+      },
+      returns: { type: 'JSONSchema4', description: 'The same JSON schema with every registered schema added under `definitions`.' },
+      example: `import { jsonSchemaPlugin } from '@pro-laico/core'
+import { generateBlocksType, toJSONSchemaExtensions } from '@pro-laico/zap'
+
+// src/plugins/jsonSchema.ts: hand it to the core plugin, which wires it
+// into Payload's typescript.schema for you.
+export const jsonSchemaPluginConfig = jsonSchemaPlugin({
+  enabled: true,
+  toJSONSchemaExtensions,
+  generateBlocksType,
+  blocks: {
+    // name -> the block slugs that belong to each generated union
+  },
+})`,
+    },
+    generateBlocksType: {
+      type: 'function',
+      location: '@pro-laico/zap',
+      description: 'Builds a single JSON-schema entry describing a union of block references. The core JSON-schema plugin calls it once per entry in its `blocks` map to generate a named block-union type, so you usually just hand it to that plugin alongside `toJSONSchemaExtensions`.',
+      params: {
+        args: { type: '{ name: string; refs: (string | undefined)[] }', description: '`name` is the generated type name; `refs` is the list of block slugs in the union (falsy entries are dropped).' },
+      },
+      returns: { type: 'Record<string, JSONSchema4>', description: 'A one-key object (`{ [name]: ... }`) describing the union, ready to merge into a JSON schema\'s `definitions`.' },
+      example: `import { generateBlocksType } from '@pro-laico/zap'
+
+// Describe an "ActionBlocks" type as a union of these block slugs.
+const definitions = {
+  ...generateBlocksType({ name: 'ActionBlocks', refs: ['redirect', 'sendEmail', 'toast'] }),
+}
+// -> { ActionBlocks: { oneOf: [{ items: { oneOf: [...] } }] } }`,
+    },
     AtomicRegistry: { type: 'type', location: '@pro-laico/zap/schema', description: 'The type that maps each registered ID to its generated shape. Resolves through the @pro-laico/core kernel to your project\'s generated types, falling back to Record<string, any> before they are generated.' },
   }}
 />

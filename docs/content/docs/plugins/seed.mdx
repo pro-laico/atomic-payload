@@ -1,12 +1,12 @@
 ---
 title: "@pro-laico/seed"
-description: "Fill a fresh project with sample content in one click — a SEED DATABASE button in the admin and a guarded POST /api/seed endpoint behind it."
+description: "Fill a fresh project with sample content in one click: a SEED DATABASE button in the admin and a guarded POST /api/seed endpoint behind it."
 ---
 
-`@pro-laico/seed` gives you a one-click way to populate a brand-new project with the content that makes Atomic Payload feel alive — a starter design set, a default icon set, header and footer, sample pages, and site metadata. It adds a **SEED DATABASE** button to the admin dashboard and the guarded `POST /api/seed` endpoint behind it, so you can go from an empty database to a working site without writing any setup data by hand.
+`@pro-laico/seed` gives you a one-click way to populate a brand-new project with the content that makes Atomic Payload feel alive: a starter design set, a default icon set, header and footer, sample pages, and site metadata. It adds a **SEED DATABASE** button to the admin dashboard and the guarded `POST /api/seed` endpoint behind it, so you can go from an empty database to a working site without writing any setup data by hand.
 
 <Callout type="info">
-  `@pro-laico/seed` is a Tool package — a building block of the Atomic Payload stack, meant to be used alongside `@pro-laico/core` and the other `@pro-laico/*` packages (most easily via the [atomic-payload template](/docs/templates/atomic-payload)), not on its own.
+  `@pro-laico/seed` is a Tool package, a building block of the Atomic Payload stack, meant to be used alongside `@pro-laico/core` and the other `@pro-laico/*` packages (most easily via the [atomic-payload template](/docs/templates/atomic-payload)), not on its own.
 </Callout>
 
 <Callout type="warn">
@@ -44,7 +44,7 @@ yarn add @pro-laico/seed
 </Tabs>
 
 <Callout type="info">
-  `payload`, `next`, `react`, and `@payloadcms/ui` are peers you already have in a Payload + Next.js app — the admin button uses Payload's UI components.
+  `payload`, `next`, `react`, and `@payloadcms/ui` are peers you already have in a Payload + Next.js app. The admin button uses Payload's UI components.
 </Callout>
 
 ## Setup
@@ -77,7 +77,7 @@ export default buildConfig({
 
 This does two things:
 
-- Mounts a `POST /api/seed` endpoint that runs the seed function. It's guarded — it returns `403` unless the request comes from an authenticated user (and, when you pass an [`authorize`](#options) predicate, unless that predicate also approves them).
+- Mounts a `POST /api/seed` endpoint that runs the seed function. It's guarded: it returns `403` unless the request comes from an authenticated user (and, when you pass an [`authorize`](#options) predicate, unless that predicate also approves them).
 - Adds a **`BeforeDashboard`** banner to the admin dashboard with a **SEED DATABASE** button that POSTs to that endpoint and shows a toast as it runs.
 </Step>
 
@@ -96,7 +96,7 @@ Without this step the endpoint still works, but the **SEED DATABASE** button won
 <Step>
 ### Lock it down for production
 
-Out of the box the endpoint allows any authenticated user to seed — fine for a solo project, risky once other people have logins. Pass an `authorize` predicate to restrict who may run the destructive seed:
+Out of the box the endpoint allows any authenticated user to seed. That's fine for a solo project, but risky once other people have logins. Pass an `authorize` predicate to restrict who may run the destructive seed:
 
 ```ts
 seedPlugin({
@@ -111,7 +111,7 @@ The predicate runs after Payload's auth check and receives the authenticated use
 <Step>
 ### Run the seed
 
-Open the admin dashboard and click **SEED DATABASE** in the welcome banner. The button POSTs to `/api/seed`, the bundled seed clears and recreates its collections, and a toast confirms when it's done — then your site has content to render.
+Open the admin dashboard and click **SEED DATABASE** in the welcome banner. The button POSTs to `/api/seed`, the bundled seed clears and recreates its collections, and a toast confirms when it's done. Your site then has content to render.
 </Step>
 
 </Steps>
@@ -120,7 +120,7 @@ Open the admin dashboard and click **SEED DATABASE** in the welcome banner. The 
 
 <Tab value="With the atomic-payload template">
 
-The [atomic-payload template](/docs/templates/atomic-payload) already wires everything up — the plugin is in the config, the admin button is in the import map, and seeding is gated behind the `INCLUDE_SEED` environment variable.
+The [atomic-payload template](/docs/templates/atomic-payload) already wires everything up: the plugin is in the config, the admin button is in the import map, and seeding is gated behind the `INCLUDE_SEED` environment variable.
 
 <Steps>
 
@@ -138,7 +138,7 @@ INCLUDE_SEED=true
 <Step>
 ### Click SEED DATABASE
 
-Open the admin dashboard. The welcome banner has a **SEED DATABASE** button — click it to populate a fresh project with the starter design set, icon set, header/footer, sample pages, and site metadata. A toast confirms when it finishes, and you can then visit the site to see the content.
+Open the admin dashboard. The welcome banner has a **SEED DATABASE** button; click it to populate a fresh project with the starter design set, icon set, header/footer, sample pages, and site metadata. A toast confirms when it finishes, and you can then visit the site to see the content.
 </Step>
 
 </Steps>
@@ -153,17 +153,55 @@ Open the admin dashboard. The welcome banner has a **SEED DATABASE** button — 
 
 <TypeTable
   type={{
-    enabled: { type: 'boolean', default: 'true', description: 'Set false to turn the plugin off — it adds neither the endpoint nor the admin button.' },
-    seed: { type: 'SeedFn', default: 'bundled seed', description: 'The function the endpoint runs. Defaults to the bundled Atomic Payload seed; pass your own to seed different content.' },
+    enabled: { type: 'boolean', default: 'true', description: 'Set false to turn the plugin off, so it adds neither the endpoint nor the admin button.' },
+    seed: { type: 'SeedFn', default: 'bundled seed', description: 'The function the endpoint runs. Defaults to the bundled Atomic Payload seed; pass your own to seed different content. To reuse the bundled seed with different slugs, wrap it: `(args) => seed(args, { pages: "my-pages" })`. See the slug keys below.' },
     endpointPath: { type: 'string', default: "'/seed'", description: 'Path mounted under /api, so the default resolves to /api/seed.' },
-    authorize: { type: 'SeedAuthorize', default: 'any authenticated user', description: 'Predicate run after the auth check to further restrict who may seed. Receives the authenticated user and returns boolean | Promise<boolean>. Because the seed is destructive, pass a role test in production — e.g. (user) => user.roles?.includes("admin").' },
+    authorize: { type: 'SeedAuthorize', default: 'any authenticated user', description: 'Predicate run after the auth check to further restrict who may seed. Receives the authenticated user and returns `boolean | Promise<boolean>`. Because the seed is destructive, pass a role test in production, e.g. `(user) => user.roles?.includes("admin")`.' },
     includeBeforeDashboard: { type: 'boolean', default: 'true', description: 'Whether to add the SEED DATABASE banner to the admin dashboard. Set false to keep the endpoint but hide the button.' },
   }}
 />
 
+The `seed` function accepts an optional second argument, `slugConfig` (a `SeedSlugConfig`), for remapping which collection and global slugs the bundled seed writes to. It isn't a plugin option of its own; you reach it by wrapping the `seed` option (above). Every key is optional and defaults to the slug the Atomic Payload collections use:
+
+<Accordions>
+
+<Accordion title="SeedSlugConfig keys">
+
+<TypeTable
+  type={{
+    pages: { type: 'string', default: "'pages'", description: 'The pages collection the sample pages (home, prose showcase, testing, not-found) are created in.' },
+    header: { type: 'string', default: "'header'", description: 'The header collection the seeded site header is written to.' },
+    footer: { type: 'string', default: "'footer'", description: 'The footer collection the seeded site footer is written to.' },
+    forms: { type: 'string', default: "'forms'", description: 'The forms collection the bundled backend form is created in.' },
+    icon: { type: 'string', default: "'icon'", description: 'The icon collection the seeded SVG icons (logo, menu, check, close, theme, cookie, github) are uploaded to.' },
+    iconSet: { type: 'string', default: "'iconSet'", description: 'The iconSet collection the starter icon set is written to.' },
+    designSet: { type: 'string', default: "'designSet'", description: 'The designSet collection the starter design set (theme tokens) is written to.' },
+    shortcutSet: { type: 'string', default: "'shortcutSet'", description: 'The shortcutSet collection the starter shortcuts are written to.' },
+    siteMetaDataGlobal: { type: 'string', default: "'siteMetaData'", description: 'The global the seeded site metadata is written to.' },
+  }}
+/>
+
+</Accordion>
+
+</Accordions>
+
 <Callout type="info">
-  **Custom slugs aren't a plugin option.** The bundled `seed()` takes an optional second argument, `slugConfig` (a `SeedSlugConfig`), for remapping the collection and global slugs it writes to. To use it through the plugin, wrap the call — `seedPlugin({ seed: (args) => seed(args, { pages: 'my-pages' }) })`. See [Slugs](/docs/concepts/slugs) for how those collections and globals are addressed.
+  See [Slugs](/docs/concepts/slugs) for how those collections and globals are addressed across the stack.
 </Callout>
+
+All options at their defaults, as a working starting point:
+
+```ts
+import { seedPlugin } from '@pro-laico/seed'
+
+seedPlugin({
+  enabled: true,
+  // seed defaults to the bundled Atomic Payload seed; pass your own SeedFn to change it
+  endpointPath: '/seed',
+  // authorize defaults to "any authenticated user"; pass a predicate to restrict further
+  includeBeforeDashboard: true,
+})
+```
 
 ## Environment variables
 
@@ -171,17 +209,34 @@ The plugin reads no environment variables itself. The template uses one to decid
 
 | Variable | Purpose |
 | --- | --- |
-| `INCLUDE_SEED` | The template gates `seedPlugin({ enabled: ... })` on this — set `true` to mount the endpoint and show the **SEED DATABASE** button, `false` to leave them out. |
+| `INCLUDE_SEED` | The template gates `seedPlugin({ enabled: ... })` on this. Set `true` to mount the endpoint and show the **SEED DATABASE** button, `false` to leave them out. |
 
 ## Exports
 
-Grouped by what they do — the plugin and its options, the seeding runtime, and the admin banner.
+Grouped by what they do: the plugin and its options, the seeding function, and the admin banner.
 
 ### The plugin
 
 <ExportTable
   exports={{
-    seedPlugin: { type: 'plugin', location: '@pro-laico/seed', description: 'The plugin itself — mounts the POST /api/seed endpoint and (by default) the SEED DATABASE admin banner. Default and named export.' },
+    seedPlugin: {
+      type: 'plugin',
+      location: '@pro-laico/seed',
+      description: 'The plugin itself. Mounts the `POST /api/seed` endpoint and (by default) the SEED DATABASE admin banner. Default and named export.',
+      params: {
+        'options?': { type: 'SeedPluginOptions', description: 'See the Options table above. Everything is optional: `enabled`, `seed`, `endpointPath`, `authorize`, `includeBeforeDashboard`.' },
+      },
+      returns: { type: 'Plugin', description: 'A Payload config plugin you add to `buildConfig({ plugins: [...] })`.' },
+      example: `import { buildConfig } from 'payload'
+import { seedPlugin } from '@pro-laico/seed'
+
+export default buildConfig({
+  plugins: [
+    // gate it behind an env var so it only registers where you want it
+    seedPlugin({ enabled: process.env.INCLUDE_SEED === 'true' }),
+  ],
+})`,
+    },
     SeedPluginOptions: { type: 'type', location: '@pro-laico/seed', description: "The TypeScript type for the plugin's options." },
   }}
 />
@@ -190,8 +245,34 @@ Grouped by what they do — the plugin and its options, the seeding runtime, and
 
 <ExportTable
   exports={{
-    seed: { type: 'function', location: '@pro-laico/seed', description: 'The bundled default seed — clears and recreates a starter design set, icon set, header/footer, sample pages, and site metadata. Override it by passing your own; accepts an optional second slugConfig argument.' },
-    SeedSlugConfig: { type: 'type', location: '@pro-laico/seed', description: 'Optional collection/global slug overrides for the bundled seed(), letting it write to non-default slugs.' },
+    seed: {
+      type: 'function',
+      location: '@pro-laico/seed',
+      description: 'The bundled default seed. Clears and recreates a starter design set, icon set, header/footer, sample pages, and site metadata, all inside the request transaction. This is what the endpoint runs unless you pass your own `seed` option.',
+      params: {
+        args: { type: '{ payload: Payload; req: PayloadRequest }', description: 'The Payload instance and the request, threaded through every write so the whole seed runs in one transaction (a mid-seed failure rolls back).' },
+        'slugConfig?': { type: 'SeedSlugConfig', description: 'Optional per-slug overrides (`pages`, `header`, `footer`, `forms`, `icon`, `iconSet`, `designSet`, `shortcutSet`, `siteMetaDataGlobal`). Each is a string; any you omit falls back to the matching Atomic Payload slug. See the SeedSlugConfig keys under Options.' },
+      },
+      returns: { type: 'Promise<void>', description: 'Resolves once the database has been seeded; it writes through Payload rather than returning the created documents.' },
+      example: `import type { Endpoint } from 'payload'
+import { seed } from '@pro-laico/seed'
+
+// Your own guarded endpoint that reuses the bundled seed (this is the shape the
+// plugin mounts at POST /api/seed). req carries the Payload instance and user.
+export const customSeedEndpoint: Endpoint = {
+  path: '/seed',
+  method: 'post',
+  handler: async (req) => {
+    if (!req.user) return Response.json({ error: 'Action forbidden.' }, { status: 403 })
+
+    // reuse the bundled seed, but write pages into a custom slug
+    await seed({ payload: req.payload, req }, { pages: 'my-pages' })
+
+    return Response.json({ success: true })
+  },
+}`,
+    },
+    SeedSlugConfig: { type: 'type', location: '@pro-laico/seed', description: 'Optional collection/global slug overrides for the bundled `seed()`, letting it write to non-default slugs. Every key is an optional string. See the SeedSlugConfig keys under Options.' },
   }}
 />
 
@@ -199,7 +280,7 @@ Grouped by what they do — the plugin and its options, the seeding runtime, and
 
 <ExportTable
   exports={{
-    BeforeDashboard: { type: 'component', location: '@pro-laico/seed/admin/beforeDashboard', description: 'The admin dashboard banner with the SEED DATABASE button. Loaded through Payload\'s import map — reference it by its subpath rather than importing it at config time.' },
+    BeforeDashboard: { type: 'component', location: '@pro-laico/seed/admin/beforeDashboard', description: "The admin dashboard banner with the SEED DATABASE button. Loaded through Payload's import map, so reference it by its subpath rather than importing it at config time." },
   }}
 />
 

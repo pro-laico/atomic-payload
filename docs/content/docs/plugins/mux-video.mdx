@@ -1,12 +1,12 @@
 ---
 title: "@pro-laico/mux-video"
-description: "Lets editors upload videos in the Payload admin and drop them onto pages — Mux handles the encoding and adaptive streaming, and a ready-made video block renders the player."
+description: "Lets editors upload videos in the Payload admin and drop them onto pages. Mux handles the encoding and adaptive streaming, and a ready-made video block renders the player."
 ---
 
-`@pro-laico/mux-video` lets editors upload videos straight from the Payload admin and place them on pages with a ready-made video block. Uploads go to [Mux](https://www.mux.com/), which handles the encoding and adaptive streaming, and the bundled block renders the Mux player on your site — with controls for autoplay, looping, muting, preload, and a blurred poster frame.
+`@pro-laico/mux-video` lets editors upload videos straight from the Payload admin and place them on pages with a ready-made video block. Uploads go to [Mux](https://www.mux.com/), which handles the encoding and adaptive streaming, and the bundled block renders the Mux player on your site, with controls for autoplay, looping, muting, preload, and a blurred poster frame.
 
 <Callout type="info">
-  `@pro-laico/mux-video` is a Tool package — a building block of the Atomic Payload stack, meant to be used alongside `@pro-laico/core` and the other `@pro-laico/*` packages (most easily via the [atomic-payload template](/docs/templates/atomic-payload)), not on its own.
+  `@pro-laico/mux-video` is a Tool package, a building block of the Atomic Payload stack meant to be used alongside `@pro-laico/core` and the other `@pro-laico/*` packages (most easily via the [atomic-payload template](/docs/templates/atomic-payload)), not on its own.
 </Callout>
 
 ## Installation
@@ -40,7 +40,7 @@ yarn add @pro-laico/mux-video
 </Tabs>
 
 <Callout type="info">
-  `next`, `payload`, and `react` are peers you already have in a Payload + Next.js app. This package builds on the upstream [`@oversightstudio/mux-video`](https://www.npmjs.com/package/@oversightstudio/mux-video) plugin — install it too. The Mux player (`@mux/mux-video-react`) ships bundled, so you don't add it yourself.
+  `next`, `payload`, and `react` are peers you already have in a Payload + Next.js app. This package builds on the upstream [`@oversightstudio/mux-video`](https://www.npmjs.com/package/@oversightstudio/mux-video) plugin, so install it too. The Mux player (`@mux/mux-video-react`) ships bundled, so you don't add it yourself.
 </Callout>
 
 ## Setup
@@ -71,7 +71,7 @@ This registers the **`mux-video`** collection (in the admin's **Assets** group) 
 <Step>
 ### Set your Mux credentials
 
-The plugin reads your Mux API token and webhook secret from the [environment](#environment-variables) before `buildConfig` runs. Without `MUX_TOKEN_ID` and `MUX_TOKEN_SECRET`, the plugin logs a warning and uploads will fail — so set them before you start the app.
+The plugin reads your Mux API token and webhook secret from the [environment](#environment-variables) before `buildConfig` runs. Without `MUX_TOKEN_ID` and `MUX_TOKEN_SECRET`, the plugin logs a warning and uploads will fail, so set them before you start the app.
 </Step>
 
 <Step>
@@ -93,7 +93,7 @@ export default buildConfig({
 ```
 
 <Callout type="info">
-  The block is **not** re-exported from the package root — import the prebuilt `Video` block (or the `createVideoBlock` factory) from the `@pro-laico/mux-video/blocks/videoChild` subpath.
+  The block is **not** re-exported from the package root. Import the prebuilt `Video` block (or the `createVideoBlock` factory) from the `@pro-laico/mux-video/blocks/videoChild` subpath.
 </Callout>
 </Step>
 
@@ -124,7 +124,7 @@ Need the player component directly for a custom layout? It's available at `@pro-
 
 <Tab value="With the atomic-payload template">
 
-The [atomic-payload template](/docs/templates/atomic-payload) already wires everything up — the plugin is in the config, the `VideoChild` block is registered with the child-blocks plugin (and given a styling field), and pages render through the Atomic child renderer. You just add your Mux credentials and use the block.
+The [atomic-payload template](/docs/templates/atomic-payload) already wires everything up: the plugin is in the config, the `VideoChild` block is registered with the child-blocks plugin (and given a styling field), and pages render through the Atomic child renderer. You just add your Mux credentials and use the block.
 
 <Steps>
 
@@ -134,7 +134,7 @@ The [atomic-payload template](/docs/templates/atomic-payload) already wires ever
 Copy the Mux keys into your `.env` (the template's `.env.example` lists them):
 
 ```plaintext
-# .env — Mux credentials
+# .env (Mux credentials)
 MUX_TOKEN_ID=
 MUX_TOKEN_SECRET=
 MUX_WEBHOOK_SIGNING_SECRET=
@@ -167,14 +167,61 @@ Editing a page, add a **Video** block, pick the uploaded video, and set the play
 
 <TypeTable
   type={{
-    enabled: { type: 'boolean', default: 'true', description: 'Set false to turn the plugin off.' },
+    enabled: { type: 'boolean', default: 'true', description: 'Set false to turn the plugin off (it becomes a no-op).' },
     includeCollection: { type: 'boolean', default: 'true', description: 'Registers the bundled mux-video collection that holds uploaded videos. Set false if you register your own collection with the same slug.' },
-    collectionOptions: { type: 'Partial<CollectionConfig>', description: 'Tweaks merged onto the mux-video collection — access and admin are deep-merged, fields are appended, and hooks are merged per phase, so a partial override can\'t silently drop the collection\'s access rules.' },
+    collectionOptions: { type: 'Partial<CollectionConfig>', description: "Tweaks merged onto the mux-video collection. Top-level keys replace, but `access` and `admin` are deep-merged, `fields` are appended, and `hooks` are merged per phase, so a partial override can't silently drop the collection's access rules." },
     adminThumbnail: { type: "'image' | 'gif' | 'none'", default: "'image'", description: 'What to show as the thumbnail in the admin list view.' },
-    uploadSettings: { type: '{ cors_origin: string }', default: 'NEXT_PUBLIC_SERVER_URL', description: 'CORS origin allowed to upload to Mux. Defaults to your site URL (or http://localhost:3000).' },
-    initSettings: { type: '{ tokenId; tokenSecret; webhookSecret }', default: 'from env', description: 'Your Mux credentials. Defaults to the MUX_* environment variables — pass them explicitly to override.' },
+    uploadSettings: { type: '{ cors_origin: string }', default: 'NEXT_PUBLIC_SERVER_URL', description: 'The CORS origin allowed to upload to Mux. Defaults to your site URL. See its keys below.' },
+    initSettings: { type: '{ tokenId, tokenSecret, webhookSecret }', default: 'from env', description: 'Your Mux credentials. Defaults to reading the MUX_* environment variables; pass them explicitly to override. See its keys below.' },
   }}
 />
+
+The `uploadSettings` and `initSettings` options take their own nested keys:
+
+<Accordions>
+
+<Accordion title="uploadSettings keys">
+
+<TypeTable
+  type={{
+    cors_origin: { type: 'string', default: 'NEXT_PUBLIC_SERVER_URL', description: 'The origin Mux accepts direct uploads from. Defaults to `NEXT_PUBLIC_SERVER_URL`, falling back to `http://localhost:3000`.' },
+  }}
+/>
+
+</Accordion>
+
+<Accordion title="initSettings keys">
+
+<TypeTable
+  type={{
+    tokenId: { type: 'string', default: 'MUX_TOKEN_ID', description: 'Your Mux API access token ID. Defaults to the `MUX_TOKEN_ID` environment variable.' },
+    tokenSecret: { type: 'string', default: 'MUX_TOKEN_SECRET', description: 'Your Mux API access token secret. Defaults to the `MUX_TOKEN_SECRET` environment variable.' },
+    webhookSecret: { type: 'string', default: 'MUX_WEBHOOK_SIGNING_SECRET', description: 'The secret used to verify incoming Mux webhooks. Defaults to the `MUX_WEBHOOK_SIGNING_SECRET` environment variable.' },
+  }}
+/>
+
+</Accordion>
+
+</Accordions>
+
+All options at their defaults, as a working starting point:
+
+```ts
+muxVideoPlugin({
+  enabled: true,
+  includeCollection: true,
+  adminThumbnail: 'image',
+  // collectionOptions is unset by default
+  uploadSettings: {
+    cors_origin: process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000',
+  },
+  initSettings: {
+    tokenId: process.env.MUX_TOKEN_ID || '',
+    tokenSecret: process.env.MUX_TOKEN_SECRET || '',
+    webhookSecret: process.env.MUX_WEBHOOK_SIGNING_SECRET || '',
+  },
+})
+```
 
 ## Environment variables
 
@@ -189,15 +236,76 @@ The plugin picks these up automatically before `buildConfig` runs:
 
 ## Exports
 
+### The plugin
+
 <ExportTable
   exports={{
-    muxVideoPlugin: { type: 'plugin', location: '@pro-laico/mux-video', description: 'The plugin itself — registers the mux-video collection and applies the upstream @oversightstudio/mux-video plugin to it. Default and named export.' },
+    muxVideoPlugin: {
+      type: 'plugin',
+      location: '@pro-laico/mux-video',
+      description: 'The plugin itself. Registers the mux-video collection and applies the upstream @oversightstudio/mux-video plugin to it. Default and named export.',
+      params: {
+        'options?': { type: 'MuxVideoPluginOptions', description: 'See the Options table above. All keys are optional; the Mux credentials default to the `MUX_*` environment variables.' },
+      },
+      returns: { type: 'Plugin', description: 'A Payload config plugin you add to `buildConfig({ plugins: [...] })`.' },
+      example: `import { buildConfig } from 'payload'
+import { muxVideoPlugin } from '@pro-laico/mux-video'
+
+export default buildConfig({
+  plugins: [muxVideoPlugin()],
+})`,
+    },
     MuxVideoPluginOptions: { type: 'type', location: '@pro-laico/mux-video', description: "The TypeScript type for the plugin's options." },
-    MuxVideo: { type: 'collection', location: '@pro-laico/mux-video', description: 'The collection uploaded videos live in (slug mux-video, in the admin Assets group) — import it to register or extend the collection yourself.' },
-    createVideoBlock: { type: 'function', location: '@pro-laico/mux-video/blocks/videoChild', description: 'Factory that builds the VideoChild block, with optional prependFields / appendFields to weave your own fields (e.g. a styles className field) into its Video tab.' },
-    Video: { type: 'block', location: '@pro-laico/mux-video/blocks/videoChild', description: 'The prebuilt VideoChild block (slug and interfaceName VideoChild) with no extra fields — register it through @pro-laico/atomic\'s child-blocks plugin.' },
-    VideoBlockOptions: { type: 'type', location: '@pro-laico/mux-video/blocks/videoChild', description: 'The options type for createVideoBlock — the fields to prepend and append to the block.' },
-    VideoChild: { type: 'function', location: '@pro-laico/mux-video/blocks/videoChild/component', description: 'The child block renderer that mounts the @mux/mux-video-react player. Registered automatically through @pro-laico/atomic\'s renderer; import it directly only for custom layouts.' },
+    MuxVideo: { type: 'collection', location: '@pro-laico/mux-video', description: 'The collection uploaded videos live in (slug `mux-video`, in the admin Assets group). Import it to register or extend the collection yourself.' },
+  }}
+/>
+
+### The video block
+
+<ExportTable
+  exports={{
+    createVideoBlock: {
+      type: 'function',
+      location: '@pro-laico/mux-video/blocks/videoChild',
+      description: 'Factory that builds the VideoChild block. Optional `prependFields` / `appendFields` weave your own fields (e.g. a styles `ClassNameField`) into the start or end of its Video tab, so the block carries no CSS dependency of its own.',
+      params: {
+        'options?': { type: 'VideoBlockOptions', description: '`prependFields` and `appendFields`: Payload fields spread at the start and end of the block\'s Video tab. Both default to `[]`.' },
+      },
+      returns: { type: 'Block', description: 'A Payload block (slug and interfaceName `VideoChild`) you register through `@pro-laico/atomic`\'s child-blocks plugin.' },
+      example: `import { buildConfig } from 'payload'
+import { childBlocksPlugin } from '@pro-laico/atomic/children'
+import { createVideoBlock } from '@pro-laico/mux-video/blocks/videoChild'
+import { ClassNameField } from '@pro-laico/styles/fields/className'
+
+// add a styles className field to the video block's Video tab:
+const Video = createVideoBlock({ appendFields: [ClassNameField({ namePrefix: 'video' })] })
+
+export default buildConfig({
+  plugins: [childBlocksPlugin({ childBlocks: [Video] })],
+})`,
+    },
+    Video: { type: 'block', location: '@pro-laico/mux-video/blocks/videoChild', description: 'The prebuilt VideoChild block (slug and interfaceName `VideoChild`) with no extra fields. Register it through `@pro-laico/atomic`\'s child-blocks plugin.' },
+    VideoBlockOptions: { type: 'type', location: '@pro-laico/mux-video/blocks/videoChild', description: 'The options type for `createVideoBlock` (the `prependFields` / `appendFields` to weave into the block). An alias of core\'s `BlockFieldExtensions`.' },
+    VideoChild: {
+      type: 'function',
+      location: '@pro-laico/mux-video/blocks/videoChild/component',
+      description: 'The child-block renderer that mounts the @mux/mux-video-react player with the block\'s playback settings. Registered automatically through @pro-laico/atomic\'s renderer, so you rarely import it directly; reach for it only when you render a video outside the child renderer.',
+      params: {
+        props: { type: 'RenderChild<VideoChildType>', description: 'The resolved child-block props @pro-laico/atomic passes its renderers. The player and data attributes come from `pt.c.p` / `pt.c.da`.' },
+      },
+      returns: { type: 'ReactElement', description: 'The mounted Mux player (`@mux/mux-video-react`), loaded with `next/dynamic`.' },
+      exampleLang: 'tsx',
+      example: `// a custom layout that renders one resolved video child directly
+import { VideoChild } from '@pro-laico/mux-video/blocks/videoChild/component'
+
+export function Hero({ child }) {
+  return (
+    <section>
+      <VideoChild {...child} />
+    </section>
+  )
+}`,
+    },
   }}
 />
 

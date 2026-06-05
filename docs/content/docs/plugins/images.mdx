@@ -1,12 +1,12 @@
 ---
 title: "@pro-laico/images"
-description: "Adds the image and favicon upload collections to your Payload admin — web-ready WebP sizes, a favicon picker field, and an image block for your pages."
+description: "Adds the image and favicon upload collections to your Payload admin: web-ready WebP sizes, a favicon picker field, and an image block for your pages."
 ---
 
 `@pro-laico/images` gives your Payload admin a place to upload images and favicons. The image collection converts uploads to WebP and generates a standard set of responsive sizes, a separate favicons collection keeps favicons out of your main image library, and the package ships a favicon-picker field and an image block you can use elsewhere. It's a tool the [atomic-payload template](/docs/templates/atomic-payload) and other plugins bring along, but you can add it on its own too.
 
 <Callout type="info">
-  `@pro-laico/images` is a Tool package — a building block of the Atomic Payload stack, meant to be used alongside `@pro-laico/core` and the other `@pro-laico/*` packages (most easily via the [atomic-payload template](/docs/templates/atomic-payload)), not on its own.
+  `@pro-laico/images` is a Tool package, a building block of the Atomic Payload stack, meant to be used alongside `@pro-laico/core` and the other `@pro-laico/*` packages (most easily via the [atomic-payload template](/docs/templates/atomic-payload)), not on its own.
 </Callout>
 
 ## Installation
@@ -40,7 +40,7 @@ yarn add @pro-laico/images
 </Tabs>
 
 <Callout type="info">
-  `payload`, `next`, and `react` are peers you already have in a Payload + Next.js app. `@oversightstudio/blur-data-urls` is an **optional** peer — install it only if you want blur-up placeholders for your images (see [Blur placeholders](#blur-placeholders)).
+  `payload`, `next`, and `react` are peers you already have in a Payload + Next.js app. `@oversightstudio/blur-data-urls` is an **optional** peer. Install it only if you want blur-up placeholders for your images (see [Add blur placeholders](#add-blur-placeholders-optional)).
 </Callout>
 
 ## Setup
@@ -65,7 +65,7 @@ export default buildConfig({
 })
 ```
 
-This registers the **Images** collection (where you upload images — every upload is converted to WebP and given a set of responsive sizes) and the **Favicons** collection (a separate place for `.ico` favicons). Both appear under an **Assets** group in the admin sidebar. Pass `includeFavicons: false` if you only want the Images collection.
+This registers the **Images** collection (where you upload images, and every upload is converted to WebP and given a set of responsive sizes) and the **Favicons** collection (a separate place for `.ico` favicons). Both appear under an **Assets** group in the admin sidebar. Pass `includeFavicons: false` if you only want the Images collection.
 </Step>
 
 <Step>
@@ -77,7 +77,7 @@ Open the **Images** collection in the admin and upload your images. Each one get
 <Step>
 ### Add blur placeholders (optional)
 
-The plugin does **not** wire up blur placeholders itself — pnpm doesn't install the optional peer next to this package, so the plugin can't reach it. Install [`@oversightstudio/blur-data-urls`](https://www.npmjs.com/package/@oversightstudio/blur-data-urls) yourself and register it **after** `imagesPlugin`, passing the exported `Images` collection:
+The plugin does **not** wire up blur placeholders itself, because pnpm doesn't install the optional peer next to this package, so the plugin can't reach it. Install [`@oversightstudio/blur-data-urls`](https://www.npmjs.com/package/@oversightstudio/blur-data-urls) yourself and register it **after** `imagesPlugin`, passing the exported `Images` collection:
 
 ```ts
 import { buildConfig } from 'payload'
@@ -105,7 +105,7 @@ That generates a small blurred placeholder for each upload, which the [image blo
 
 <Tab value="With the atomic-payload template">
 
-The [atomic-payload template](/docs/templates/atomic-payload) already includes `@pro-laico/images` — the **Images** and **Favicons** collections, the blur-placeholder plugin wired against the Images collection, and the image block registered with the other Atomic blocks. You just upload your assets.
+The [atomic-payload template](/docs/templates/atomic-payload) already includes `@pro-laico/images`: the **Images** and **Favicons** collections, the blur-placeholder plugin wired against the Images collection, and the image block registered with the other Atomic blocks. You just upload your assets.
 
 <Steps>
 
@@ -146,7 +146,7 @@ Pass a `name` (and anything else a Payload upload field accepts) to mount more t
 
 ### The image block
 
-The package ships an **Image** block (slug `ImageChild`) that lets editors drop an image into [Atomic](/docs/plugins/atomic) content. It isn't registered by `imagesPlugin` — it's one of the default child blocks the Atomic renderer wires up — so in most setups you get it for free. To register it in your own block list, import it from the `@pro-laico/images/blocks/imageChild` subpath:
+The package ships an **Image** block (slug `ImageChild`) that lets editors drop an image into [Atomic](/docs/plugins/atomic) content. It isn't registered by `imagesPlugin`. It's one of the default child blocks the Atomic renderer wires up, so in most setups you get it for free. To register it in your own block list, import it from the `@pro-laico/images/blocks/imageChild` subpath:
 
 ```ts
 import { createImageBlock, Image } from '@pro-laico/images/blocks/imageChild'
@@ -161,8 +161,14 @@ const customImageBlock = createImageBlock({ prependFields: [], appendFields: [] 
 The block lets the editor choose the image, a stored size, alt text, and `next/image` options (priority, blur, loading, and more). On the front end it renders through `@pro-laico/atomic/children`, which resolves the chosen image and outputs an optimized `next/image`.
 
 <Callout type="info">
-  The Image block is **not** re-exported from the package root — import `createImageBlock` or `Image` from the `@pro-laico/images/blocks/imageChild` subpath.
+  The Image block is **not** re-exported from the package root. Import `createImageBlock` or `Image` from the `@pro-laico/images/blocks/imageChild` subpath.
 </Callout>
+
+## Caching & revalidation
+
+The package ships one cached read, `getCachedImage`, from the `@pro-laico/images/cache` subpath. Give it an image document id (and an optional size name) and it returns that upload's URL, reading Payload once instead of on every render. The [image block](#the-image-block) calls it so the block looks up the chosen image by id, which keeps the rest of the page cached even when the image changes.
+
+The Images collection revalidates the matching tag for you: saving an image refreshes its cached URL, and deleting one clears it, so the next page render serves the new URL. See [Caching & revalidation](/docs/concepts/caching) for how the tags work.
 
 ## Options
 
@@ -172,25 +178,146 @@ The block lets the editor choose the image, a stored size, alt text, and `next/i
   type={{
     enabled: { type: 'boolean', default: 'true', description: 'When false, the plugin does nothing.' },
     includeFavicons: { type: 'boolean', default: 'true', description: 'When true, registers the Favicons collection alongside Images.' },
-    imagesOptions: { type: 'Partial<CollectionConfig>', description: "Tweaks merged onto the Images collection — e.g. add fields or change the upload folder. Upload, access, and admin settings are deep-merged and fields/hooks are appended, so a partial override can't silently drop the built-in image sizes, accepted types, alt field, or access rules." },
+    imagesOptions: { type: 'Partial<CollectionConfig>', description: "Tweaks merged onto the Images collection, e.g. add fields or change the upload folder. Upload, access, and admin settings are deep-merged and fields/hooks are appended, so a partial override can't silently drop the built-in image sizes, accepted types, alt field, or access rules." },
     faviconsOptions: { type: 'Partial<CollectionConfig>', description: 'Tweaks merged onto the Favicons collection (same merge behavior as imagesOptions).' },
   }}
 />
 
+`imagesOptions` and `faviconsOptions` are standard Payload `Partial<CollectionConfig>` objects, so any collection key you pass is merged onto the built-in collection. All options at their defaults, as a working starting point:
+
+```ts
+imagesPlugin({
+  enabled: true,
+  includeFavicons: true,
+  // imagesOptions and faviconsOptions are unset by default (no overrides merged)
+})
+```
+
 ## Exports
+
+### The plugin
 
 <ExportTable
   exports={{
-    imagesPlugin: { type: 'plugin', location: '@pro-laico/images', description: 'The plugin itself — registers the Images collection and, with includeFavicons, the Favicons collection. Default and named export.' },
+    imagesPlugin: {
+      type: 'plugin',
+      location: '@pro-laico/images',
+      description: 'The plugin itself. Registers the Images collection and, with includeFavicons, the Favicons collection. Default and named export.',
+      params: {
+        'options?': { type: 'ImagesPluginOptions', description: 'See the Options table above. Everything is optional; omit it to register both collections with their defaults.' },
+      },
+      returns: { type: 'Plugin', description: 'A Payload config plugin you add to `buildConfig({ plugins: [...] })`.' },
+      example: `import { buildConfig } from 'payload'
+import { imagesPlugin } from '@pro-laico/images'
+
+export default buildConfig({
+  plugins: [imagesPlugin({ includeFavicons: true })],
+})`,
+    },
     ImagesPluginOptions: { type: 'type', location: '@pro-laico/images', description: "The TypeScript type for the plugin's options." },
+  }}
+/>
+
+### Collections & fields
+
+<ExportTable
+  exports={{
     Images: { type: 'collection', location: '@pro-laico/images', description: 'The image upload collection (WebP conversion + responsive sizes). Import it to extend the collection or to pass it to the blur-data-URL plugin.' },
-    Favicons: { type: 'collection', location: '@pro-laico/images', description: 'The favicon upload collection (.ico), kept separate from the main image library.' },
-    FaviconField: { type: 'function', location: '@pro-laico/images', description: 'Builds a reusable favicon-picker upload field that targets the Favicons collection — drop it into any global or collection.' },
-    createImageBlock: { type: 'function', location: '@pro-laico/images/blocks/imageChild', description: 'Factory for the Image (ImageChild) block; accepts prependFields / appendFields to weave extra fields into its Image tab.' },
-    Image: { type: 'block', location: '@pro-laico/images/blocks/imageChild', description: 'The prebuilt Image block, with no extra fields — what createImageBlock() returns by default.' },
-    ImageBlockOptions: { type: 'type', location: '@pro-laico/images/blocks/imageChild', description: 'The TypeScript type for createImageBlock options (prependFields / appendFields).' },
-    ImageChild: { type: 'component', location: '@pro-laico/images/blocks/imageChild/component', description: 'The server component that renders the Image block as an optimized next/image. Used by the Atomic children renderer.' },
-    'Image (type)': { type: 'type', location: '@pro-laico/images/schema', description: 'The TypeScript type for an Images document (exported as Image) — for typed access to your image data.' },
+    Favicons: { type: 'collection', location: '@pro-laico/images', description: 'The favicon upload collection (`.ico`), kept separate from the main image library.' },
+    FaviconField: {
+      type: 'function',
+      location: '@pro-laico/images',
+      description: "Builds a reusable favicon-picker upload field that targets the Favicons collection. Drop it into any global or collection. The field always points at the `favicons` collection, so an override can't re-target it.",
+      params: {
+        'args?': { type: 'Partial<UploadField> & { apf?: APFunction[] }', description: 'Upload-field overrides (`name`, `label`, `admin`, …) merged onto the field; `name` lets you mount several pickers. `apf` attaches `@pro-laico/core` upload hooks via `onUploadSetAPF`.' },
+      },
+      returns: { type: 'UploadField', description: 'A Payload upload field pointing at the `favicons` collection.' },
+      example: `import type { GlobalConfig } from 'payload'
+import { FaviconField } from '@pro-laico/images'
+
+// a global with light + dark favicon pickers
+export const SiteMetaData: GlobalConfig = {
+  slug: 'siteMetaData',
+  fields: [FaviconField({ name: 'lightFavicon' }), FaviconField({ name: 'darkFavicon' })],
+}`,
+    },
+  }}
+/>
+
+### The image block
+
+<ExportTable
+  exports={{
+    createImageBlock: {
+      type: 'function',
+      location: '@pro-laico/images/blocks/imageChild',
+      description: 'Factory for the Image (`ImageChild`) block. Pass `prependFields` / `appendFields` to weave extra fields (e.g. a `@pro-laico/styles` class-name field) into the start / end of its Image tab.',
+      params: {
+        'options?': { type: 'ImageBlockOptions', description: '`{ prependFields?, appendFields? }` arrays of Payload fields spread at the start / end of the Image tab. Omit it to get the block with no extra fields.' },
+      },
+      returns: { type: 'Block', description: 'A Payload block (slug `ImageChild`) you add to a block field or an Atomic child-block list.' },
+      example: `import type { Block } from 'payload'
+import { createImageBlock } from '@pro-laico/images/blocks/imageChild'
+import { ClassNameField } from '@pro-laico/styles/fields/className'
+
+// the Image block with an authored class-name field prepended
+const imageBlock: Block = createImageBlock({ prependFields: [ClassNameField({ namePrefix: 'image' })] })`,
+    },
+    Image: { type: 'block', location: '@pro-laico/images/blocks/imageChild', description: 'The prebuilt Image block, with no extra fields. What `createImageBlock()` returns by default.' },
+    ImageBlockOptions: { type: 'type', location: '@pro-laico/images/blocks/imageChild', description: 'The TypeScript type for `createImageBlock` options (`prependFields` / `appendFields`).' },
+    ImageChild: {
+      type: 'component',
+      location: '@pro-laico/images/blocks/imageChild/component',
+      description: 'The server component that renders the Image block as an optimized `next/image`. The Atomic children renderer wires it up for the `ImageChild` slug, so you rarely import it directly.',
+      params: {
+        props: { type: 'RenderChild<ImageChild>', description: 'The block data and pass-through props the Atomic children renderer supplies (`block`, `pt`).' },
+      },
+      returns: { type: 'Promise<JSX.Element>', description: 'A `next/image` for the chosen image (resolved through `getCachedImage`), or a placeholder when no image is set.' },
+      exampleLang: 'tsx',
+      example: `import { ImageChild } from '@pro-laico/images/blocks/imageChild/component'
+
+// register it for the ImageChild slug in your Atomic children map;
+// the renderer passes the block + pass-through props for you
+const childComponents = {
+  ImageChild,
+  // ...other child block components
+}`,
+    },
+  }}
+/>
+
+### Cache getter
+
+<ExportTable
+  exports={{
+    getCachedImage: {
+      type: 'function',
+      location: '@pro-laico/images/cache',
+      description: "Cached read of an image upload's URL by document id. Returns the named `version` size if given, else the original. Wrapped in `withCache` under the `image` tag and revalidated when the image is saved or deleted, so a page reads it once instead of re-querying Payload on every render. Resolves the config the app registered with `registerPayloadConfig`.",
+      params: {
+        tid: { type: 'string | null | undefined', description: 'The Images document id (e.g. `block.image.id`). A falsy id returns an empty string.' },
+        'version?': { type: 'string | null', description: 'A stored size name (`thumbnail`, `square`, `small`, `medium`, `large`, `xlarge`, `og`). Omit it for the original upload URL.' },
+      },
+      returns: { type: 'Promise<string | undefined>', description: "The image URL, or `undefined` when the document or size can't be resolved." },
+      exampleLang: 'tsx',
+      example: `import Image from 'next/image'
+import { getCachedImage } from '@pro-laico/images/cache'
+
+// inside the ImageChild server component, the block stores the image as a relationship
+export async function Picture({ block }) {
+  const src = await getCachedImage(block.image?.id, block.version)
+  if (!src) return <div className="w-full h-full bg-gray-200" />
+  return <Image alt={block.alt ?? ''} src={src} />
+}`,
+    },
+  }}
+/>
+
+### Types
+
+<ExportTable
+  exports={{
+    'Image (type)': { type: 'type', location: '@pro-laico/images/schema', description: 'The TypeScript type for an Images document (exported as `Image`), for typed access to your image data.' },
   }}
 />
 
