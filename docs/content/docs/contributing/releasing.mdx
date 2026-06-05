@@ -7,11 +7,11 @@ Every `@pro-laico/*` package shares one version (Payload-style lockstep) and shi
 
 ## Lockstep versioning
 
-`pnpm release` reads the **root `package.json` version** as the source of truth, computes the next version from your chosen bump, and stamps that **same version** into the root plus every releasable workspace project — all `packages/*`, `templates/*`, and `examples/*`. Only the `version` line is rewritten, so Biome formatting is preserved. It then commits `chore(release): vX.Y.Z` and creates an annotated `vX.Y.Z` tag.
+`pnpm release` reads the **root `package.json` version** as the source of truth, computes the next version from your chosen bump, and stamps that **same version** into the root plus every releasable workspace project: all `packages/*`, `templates/*`, and `examples/*`. Only the `version` line is rewritten, so Biome formatting is preserved. It then commits `chore(release): vX.Y.Z` and creates an annotated `vX.Y.Z` tag.
 
-Internal `workspace:*` dependencies are left untouched — pnpm rewrites them to the concrete version automatically at publish time.
+Internal `workspace:*` dependencies are left untouched: pnpm rewrites them to the concrete version automatically at publish time.
 
-Always dry-run first — it prints the version table and writes nothing:
+Always dry-run first. It prints the version table and writes nothing:
 
 ```bash
 pnpm release --dry-run
@@ -59,7 +59,7 @@ pnpm publish-packages --provenance --yes   # CI: signed provenance, no prompt
 | Flag | Default | Effect |
 | --- | --- | --- |
 | `--tag <name>` | `latest` | npm dist-tag to publish under. |
-| `--provenance` | `false` | Emit npm provenance (requires CI OIDC — fails locally). |
+| `--provenance` | `false` | Emit npm provenance (requires CI OIDC, fails locally). |
 | `--dry-run` | `false` | Build + pack every package without uploading. |
 | `--yes` | `false` | Skip the confirmation prompt. |
 
@@ -93,7 +93,7 @@ git push --follow-tags
 
 ### CI publishes
 
-Pushing a `v*` tag triggers `.github/workflows/release.yml`, which runs `pnpm publish-packages --yes --provenance` on the pushed tag — building and publishing every public package with npm provenance.
+Pushing a `v*` tag triggers `.github/workflows/release.yml`, which runs `pnpm publish-packages --yes --provenance` on the pushed tag, building and publishing every public package with npm provenance.
 
 </Step>
 

@@ -8,8 +8,8 @@ Scaffold a brand-new Atomic Payload project and land on a running dev server.
 ## Prerequisites
 
 - **Node.js 18+**
-- **pnpm** (recommended) — `npm install -g pnpm`
-- A **MongoDB connection string** for your project's database
+- **pnpm** (recommended). Install it with `npm install -g pnpm`.
+- A **MongoDB connection string**, only for the full `atomic-payload` template. The minimal examples ship with SQLite and need no database server.
 
 ## Scaffold
 
@@ -54,10 +54,10 @@ The CLI prompts for which scaffold to create. Pick one, or skip the prompt with 
 
 | Scaffold | What you get |
 | --- | --- |
-| `atomic-payload` | Full starter — Payload + Next.js + Tailwind, every plugin (the default) |
-| `fonts-only` | Minimal example — `@pro-laico/fonts` in isolation |
-| `icons-only` | Minimal example — `@pro-laico/icons` in isolation |
-| `styles-only` | Minimal example — `@pro-laico/styles` in isolation |
+| `atomic-payload` | Full starter (the default): Payload + Next.js + Tailwind, every plugin |
+| `fonts-only` | Minimal example: `@pro-laico/fonts` in isolation |
+| `icons-only` | Minimal example: `@pro-laico/icons` in isolation |
+| `styles-only` | Minimal example: `@pro-laico/styles` in isolation |
 
 ```bash
 npx @pro-laico/create-atomic-payload my-icons --template icons-only
@@ -79,6 +79,44 @@ Once you've chosen a scaffold, the CLI does the rest:
 4. Downloads fonts (for scaffolds that ship a font step).
 
 It also copies `.env.example` to `.env` so the project is ready to run. When it finishes, you'll see the next steps printed in your terminal.
+</Step>
+
+<Step>
+### Configure and run
+
+How much you configure depends on the scaffold. The full template wires up a real database and storage; the examples run on SQLite out of the box, so there's much less to fill in.
+
+<Tabs groupId="scaffold" items={['Atomic Payload template', 'Example']}>
+
+<Tab value="Atomic Payload template">
+
+Open `.env` and fill in the four required values: a MongoDB connection string, a Vercel Blob token, your `PAYLOAD_SECRET`, and `NEXT_PUBLIC_SERVER_URL`. [Environment & prerequisites](/docs/getting-started/environment) walks through each one. Then generate types and the import map, and start dev:
+
+```bash
+pnpm generate:types        # src/payload-types.ts + augment
+pnpm generate:importmap    # src/app/(payload)/admin/importMap.js
+pnpm dev
+```
+
+</Tab>
+
+<Tab value="Example">
+
+The examples ship with SQLite (`./<example>.db`), so there's no database server to set up. Just set a long `PAYLOAD_SECRET` in `.env`, then generate types and the import map, and start dev:
+
+```bash
+pnpm generate:types        # src/payload-types.ts + augment
+pnpm generate:importmap    # src/app/(payload)/admin/importMap.js
+pnpm dev
+```
+
+<Callout type="info">
+  Swap SQLite for any Payload-supported adapter by editing `src/payload.config.ts` and setting the matching connection string in `.env`.
+</Callout>
+
+</Tab>
+
+</Tabs>
 </Step>
 
 </Steps>

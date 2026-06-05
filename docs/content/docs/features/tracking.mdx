@@ -1,11 +1,11 @@
 ---
 title: "Tracking"
-description: "Turn analytics providers on and off from the admin — no env-var juggling across environments."
+description: "Turn analytics providers on and off from the admin, with no env-var juggling across environments."
 ---
 
 ## Overview
 
-Tracking gives you analytics and tag-manager integration that lives inside Payload instead of your environment configuration. A single **`Tracking`** global holds the settings for every supported provider — **PostHog**, **Google Tag Manager**, and **Vercel Analytics** — each behind its own toggle.
+Tracking gives you analytics and tag-manager integration that lives inside Payload instead of your environment configuration. A single **`Tracking`** global holds the settings for every supported provider (**PostHog**, **Google Tag Manager**, and **Vercel Analytics**), each behind its own toggle.
 
 Flipping a provider on or off, or changing its keys, is an edit in the admin rather than an env-var change you have to make in every environment. The optional provider SDKs are only loaded when you actually turn a provider on, so sites that use none pay no cost.
 
@@ -13,16 +13,16 @@ Flipping a provider on or off, or changing its keys, is an edit in the admin rat
 
 Two pieces work together:
 
-- **The `Tracking` global** — one document in the admin with a tab per provider (PostHog, Google Tag Manager, Vercel Analytics) and a per-provider enable toggle. This is the single source of truth for what's on and how it's configured. The PostHog tab carries the public key, host, and autocapture settings (an enable toggle plus URL allow/ignore lists).
-- **The composite `TrackingProvider`** — a React provider you mount once at your app root. It reads the `Tracking` global and picks which provider components to render based on the global's flags. Internally it composes the per-provider providers (`PostHogProvider`, `GoogleTagManagerProvider`, `VercelProvider`), each of which conditionally loads its own script only when its toggle is enabled.
+- **The `Tracking` global**: one document in the admin with a settings group per provider (PostHog, Google Tag Manager, Vercel Analytics) and a per-provider enable toggle in the sidebar. This is the single source of truth for what's on and how it's configured. The PostHog group carries the public key, host, and autocapture settings (an enable toggle plus URL allow/ignore lists).
+- **The composite `TrackingProvider`**: a React provider you mount once at your app root. It reads the `Tracking` global and picks which provider components to render based on the global's flags. Internally it composes the per-provider providers (`PostHogProvider`, `GoogleTagManagerProvider`, `VercelProvider`), each of which conditionally loads its own script only when its toggle is enabled.
 
 Because the providers short-circuit when the global says a provider is off, nothing loads unless it's explicitly enabled in the admin.
 
 ## Using it
 
-**Enable and configure providers in the admin.** Open the **Tracking** global and switch to the tab for the provider you want — PostHog, Google Tag Manager, or Vercel Analytics. Turn on its toggle and fill in the keys or IDs it needs. Repeat for each provider you want active. Turning a toggle off stops that provider's script from loading without removing its settings.
+**Enable and configure providers in the admin.** Open the **Tracking** global and turn on the toggle for the provider you want (PostHog, Google Tag Manager, or Vercel Analytics). Fill in the keys or IDs it needs. Repeat for each provider you want active. Turning a toggle off stops that provider's script from loading without removing its settings.
 
-**Mount the provider at your app root.** The `TrackingProvider` needs the `Tracking` global threaded in as a prop — fetch it server-side in your root layout and pass it down, otherwise every provider short-circuits and nothing loads. For the exact setup code (fetching the global and wrapping your layout), see the plugin page's Setup section.
+**Mount the provider at your app root.** The `TrackingProvider` needs the `Tracking` global threaded in as a prop: fetch it server-side in your root layout and pass it down, otherwise every provider short-circuits and nothing loads. For the exact setup code (fetching the global and wrapping your layout), see the plugin page's Setup section.
 
 ## Configuration
 

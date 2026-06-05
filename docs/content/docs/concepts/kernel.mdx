@@ -7,7 +7,7 @@ The **kernel** lives in `@pro-laico/core` (`src/kernel.ts`), and its types are r
 
 ## What & why
 
-Atomic Payload is plugin-based, and every plugin defines its own schema stubs. But the concrete types — your collections, globals, and blocks — only exist in the consuming project's generated `payload-types.ts`. A plugin can't import them directly without creating a hard dependency on a file it doesn't own.
+Atomic Payload is plugin-based, and every plugin defines its own schema stubs. But the concrete types (your collections, globals, and blocks) only exist in the consuming project's generated `payload-types.ts`. A plugin can't import them directly without creating a hard dependency on a file it doesn't own.
 
 The kernel solves this with a single indirection point: domain packages (`atomic`, `site`, `styles`, …) write their stubs against one `PayloadAugment` interface declared in `@pro-laico/core`. The consumer project fills that interface in **once**, and every package's stubs resolve to the project's real shapes.
 
@@ -19,7 +19,7 @@ The kernel solves this with a single indirection point: domain packages (`atomic
 
 ### `PayloadAugment`
 
-`PayloadAugment` is an empty index interface. Consumer projects extend it via module augmentation — a generated `payload-types.augment.d.ts`, produced by `payload generate:types && core-augment-types` — to supply concrete shapes from their `payload-types.ts`.
+`PayloadAugment` is an empty index interface. Consumer projects extend it via module augmentation, using a generated `payload-types.augment.d.ts` (produced by `payload generate:types && core-augment-types`) to supply concrete shapes from their `payload-types.ts`.
 
 ```ts
 export interface PayloadAugment {}
@@ -27,7 +27,7 @@ export interface PayloadAugment {}
 
 ### `Get<K, F>`
 
-`Get<K, F>` looks up the key `K` in the augmented `PayloadAugment` interface and returns its type — or falls back to `F` when that key isn't augmented.
+`Get<K, F>` looks up the key `K` in the augmented `PayloadAugment` interface and returns its type, falling back to `F` when that key isn't augmented.
 
 ```ts
 export type Get<K extends string, F> = PayloadAugment extends Record<K, infer T> ? T : F
@@ -41,7 +41,7 @@ export type Config = Get<'Config', DefaultConfig>
 
 ### `ExtractOrDefault<U, V>`
 
-`ExtractOrDefault<U, V>` behaves like `Extract<U, V>`, but guards against the case where `Extract` collapses to `never`. That happens when `U` is an un-augmented default (e.g. `DefaultBlock`, whose discriminant is `string`) — narrowing it by a specific literal `V` yields `never`. Instead, it falls back to `U & V`, preserving the discriminant literal.
+`ExtractOrDefault<U, V>` behaves like `Extract<U, V>`, but guards against the case where `Extract` collapses to `never`. That happens when `U` is an un-augmented default (e.g. `DefaultBlock`, whose discriminant is `string`): narrowing it by a specific literal `V` yields `never`. Instead, it falls back to `U & V`, preserving the discriminant literal.
 
 ```ts
 export type ExtractOrDefault<U, V> = [Extract<U, V>] extends [never] ? U & V : Extract<U, V>
@@ -50,7 +50,7 @@ export type ExtractOrDefault<U, V> = [Extract<U, V>] extends [never] ? U & V : E
 ## Notes / gotchas
 
 <Callout type="warn">
-  Use `ExtractOrDefault<U, V>` instead of `Extract<U, V>` whenever `U` may be an un-augmented default fallback like `DefaultBlock`. Plain `Extract` collapses to `never` when the augmentation is missing — `ExtractOrDefault` falls back to `U & V` so the discriminant literal survives even before the project fills in `PayloadAugment`.
+  Use `ExtractOrDefault<U, V>` instead of `Extract<U, V>` whenever `U` may be an un-augmented default fallback like `DefaultBlock`. Plain `Extract` collapses to `never` when the augmentation is missing, but `ExtractOrDefault` falls back to `U & V` so the discriminant literal survives even before the project fills in `PayloadAugment`.
 </Callout>
 
 <Callout type="info">

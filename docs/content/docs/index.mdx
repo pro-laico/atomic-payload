@@ -1,13 +1,13 @@
 ---
 title: "Introduction"
-description: "A suite of composable @pro-laico/* plugins for Payload CMS — Tailwind styling in the admin, atomic blocks, media, icons, fonts, and more. Several work standalone in any Payload + Next.js project."
+description: "A suite of composable @pro-laico/* plugins for Payload CMS: Tailwind styling in the admin, atomic blocks, media, icons, fonts, and more. Several work standalone in any Payload + Next.js project."
 ---
 
-**Atomic Payload** is a collection of composable [Payload CMS](https://payloadcms.com/) plugins for building Next.js websites. It started life as a single website builder, but the project has since been split into independent `@pro-laico/*` packages — and several of them work as standalone plugins you can drop into any Payload project.
+**Atomic Payload** is a collection of composable [Payload CMS](https://payloadcms.com/) plugins for building Next.js websites. It started life as a single website builder, but the project has since been split into independent `@pro-laico/*` packages, and several of them work as standalone plugins you can drop into any Payload project.
 
-The building blocks come from that plugin family: Tailwind styles written in the admin, recursive atomic blocks with copy-paste-duplicate, UnoCSS shortcuts, design tokens and swappable design sets, interactive actions, and custom forms with sanitation, validation, and rate limiting — plus images, fonts, icons, Mux video, and tracking. Add the ones you need on top of the **`@pro-laico/core`** kernel.
+The building blocks come from that plugin family: Tailwind styles written in the admin, recursive atomic blocks with copy-paste-duplicate, UnoCSS shortcuts, design tokens and swappable design sets, interactive actions, and custom forms with sanitation, validation, and rate limiting, plus images, fonts, icons, Mux video, and tracking. Add the ones you need on top of the **`@pro-laico/core`** kernel.
 
-A full starter template composes every plugin into a visual, no-code website builder — editors assemble entire pages directly in the admin, and the sites it produces have excellent performance out of the box. It's the fastest way to see what the plugins can do together, though in your own project you'll typically reach for just the individual plugins you need.
+A full starter template composes every plugin into a visual, no-code website builder. Editors assemble entire pages directly in the admin, and the sites it produces have excellent performance out of the box. It's the fastest way to see what the plugins can do together, though in your own project you'll typically reach for just the individual plugins you need.
 
 <Callout type="info">
   Atomic Payload is not affiliated with Payload CMS in any capacity.
@@ -15,7 +15,7 @@ A full starter template composes every plugin into a visual, no-code website bui
 
 ## How it's built
 
-The packages fall into three groups: the **`@pro-laico/core`** foundation, the **standalone** plugins (styles, icons, fonts, tracking) usable on their own, and the **tools** (atomic, site, images, mux-video, richtext, seed, zap) that the standalones and the template build on. Every package defines its schema as stubs against a single `PayloadAugment` interface in core — resolved through the `Get<>` and `ExtractOrDefault` helpers — so a plugin's types snap to your project's concrete shapes once you generate types. See the [plugins reference](/docs/plugins) for the full list.
+The packages fall into three groups: the **`@pro-laico/core`** foundation, the **standalone** plugins (styles, icons, fonts, tracking) usable on their own, and the **tools** (atomic, site, images, mux-video, richtext, seed, zap) that the standalones and the template build on. Every package defines its schema as stubs against a single `PayloadAugment` interface in core (resolved through the `Get<>` and `ExtractOrDefault` helpers), so a plugin's types snap to your project's concrete shapes once you generate types. See the [plugins reference](/docs/plugins) for the full list.
 
 ## How these docs are organized
 

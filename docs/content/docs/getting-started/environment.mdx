@@ -27,7 +27,7 @@ MONGODB_URI="mongodb+srv://<username>:<password>@<cluster-name>.mongodb.net/my_d
 
 ### `PAYLOAD_SECRET`
 
-A random string Payload uses to encrypt JWT auth tokens. Generate any sufficiently long secret — for example with `openssl rand -hex 32` — and keep it stable per environment.
+A random string Payload uses to encrypt JWT auth tokens. Generate any sufficiently long secret (for example with `openssl rand -hex 32`) and keep it stable per environment.
 
 ```bash
 PAYLOAD_SECRET=524AFEAC8E77853C6AC1C2EBCB266
@@ -51,7 +51,7 @@ BLOB_READ_WRITE_TOKEN="vercel_blob_rw_..."
 
 ### `NEXT_PUBLIC_SERVER_URL`
 
-The public URL the app runs at — used to configure CORS, format links, and more. Use `http://localhost:3000` for local dev, and set it to your deployed URL (e.g. `https://<project-name>.vercel.app`) in production. No trailing slash.
+The public URL the app runs at, used to configure CORS, format links, and more. Use `http://localhost:3000` for local dev, and set it to your deployed URL (e.g. `https://<project-name>.vercel.app`) in production. No trailing slash.
 
 ```bash
 NEXT_PUBLIC_SERVER_URL=http://localhost:3000
@@ -62,17 +62,17 @@ NEXT_PUBLIC_SERVER_URL=http://localhost:3000
 </Steps>
 
 <Callout type="info">
-  The template also ships `PREVIEW_SECRET` (validates draft-preview requests) — generate it like `PAYLOAD_SECRET`. The font download (`generate:fonts`) needs no credentials of its own: it calls the fonts plugin's export endpoint at `FONT_DOWNLOAD_URL` and authenticates with `PAYLOAD_SECRET`.
+  The template also ships `PREVIEW_SECRET` (validates draft-preview requests): generate it like `PAYLOAD_SECRET`. The font download (`generate:fonts`) needs no credentials of its own: it calls the fonts plugin's export endpoint at `FONT_DOWNLOAD_URL` and authenticates with `PAYLOAD_SECRET`.
 </Callout>
 
 ## Optional integrations
 
-These are off by default — wire them up only if you need them. Full setup steps live on the template page.
+These are off by default, so wire them up only if you need them. Full setup steps live on the template page.
 
 <Callout type="info">
-  - **Mux** (`MUX_TOKEN_ID`, `MUX_TOKEN_SECRET`, `MUX_WEBHOOK_SIGNING_SECRET`) — upload and serve video through the admin dashboard.
-  - **Resend** (`RESEND_API_KEY`) — send transactional email on form submissions.
-  - **Vercel deploy webhook** (`VERCEL_DEPLOY_WEBHOOK_URL`) — trigger a redeploy from the admin UI.
+  - **Mux** (`MUX_TOKEN_ID`, `MUX_TOKEN_SECRET`, `MUX_WEBHOOK_SIGNING_SECRET`): upload and serve video through the admin dashboard.
+  - **Resend** (`RESEND_API_KEY`): send transactional email on form submissions.
+  - **Vercel deploy webhook** (`VERCEL_DEPLOY_WEBHOOK_URL`): trigger a redeploy from the admin UI.
 
   See **Template Setup** in the template README for the step-by-step account and token configuration for each.
 </Callout>
@@ -80,5 +80,5 @@ These are off by default — wire them up only if you need them. Full setup step
 ## Next
 
 <Cards>
-  <Card title="Project structure" href="/docs/getting-started/project-structure" />
+  <Card title="Core concepts" href="/docs/concepts/architecture" />
 </Cards>

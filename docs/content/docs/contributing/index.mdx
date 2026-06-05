@@ -1,13 +1,13 @@
 ---
 title: "Contributing"
-description: "Work on the Atomic Payload monorepo — its workspace layout, local development commands, and the standard plugin shape."
+description: "Work on the Atomic Payload monorepo: its workspace layout, local development commands, and the standard plugin shape."
 ---
 
 Atomic Payload is a pnpm workspace: the publishable `@pro-laico/*` packages, a full starter template, minimal example apps, release tooling, and these docs all live in one repo. This page is the map for contributors and maintainers.
 
 ## Monorepo structure
 
-```
+```plaintext
 atomic-payload/
 ├── packages/
 │   ├── create-atomic-payload/   # CLI that scaffolds new projects
@@ -35,7 +35,7 @@ atomic-payload/
 ```
 
 <Callout type="info">
-  The publishable packages live in `packages/*`. `templates/*`, `examples/*`, and `tools/*` are never published — they exist for local dev, regression testing, and release automation.
+  The publishable packages live in `packages/*`. `templates/*`, `examples/*`, and `tools/*` are never published. They exist for local dev, regression testing, and release automation.
 </Callout>
 
 ## Local development
@@ -121,11 +121,11 @@ The template at `templates/atomic-payload` wires up every plugin, so running `pn
 
 ## Adding a plugin
 
-New plugins live in `packages/` and follow one standard shape — the same one every existing package uses, so the cleanest reference is any sibling package.
+New plugins live in `packages/` and follow one standard shape, the same one every existing package uses, so the cleanest reference is any sibling package.
 
 - The package can be **used independently** (`pnpm add @pro-laico/<name>`) or **via the template**, referenced with `workspace:*` for local dev. The CLI's `prepack` step rewrites those `workspace:*` deps to caret-pinned versions when it bundles the scaffold tarball.
 - The standard shape: a `(opts) => (config) => config` plugin factory exported as **both** the default and a named export, with the raw collections / hooks / fields / components also exported as named imports for advanced consumers.
-- A `schema` subpath exports `payload-augment` types so `zap` knows about the package's block shapes, and the `index.ts` barrel stays safe to import from `payload.config.ts` (no client-only code) — client components and server-only utilities sit behind subpaths.
+- A `schema` subpath exports `payload-augment` types so `zap` knows about the package's block shapes, and the `index.ts` barrel stays safe to import from `payload.config.ts` (no client-only code). Client components and server-only utilities sit behind subpaths.
 
 For how these pieces fit together at runtime, see the architecture guide.
 

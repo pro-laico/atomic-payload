@@ -7,7 +7,7 @@ Manage your icons as first-class CMS content. Upload SVGs and they're optimized 
 
 ## Overview
 
-Icons are SVG files you upload through the Payload admin. On upload, each file is cleaned up and its `viewBox` is tightened so what's stored is the smallest correct version of the original — no per-render cost and no manual cleanup. Icons are then grouped into **icon sets** (e.g. "Social", "Nav"), so a whole set of brand icons can travel with the active design without code changes.
+Icons are SVG files you upload through the Payload admin. On upload, each file is cleaned up and its `viewBox` is tightened so what's stored is the smallest correct version of the original, with no per-render cost and no manual cleanup. Icons are then grouped into **icon sets** (e.g. "Social", "Nav"), so a whole set of brand icons can travel with the active design without code changes.
 
 Once stored, an icon can be rendered anywhere by name, dropped into content as a child block, or picked from a select widget in the admin.
 
@@ -15,24 +15,24 @@ Once stored, an icon can be rendered anywhere by name, dropped into content as a
 
 Two collections back the feature:
 
-- **`Icon`** — an upload collection that accepts SVG files. On upload, the `formatSVGHook` runs the file through `svgo` (cleanup) and `svg-path-bbox` (tightens the `viewBox`), so the stored asset is always optimized and the `viewBox` is correct.
-- **`IconSet`** — groups icons under a named bucket. The active design set can reference icon sets, so icons swap with the theme.
+- **`Icon`**: an upload collection that accepts SVG files. On upload, the `formatSVGHook` runs the file through `svgo` (cleanup) and `svg-path-bbox` (tightens the `viewBox`), so the stored asset is always optimized and the `viewBox` is correct.
+- **`IconSet`**: groups icons under a named bucket. The active design set can reference icon sets, so icons swap with the theme.
 
-**Rendering by name.** The `<Icon name="…" />` server component looks up an icon by name from the active icon set and renders it inline as an `<svg>`. Resolution happens server-side through `@pro-laico/core`'s cached `iconSet` and `icon` getters, so revalidating either cache tag invalidates just the rendered `<svg>` — not the surrounding page. JSX props you pass always win over the SVG source's intrinsic attributes.
+**Rendering by name.** The `<Icon name="…" />` server component looks up an icon by name from the active icon set and renders it inline as an `<svg>`. Resolution happens server-side through this package's cached `iconSet` and `icon` getters (in `@pro-laico/icons/cache`, built on `@pro-laico/core`'s `withCache` primitive), so revalidating either cache tag invalidates just the rendered `<svg>`, not the surrounding page. JSX props you pass always win over the SVG source's intrinsic attributes.
 
 **Caching and revalidation.** Cache revalidation is driven by `@pro-laico/core` hooks: `revalidateCacheCollectionAfterChange` runs on save and `revalidateCacheOnDelete` runs on delete. Because resolution reads from cached getters keyed by tag, editing or deleting an icon or set invalidates only what it touches.
 
-**Other surfaces.** `AtomicIcon` is the admin marker glyph for atomic block types, and `createIconSelect` is a factory that builds the admin select field for picking icons (you pass it your app's cached fetcher).
+**Other surfaces.** `AtomicIcon` is the admin marker glyph for atomic block types, and `IconSelect` is the admin select field for picking an icon by name from the active set (its options come from the cached `getCachedIconOptions` getter).
 
 ## Using it
 
 ### Uploading icons
 
-In the admin, open the **Icon** collection and upload an SVG file. The `formatSVGHook` runs automatically on upload — SVGO strips and cleans the markup (including script tags) and `svg-path-bbox` tightens the `viewBox`, so the stored `svgString` is already optimized.
+In the admin, open the **Icon** collection and upload an SVG file. The `formatSVGHook` runs automatically on upload: SVGO strips and cleans the markup (including script tags) and `svg-path-bbox` tightens the `viewBox`, so the stored `svgString` is already optimized.
 
 ### Building icon sets
 
-Open the **IconSet** collection and create a named set (for example "Social" or "Nav"), then add icons to it. The active design set can reference icon sets so the right icons follow the active theme — non-developers can swap icons per design set without touching code.
+Open the **IconSet** collection and create a named set (for example "Social" or "Nav"), then add icons to it. The active design set can reference icon sets so the right icons follow the active theme, and non-developers can swap icons per design set without touching code.
 
 ### Rendering icons
 
@@ -50,14 +50,14 @@ import { Icon } from '@pro-laico/icons/Icon'
 
 In content, editors can place icons with the child blocks:
 
-- **`IconChild`** — picks an icon from the `Icon` collection.
-- **`SVGChild`** — pastes in raw SVG.
+- **`IconChild`**: picks an icon from the `Icon` collection.
+- **`SVGChild`**: pastes in raw SVG.
 
 Both render through the frontend renderer in `@pro-laico/atomic/children`.
 
 ## Configuration
 
-Icons are added by the `iconsPlugin`, which accepts two additive option bags — `iconOptions` for the `Icon` collection and `iconSetOptions` for the `IconSet` collection. User-supplied hooks always run **after** the built-ins, so `formatSVGHook` and the revalidation hooks always run first.
+Icons are added by the `iconsPlugin`, which accepts two additive option bags: `iconOptions` for the `Icon` collection and `iconSetOptions` for the `IconSet` collection. User-supplied hooks always run **after** the built-ins, so `formatSVGHook` and the revalidation hooks always run first.
 
 ```ts
 import { buildConfig } from 'payload'

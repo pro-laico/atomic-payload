@@ -1,9 +1,9 @@
 ---
 title: "styles-only"
-description: "Minimal template that exercises @pro-laico/styles in isolation — the full back-to-front loop from admin-authored atomic classes to a compiled stylesheet."
+description: "Minimal template that exercises @pro-laico/styles in isolation: the full back-to-front loop from admin-authored atomic classes to a compiled stylesheet."
 ---
 
-A minimal Atomic Payload template that demonstrates the **`@pro-laico/styles`** plugin in isolation — and the full **back-to-front** loop it enables.
+A minimal Atomic Payload template that demonstrates the **`@pro-laico/styles`** plugin in isolation, and the full **back-to-front** loop it enables.
 
 ## What it shows
 
@@ -56,7 +56,7 @@ yarn dlx @pro-laico/create-atomic-payload my-styles --template styles-only
 Then set up and run it:
 
 ```bash
-cp .env.example .env       # set a long PAYLOAD_SECRET (DATABASE_URI is optional)
+cp .env.example .env       # set long PAYLOAD_SECRET + PREVIEW_SECRET (DATABASE_URI is optional)
 cp gitignore.template .gitignore
 pnpm install
 pnpm generate:types        # generates src/payload-types.ts + augment
@@ -65,20 +65,20 @@ pnpm dev
 ```
 
 <Callout type="info">
-  The demo ships with the SQLite adapter (`@payloadcms/db-sqlite`) wired to a local file at `./styles-only.db` — no database server required. Swap to Postgres or MongoDB by changing the import + `db:` call in `src/payload.config.ts` and installing the matching `@payloadcms/db-*` package.
+  The demo ships with the SQLite adapter (`@payloadcms/db-sqlite`) wired to a local file at `./styles-only.db`, with no database server required. Swap to Postgres or MongoDB by changing the import + `db:` call in `src/payload.config.ts` and installing the matching `@payloadcms/db-*` package.
 </Callout>
 
 Once it's running:
 
 1. Open `http://localhost:3000/admin` and create your first user.
-2. Go back to `http://localhost:3000`. The seed button is now visible — click it to create the design set, shortcut set, and home page.
+2. Go back to `http://localhost:3000`. The seed button is now visible: click it to create the design set, shortcut set, and home page.
 3. The page renders, styled by the generated CSS. Edit a block's class names (or a design-set color) in the admin and the page restyles after the save.
 
 ## How it works
 
 When a page (or the design set / shortcut set) is saved, the `cssHook` runs the full back-to-front loop:
 
-```
+```plaintext
 page (blocks) ─save─▶ cssHook (beforeChange)
                         ├─ collectClassNames(data)  → storedAtomicClasses on the page
                         └─ createCssProcessor → UnoCSS generate(
@@ -92,11 +92,11 @@ page (blocks) ─save─▶ cssHook (beforeChange)
              RenderBlocks(page.layout)  → components apply the stored *ClassName values
 ```
 
-`POST /api/seed` creates the shortcut set, the design set, and a home page made of one of each block (auth-gated, idempotent). `/` loads the home page, injects the generated stylesheet into `<head>`, and renders the blocks — every utility, shortcut, token color, radius, and prose style was authored in the admin and compiled on save. Live preview is wired for `designSet` / `shortcutSet` / `pages` edits via `<LivePreviewListener>` + the `/next/preview` route handler, with local `afterChange` hooks adding the `revalidateTag` calls that bust the frontend cache.
+`POST /api/seed` creates the shortcut set, the design set, and a home page made of one of each block (auth-gated, idempotent). `/` loads the home page, injects the generated stylesheet into `<head>`, and renders the blocks: every utility, shortcut, token color, radius, and prose style was authored in the admin and compiled on save. Live preview is wired for `designSet` / `shortcutSet` / `pages` edits via `<LivePreviewListener>` + the `/next/preview` route handler, with local `afterChange` hooks adding the `revalidateTag` calls that bust the frontend cache.
 
 ## What to look at
 
-```
+```plaintext
 src/
   payload.config.ts                     # buildConfig — styles plugin, page cssHook, revalidation
   collections/
@@ -121,11 +121,12 @@ src/
 ```
 
 <Callout type="info">
-  **Configs vs components.** `blocks/configs.ts` is pulled into the Payload config graph (via `pages`), so it stays free of React / `server-only` imports. The render components live in `blocks/components.tsx` and are imported only by the frontend — keeping them apart is what lets `payload generate:types` run.
+  **Configs vs components.** `blocks/configs.ts` is pulled into the Payload config graph (via `pages`), so it stays free of React / `server-only` imports. The render components live in `blocks/components.tsx` and are imported only by the frontend. Keeping them apart is what lets `payload generate:types` run.
 </Callout>
 
 ## Related
 
 <Cards>
-  <Card title="Styles — feature guide" href="/docs/features/styles" />
+  <Card title="Styles feature guide" href="/docs/features/styles" />
+  <Card title="@pro-laico/styles" href="/docs/plugins/styles" />
 </Cards>

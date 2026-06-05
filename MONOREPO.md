@@ -8,12 +8,12 @@ This document is for contributors and maintainers working on the Atomic Payload 
 atomic-payload/
 ├── packages/
 │   ├── create-atomic-payload/   # CLI that scaffolds new projects
-│   ├── core/                    # Kernel (PayloadAugment, Get<>, ExtractOrDefault), revalidate hooks, cache helpers, APF runtime, plugin
+│   ├── core/                    # Kernel (PayloadAugment, Get<>, ExtractOrDefault), revalidate hooks, withCache cache primitive, APF runtime, plugins
 │   ├── zap/                     # zod + AtomicRegistry helper
 │   ├── atomic/                  # actions, hook (createAtomicHook + cssProcessor), forms, children — runtime + admin UI
 │   ├── site/                    # sitePlugin: Pages, Header, Footer, SiteMetaData, Settings, Storage globals
 │   ├── styles/                  # stylesPlugin: designSet + shortcutSet collections, className field, CSS storage globals, token fields, cssProcessor + cssHook + processDesignSet (all CSS handling)
-│   ├── icons/                   # iconsPlugin: Icon + iconSet collections, formatSVG, AtomicIcon
+│   ├── icons/                   # iconsPlugin: Icon + iconSet collections, SVG extraction, Icon + AtomicIcon components
 │   ├── images/                  # Images + Favicons collections + FaviconField + blur integration
 │   ├── fonts/                   # fontsPlugin + Font collection + font download CLI
 │   ├── mux-video/               # MuxVideo wrapper plugin

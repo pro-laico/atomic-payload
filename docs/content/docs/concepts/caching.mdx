@@ -92,7 +92,7 @@ Cached reads only stay correct because Payload hooks bust the matching tags when
 Each takes a `slug → handler` map, so you wire revalidation for exactly the collections you have:
 
 ```ts
-import { createRevalidateCache, createRevalidateCacheOnDelete } from '@pro-laico/core'
+import { createRevalidateCache, createRevalidateCacheOnDelete, revalidateTag } from '@pro-laico/core'
 
 const revalidateCache = createRevalidateCache({
   pages: async ({ data }) => {
@@ -109,7 +109,7 @@ const revalidateCacheOnDelete = createRevalidateCacheOnDelete({
 })
 ```
 
-Default exports (`revalidateCache`, `revalidateCacheOnDelete`) stay bound to the conventional slug set, so existing imports keep working unchanged. The simplest path of all is the bundled `revalidationPlugin` (the default export of `@pro-laico/core`), which wires the standard collection and global revalidation hooks for you.
+The slug-bound default hooks (exported from `@pro-laico/core` as `revalidateCacheCollection` and `revalidateCacheOnDelete`) stay bound to the conventional slug set, so existing imports keep working unchanged. The simplest path of all is the bundled `revalidationPlugin` (the default export of `@pro-laico/core`), which wires the standard collection and global revalidation hooks for you.
 
 ## Notes
 

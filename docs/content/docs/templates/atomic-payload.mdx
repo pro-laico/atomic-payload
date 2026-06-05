@@ -1,11 +1,11 @@
 ---
 title: "atomic-payload"
-description: "The full Payload + Next.js + Tailwind starter that wires up every Atomic Payload plugin — environment setup, deployment, and optional Mux/Resend integrations."
+description: "The full Payload + Next.js + Tailwind starter that wires up every Atomic Payload plugin: environment setup, deployment, and optional Mux/Resend integrations."
 ---
 
 ## Overview
 
-**Atomic Payload** is the complete starter template that brings the whole platform together: **Payload** for the CMS and admin, **Next.js** for the frontend and API routes, and **Tailwind** for styling — with every Atomic Payload plugin already installed and configured. Use this guide whether you scaffolded a project with `npx @pro-laico/create-atomic-payload` or you're developing from the monorepo template folder.
+**Atomic Payload** is the complete starter template that brings the whole platform together: **Payload** for the CMS and admin, **Next.js** for the frontend and API routes, and **Tailwind** for styling, with every Atomic Payload plugin already installed and configured. Use this guide whether you scaffolded a project with `npx @pro-laico/create-atomic-payload` or you're developing from the monorepo template folder.
 
 <Callout type="info">
   Developing the monorepo itself? See `MONOREPO.md` in the repo root for structure, local dev, and per-plugin instructions.
@@ -63,7 +63,7 @@ Open `http://localhost:3000/admin` and create the first admin user.
 </Steps>
 
 <Callout type="info">
-  Once running, it's recommended to seed the database from the main admin dashboard. Seeding overrides existing data, so comment out the `beforeDashboard` custom component in `src/payload.config.ts` after you've seeded.
+  Once running, it's recommended to seed the database from the **Seed database** banner on the main admin dashboard. Seeding wipes and replaces existing data, so once you've seeded, set `INCLUDE_SEED=false` in your `.env` to drop the seed endpoint and its dashboard banner.
 </Callout>
 
 ## Optional integrations
@@ -72,7 +72,7 @@ Open `http://localhost:3000/admin` and create the first admin user.
 
 <Accordion title="Vercel rebuild webhook">
 
-Trigger a rebuild of your deployment with a Vercel webhook — mainly useful when updating fonts.
+Trigger a rebuild of your deployment with a Vercel webhook, mainly useful when updating fonts.
 
 1. Go to your project dashboard, then `Settings → Git → Deploy Hooks`.
 2. Add a name and select the branch to rebuild (usually `main`).
@@ -138,7 +138,7 @@ Send emails programmatically on form submissions using Resend.
 
 ### Import your repo into Vercel
 
-Create a new project in Vercel by importing your repo — but before hitting **Create**, point your local `.env` at the deployed URL so it's ready to copy into Vercel:
+Create a new project in Vercel by importing your repo, but before hitting **Create**, point your local `.env` at the deployed URL so it's ready to copy into Vercel:
 
 ```bash
 NEXT_PUBLIC_SERVER_URL='https://<project-name>.vercel.app'

@@ -1,18 +1,18 @@
 ---
 title: "fonts-only"
-description: "Minimal example — @pro-laico/fonts in isolation, served with next/font/local."
+description: "Minimal example: @pro-laico/fonts in isolation, served with next/font/local."
 ---
 
 A minimal Atomic Payload template that exercises **`@pro-laico/fonts`** on its own. Upload font files to the `Font` collection, choose the active four in the `fontSet` global, run the font download step, and the site serves them with `next/font/local`.
 
 ## What it shows
 
-The only `@pro-laico` dependencies are **`@pro-laico/fonts`** and **`@pro-laico/core`**, so you see the fonts plugin in isolation — set up exactly as the [fonts plugin's Standalone guide](/docs/plugins/fonts) describes:
+The only `@pro-laico` dependencies are **`@pro-laico/fonts`** and **`@pro-laico/core`**, so you see the fonts plugin in isolation, set up exactly as the [fonts plugin's Standalone guide](/docs/plugins/fonts) describes:
 
-- `fontsPlugin({ includeFontSet: true })` registers the **`Font` upload collection** (woff/woff2/ttf/otf) **and** the **`fontSet` global** — the active `sans` / `serif` / `mono` / `display` selection (the font analog of an active icon set).
-- `POST /api/seed` uploads four bundled open-source fonts (one per role) **and points the `fontSet` global at them** — auth-gated and idempotent, run from the admin dashboard, so you have fonts to pick without finding your own.
+- `fontsPlugin({ includeFontSet: true })` registers the **`Font` upload collection** (woff/woff2/ttf/otf) **and** the **`fontSet` global**, the active `sans` / `serif` / `mono` / `display` selection (the font analog of an active icon set).
+- `POST /api/seed` uploads four bundled open-source fonts (one per role) **and points the `fontSet` global at them**. It is auth-gated and idempotent, run from the admin dashboard, so you have fonts to pick without finding your own.
 - `pnpm generate:fonts` (wired as `prebuild`) reads the active selection from a running site, downloads the fonts to `public/fonts`, and writes `src/app/definition.ts` for `next/font/local`.
-- The layout applies those `next/font` variables to `<html>` and maps each role to `--font-<role>`; `/` renders a specimen per active role (pangram, size ramp, glyphs) via `var(--font-<role>)`.
+- The layout applies those `next/font` variables to `<html>` and maps each role to `--font-<role>`. `/` renders a specimen per active role (pangram, size ramp, glyphs) via `var(--font-<role>)`.
 
 ## Scaffold it
 
@@ -53,15 +53,15 @@ pnpm dev
 ```
 
 <Callout type="info">
-  Ships with SQLite (`@payloadcms/db-sqlite`) at `./font-only.db` — no DB server. Swap adapters by editing `src/payload.config.ts`.
+  Ships with SQLite (`@payloadcms/db-sqlite`) at `./font-only.db`, with no DB server. Swap adapters by editing `src/payload.config.ts`.
 </Callout>
 
 The flow:
 
-1. Visit `/` — an explainer page. Logged out, it points you to the admin.
+1. Visit `/`, an explainer page. Logged out, it points you to the admin.
 2. Open `/admin`, create your first user.
 3. On the dashboard, click **Seed sample fonts** (or upload your own and pick them in the `fontSet` global).
-4. Run `pnpm setup:fonts` to download the active fonts for `next/font/local` — it boots a temporary server, runs the download against it (authenticating with your `PAYLOAD_SECRET`), and shuts it down.
+4. Run `pnpm setup:fonts` to download the active fonts for `next/font/local`. It boots a temporary server, runs the download against it (authenticating with your `PAYLOAD_SECRET`), and shuts it down.
 5. Run `pnpm dev` again and open `/` to see the four active fonts rendered as specimens.
 
 ## How it works
@@ -85,29 +85,29 @@ The active selection lives in a **global** because it's the active-selection lay
 
 ## The download step
 
-`pnpm build` runs `prebuild` → `generate:fonts`, which calls the fonts plugin's export endpoint on a **reachable Payload instance** and writes the fonts to disk for `next/font/local`. It authenticates with `PAYLOAD_SECRET` and fetches from `FONT_DOWNLOAD_URL` — the running instance to pull the active fonts from (see `.env.example`):
+`pnpm build` runs `prebuild` → `generate:fonts`, which calls the fonts plugin's export endpoint on a **reachable Payload instance** and writes the fonts to disk for `next/font/local`. It authenticates with `PAYLOAD_SECRET` and fetches from `FONT_DOWNLOAD_URL`, the running instance to pull the active fonts from (see `.env.example`):
 
 ```bash
 FONT_DOWNLOAD_URL=http://localhost:3000   # the running instance to fetch from
 PAYLOAD_SECRET=...                        # authenticates the request
 ```
 
-The endpoint reads each font server-side — from disk for local storage, or by fetching the URL Payload reports for cloud adapters (Vercel Blob, S3, …) — so there's no storage token or login to manage. When neither the URL nor the secret resolves, the download is skipped (the build still succeeds) and the specimens fall back to system fonts until you run it.
+The endpoint reads each font server-side, from disk for local storage, or by fetching the URL Payload reports for cloud adapters (Vercel Blob, S3, and the like), so there's no storage token or login to manage. When neither the URL nor the secret resolves, the download is skipped (the build still succeeds) and the specimens fall back to system fonts until you run it.
 
 <Callout type="info">
-  **Local dev — one command.** `generate:fonts` needs a running Payload to fetch from, which is awkward before anything's deployed. `pnpm setup:fonts` handles it: it boots a temporary `next dev` server, points `FONT_DOWNLOAD_URL` at it, runs the download, then shuts the server down. No credentials needed — it authenticates with your existing `PAYLOAD_SECRET`.
+  **Local dev, one command.** `generate:fonts` needs a running Payload to fetch from, which is awkward before anything's deployed. `pnpm setup:fonts` handles it: it boots a temporary `next dev` server, points `FONT_DOWNLOAD_URL` at it, runs the download, then shuts the server down. No credentials needed: it authenticates with your existing `PAYLOAD_SECRET`.
 </Callout>
 
 ## What to look at
 
 | File | What's there |
 | --- | --- |
-| `src/payload.config.ts` | `buildConfig` — `fontsPlugin({ includeFontSet: true })` + `staticDir` |
+| `src/payload.config.ts` | `buildConfig`: `fontsPlugin({ includeFontSet: true })` + `staticDir` |
 | `src/lib/fontDir.ts` | `FONT_STATIC_DIR` (shared with the config, no `@payload-config` import) |
-| `src/lib/fonts.ts` | `getActiveFonts()` — reads the active selection from the `fontSet` global |
+| `src/lib/fonts.ts` | `getActiveFonts()`: reads the active selection from the `fontSet` global |
 | `src/seed/sampleFonts.ts` | manifest mapping bundled files → `title` + role |
 | `src/components/admin/` | `BeforeDashboard` + `SeedControls` (seed/reset on the dashboard) |
-| `src/app/definition.ts` | generated by `generate:fonts` (gitignored) — the `next/font/local` declarations |
+| `src/app/definition.ts` | generated by `generate:fonts` (gitignored): the `next/font/local` declarations |
 | `src/app/(frontend)/layout.tsx` | applies the next/font variables + maps `--font-<role>` |
 | `src/app/(frontend)/page.tsx` | explainer + a specimen per active role + "use them together" |
 | `src/app/(payload)/api/seed/route.ts` | `POST /api/seed` → upload fonts + set the `fontSet` global |
@@ -115,12 +115,12 @@ The endpoint reads each font server-side — from disk for local storage, or by 
 | `public/seed-fonts/*.woff2` | bundled OFL fonts (committed) + `LICENSES.md` |
 
 <Callout type="info">
-  `FONT_STATIC_DIR` (`./media`, gitignored) is where Payload writes uploads, shared via `src/lib/fontDir.ts` so the config and the download step never drift. The bundled seed fonts (Inter, Lora, JetBrains Mono, Abril Fatface) are OFL; see `public/seed-fonts/LICENSES.md`, and replace them before shipping a real project.
+  `FONT_STATIC_DIR` (`./media`, gitignored) is where Payload writes uploads, shared via `src/lib/fontDir.ts` so the config and the download step never drift. The bundled seed fonts (Inter, Lora, JetBrains Mono, Abril Fatface) are OFL: see `public/seed-fonts/LICENSES.md`, and replace them before shipping a real project.
 </Callout>
 
 ## Related
 
 <Cards>
-  <Card title="Fonts — feature guide" href="/docs/features/fonts" />
+  <Card title="Fonts feature guide" href="/docs/features/fonts" />
   <Card title="@pro-laico/fonts" href="/docs/plugins/fonts" />
 </Cards>

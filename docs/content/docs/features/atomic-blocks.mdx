@@ -5,9 +5,9 @@ description: "Build entire custom components from recursive child blocks, then r
 
 ## Overview
 
-Atomic Blocks are the recursive content model behind every page you build in the Atomic Payload dashboard. Using **Atomic Child Blocks**, you compose entire custom components — nesting blocks inside blocks — directly in the Payload admin, without touching code.
+Atomic Blocks are the recursive content model behind every page you build in the Atomic Payload dashboard. Using **Atomic Child Blocks**, you compose entire custom components (nesting blocks inside blocks) directly in the Payload admin, without touching code.
 
-Because the model is recursive, a child block can contain its own children, which can contain theirs, all the way down. Combined with Payload's **copy-paste-duplicate (CPD)** functionality, you can reuse a component you've built with ease — copy a block, paste it elsewhere, and tweak.
+Because the model is recursive, a child block can contain its own children, which can contain theirs, all the way down. Combined with Payload's **copy-paste-duplicate (CPD)** functionality, you can reuse a component you've built with ease: copy a block, paste it elsewhere, and tweak.
 
 <Callout type="info">
   Once Payload CMS implements Sanity-style CPD, you'll be able to reuse components across projects too.
@@ -15,12 +15,12 @@ Because the model is recursive, a child block can contain its own children, whic
 
 ## How it works
 
-Atomic Blocks are provided by the `children` namespace of `@pro-laico/atomic`. Its `childBlocksPlugin` registers the `AtomicChild` block and the built-in `SimpleTextChild` block, forming the recursive tree:
+Atomic Blocks are provided by the `children` namespace of `@pro-laico/atomic`. Its `childBlocksPlugin` registers the default child blocks, with the `AtomicChild` container and the built-in `SimpleTextChild` leaf forming the recursive tree:
 
-- **`AtomicChild`** — the recursive container. It nests other child blocks inside itself, so a single component is really a tree of blocks.
-- **`SimpleTextChild`** — the built-in leaf for text content.
+- **`AtomicChild`**: the recursive container. It nests other child blocks inside itself, so a single component is really a tree of blocks.
+- **`SimpleTextChild`**: the built-in leaf for text content.
 
-Sibling packages contribute their own child blocks — for example `@pro-laico/images/blocks/imageChild` and `@pro-laico/icons/blocks/iconChild` — which get picked up automatically when those plugins are installed. So the set of blocks you can nest grows as you add integrations.
+Sibling packages contribute the rest of the default blocks (RichText, Image, Video, Icon, and SVG), pulled in from their own factories. Some live behind their own subpaths, for example `@pro-laico/images/blocks/imageChild` and `@pro-laico/icons/blocks/iconChild`, so the set of blocks you can nest reflects the packages installed.
 
 On the front end, the `children/render` subpath provides the React component that **walks the tree and renders each child**, producing the final HTML. The `children` namespace also wires children into the action system, so blocks in the tree can carry interactivity.
 
@@ -28,7 +28,7 @@ On the front end, the `children/render` subpath provides the React component tha
 
 In the admin, you build a component by nesting `AtomicChild` blocks and dropping content blocks (`SimpleTextChild`, image children, icon children, and any others contributed by installed plugins) inside them. Because the structure is recursive, you can keep nesting to build up arbitrarily deep components.
 
-Once a component is built, use Payload's **copy-paste-duplicate** to reuse it — duplicate the block and adjust the copy rather than rebuilding from scratch.
+Once a component is built, use Payload's **copy-paste-duplicate** to reuse it: duplicate the block and adjust the copy rather than rebuilding from scratch.
 
 On the front end, render the tree with the child renderer:
 
