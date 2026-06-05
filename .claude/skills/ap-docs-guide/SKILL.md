@@ -59,6 +59,14 @@ Registered globally — **never add imports** for them:
 
 Always label, and **only with a Shiki-loaded language**, or the build crashes (`ShikiError: Language not found`). Safe: `ts`, `tsx`, `js`, `jsx`, `json`, `bash`, `sh`, `css`, `mdx`, `plaintext`. Niche grammars like `gitignore`, `dotenv`, `env` are **not** loaded — use `plaintext` (add a `# .gitignore` comment for context). Use `ts` for Payload config, `tsx` for React/Next, `bash` for commands, `json` for `package.json`.
 
+## Code examples
+
+Show code the way a reader would actually write it, not an abstract import-then-call snippet. Put the API **inside its real context** — the server component, block render, collection config, layout, or `buildConfig` it belongs in — so the reader sees how the piece fits a real file, not just its signature.
+
+- Not this: import `Icon`, then a bare `<Icon name="check" />` floating on its own.
+- This: a small server component (or the actual block-render component) that resolves the data and returns the real markup, the way the package's own component or the template renders it.
+- This is the "ground in real source" rule (below) applied to snippets: base the example on the real package source or the `templates/atomic-payload` / `examples/*` wiring, so it mirrors code that exists rather than a contrived shape.
+
 ## Accuracy
 
 - **Ground everything in real source** — read the package's `src/` and `package.json`, and `templates/atomic-payload/` (its `package.json` scripts, `.env.example`, `src/app/**`) for how things are actually wired. Don't invent commands or flows.
@@ -75,5 +83,6 @@ Always label, and **only with a Shiki-loaded language**, or the build crashes (`
 - [ ] New page's slug added to its folder `meta.json`.
 - [ ] Plain, benefit-first tone; no banned jargon; no em-dashes/en-dashes in the prose.
 - [ ] Fumadocs components (no imports); every fence labeled with a Shiki-safe language.
+- [ ] Code snippets show real, in-context usage (inside a component / config / layout), not abstract import-and-call.
 - [ ] Content grounded in real source/template; all links verified.
 - [ ] Used the matching type skill for this page's structure.
