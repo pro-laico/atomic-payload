@@ -1,5 +1,5 @@
 import { APField } from '@pro-laico/core'
-import { ChangeKeyField, KeySelectField, PerformSelectField, SetDataField } from '@pro-laico/atomic/actions/fields'
+import { ChangeKeyField, KeySelectField, PerformSelectField, SetDataField } from '../../../fields'
 
 import type { Block } from 'payload'
 

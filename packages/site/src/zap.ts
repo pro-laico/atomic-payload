@@ -10,23 +10,23 @@
 const PAGES_HEADER_FOOTER = ['pages', 'header', 'footer'] as const
 const DESIGN_SET_AND_SHORTCUT_SET = ['designSet', 'shortcutSet'] as const
 
-export const CollectionThatUsesAtomicHookSlug = z.ap.add(z.enum([...PAGES_HEADER_FOOTER, ...DESIGN_SET_AND_SHORTCUT_SET, 'iconSet']), {
+const CollectionThatUsesAtomicHookSlug = z.ap.add(z.enum([...PAGES_HEADER_FOOTER, ...DESIGN_SET_AND_SHORTCUT_SET, 'iconSet']), {
   id: 'CollectionThatUsesAtomicHookSlug',
 })
 
-export const CollectionWithStoredAtomicClassesSlug = z.ap.add(z.enum(PAGES_HEADER_FOOTER), {
+const CollectionWithStoredAtomicClassesSlug = z.ap.add(z.enum(PAGES_HEADER_FOOTER), {
   id: 'CollectionWithStoredAtomicClassesSlug',
 })
 
-export const CollectionThatUseCSSProcessorSlug = z.ap.add(z.enum([...DESIGN_SET_AND_SHORTCUT_SET, ...PAGES_HEADER_FOOTER]), {
+const CollectionThatUseCSSProcessorSlug = z.ap.add(z.enum([...DESIGN_SET_AND_SHORTCUT_SET, ...PAGES_HEADER_FOOTER]), {
   id: 'CollectionThatUsesCSSProcessorSlug',
 })
 
-export const CollectionWithStoredAtomicFormsSlug = z.ap.add(z.enum(PAGES_HEADER_FOOTER), {
+const CollectionWithStoredAtomicFormsSlug = z.ap.add(z.enum(PAGES_HEADER_FOOTER), {
   id: 'CollectionWithStoredAtomicFormsSlug',
 })
 
-export const CollectionWithStoredAtomicActionsSlug = z.ap.add(z.enum(PAGES_HEADER_FOOTER), {
+const CollectionWithStoredAtomicActionsSlug = z.ap.add(z.enum(PAGES_HEADER_FOOTER), {
   id: 'CollectionWithStoredAtomicActionsSlug',
 })
 

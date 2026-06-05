@@ -1,6 +1,3 @@
-export { googleTagManagerGroup } from './globals/gtmGroup'
-export { postHogGroup } from './globals/postHogGroup'
-export { Tracking } from './globals/tracking'
 export type { TrackingPluginOptions } from './plugin'
 export { default, trackingPlugin } from './plugin'
 // Client-only React components (PostHogProvider, GoogleTagManagerProvider,

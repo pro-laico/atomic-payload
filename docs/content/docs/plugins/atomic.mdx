@@ -279,7 +279,7 @@ Atomic reads these when resolving the URL form submissions POST to. They're opti
 
 ## Exports
 
-Atomic exposes most of its surface through namespaced subpaths (`@pro-laico/atomic/{actions,hook,forms,children}` and their sub-subpaths). The package root re-exports the four plugin factories plus a curated set of values and types; the full subpath list is in the package's `package.json` `exports`. The key public pieces:
+Atomic exposes most of its surface through namespaced subpaths (`@pro-laico/atomic/{actions,hook,forms,children}` and their sub-subpaths). The package root re-exports the three block plugin factories (`actionsPlugin`, `formsPlugin`, `childBlocksPlugin`), the `ChildrenBlocksField`, and the ready-made `atomicHook` as a convenience; everything else lives on its subpath. The full subpath list is in the package's `package.json` `exports`. The key public pieces:
 
 ### Plugins & options
 
@@ -288,11 +288,7 @@ Atomic exposes most of its surface through namespaced subpaths (`@pro-laico/atom
     childBlocksPlugin: { type: 'plugin', location: '@pro-laico/atomic/children', description: 'Registers the nestable content child blocks (Atomic, SimpleText, RichText, Image, Video, Icon, SVG). Also re-exported from the root.' },
     actionsPlugin: { type: 'plugin', location: '@pro-laico/atomic/actions', description: 'Registers the built-in action blocks (theme toggle, cookie consent, form submit, dynamic store, portal). Also re-exported from the root.' },
     formsPlugin: { type: 'plugin', location: '@pro-laico/atomic/forms', description: 'Registers the default submit-form processing blocks (rate limiting, sanitation, validation). Also re-exported from the root.' },
-    atomicHookPlugin: { type: 'plugin', location: '@pro-laico/atomic/hook', description: "Attaches the save-time hook to your content collections' beforeChange. Also re-exported from the root." },
-    ActionsPluginOptions: { type: 'type', location: '@pro-laico/atomic', description: 'The options type for actionsPlugin.' },
-    FormsPluginOptions: { type: 'type', location: '@pro-laico/atomic', description: 'The options type for formsPlugin.' },
-    ChildBlocksPluginOptions: { type: 'type', location: '@pro-laico/atomic', description: 'The options type for childBlocksPlugin.' },
-    AtomicHookPluginOptions: { type: 'type', location: '@pro-laico/atomic', description: 'The options type for atomicHookPlugin.' },
+    atomicHookPlugin: { type: 'plugin', location: '@pro-laico/atomic/hook', description: "Attaches the save-time hook to your content collections' beforeChange." },
   }}
 />
 
@@ -324,7 +320,6 @@ Atomic exposes most of its surface through namespaced subpaths (`@pro-laico/atom
 <ExportTable
   exports={{
     submitForm: { type: 'function', location: '@pro-laico/atomic/forms/submitForm/serverFunction', description: 'The server action that runs the stored rate-limit / sanitation / validation pipeline and writes the submission.' },
-    formProcessor: { type: 'function', location: '@pro-laico/atomic/forms/submitForm/formProcessor', description: 'The processor invoked after a submission passes its checks — exported for advanced use.' },
     defaultSubmitFormBlocks: { type: 'object', location: '@pro-laico/atomic/forms', description: 'The default array of submit-form processing blocks formsPlugin registers.' },
   }}
 />

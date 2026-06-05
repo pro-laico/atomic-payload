@@ -1,5 +1,5 @@
 ﻿import { z } from '@pro-laico/zap'
-import { cookieConsentKeys } from '@pro-laico/atomic/actions/fields/strict/registry/cookieConsent'
+import { cookieConsentKeys } from '../../../../../../actions/fields/strict/registry/cookieConsent'
 
 export const CCtoDASchema = z.ap.add(
   z.object({

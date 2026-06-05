@@ -50,8 +50,8 @@ All of the above functionality meshes with the additional Sanitation, Validation
 
 | Import | What's there |
 | --- | --- |
-| `@pro-laico/atomic` | Root barrel — the four plugin factories (`childBlocksPlugin`, `actionsPlugin`, `formsPlugin`, `atomicHookPlugin`) plus curated value/type exports. |
-| `@pro-laico/atomic/actions` | Action blocks (theme toggle, form submit, cookie consent, dynamicStore, portal): `actionsPlugin`, `AllActionBlocks`, `ActionFilters`, `ActionBlockStorageProcessor`, action field builders. |
+| `@pro-laico/atomic` | Root barrel — the three block plugin factories (`childBlocksPlugin`, `actionsPlugin`, `formsPlugin`), the `ChildrenBlocksField`, and the ready-made `atomicHook`. |
+| `@pro-laico/atomic/actions` | Action blocks (theme toggle, form submit, cookie consent, dynamicStore, portal): `actionsPlugin`, `AllActionBlocks`, `ActionFilters`, `ActionBlockStorageProcessor`. |
 | `@pro-laico/atomic/hook` | The `beforeChange` orchestrator that runs CSS/UnoCSS through the design-set pipeline: `atomicHookPlugin`, `atomicHook`, `createAtomicHook`, `atomicHookWith`. |
 | `@pro-laico/atomic/hook/client` | The client zustand `AtomicStore` binding (`AtomicStoreProvider`, `useAtomicStore`, `createAtomicStore`). |
 | `@pro-laico/atomic/forms` | Form & input submission with sanitation, validation, and rate limiting: `formsPlugin`, `defaultSubmitFormBlocks`, form types. |

@@ -21,10 +21,6 @@
         "types": "./dist/cache/index.d.ts",
         "default": "./dist/cache/index.js"
       },
-      "./src": {
-        "types": "./dist/index.d.ts",
-        "default": "./dist/index.js"
-      },
       "./Icon": {
         "types": "./dist/components/frontend/Icon.d.ts",
         "default": "./dist/components/frontend/Icon.js"
@@ -40,10 +36,6 @@
       "./admin/iconSelect": {
         "types": "./dist/components/admin/iconSelect.d.ts",
         "default": "./dist/components/admin/iconSelect.js"
-      },
-      "./iconSet/defaults": {
-        "types": "./dist/iconSet/defaults.d.ts",
-        "default": "./dist/iconSet/defaults.js"
       },
       "./blocks/iconChild": {
         "types": "./dist/blocks/iconChild/block.d.ts",
@@ -78,10 +70,6 @@
       "types": "./src/cache/index.ts",
       "default": "./src/cache/index.ts"
     },
-    "./src": {
-      "types": "./src/index.ts",
-      "default": "./src/index.ts"
-    },
     "./Icon": {
       "types": "./src/components/frontend/Icon.tsx",
       "default": "./src/components/frontend/Icon.tsx"
@@ -97,10 +85,6 @@
     "./admin/iconSelect": {
       "types": "./src/components/admin/iconSelect.tsx",
       "default": "./src/components/admin/iconSelect.tsx"
-    },
-    "./iconSet/defaults": {
-      "types": "./src/iconSet/defaults.ts",
-      "default": "./src/iconSet/defaults.ts"
     },
     "./blocks/iconChild": {
       "types": "./src/blocks/iconChild/block.ts",

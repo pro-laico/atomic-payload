@@ -1,5 +1,5 @@
 ﻿import type { Block } from 'payload'
-import { PerformSelectField } from '@pro-laico/atomic/actions/fields'
+import { PerformSelectField } from '../../../fields'
 
 export const ActSetTheme: Block = {
   slug: 'ActSetTheme',

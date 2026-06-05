@@ -14,5 +14,5 @@ Zod with Atomic Payload extensions — a registry-aware schema layer (`z.ap`) sh
 
 | Import | What's there |
 | --- | --- |
-| `@pro-laico/zap` | The barrel: `z` (Zod with `z.ap` attached, also the default export), `AtomicPayloadZodClass`, `toJSONSchemaExtensions`, `generateBlocksType`, and `GenerateBlocksTypeProps`. |
+| `@pro-laico/zap` | The barrel: `z` (Zod with `z.ap` attached, also the default export), `toJSONSchemaExtensions`, and `generateBlocksType`. |
 | `@pro-laico/zap/schema` | The `AtomicRegistry` type alias (`Get<'AtomicRegistry', Record<string, any>>`), kept separate so packages can reference the registry type without pulling in the `server-only` runtime barrel. |

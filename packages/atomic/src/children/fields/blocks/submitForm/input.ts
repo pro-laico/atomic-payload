@@ -2,7 +2,7 @@
 import type { InputSanitationBlockType, InputValidationBlockType } from '@pro-laico/atomic/forms/schema'
 
 import { InputBlocksPath } from '../../../components/admin'
-import { useOn } from '@pro-laico/atomic/forms/submitForm/input/useOn'
+import { useOn } from '../../../../forms/submitForm/input/useOn'
 
 type InputFunctionRegistry = {
   Sanitation: InputSanitationBlockType[]

@@ -1,6 +1,6 @@
 import type { Block } from 'payload'
 import { APField } from '@pro-laico/core'
-import { ValidationMessageField } from '@pro-laico/atomic/forms/fields/validationMessage'
+import { ValidationMessageField } from '../../../../fields/validationMessage'
 
 const d = {
   limit: 'The number of times the field can be used. It defaults to 1.',

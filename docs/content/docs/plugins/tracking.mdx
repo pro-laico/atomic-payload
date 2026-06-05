@@ -144,7 +144,7 @@ The layout reads the global on each request, so once you save your changes the e
 <TypeTable
   type={{
     enabled: { type: 'boolean', default: 'true', description: 'Set false to turn the plugin off entirely.' },
-    includeTrackingGlobal: { type: 'boolean', default: 'true', description: 'Registers the Tracking global where you toggle each tool and enter its keys. Turn off if you compose your own global from the exported field groups.' },
+    includeTrackingGlobal: { type: 'boolean', default: 'true', description: 'Registers the Tracking global where you toggle each tool and enter its keys. Turn off if you provide your own tracking global.' },
   }}
 />
 
@@ -162,9 +162,6 @@ Everything `@pro-laico/tracking` exposes, grouped by where you reach for it.
   exports={{
     trackingPlugin: { type: 'plugin', location: '@pro-laico/tracking', description: 'The plugin itself — registers the Tracking global. Default and named export.' },
     TrackingPluginOptions: { type: 'type', location: '@pro-laico/tracking', description: "The TypeScript type for the plugin's options." },
-    Tracking: { type: 'global', location: '@pro-laico/tracking', description: 'The Tracking global config — the toggles and key fields for PostHog, Google Tag Manager, and Vercel Analytics. Import it to register or extend it yourself.' },
-    postHogGroup: { type: 'function', location: '@pro-laico/tracking', description: 'Builds the PostHog settings field group (public key, host, autocapture) for composing your own Tracking global.' },
-    googleTagManagerGroup: { type: 'function', location: '@pro-laico/tracking', description: 'Builds the Google Tag Manager settings field group (container ID) for composing your own Tracking global.' },
   }}
 />
 

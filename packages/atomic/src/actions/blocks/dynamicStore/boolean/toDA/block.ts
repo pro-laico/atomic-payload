@@ -1,6 +1,6 @@
 ﻿import type { Block } from 'payload'
 
-import { ChangeKeyField, KeyTextField } from '@pro-laico/atomic/actions/fields'
+import { ChangeKeyField, KeyTextField } from '../../../../fields'
 
 export const ActDSBoolToDA: Block = {
   slug: 'ActDSBoolToDA',

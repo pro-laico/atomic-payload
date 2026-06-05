@@ -13,10 +13,6 @@
         "types": "./dist/index.d.ts",
         "default": "./dist/index.js"
       },
-      "./src": {
-        "types": "./dist/index.d.ts",
-        "default": "./dist/index.js"
-      },
       "./cache": {
         "types": "./dist/cache/index.d.ts",
         "default": "./dist/cache/index.js"
@@ -33,33 +29,9 @@
         "types": "./dist/actions/blocks/zap.d.ts",
         "default": "./dist/actions/blocks/zap.js"
       },
-      "./actions/blocks": {
-        "types": "./dist/actions/blocks/blocks.d.ts",
-        "default": "./dist/actions/blocks/blocks.js"
-      },
-      "./actions/filters": {
-        "types": "./dist/actions/blocks/filters.d.ts",
-        "default": "./dist/actions/blocks/filters.js"
-      },
       "./actions/processor": {
         "types": "./dist/actions/blocks/processor.d.ts",
         "default": "./dist/actions/blocks/processor.js"
-      },
-      "./actions/fields": {
-        "types": "./dist/actions/fields/index.d.ts",
-        "default": "./dist/actions/fields/index.js"
-      },
-      "./actions/fields/keyText": {
-        "types": "./dist/actions/fields/keyText.d.ts",
-        "default": "./dist/actions/fields/keyText.js"
-      },
-      "./actions/fields/strict/registry/theme": {
-        "types": "./dist/actions/fields/strict/registry/theme.d.ts",
-        "default": "./dist/actions/fields/strict/registry/theme.js"
-      },
-      "./actions/fields/strict/registry/cookieConsent": {
-        "types": "./dist/actions/fields/strict/registry/cookieConsent.d.ts",
-        "default": "./dist/actions/fields/strict/registry/cookieConsent.js"
       },
       "./hook": {
         "types": "./dist/hook/index.d.ts",
@@ -81,10 +53,6 @@
         "types": "./dist/forms/types/payload-augment.d.ts",
         "default": "./dist/forms/types/payload-augment.js"
       },
-      "./forms/fields/validationMessage": {
-        "types": "./dist/forms/fields/validationMessage.d.ts",
-        "default": "./dist/forms/fields/validationMessage.js"
-      },
       "./forms/submitForm/form/zap": {
         "types": "./dist/forms/submitForm/form/zap.d.ts",
         "default": "./dist/forms/submitForm/form/zap.js"
@@ -93,25 +61,9 @@
         "types": "./dist/forms/submitForm/input/zap.d.ts",
         "default": "./dist/forms/submitForm/input/zap.js"
       },
-      "./forms/submitForm/input/useOn": {
-        "types": "./dist/forms/submitForm/input/useOn.d.ts",
-        "default": "./dist/forms/submitForm/input/useOn.js"
-      },
       "./forms/submitForm/serverFunction": {
         "types": "./dist/forms/submitForm/serverFunction.d.ts",
         "default": "./dist/forms/submitForm/serverFunction.js"
-      },
-      "./forms/submitForm/formProcessor": {
-        "types": "./dist/forms/submitForm/formProcessor.d.ts",
-        "default": "./dist/forms/submitForm/formProcessor.js"
-      },
-      "./forms/utilities/formatDurationWithTokens": {
-        "types": "./dist/forms/utilities/formatDurationWithTokens.d.ts",
-        "default": "./dist/forms/utilities/formatDurationWithTokens.js"
-      },
-      "./forms/utilities/getServerSideURL": {
-        "types": "./dist/forms/utilities/getServerSideURL.d.ts",
-        "default": "./dist/forms/utilities/getServerSideURL.js"
       },
       "./children": {
         "types": "./dist/children/index.d.ts",
@@ -128,10 +80,6 @@
       "./children/useActions/zap": {
         "types": "./dist/children/hooks/useActions/dispatch/zap.d.ts",
         "default": "./dist/children/hooks/useActions/dispatch/zap.js"
-      },
-      "./children/frontend-components": {
-        "types": "./dist/children/frontend-components.d.ts",
-        "default": "./dist/children/frontend-components.js"
       },
       "./children/render": {
         "types": "./dist/children/render/index.d.ts",
@@ -190,10 +138,6 @@
       "types": "./src/index.ts",
       "default": "./src/index.ts"
     },
-    "./src": {
-      "types": "./src/index.ts",
-      "default": "./src/index.ts"
-    },
     "./cache": {
       "types": "./src/cache/index.ts",
       "default": "./src/cache/index.ts"
@@ -210,33 +154,9 @@
       "types": "./src/actions/blocks/zap.ts",
       "default": "./src/actions/blocks/zap.ts"
     },
-    "./actions/blocks": {
-      "types": "./src/actions/blocks/blocks.ts",
-      "default": "./src/actions/blocks/blocks.ts"
-    },
-    "./actions/filters": {
-      "types": "./src/actions/blocks/filters.ts",
-      "default": "./src/actions/blocks/filters.ts"
-    },
     "./actions/processor": {
       "types": "./src/actions/blocks/processor.ts",
       "default": "./src/actions/blocks/processor.ts"
-    },
-    "./actions/fields": {
-      "types": "./src/actions/fields/index.ts",
-      "default": "./src/actions/fields/index.ts"
-    },
-    "./actions/fields/keyText": {
-      "types": "./src/actions/fields/keyText.ts",
-      "default": "./src/actions/fields/keyText.ts"
-    },
-    "./actions/fields/strict/registry/theme": {
-      "types": "./src/actions/fields/strict/registry/theme.ts",
-      "default": "./src/actions/fields/strict/registry/theme.ts"
-    },
-    "./actions/fields/strict/registry/cookieConsent": {
-      "types": "./src/actions/fields/strict/registry/cookieConsent.ts",
-      "default": "./src/actions/fields/strict/registry/cookieConsent.ts"
     },
     "./hook": {
       "types": "./src/hook/index.ts",
@@ -258,10 +178,6 @@
       "types": "./src/forms/types/payload-augment.ts",
       "default": "./src/forms/types/payload-augment.ts"
     },
-    "./forms/fields/validationMessage": {
-      "types": "./src/forms/fields/validationMessage.ts",
-      "default": "./src/forms/fields/validationMessage.ts"
-    },
     "./forms/submitForm/form/zap": {
       "types": "./src/forms/submitForm/form/zap.ts",
       "default": "./src/forms/submitForm/form/zap.ts"
@@ -270,25 +186,9 @@
       "types": "./src/forms/submitForm/input/zap.ts",
       "default": "./src/forms/submitForm/input/zap.ts"
     },
-    "./forms/submitForm/input/useOn": {
-      "types": "./src/forms/submitForm/input/useOn.ts",
-      "default": "./src/forms/submitForm/input/useOn.ts"
-    },
     "./forms/submitForm/serverFunction": {
       "types": "./src/forms/submitForm/serverFunction.ts",
       "default": "./src/forms/submitForm/serverFunction.ts"
-    },
-    "./forms/submitForm/formProcessor": {
-      "types": "./src/forms/submitForm/formProcessor.ts",
-      "default": "./src/forms/submitForm/formProcessor.ts"
-    },
-    "./forms/utilities/formatDurationWithTokens": {
-      "types": "./src/forms/utilities/formatDurationWithTokens.ts",
-      "default": "./src/forms/utilities/formatDurationWithTokens.ts"
-    },
-    "./forms/utilities/getServerSideURL": {
-      "types": "./src/forms/utilities/getServerSideURL.ts",
-      "default": "./src/forms/utilities/getServerSideURL.ts"
     },
     "./children": {
       "types": "./src/children/index.ts",
@@ -305,10 +205,6 @@
     "./children/useActions/zap": {
       "types": "./src/children/hooks/useActions/dispatch/zap.ts",
       "default": "./src/children/hooks/useActions/dispatch/zap.ts"
-    },
-    "./children/frontend-components": {
-      "types": "./src/children/frontend-components.ts",
-      "default": "./src/children/frontend-components.ts"
     },
     "./children/render": {
       "types": "./src/children/render/index.ts",

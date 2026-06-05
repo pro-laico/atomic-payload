@@ -1,7 +1,7 @@
 import type { Block } from 'payload'
 
 import { APField } from '@pro-laico/core'
-import { InitialValueCheckboxField, KeyTextField, PersistedField, SetDataField } from '@pro-laico/atomic/actions/fields'
+import { InitialValueCheckboxField, KeyTextField, PersistedField, SetDataField } from '../../../../fields'
 
 export const ActDSCycleText: Block = {
   slug: 'ActDSCycleText',

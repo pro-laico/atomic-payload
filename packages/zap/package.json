@@ -16,10 +16,6 @@
       "./schema": {
         "types": "./dist/types/payload-augment.d.ts",
         "default": "./dist/types/payload-augment.js"
-      },
-      "./src": {
-        "types": "./dist/index.d.ts",
-        "default": "./dist/index.js"
       }
     }
   },
@@ -33,10 +29,6 @@
     "./schema": {
       "types": "./src/types/payload-augment.ts",
       "default": "./src/types/payload-augment.ts"
-    },
-    "./src": {
-      "types": "./src/index.ts",
-      "default": "./src/index.ts"
     }
   },
   "files": [

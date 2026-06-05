@@ -196,15 +196,13 @@ Grouped by what they're for.
   }}
 />
 
-### Collections & globals
+### Collections
 
 <ExportTable
   exports={{
     Pages: { type: 'collection', location: '@pro-laico/site', description: 'The routable pages collection (title, slug, href, parent nesting, content, SEO, and settings) — import it to register or extend it yourself.' },
     Header: { type: 'collection', location: '@pro-laico/site', description: 'The header collection for the chrome rendered above every page.' },
     Footer: { type: 'collection', location: '@pro-laico/site', description: 'The footer collection for the chrome rendered below every page.' },
-    Settings: { type: 'global', location: '@pro-laico/site', description: 'The site-wide Settings global (the draft / published persistent store version).' },
-    SiteMetaData: { type: 'global', location: '@pro-laico/site', description: 'The site-wide SEO fallbacks global — site name, default description, default Open Graph image, and light/dark favicons.' },
   }}
 />
 
@@ -226,12 +224,11 @@ Grouped by what they're for.
   }}
 />
 
-### Constants & schemas
+### Schemas
 
 <ExportTable
   exports={{
-    COLLECTION_SLUGS_WITH_ATOMIC_HOOK: { type: 'constant', location: '@pro-laico/site', description: 'The list of collection slugs that should run the atomic hook (pages / header / footer plus the styles and icons sets) — keep your atomic-hook wiring in sync with this.' },
-    'CollectionSchemas (+ slug schemas)': { type: 'object', location: '@pro-laico/site/zap', description: 'The zap registry schemas for the site collection slugs — register them before generating types (the JSON-schema step uses these). Default export, with the individual slug schemas named.' },
+    CollectionSchemas: { type: 'object', location: '@pro-laico/site/zap', description: 'The zap registry schemas for the site collection slugs — register them before generating types (the JSON-schema step uses these). Default export.' },
   }}
 />
 

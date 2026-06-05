@@ -20,5 +20,5 @@ The bundled default seed needs all of these to know what to write:
 
 | Import | What's there |
 | --- | --- |
-| `.` | Plugin barrel — `seedPlugin` (default + named), the bundled `seed`, `createSeedEndpoint`, `BeforeDashboardPath`, and the `SeedPluginOptions` / `SeedFn` / `SeedAuthorize` / `SeedSlugConfig` types. |
+| `.` | Plugin barrel — `seedPlugin` (default + named), the bundled `seed`, and the `SeedPluginOptions` / `SeedSlugConfig` types. |
 | `./admin/beforeDashboard` | The `BeforeDashboard` admin banner component (loaded via Payload's import map). |

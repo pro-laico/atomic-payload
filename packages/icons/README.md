@@ -17,13 +17,12 @@ Turns SVG icons into first-class CMS content — an upload collection optimized 
 
 | Import | What's there |
 | --- | --- |
-| `.` | Plugin barrel — `iconsPlugin` plus collections, hooks, and helpers (server-only; re-exports the `server-only` `formatSVG` hook). |
+| `.` | Plugin barrel — `iconsPlugin` plus the `extractSvgContent` / `extractSvgProps` SVG helpers and the `IconLabelPath` import-map constant. |
 | `./schema` | Payload `Icon` / `IconSet` type-augmentation stubs. |
 | `./Icon` | `<Icon name="..." />` server component (resolves from the active IconSet). |
 | `./AtomicIcon` | `AtomicIcon` marker glyph for atomic block types — client-safe entry kept off the server-only main barrel. |
 | `./admin/iconRowLabel` | Admin row label (loaded via import map). |
 | `./admin/iconSelect` | `createIconSelect` factory for the admin select widget. |
-| `./iconSet/defaults` | Name presets for seeding/docs. |
 | `./blocks/iconChild` | `IconChild` block config (exported `Icon` const + `createIconBlock` factory). |
 | `./blocks/iconChild/component` | `IconChild` block renderer. |
 | `./blocks/svgChild` | `SVGChild` block config (exported `SVGBlock` const + `createSvgBlock` factory). |

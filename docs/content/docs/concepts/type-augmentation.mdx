@@ -5,7 +5,7 @@ description: "How Atomic Payload packages ship type stubs against one PayloadAug
 
 ## What & why
 
-Atomic Payload is plugin-based, but the packages can't hard-code the types of the project that consumes them — every app generates its own `payload-types.ts` with its own block, collection, and global shapes. To stay decoupled, each domain package (`atomic`, `site`, `styles`, …) ships **schema stubs** written as `Get<'X', Default>` against the single `PayloadAugment` interface in `@pro-laico/core/kernel`.
+Atomic Payload is plugin-based, but the packages can't hard-code the types of the project that consumes them — every app generates its own `payload-types.ts` with its own block, collection, and global shapes. To stay decoupled, each domain package (`atomic`, `site`, `styles`, …) ships **schema stubs** written as `Get<'X', Default>` against the single `PayloadAugment` interface from `@pro-laico/core`.
 
 `PayloadAugment` is an indirection layer. The packages reference it; they never reference your generated types directly. Your project then **fills that interface in once**, and every package's stub resolves to your project's concrete shape.
 
@@ -57,7 +57,7 @@ pnpm generate:types
 
 </Steps>
 
-For `Extract<T, { discriminant: K }>` patterns whose `T` is a default fallback like `DefaultBlock`, packages use `ExtractOrDefault<T, V>` (also exported from `@pro-laico/core/kernel`) — it falls back to `T & V` rather than collapsing to `never` when the augmentation is missing.
+For `Extract<T, { discriminant: K }>` patterns whose `T` is a default fallback like `DefaultBlock`, packages use `ExtractOrDefault<T, V>` (also exported from `@pro-laico/core`) — it falls back to `T & V` rather than collapsing to `never` when the augmentation is missing.
 
 ## Notes
 

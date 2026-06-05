@@ -95,10 +95,8 @@ After that runs, the IDs you registered with `z.ap.add` show up as members of th
 <ExportTable
   exports={{
     z: { type: 'object', location: '@pro-laico/zap', description: 'Zod, re-exported with the z.ap registry attached (add, get, type, and the z.ap.Type<id> type helper). Both the default export and a named export.' },
-    AtomicPayloadZodClass: { type: 'class', location: '@pro-laico/zap', description: 'The class behind z.ap, exported for typing and extension. The shared instance is z.ap — you normally do not construct your own.' },
     toJSONSchemaExtensions: { type: 'function', location: '@pro-laico/zap', description: 'Adds every registered schema to a generated JSON schema. Pass it to the core JSON-schema plugin (or spread it into your own Payload typescript.schema function) so the registered shapes become generated types.' },
     generateBlocksType: { type: 'function', location: '@pro-laico/zap', description: 'Builds a JSON-schema entry describing a union of block references, used alongside toJSONSchemaExtensions to generate block-union types.' },
-    GenerateBlocksTypeProps: { type: 'type', location: '@pro-laico/zap', description: 'The argument shape for generateBlocksType: { name: string; refs: (string | undefined)[] }.' },
     AtomicRegistry: { type: 'type', location: '@pro-laico/zap/schema', description: 'The type that maps each registered ID to its generated shape. Resolves through the @pro-laico/core kernel to your project\'s generated types, falling back to Record<string, any> before they are generated.' },
   }}
 />

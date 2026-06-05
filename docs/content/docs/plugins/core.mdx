@@ -125,7 +125,7 @@ The rest of the package — fields, hooks, cache helpers, URL and metadata utili
 
 | Variable | Purpose |
 | --- | --- |
-| `NEXT_PUBLIC_SERVER_URL` | The site's base URL, used by `getServerSideURL` / `getClientSideURL` for absolute links and metadata. Falls back to `http://localhost:3000`. |
+| `NEXT_PUBLIC_SERVER_URL` | The site's base URL, used by `getServerSideURL` for absolute links and metadata. Falls back to `http://localhost:3000`. |
 | `VERCEL_PROJECT_PRODUCTION_URL` | Used as the base URL on Vercel when `NEXT_PUBLIC_SERVER_URL` isn't set. |
 | `PREVIEW_SECRET` | Validates draft-preview requests handled by the preview route handlers and `generateLivePreviewPath`. |
 | `VERCEL_DEPLOY_WEBHOOK_URL` | The deploy hook the admin "trigger deploy" control posts to, when you use the site triggers component. |
@@ -139,11 +139,8 @@ The rest of the package — fields, hooks, cache helpers, URL and metadata utili
 <ExportTable
   exports={{
     revalidationPlugin: { type: 'plugin', location: '@pro-laico/core', description: 'Attaches the cache-revalidation hooks to the collection and global slugs you list. Default and named export.' },
-    RevalidationPluginOptions: { type: 'type', location: '@pro-laico/core', description: "The TypeScript type for revalidationPlugin's options." },
     jsonSchemaPlugin: { type: 'plugin', location: '@pro-laico/core', description: 'Extends payload generate:types with accurate JSON-schema definitions for block fields.' },
-    'jsonSchemaPlugin options + types': { type: 'type', location: '@pro-laico/core', description: 'JSONSchemaPluginOptions, AtomicPayloadSchemaBlocks, BlockRefs, and the related schema-extension function types.' },
     createJSONSchemaExtensions: { type: 'function', location: '@pro-laico/core', description: 'Builds the schema-extension function jsonSchemaPlugin appends — call it directly to wire schema generation by hand.' },
-    atomicPayloadStoredDefinitions: { type: 'object', location: '@pro-laico/core', description: 'The shared JSON-schema definitions for stored Atomic forms and actions, merged into generated types.' },
   }}
 />
 
@@ -155,10 +152,9 @@ The rest of the package — fields, hooks, cache helpers, URL and metadata utili
     StorageTab: { type: 'field', location: '@pro-laico/core', description: 'The admin tab that holds generated CSS / storage fields.' },
     DevModeField: { type: 'field', location: '@pro-laico/core', description: 'A field that surfaces developer-only controls in the admin.' },
     TestPathField: { type: 'field', location: '@pro-laico/core', description: 'A field for the live-preview test path.' },
-    createTestPathField: { type: 'function', location: '@pro-laico/core', description: 'Factory that builds a customized live-preview test path field.' },
     UniqueTitleField: { type: 'field', location: '@pro-laico/core', description: 'A title field that enforces uniqueness.' },
     ActiveField: { type: 'field', location: '@pro-laico/core', description: 'A reusable active / enabled toggle field.' },
-    'APField + APF helpers': { type: 'function', location: '@pro-laico/core', description: 'The Atomic Payload Functions field plus its registry, storage, generators, and runAPF runner — the building blocks for configurable block behavior.' },
+    'APField + APF helpers': { type: 'function', location: '@pro-laico/core', description: 'The Atomic Payload Functions field plus generateAPFFields and the runAPF runner — the building blocks for configurable block behavior.' },
   }}
 />
 
@@ -166,10 +162,7 @@ The rest of the package — fields, hooks, cache helpers, URL and metadata utili
 
 <ExportTable
   exports={{
-    'revalidate hooks': { type: 'function', location: '@pro-laico/core', description: 'The collection and global revalidation hooks and their default handler maps (revalidateCacheCollection, revalidateCacheOnDelete, revalidateCacheGlobal, and friends) — wired for you by revalidationPlugin.' },
-    sanitizeAfterRead: { type: 'function', location: '@pro-laico/core', description: 'An afterRead collection hook that strips internal fields from API responses.' },
-    formatSlug: { type: 'function', location: '@pro-laico/core', description: 'Turns a string into a URL-safe slug — a plain helper.' },
-    formatSlugHook: { type: 'function', location: '@pro-laico/core', description: 'The field-hook form of formatSlug, for auto-slugging a field on change.' },
+    'revalidate hooks': { type: 'function', location: '@pro-laico/core', description: 'The collection and global revalidation hooks (revalidateCacheCollection, revalidateCacheCollectionAfterChange, revalidateCacheOnDelete, revalidateCacheGlobalAfterChange) — wired for you by revalidationPlugin. Plus the createRevalidateCache* factories for binding a custom slug-to-handler map.' },
     updateHrefHook: { type: 'function', location: '@pro-laico/core', description: 'Keeps a document href field in sync as its slug or parents change.' },
     updatePublishedAtHook: { type: 'function', location: '@pro-laico/core', description: 'Stamps publishedAt the first time a document is published.' },
   }}
@@ -180,8 +173,6 @@ The rest of the package — fields, hooks, cache helpers, URL and metadata utili
 <ExportTable
   exports={{
     getServerSideURL: { type: 'function', location: '@pro-laico/core', description: 'Resolves the site base URL on the server (reads NEXT_PUBLIC_SERVER_URL with sensible fallbacks).' },
-    getClientSideURL: { type: 'function', location: '@pro-laico/core', description: 'Resolves the site base URL in the browser, falling back to env vars during SSR.' },
-    getImageUrl: { type: 'function', location: '@pro-laico/core', description: 'Builds an absolute URL for an uploaded image.' },
     GenerateMetaData: { type: 'function', location: '@pro-laico/core', description: "Produces a Next.js metadata object from a document's SEO fields." },
     generateLivePreviewPath: { type: 'function', location: '@pro-laico/core', description: 'Builds the preview URL used by Payload live preview.' },
   }}
@@ -194,9 +185,9 @@ The rest of the package — fields, hooks, cache helpers, URL and metadata utili
     mergeCollection: { type: 'function', location: '@pro-laico/core', description: 'Merge user overrides onto a default collection config — the composition helper plugins use internally.' },
     mergeGlobal: { type: 'function', location: '@pro-laico/core', description: 'Merge user overrides onto a default global config — the composition helper plugins use internally.' },
     mergeHooks: { type: 'function', location: '@pro-laico/core', description: 'Combine multiple hook maps into one.' },
-    deepMerge: { type: 'function', location: '@pro-laico/core', description: 'A deep object merge utility (with the isObject guard).' },
+    deepMerge: { type: 'function', location: '@pro-laico/core', description: 'A deep object merge utility.' },
     sanitizeData: { type: 'function', location: '@pro-laico/core', description: 'Strips non-serializable values before passing data to the client.' },
-    'string + duration helpers': { type: 'function', location: '@pro-laico/core', description: 'toTitleCase, toKebabCase, formatDurationString, and the mt merge-tags helper.' },
+    'string helpers': { type: 'function', location: '@pro-laico/core', description: 'toTitleCase and toKebabCase string-casing helpers.' },
     manualLogger: { type: 'function', location: '@pro-laico/core', description: 'A small logger used across the packages.' },
     revalidateTag: { type: 'function', location: '@pro-laico/core', description: 'A safe wrapper around Next.js revalidateTag for use in server actions.' },
   }}
@@ -228,11 +219,9 @@ The rest of the package — fields, hooks, cache helpers, URL and metadata utili
 
 <ExportTable
   exports={{
-    'kernel types': { type: 'type', location: '@pro-laico/core/kernel', description: 'The type-indirection layer: the PayloadAugment interface, the Get<> lookup, the default fallbacks, and generic config helpers like CollectionBySlug.' },
+    'kernel types': { type: 'type', location: '@pro-laico/core', description: 'The type-indirection layer: the PayloadAugment interface, the Get<> lookup, the default fallbacks, and generic config helpers like CollectionBySlug.' },
     registerPayloadConfig: { type: 'function', location: '@pro-laico/core/config', description: 'Registers your Payload config so the cache helpers can reach the Local API — called once from the Next.js instrumentation hook.' },
-    revalidationLogger: { type: 'function', location: '@pro-laico/core/logger', description: 'A server-only logger for revalidation events. Subpath-only because it imports server-only.' },
     getPayloadInstance: { type: 'function', location: '@pro-laico/core/payload', description: 'Returns a memoized Local API Payload instance.' },
-    getMeUser: { type: 'function', location: '@pro-laico/core/auth/getMeUser', description: 'Resolves the currently logged-in user on the frontend. Subpath-only because it imports next/navigation.' },
     'preview route handlers': { type: 'function', location: '@pro-laico/core/next/preview', description: 'createPreviewRouteHandler and exitPreviewRouteHandler (from @pro-laico/core/next/exit-preview) — the GET handlers for the draft-preview routes.' },
   }}
 />

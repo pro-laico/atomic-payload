@@ -191,9 +191,6 @@ Grouped by what they do — the plugin and its options, the seeding runtime, and
 <ExportTable
   exports={{
     seed: { type: 'function', location: '@pro-laico/seed', description: 'The bundled default seed — clears and recreates a starter design set, icon set, header/footer, sample pages, and site metadata. Override it by passing your own; accepts an optional second slugConfig argument.' },
-    SeedFn: { type: 'type', location: '@pro-laico/seed', description: 'The signature a seed function must match — receives { payload, req } and returns a promise.' },
-    createSeedEndpoint: { type: 'function', location: '@pro-laico/seed', description: 'Builds the auth-guarded POST endpoint directly from a seed function, path, and optional authorize check. Registered for you by the plugin; exported for advanced use.' },
-    SeedAuthorize: { type: 'type', location: '@pro-laico/seed', description: 'The type of the authorize predicate — receives the authenticated user and returns whether the seed is permitted.' },
     SeedSlugConfig: { type: 'type', location: '@pro-laico/seed', description: 'Optional collection/global slug overrides for the bundled seed(), letting it write to non-default slugs.' },
   }}
 />
@@ -202,8 +199,7 @@ Grouped by what they do — the plugin and its options, the seeding runtime, and
 
 <ExportTable
   exports={{
-    BeforeDashboardPath: { type: 'constant', location: '@pro-laico/seed', description: "The import-map path string the plugin registers for the admin banner ('@pro-laico/seed/admin/beforeDashboard')." },
-    BeforeDashboard: { type: 'component', location: '@pro-laico/seed/admin/beforeDashboard', description: 'The admin dashboard banner with the SEED DATABASE button. Loaded through Payload\'s import map — reference it by BeforeDashboardPath rather than importing it at config time.' },
+    BeforeDashboard: { type: 'component', location: '@pro-laico/seed/admin/beforeDashboard', description: 'The admin dashboard banner with the SEED DATABASE button. Loaded through Payload\'s import map — reference it by its subpath rather than importing it at config time.' },
   }}
 />
 

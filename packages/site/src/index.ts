@@ -10,8 +10,5 @@ export { default, sitePlugin } from './plugin'
 // keep client-component imports out of any consumer that only needs the
 // Payload-side collection configs (e.g. payload.config.ts).
 
-export { COLLECTION_SLUGS_WITH_ATOMIC_HOOK } from './collections/pages/atomicHookSlugs'
 export { SEOTab } from './collections/pages/tabs/SEO'
 export { SettingsTab } from './collections/pages/tabs/settings'
-export { Settings } from './globals/settings'
-export { SiteMetaData } from './globals/siteMetaData'

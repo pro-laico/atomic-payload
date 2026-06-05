@@ -3,10 +3,11 @@ import { useMemo } from 'react'
 import { BlocksField, useFormFields } from '@payloadcms/ui'
 import type { BlocksFieldClientProps } from 'payload'
 
-import type { ActionBlockFilter, ActionBlockPrefix } from '@pro-laico/atomic/actions'
-import { ActionFilters } from '@pro-laico/atomic/actions/filters'
 import type { ChildBlockType } from '@pro-laico/atomic/children/schema'
+import type { ActionBlockFilter, ActionBlockPrefix } from '@pro-laico/atomic/actions'
 import type { AtomicButtonPortalTypes, AtomicButtonTypes, AtomicChildVariants, AtomicInputTypes } from '@pro-laico/atomic/actions/schema'
+
+import { ActionFilters } from '../../../actions/blocks/filters'
 
 interface ActionBlocksFieldProps extends BlocksFieldClientProps {
   placement: ActionBlockPrefix

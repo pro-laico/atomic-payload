@@ -3,7 +3,7 @@ title: "The kernel: Get and PayloadAugment"
 description: "The type-indirection layer in @pro-laico/core that lets plugin schema stubs resolve to a project's concrete generated types."
 ---
 
-The **kernel** lives in `@pro-laico/core` (`src/kernel.ts`, also reachable as `@pro-laico/core/kernel`). It is the indirection layer that lets every Atomic Payload package reference the consuming app's generated `payload-types.ts` shapes without hard-coding them.
+The **kernel** lives in `@pro-laico/core` (`src/kernel.ts`), and its types are re-exported from the package's root barrel. It is the indirection layer that lets every Atomic Payload package reference the consuming app's generated `payload-types.ts` shapes without hard-coding them.
 
 ## What & why
 

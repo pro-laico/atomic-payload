@@ -18,7 +18,7 @@ The opinionated "site shape" package: Pages, Header, and Footer collections plus
 
 | Import | What's there |
 | --- | --- |
-| `@pro-laico/site` | `sitePlugin` + `SitePluginOptions`, the `Pages` / `Header` / `Footer` collections, the `Settings` / `SiteMetaData` globals, `SEOTab`, `SettingsTab`, and `COLLECTION_SLUGS_WITH_ATOMIC_HOOK`. |
+| `@pro-laico/site` | `sitePlugin` + `SitePluginOptions`, the `Pages` / `Header` / `Footer` collections, and the `SEOTab` / `SettingsTab` fields. |
 | `@pro-laico/site/schema` | The Payload type stubs (`Page`, `Header`, `Footer`, `SiteMetaDatum`, `ShortcutSet`). |
-| `@pro-laico/site/zap` | The site's slug zod enums (`CollectionThatUsesAtomicHookSlug`, `CollectionWithStoredAtomicClassesSlug`, etc.) for the `zap` registry. |
+| `@pro-laico/site/zap` | The `CollectionSchemas` default export — the site's slug schemas for the `zap` registry. |
 | `@pro-laico/site/components/frontend` | The `Header` and `Footer` frontend React renderers, kept off the main barrel so server config never imports client code. |

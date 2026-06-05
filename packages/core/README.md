@@ -20,13 +20,10 @@ This is a base package with no `@pro-laico/*` runtime dependencies — it's the 
 
 | Import | What's there |
 | --- | --- |
-| `@pro-laico/core` | The barrel: `revalidationPlugin` (default), `jsonSchemaPlugin`, kernel types, fields, hooks, and admin component path constants. |
-| `@pro-laico/core/kernel` | `PayloadAugment`, `Get<>`, default fallbacks and generic config helpers. |
-| `@pro-laico/core/logger` | `revalidationLogger` — imports `server-only`. |
+| `@pro-laico/core` | The barrel: `revalidationPlugin` (default), `jsonSchemaPlugin`, kernel types (`PayloadAugment`, `Get<>`, and friends), fields, hooks, and admin component path constants. |
 | `@pro-laico/core/cache` (and `/cache/primitives`) | `withCache` (the caching primitive every package getter wraps its fetch with) and the `mt` tag-merge helper. The data getters now live in the packages that own their collections (`@pro-laico/site/cache`, `styles/cache`, etc.). Imports `server-only`. |
 | `@pro-laico/core/payload` | `getPayloadInstance` — Local API handle from the registered config (server-only). |
 | `@pro-laico/core/config` | `registerPayloadConfig` / `getPayloadConfig` — the config registry (server-only). |
-| `@pro-laico/core/auth/getMeUser` | `getMeUser` — frontend auth helper; imports `next/navigation`. |
 | `@pro-laico/core/components/frontend/Toaster` | The `Toaster` client component. |
 | `@pro-laico/core/components/frontend/LivePreviewListener` | The `LivePreviewListener` client component. |
 | `@pro-laico/core/next/preview` | `previewRouteHandler` for the draft-preview route. |

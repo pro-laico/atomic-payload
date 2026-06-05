@@ -13,14 +13,6 @@
         "types": "./dist/index.d.ts",
         "default": "./dist/index.js"
       },
-      "./kernel": {
-        "types": "./dist/kernel.d.ts",
-        "default": "./dist/kernel.js"
-      },
-      "./logger": {
-        "types": "./dist/utilities/log.d.ts",
-        "default": "./dist/utilities/log.js"
-      },
       "./cache": {
         "types": "./dist/utilities/cache/index.d.ts",
         "default": "./dist/utilities/cache/index.js"
@@ -57,10 +49,6 @@
         "types": "./dist/next/exitPreviewRouteHandler.d.ts",
         "default": "./dist/next/exitPreviewRouteHandler.js"
       },
-      "./auth/getMeUser": {
-        "types": "./dist/utilities/getMeUser.d.ts",
-        "default": "./dist/utilities/getMeUser.js"
-      },
       "./admin/controls": {
         "types": "./dist/apf/components/admin/controls.d.ts",
         "default": "./dist/apf/components/admin/controls.js"
@@ -72,10 +60,6 @@
       "./admin/label": {
         "types": "./dist/apf/components/admin/label.d.ts",
         "default": "./dist/apf/components/admin/label.js"
-      },
-      "./src": {
-        "types": "./dist/index.d.ts",
-        "default": "./dist/index.js"
       },
       "./config": {
         "types": "./dist/config/index.d.ts",
@@ -92,14 +76,6 @@
     ".": {
       "types": "./src/index.ts",
       "default": "./src/index.ts"
-    },
-    "./kernel": {
-      "types": "./src/kernel.ts",
-      "default": "./src/kernel.ts"
-    },
-    "./logger": {
-      "types": "./src/utilities/log.ts",
-      "default": "./src/utilities/log.ts"
     },
     "./cache": {
       "types": "./src/utilities/cache/index.ts",
@@ -137,10 +113,6 @@
       "types": "./src/next/exitPreviewRouteHandler.ts",
       "default": "./src/next/exitPreviewRouteHandler.ts"
     },
-    "./auth/getMeUser": {
-      "types": "./src/utilities/getMeUser.ts",
-      "default": "./src/utilities/getMeUser.ts"
-    },
     "./admin/controls": {
       "types": "./src/apf/components/admin/controls.tsx",
       "default": "./src/apf/components/admin/controls.tsx"
@@ -152,10 +124,6 @@
     "./admin/label": {
       "types": "./src/apf/components/admin/label.tsx",
       "default": "./src/apf/components/admin/label.tsx"
-    },
-    "./src": {
-      "types": "./src/index.ts",
-      "default": "./src/index.ts"
     },
     "./config": {
       "types": "./src/config/index.ts",

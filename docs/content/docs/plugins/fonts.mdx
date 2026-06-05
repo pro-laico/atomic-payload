@@ -231,23 +231,11 @@ Everything `@pro-laico/fonts` exports, grouped by what you reach for it.
   }}
 />
 
-### Collection & global
-
-<ExportTable
-  exports={{
-    Font: { type: 'collection', location: '@pro-laico/fonts', description: 'The upload collection your font files live in — import it to register or extend the collection yourself.' },
-    FontSet: { type: 'global', location: '@pro-laico/fonts', description: 'The standalone font-selection global (active sans / serif / mono / display) that includeFontSet registers.' },
-    createFontSetGlobal: { type: 'function', location: '@pro-laico/fonts', description: 'Factory for a customized fontSet global — use it when you need to change its slug or fields.' },
-    FONT_SET_SLUG: { type: 'constant', location: '@pro-laico/fonts', description: 'The slug string for the fontSet global ("fontSet") — handy when querying it.' },
-  }}
-/>
-
 ### Fields
 
 <ExportTable
   exports={{
     fontUploadField: { type: 'function', location: '@pro-laico/fonts', description: "Builds the font group field for a @pro-laico/styles design set's Fonts tab." },
-    fontUploadFields: { type: 'function', location: '@pro-laico/fonts', description: 'Builds the four upload slot fields (sans / serif / mono / display) shared by the global and the design-set group.' },
   }}
 />
 

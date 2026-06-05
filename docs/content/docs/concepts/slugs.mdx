@@ -53,15 +53,13 @@ const getCachedArticles = createGetCachedPages('articles')
 const getCachedContactForms = createGetCachedBackendForms('contactForms')
 ```
 
-### Admin fields — `createTestPathField` / `createLinkControlBarFields`
+### Admin fields — `createLinkControlBarFields`
 
-`createTestPathField(slug)` is from `@pro-laico/core`; `createLinkControlBarFields(slug)` is from `@pro-laico/atomic`. Each builds an admin field bound to the slug you pass.
+`createLinkControlBarFields(slug)` is from `@pro-laico/atomic`. It builds an admin field bound to the slug you pass.
 
 ```ts
-import { createTestPathField } from '@pro-laico/core'
 import { createLinkControlBarFields } from '@pro-laico/atomic'
 
-const testPathField = createTestPathField('articles')
 const linkControlBarFields = createLinkControlBarFields('articles')
 ```
 

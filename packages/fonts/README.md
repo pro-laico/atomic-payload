@@ -14,6 +14,6 @@ Manages custom fonts in Payload and ships them to disk for `next/font/local`, wo
 
 | Import | What's there |
 | --- | --- |
-| `@pro-laico/fonts` | The barrel: `fontsPlugin` (default), the `Font` upload collection, `fontUploadField` / `fontUploadFields`, and the standalone `FontSet` / `createFontSetGlobal` / `FONT_SET_SLUG`. |
+| `@pro-laico/fonts` | The barrel: `fontsPlugin` (default), `fontUploadField`, `extractFonts`, and `exportFontsEndpoint`. |
 | `@pro-laico/fonts/schema` | `Font` / `FontSet` Payload type augmentation stubs. |
 | `@pro-laico/fonts/scripts/downloadFonts` | `runDownloadFonts` — selection resolution plus storage-agnostic download and definition generation. |
