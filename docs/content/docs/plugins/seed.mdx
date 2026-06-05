@@ -5,6 +5,10 @@ description: "Fill a fresh project with sample content in one click — a SEED D
 
 `@pro-laico/seed` gives you a one-click way to populate a brand-new project with the content that makes Atomic Payload feel alive — a starter design set, a default icon set, header and footer, sample pages, and site metadata. It adds a **SEED DATABASE** button to the admin dashboard and the guarded `POST /api/seed` endpoint behind it, so you can go from an empty database to a working site without writing any setup data by hand.
 
+<Callout type="info">
+  `@pro-laico/seed` is a Tool package — a building block of the Atomic Payload stack, meant to be used alongside `@pro-laico/core` and the other `@pro-laico/*` packages (most easily via the [atomic-payload template](/docs/templates/atomic-payload)), not on its own.
+</Callout>
+
 <Callout type="warn">
   Seeding is **destructive**: it clears the collections it manages and recreates them from scratch. Run it on a fresh project, not over content you want to keep. By default the endpoint allows **any authenticated user** to run it, so lock it down with the [`authorize`](#options) option in multi-user or production apps.
 </Callout>
@@ -171,15 +175,33 @@ The plugin reads no environment variables itself. The template uses one to decid
 
 ## Exports
 
+Grouped by what they do — the plugin and its options, the seeding runtime, and the admin banner.
+
+### The plugin
+
 <ExportTable
   exports={{
     seedPlugin: { type: 'plugin', location: '@pro-laico/seed', description: 'The plugin itself — mounts the POST /api/seed endpoint and (by default) the SEED DATABASE admin banner. Default and named export.' },
     SeedPluginOptions: { type: 'type', location: '@pro-laico/seed', description: "The TypeScript type for the plugin's options." },
+  }}
+/>
+
+### Seeding
+
+<ExportTable
+  exports={{
     seed: { type: 'function', location: '@pro-laico/seed', description: 'The bundled default seed — clears and recreates a starter design set, icon set, header/footer, sample pages, and site metadata. Override it by passing your own; accepts an optional second slugConfig argument.' },
     SeedFn: { type: 'type', location: '@pro-laico/seed', description: 'The signature a seed function must match — receives { payload, req } and returns a promise.' },
     createSeedEndpoint: { type: 'function', location: '@pro-laico/seed', description: 'Builds the auth-guarded POST endpoint directly from a seed function, path, and optional authorize check. Registered for you by the plugin; exported for advanced use.' },
     SeedAuthorize: { type: 'type', location: '@pro-laico/seed', description: 'The type of the authorize predicate — receives the authenticated user and returns whether the seed is permitted.' },
     SeedSlugConfig: { type: 'type', location: '@pro-laico/seed', description: 'Optional collection/global slug overrides for the bundled seed(), letting it write to non-default slugs.' },
+  }}
+/>
+
+### Admin
+
+<ExportTable
+  exports={{
     BeforeDashboardPath: { type: 'constant', location: '@pro-laico/seed', description: "The import-map path string the plugin registers for the admin banner ('@pro-laico/seed/admin/beforeDashboard')." },
     BeforeDashboard: { type: 'component', location: '@pro-laico/seed/admin/beforeDashboard', description: 'The admin dashboard banner with the SEED DATABASE button. Loaded through Payload\'s import map — reference it by BeforeDashboardPath rather than importing it at config time.' },
   }}

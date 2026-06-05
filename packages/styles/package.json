@@ -17,37 +17,9 @@
         "types": "./dist/types/payload-augment.d.ts",
         "default": "./dist/types/payload-augment.js"
       },
-      "./cssProcessor": {
-        "types": "./dist/cssProcessor.d.ts",
-        "default": "./dist/cssProcessor.js"
-      },
-      "./processDesignSet": {
-        "types": "./dist/processDesignSet/index.d.ts",
-        "default": "./dist/processDesignSet/index.js"
-      },
-      "./designSet/tabs/colors": {
-        "types": "./dist/designSet/tabs/colors.d.ts",
-        "default": "./dist/designSet/tabs/colors.js"
-      },
-      "./designSet/defaults": {
-        "types": "./dist/designSet/defaults.d.ts",
-        "default": "./dist/designSet/defaults.js"
-      },
-      "./fields/value": {
-        "types": "./dist/fields/value.d.ts",
-        "default": "./dist/fields/value.js"
-      },
       "./fields/className": {
         "types": "./dist/fields/className.d.ts",
         "default": "./dist/fields/className.js"
-      },
-      "./globals/storage": {
-        "types": "./dist/globals/storage.d.ts",
-        "default": "./dist/globals/storage.js"
-      },
-      "./hooks/cssHook": {
-        "types": "./dist/hooks/cssHook.d.ts",
-        "default": "./dist/hooks/cssHook.js"
       },
       "./ui/rowLabels/shortcut": {
         "types": "./dist/ui/rowLabels/shortcut/index.d.ts",
@@ -78,37 +50,9 @@
       "types": "./src/types/payload-augment.ts",
       "default": "./src/types/payload-augment.ts"
     },
-    "./cssProcessor": {
-      "types": "./src/cssProcessor.ts",
-      "default": "./src/cssProcessor.ts"
-    },
-    "./processDesignSet": {
-      "types": "./src/processDesignSet/index.ts",
-      "default": "./src/processDesignSet/index.ts"
-    },
-    "./designSet/tabs/colors": {
-      "types": "./src/designSet/tabs/colors.ts",
-      "default": "./src/designSet/tabs/colors.ts"
-    },
-    "./designSet/defaults": {
-      "types": "./src/designSet/defaults.ts",
-      "default": "./src/designSet/defaults.ts"
-    },
-    "./fields/value": {
-      "types": "./src/fields/value.ts",
-      "default": "./src/fields/value.ts"
-    },
     "./fields/className": {
       "types": "./src/fields/className.ts",
       "default": "./src/fields/className.ts"
-    },
-    "./globals/storage": {
-      "types": "./src/globals/storage.ts",
-      "default": "./src/globals/storage.ts"
-    },
-    "./hooks/cssHook": {
-      "types": "./src/hooks/cssHook.ts",
-      "default": "./src/hooks/cssHook.ts"
     },
     "./ui/rowLabels/shortcut": {
       "types": "./src/ui/rowLabels/shortcut/index.tsx",

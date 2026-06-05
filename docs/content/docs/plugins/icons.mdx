@@ -3,7 +3,7 @@ title: "@pro-laico/icons"
 description: "Manage your SVG icons in the Payload admin — upload them, group them into reusable sets, and render any icon by name on your site."
 ---
 
-`@pro-laico/icons` makes your SVG icons part of the CMS. Upload an icon and it's cleaned up and optimized automatically; group icons into named sets you can swap from the admin; then render any icon by name on your site. Editors can change which icons your pages use without touching code.
+`@pro-laico/icons` allows you to upload SVG icons, and have them automatically optimized and formatted for use in your application front end. This serves to offer a comparably easy to use solution to a public icon library like lucide, but without the limited options of a public icon library.
 
 ## Installation
 
@@ -207,26 +207,66 @@ In a project that uses `@pro-laico/atomic`'s children system, editors can also p
 
 ## Exports
 
+Grouped by what each export is for.
+
+### The plugin
+
 <ExportTable
   exports={{
     iconsPlugin: { type: 'plugin', location: '@pro-laico/icons', description: 'The plugin itself — registers the Icon collection and, by default, the IconSet collection. Default and named export.' },
     IconsPluginOptions: { type: 'type', location: '@pro-laico/icons', description: "The TypeScript type for the plugin's options." },
+  }}
+/>
+
+### Collections
+
+<ExportTable
+  exports={{
     Icon: { type: 'collection', location: '@pro-laico/icons', description: 'The SVG upload collection your icons live in — import it to register or extend the collection yourself.' },
     createIconCollection: { type: 'function', location: '@pro-laico/icons', description: 'Factory for a customized Icon collection — appended fields, additive hooks, and a shallow-merge escape hatch.' },
     IconCollectionOptions: { type: 'type', location: '@pro-laico/icons', description: 'The options type for createIconCollection (and the plugin’s iconOptions).' },
     IconSet: { type: 'collection', location: '@pro-laico/icons', description: 'The grouping collection that buckets icons under a named, versioned, draft-enabled set with an active toggle.' },
     createIconSetCollection: { type: 'function', location: '@pro-laico/icons', description: 'Factory for a customized IconSet collection — wire live preview, extra fields, per-icon-row fields, and additive hooks.' },
     IconSetCollectionOptions: { type: 'type', location: '@pro-laico/icons', description: 'The options type for createIconSetCollection (and the plugin’s iconSetOptions).' },
+  }}
+/>
+
+### Frontend & admin
+
+<ExportTable
+  exports={{
     'Icon (component)': { type: 'component', location: '@pro-laico/icons/Icon', description: 'Server component that renders an icon by name from the active set, with cached lookup and a fallback. The main way to use icons on the frontend.' },
     AtomicIcon: { type: 'component', location: '@pro-laico/icons', description: 'Small marker glyph used in the admin to label atomic block types (tag / form / input / button / portal).' },
     createIconSelect: { type: 'function', location: '@pro-laico/icons/admin/iconSelect', description: 'Factory that builds the admin select field for picking an icon by name — you pass it your app’s cached fetcher.' },
+  }}
+/>
+
+### SVG helpers
+
+<ExportTable
+  exports={{
     formatSVGHook: { type: 'function', location: '@pro-laico/icons', description: 'The beforeChange hook that optimizes an uploaded SVG (svgo cleanup + viewBox tightening). Wired onto the Icon collection automatically.' },
     formatSvg: { type: 'function', location: '@pro-laico/icons', description: 'The SVG optimization step as a standalone function — run it on an SVG string outside the hook.' },
     extractSvgContent: { type: 'function', location: '@pro-laico/icons', description: 'Pulls the inner markup out of an SVG string (everything between the <svg> tags).' },
     extractSvgProps: { type: 'function', location: '@pro-laico/icons', description: 'Pulls the attributes (viewBox, fill, …) off an SVG’s root tag as a props object.' },
+  }}
+/>
+
+### Constants
+
+<ExportTable
+  exports={{
     defaultIconNameList: { type: 'constant', location: '@pro-laico/icons/iconSet/defaults', description: 'Preset icon-name list (general / interface / social / shapes / brand) handy for seeding a starter set.' },
     IconLabelPath: { type: 'constant', location: '@pro-laico/icons', description: 'The admin import-map path for the IconSet row label component.' },
-    'Icon / IconSet (types)': { type: 'type', location: '@pro-laico/icons/schema', description: 'TypeScript types for typed access to your Icon and IconSet documents.' },
+  }}
+/>
+
+### Types
+
+<ExportTable
+  exports={{
+    'Icon (type)': { type: 'type', location: '@pro-laico/icons/schema', description: 'TypeScript type for typed access to your Icon documents.' },
+    'IconSet (type)': { type: 'type', location: '@pro-laico/icons/schema', description: 'TypeScript type for typed access to your IconSet documents.' },
   }}
 />
 

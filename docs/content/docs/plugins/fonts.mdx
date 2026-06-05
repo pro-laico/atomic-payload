@@ -220,20 +220,53 @@ It needs `start-server-and-test` and `cross-env` as dev dependencies. There are 
 
 ## Exports
 
+Everything `@pro-laico/fonts` exports, grouped by what you reach for it.
+
+### The plugin
+
 <ExportTable
   exports={{
     fontsPlugin: { type: 'plugin', location: '@pro-laico/fonts', description: 'The plugin itself — registers the Font collection and, with includeFontSet, the fontSet global. Default and named export.' },
     FontsPluginOptions: { type: 'type', location: '@pro-laico/fonts', description: "The TypeScript type for the plugin's options." },
+  }}
+/>
+
+### Collection & global
+
+<ExportTable
+  exports={{
     Font: { type: 'collection', location: '@pro-laico/fonts', description: 'The upload collection your font files live in — import it to register or extend the collection yourself.' },
     FontSet: { type: 'global', location: '@pro-laico/fonts', description: 'The standalone font-selection global (active sans / serif / mono / display) that includeFontSet registers.' },
     createFontSetGlobal: { type: 'function', location: '@pro-laico/fonts', description: 'Factory for a customized fontSet global — use it when you need to change its slug or fields.' },
     FONT_SET_SLUG: { type: 'constant', location: '@pro-laico/fonts', description: 'The slug string for the fontSet global ("fontSet") — handy when querying it.' },
+  }}
+/>
+
+### Fields
+
+<ExportTable
+  exports={{
     fontUploadField: { type: 'function', location: '@pro-laico/fonts', description: "Builds the font group field for a @pro-laico/styles design set's Fonts tab." },
     fontUploadFields: { type: 'function', location: '@pro-laico/fonts', description: 'Builds the four upload slot fields (sans / serif / mono / display) shared by the global and the design-set group.' },
+  }}
+/>
+
+### Functions
+
+<ExportTable
+  exports={{
     exportFontsEndpoint: { type: 'function', location: '@pro-laico/fonts', description: 'Factory for the GET /api/fonts/export endpoint the plugin registers — resolves the active fonts and returns their bytes, secured by PAYLOAD_SECRET. Registered automatically; exported for advanced use.' },
     extractFonts: { type: 'function', location: '@pro-laico/fonts', description: 'Turns the generated definition.ts export into the space-separated next/font className for your root <html> — returns undefined before the fonts are generated.' },
     runDownloadFonts: { type: 'function', location: '@pro-laico/fonts/scripts/downloadFonts', description: 'The font download step as a function — call it from your own build script instead of the generate:fonts command.' },
-    'Font / FontSet (types)': { type: 'type', location: '@pro-laico/fonts/schema', description: 'TypeScript types for typed access to your font data and the active selection.' },
+  }}
+/>
+
+### Types
+
+<ExportTable
+  exports={{
+    'Font (type)': { type: 'type', location: '@pro-laico/fonts/schema', description: 'TypeScript type for typed access to your Font documents.' },
+    'FontSet (type)': { type: 'type', location: '@pro-laico/fonts/schema', description: 'TypeScript type for the active font selection.' },
   }}
 />
 

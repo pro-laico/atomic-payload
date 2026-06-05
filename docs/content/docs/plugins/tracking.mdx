@@ -154,6 +154,10 @@ This plugin reads **no** environment variables. Every key — the PostHog public
 
 ## Exports
 
+Everything `@pro-laico/tracking` exposes, grouped by where you reach for it.
+
+### The plugin
+
 <ExportTable
   exports={{
     trackingPlugin: { type: 'plugin', location: '@pro-laico/tracking', description: 'The plugin itself — registers the Tracking global. Default and named export.' },
@@ -161,10 +165,24 @@ This plugin reads **no** environment variables. Every key — the PostHog public
     Tracking: { type: 'global', location: '@pro-laico/tracking', description: 'The Tracking global config — the toggles and key fields for PostHog, Google Tag Manager, and Vercel Analytics. Import it to register or extend it yourself.' },
     postHogGroup: { type: 'function', location: '@pro-laico/tracking', description: 'Builds the PostHog settings field group (public key, host, autocapture) for composing your own Tracking global.' },
     googleTagManagerGroup: { type: 'function', location: '@pro-laico/tracking', description: 'Builds the Google Tag Manager settings field group (container ID) for composing your own Tracking global.' },
+  }}
+/>
+
+### Frontend
+
+<ExportTable
+  exports={{
     TrackingProvider: { type: 'function', location: '@pro-laico/tracking/provider', description: 'The composite client provider for your app root — reads the Tracking global and renders only the tools you enabled. Client component.' },
     PostHogProvider: { type: 'function', location: '@pro-laico/tracking/provider', description: 'The PostHog-only client provider, in case you wire providers individually.' },
     GoogleTagManagerProvider: { type: 'function', location: '@pro-laico/tracking/provider', description: 'The Google Tag Manager-only client provider.' },
     VercelProvider: { type: 'function', location: '@pro-laico/tracking/provider', description: 'The Vercel Analytics-only client provider.' },
+  }}
+/>
+
+### Types
+
+<ExportTable
+  exports={{
     'Tracking (type)': { type: 'type', location: '@pro-laico/tracking/schema', description: 'The TypeScript type for the Tracking global, for typed access to your tracking settings.' },
   }}
 />

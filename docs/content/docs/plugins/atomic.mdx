@@ -7,6 +7,10 @@ description: "Turns the nested blocks editors build in the Payload admin into a 
 
 This is foundational tooling. You rarely install it on its own — the [atomic-payload template](/docs/templates/atomic-payload) and the other `@pro-laico/*` plugins bring it along, and a lot of its work happens behind the scenes when content is saved. But it also ships the React pieces your own app renders with — the block renderer, the form submission action, and the client store behind interactive blocks — so this page covers that frontend surface too.
 
+<Callout type="info">
+  `@pro-laico/atomic` is a Tool package — a building block of the Atomic Payload stack, meant to be used alongside `@pro-laico/core` and the other `@pro-laico/*` packages (most easily via the [atomic-payload template](/docs/templates/atomic-payload)), not on its own.
+</Callout>
+
 ## Installation
 
 <Tabs groupId="package-manager" items={['pnpm', 'npm', 'yarn']}>
@@ -275,29 +279,69 @@ Atomic reads these when resolving the URL form submissions POST to. They're opti
 
 Atomic exposes most of its surface through namespaced subpaths (`@pro-laico/atomic/{actions,hook,forms,children}` and their sub-subpaths). The package root re-exports the four plugin factories plus a curated set of values and types; the full subpath list is in the package's `package.json` `exports`. The key public pieces:
 
+### Plugins & options
+
 <ExportTable
   exports={{
     childBlocksPlugin: { type: 'plugin', location: '@pro-laico/atomic/children', description: 'Registers the nestable content child blocks (Atomic, SimpleText, RichText, Image, Video, Icon, SVG). Also re-exported from the root.' },
     actionsPlugin: { type: 'plugin', location: '@pro-laico/atomic/actions', description: 'Registers the built-in action blocks (theme toggle, cookie consent, form submit, dynamic store, portal). Also re-exported from the root.' },
     formsPlugin: { type: 'plugin', location: '@pro-laico/atomic/forms', description: 'Registers the default submit-form processing blocks (rate limiting, sanitation, validation). Also re-exported from the root.' },
     atomicHookPlugin: { type: 'plugin', location: '@pro-laico/atomic/hook', description: "Attaches the save-time hook to your content collections' beforeChange. Also re-exported from the root." },
-    'ActionsPluginOptions / FormsPluginOptions / ChildBlocksPluginOptions / AtomicHookPluginOptions': { type: 'type', location: '@pro-laico/atomic', description: 'The options types for each plugin factory.' },
-    createAtomicHook: { type: 'function', location: '@pro-laico/atomic/hook', description: 'Builds the save-time beforeChange hook from your cache reader and action storage processor.' },
-    atomicHook: { type: 'function', location: '@pro-laico/atomic/hook', description: "The ready-made hook using the template's conventional slug names — pass it straight to atomicHookPlugin (or stylesPlugin) without configuring dependencies." },
-    unsetActive: { type: 'function', location: '@pro-laico/atomic/hook', description: 'Helper that clears the previously-active document when a new one is marked active.' },
+    ActionsPluginOptions: { type: 'type', location: '@pro-laico/atomic', description: 'The options type for actionsPlugin.' },
+    FormsPluginOptions: { type: 'type', location: '@pro-laico/atomic', description: 'The options type for formsPlugin.' },
+    ChildBlocksPluginOptions: { type: 'type', location: '@pro-laico/atomic', description: 'The options type for childBlocksPlugin.' },
+    AtomicHookPluginOptions: { type: 'type', location: '@pro-laico/atomic', description: 'The options type for atomicHookPlugin.' },
+  }}
+/>
+
+### Children
+
+<ExportTable
+  exports={{
     RenderChildren: { type: 'component', location: '@pro-laico/atomic/children/render', description: "The frontend renderer — a Server Component that walks a page's saved block tree and renders each block." },
-    AtomicStoreProvider: { type: 'component', location: '@pro-laico/atomic/hook/client', description: 'Client provider that holds the state behind interactive blocks (dialogs, popovers, theme toggles, dynamic store). Wrap your frontend in it.' },
-    useAtomicStore: { type: 'function', location: '@pro-laico/atomic/hook/client', description: 'Hook to read from the client store inside your own components.' },
-    submitForm: { type: 'function', location: '@pro-laico/atomic/forms/submitForm/serverFunction', description: 'The server action that runs the stored rate-limit / sanitation / validation pipeline and writes the submission.' },
-    formProcessor: { type: 'function', location: '@pro-laico/atomic/forms/submitForm/formProcessor', description: 'The processor invoked after a submission passes its checks — exported for advanced use.' },
     buildChildBlocks: { type: 'function', location: '@pro-laico/atomic/children', description: 'Builds the default child block configs directly, for when you compose blocks yourself instead of using the plugin.' },
     childBlocks: { type: 'object', location: '@pro-laico/atomic/children', description: 'The default child block definitions.' },
     ChildrenBlocksField: { type: 'field', location: '@pro-laico/atomic/children', description: 'The reusable blocks field that holds nested child blocks — drop it into your own collection or block.' },
+  }}
+/>
+
+### Hook
+
+<ExportTable
+  exports={{
+    createAtomicHook: { type: 'function', location: '@pro-laico/atomic/hook', description: 'Builds the save-time beforeChange hook from your cache reader and action storage processor.' },
+    atomicHook: { type: 'function', location: '@pro-laico/atomic/hook', description: "The ready-made hook using the template's conventional slug names — pass it straight to atomicHookPlugin (or stylesPlugin) without configuring dependencies." },
+    unsetActive: { type: 'function', location: '@pro-laico/atomic/hook', description: 'Helper that clears the previously-active document when a new one is marked active.' },
+    AtomicStoreProvider: { type: 'component', location: '@pro-laico/atomic/hook/client', description: 'Client provider that holds the state behind interactive blocks (dialogs, popovers, theme toggles, dynamic store). Wrap your frontend in it.' },
+    useAtomicStore: { type: 'function', location: '@pro-laico/atomic/hook/client', description: 'Hook to read from the client store inside your own components.' },
+  }}
+/>
+
+### Forms
+
+<ExportTable
+  exports={{
+    submitForm: { type: 'function', location: '@pro-laico/atomic/forms/submitForm/serverFunction', description: 'The server action that runs the stored rate-limit / sanitation / validation pipeline and writes the submission.' },
+    formProcessor: { type: 'function', location: '@pro-laico/atomic/forms/submitForm/formProcessor', description: 'The processor invoked after a submission passes its checks — exported for advanced use.' },
+    defaultSubmitFormBlocks: { type: 'object', location: '@pro-laico/atomic/forms', description: 'The default array of submit-form processing blocks formsPlugin registers.' },
+  }}
+/>
+
+### Actions
+
+<ExportTable
+  exports={{
     AllActionBlocks: { type: 'object', location: '@pro-laico/atomic/actions', description: 'The array of built-in action block definitions actionsPlugin registers.' },
     ActionOptions: { type: 'object', location: '@pro-laico/atomic/actions', description: 'The option definitions for each built-in action.' },
     ActionFilters: { type: 'object', location: '@pro-laico/atomic/actions', description: 'Filters that constrain which actions apply where.' },
     ActionBlockStorageProcessor: { type: 'function', location: '@pro-laico/atomic/actions/processor', description: 'Collects the action data from a page tree at save time — passed into createAtomicHook.' },
-    defaultSubmitFormBlocks: { type: 'object', location: '@pro-laico/atomic/forms', description: 'The default array of submit-form processing blocks formsPlugin registers.' },
+  }}
+/>
+
+### Types
+
+<ExportTable
+  exports={{
     'Schema types': { type: 'type', location: '@pro-laico/atomic/{actions,hook,forms,children}/schema', description: 'Per-area TypeScript types for typed access to stored actions, forms, and child block data.' },
   }}
 />

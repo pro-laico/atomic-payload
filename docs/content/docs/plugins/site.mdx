@@ -5,6 +5,10 @@ description: "The ready-made site shape for Atomic Payload — Pages, Header, an
 
 `@pro-laico/site` gives you the bones of a website out of the box: a **Pages** collection, editable **Header** and **Footer**, site-wide **Settings**, and **SEO / metadata** defaults. Instead of remodeling the same collections on every project, you start with a sensible, ready-to-edit site structure. It's a Tool package — most people get it through the [atomic-payload template](/docs/templates/atomic-payload), which wires it up alongside the other plugins, rather than installing it on its own.
 
+<Callout type="info">
+  `@pro-laico/site` is a Tool package — a building block of the Atomic Payload stack, meant to be used alongside `@pro-laico/core` and the other `@pro-laico/*` packages (most easily via the [atomic-payload template](/docs/templates/atomic-payload)), not on its own.
+</Callout>
+
 ## Installation
 
 <Tabs groupId="package-manager" items={['pnpm', 'npm', 'yarn']}>
@@ -181,21 +185,64 @@ The template fetches the active `header` and `footer` documents (and the page co
 
 ## Exports
 
+Grouped by what they're for.
+
+### The plugin
+
 <ExportTable
   exports={{
     sitePlugin: { type: 'plugin', location: '@pro-laico/site', description: 'The plugin itself — registers the Pages / Header / Footer collections and the Settings / SiteMetaData globals. Default and named export.' },
     SitePluginOptions: { type: 'type', location: '@pro-laico/site', description: "The TypeScript type for the plugin's options." },
+  }}
+/>
+
+### Collections & globals
+
+<ExportTable
+  exports={{
     Pages: { type: 'collection', location: '@pro-laico/site', description: 'The routable pages collection (title, slug, href, parent nesting, content, SEO, and settings) — import it to register or extend it yourself.' },
     Header: { type: 'collection', location: '@pro-laico/site', description: 'The header collection for the chrome rendered above every page.' },
     Footer: { type: 'collection', location: '@pro-laico/site', description: 'The footer collection for the chrome rendered below every page.' },
     Settings: { type: 'global', location: '@pro-laico/site', description: 'The site-wide Settings global (the draft / published persistent store version).' },
     SiteMetaData: { type: 'global', location: '@pro-laico/site', description: 'The site-wide SEO fallbacks global — site name, default description, default Open Graph image, and light/dark favicons.' },
+  }}
+/>
+
+### Fields
+
+<ExportTable
+  exports={{
     SEOTab: { type: 'field', location: '@pro-laico/site', description: 'The drop-in SEO tab (title, description, image, favicons, indexing and sitemap settings) — compose it into your own page-like collections.' },
     SettingsTab: { type: 'field', location: '@pro-laico/site', description: 'The drop-in page settings tab (dev mode, breadcrumbs, and the page-function storage fields) for composing your own page-like collections.' },
+  }}
+/>
+
+### Frontend
+
+<ExportTable
+  exports={{
+    'Header (component)': { type: 'component', location: '@pro-laico/site/components/frontend', description: 'Server component that renders a header document’s blocks — pass the header document and place it above your page content.' },
+    'Footer (component)': { type: 'component', location: '@pro-laico/site/components/frontend', description: 'Server component that renders a footer document’s blocks — pass the footer document and place it below your page content.' },
+  }}
+/>
+
+### Constants & schemas
+
+<ExportTable
+  exports={{
     COLLECTION_SLUGS_WITH_ATOMIC_HOOK: { type: 'constant', location: '@pro-laico/site', description: 'The list of collection slugs that should run the atomic hook (pages / header / footer plus the styles and icons sets) — keep your atomic-hook wiring in sync with this.' },
-    'Header / Footer (components)': { type: 'component', location: '@pro-laico/site/components/frontend', description: 'Server components that render a header or footer document’s blocks — pass the matching document and place them around your page content.' },
     'CollectionSchemas (+ slug schemas)': { type: 'object', location: '@pro-laico/site/zap', description: 'The zap registry schemas for the site collection slugs — register them before generating types (the JSON-schema step uses these). Default export, with the individual slug schemas named.' },
-    'Page / Header / Footer / SiteMetaDatum (types)': { type: 'type', location: '@pro-laico/site/schema', description: 'TypeScript types for typed access to your pages, header, footer, and site-metadata documents.' },
+  }}
+/>
+
+### Types
+
+<ExportTable
+  exports={{
+    'Page (type)': { type: 'type', location: '@pro-laico/site/schema', description: 'TypeScript type for typed access to your page documents.' },
+    'Header (type)': { type: 'type', location: '@pro-laico/site/schema', description: 'TypeScript type for typed access to your header document.' },
+    'Footer (type)': { type: 'type', location: '@pro-laico/site/schema', description: 'TypeScript type for typed access to your footer document.' },
+    'SiteMetaDatum (type)': { type: 'type', location: '@pro-laico/site/schema', description: 'TypeScript type for typed access to your site-metadata document.' },
   }}
 />
 

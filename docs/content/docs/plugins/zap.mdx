@@ -5,6 +5,10 @@ description: "Zod with Atomic Payload extensions — the shared schema layer tha
 
 You rarely reach for `@pro-laico/zap` directly — the other `@pro-laico/*` packages depend on it and bring it along. It's the shared schema layer underneath them: [Zod](https://zod.dev/), re-exported with a small registry attached as `z.ap`. Each package describes its data shapes once and registers them under a string ID, and those shapes flow through Payload's type generation into your project's types. You'll usually only touch it when you're building your own package on top of Atomic Payload, or registering an extra schema of your own.
 
+<Callout type="info">
+  `@pro-laico/zap` is a Tool package — a building block of the Atomic Payload stack, meant to be used alongside `@pro-laico/core` and the other `@pro-laico/*` packages (most easily via the [atomic-payload template](/docs/templates/atomic-payload)), not on its own.
+</Callout>
+
 ## Installation
 
 <Tabs groupId="package-manager" items={['pnpm', 'npm', 'yarn']}>

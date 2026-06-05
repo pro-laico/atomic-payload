@@ -41,6 +41,7 @@ Write for a reader with **surface-level** Payload, Next.js, and React knowledge.
 - Lead with the goal/benefit in plain words; never open with internals.
 - Avoid jargon a surface-level reader wouldn't use: "binaries" → "files", "bin" → "command"/script; also "storage-agnostic", bare "runtime/namespaces", and kernel / `PayloadAugment` / `Get<>` talk up front. Genuinely common terms (`buildConfig`, `next/font/local`, "collection", "component") are fine.
 - Second person and direct. Flag gotchas with a `<Callout>`, not long warning paragraphs.
+- **No em-dashes (`—`) or en-dashes (`–`)** anywhere in the prose. They read as AI-generated and make the docs look machine-written. Rewrite with a comma, a colon, parentheses, or two separate sentences. (A normal hyphen in compound words like `benefit-first` is fine.)
 
 ## Fumadocs components (this site — NOT Payload's `<Banner>`)
 
@@ -51,7 +52,7 @@ Registered globally — **never add imports** for them:
 - `<Tabs groupId="package-manager" items={['npm','pnpm','yarn']}>` + `<Tab value="...">` — install / variant blocks.
 - `<Steps>` + `<Step>` (each with a `###` heading) — procedural walkthroughs.
 - `<TypeTable type={{ ... }} />` — option tables (`{ type, default?, description }` per row).
-- `<ExportTable exports={{ ... }} />` — **project-custom** (in `docs/src/components/`): the Exports table on plugin pages, styled to match `TypeTable` (collapsible card rows — collapsed shows the export name + kind, expanding reveals the description + location). Each row is `{ type (kind), location (import path), description }`.
+- `<ExportTable exports={{ ... }} />` — **project-custom** (in `docs/src/components/`): the Exports table on plugin pages, styled to match `TypeTable` (collapsible card rows — collapsed shows the export name + kind, expanding reveals the description + location). Each row is `{ type (kind), location (import path), description }`. One export per row — never join names with `/`; use several `<ExportTable>`s under `###` subheadings when there are many exports or multiple subpaths.
 - `<Accordions>` + `<Accordion title="...">` — collapsible items for optional/advanced details (e.g. the template page's deployment integrations).
 
 ## Code fences
@@ -72,7 +73,7 @@ Always label, and **only with a Shiki-loaded language**, or the build crashes (`
 
 - [ ] Frontmatter: `title` + approachable `description`; body starts with an intro paragraph (no repeated H1).
 - [ ] New page's slug added to its folder `meta.json`.
-- [ ] Plain, benefit-first tone; no banned jargon.
+- [ ] Plain, benefit-first tone; no banned jargon; no em-dashes/en-dashes in the prose.
 - [ ] Fumadocs components (no imports); every fence labeled with a Shiki-safe language.
 - [ ] Content grounded in real source/template; all links verified.
 - [ ] Used the matching type skill for this page's structure.
