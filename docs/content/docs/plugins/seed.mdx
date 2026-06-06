@@ -120,25 +120,24 @@ Open the admin dashboard and click **SEED DATABASE** in the welcome banner. The 
 
 <Tab value="With the atomic-payload template">
 
-The [atomic-payload template](/docs/templates/atomic-payload) already wires everything up: the plugin is in the config, the admin button is in the import map, and seeding is gated behind the `INCLUDE_SEED` environment variable.
+The [atomic-payload template](/docs/templates/atomic-payload) already wires everything up: the plugin is in the config and the admin button is in the import map, so the **SEED DATABASE** button is ready on the dashboard.
 
 <Steps>
-
-<Step>
-### Keep seeding enabled
-
-The template registers the plugin as `seedPlugin({ enabled: process.env.INCLUDE_SEED === 'true' })`, so set `INCLUDE_SEED=true` in your `.env` (it's already in `.env.example`) to show the dashboard button. Set it to `false` once your project has real content you don't want overwritten.
-
-```plaintext
-# .env
-INCLUDE_SEED=true
-```
-</Step>
 
 <Step>
 ### Click SEED DATABASE
 
 Open the admin dashboard. The welcome banner has a **SEED DATABASE** button; click it to populate a fresh project with the starter design set, icon set, header/footer, sample pages, and site metadata. A toast confirms when it finishes, and you can then visit the site to see the content.
+</Step>
+
+<Step>
+### Lock it down for production
+
+The template registers the plugin as a plain `seedPlugin()`, so seeding is always available. Because the seed is destructive, pass `enabled: false` (or an `authorize` predicate) in `src/plugins/index.ts` once your project has real content you don't want overwritten.
+
+```ts
+seedPlugin({ enabled: false })
+```
 </Step>
 
 </Steps>
@@ -205,11 +204,7 @@ seedPlugin({
 
 ## Environment variables
 
-The plugin reads no environment variables itself. The template uses one to decide whether to register it:
-
-| Variable | Purpose |
-| --- | --- |
-| `INCLUDE_SEED` | The template gates `seedPlugin({ enabled: ... })` on this. Set `true` to mount the endpoint and show the **SEED DATABASE** button, `false` to leave them out. |
+The plugin reads no environment variables. Control registration with the `enabled` option instead: pass `false` (or gate it behind your own env var) to skip the endpoint and the admin button.
 
 ## Exports
 

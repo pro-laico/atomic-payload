@@ -1,7 +1,10 @@
 import { authd } from '@/access/authenticated'
 import { formBuilderPlugin } from '@payloadcms/plugin-form-builder'
-import { revalidateCacheCollection as revalidateCache } from '@pro-laico/core'
 
+// Revalidation on `forms` / `form-submissions` is wired by `pluginComposer`'s
+// finalizer (see ./index), which runs last and attaches the revalidation
+// dispatchers to every collection, so no per-collection
+// `beforeChange: [revalidateCache]` is needed here.
 function insertFieldAtPosition<T>(fields: T[], field: T, position: number): T[] {
   return [...fields.slice(0, position), field, ...fields.slice(position)]
 }
@@ -15,7 +18,6 @@ export const formBuilderPluginConfig = formBuilderPlugin({
     // via the Local API with `overrideAccess: true`. Read/update/delete stay
     // authenticated since submissions can hold PII.
     access: { create: () => false, delete: authd, read: authd, update: authd },
-    hooks: { beforeChange: [revalidateCache] },
   },
   fields: {
     select: false,
@@ -33,7 +35,6 @@ export const formBuilderPluginConfig = formBuilderPlugin({
     slug: 'forms',
     admin: { group: 'Forms' },
     access: { read: authd, update: authd },
-    hooks: { beforeChange: [revalidateCache] },
     labels: { singular: 'Backend Form', plural: 'Backend Forms' },
     fields: ({ defaultFields }) => {
       const fieldsToRemove = ['submitButtonLabel', 'confirmationType', 'confirmationMessage', 'redirect', 'fields']

@@ -67,7 +67,7 @@ Adding styles to your own Payload + Next.js project, with no `@pro-laico/atomic`
 <Step>
 ### Add the plugin to your Payload config
 
-`stylesPlugin` always needs a `generateLivePreviewPath` (it's shared by both collections for live preview). Pass a `getCached` getter (built with `createCssGetCached`) to attach the standalone CSS hook so this package generates the stylesheet itself:
+`generateLivePreviewPath` (shared by both collections for live preview) is optional. Leave it out and the plugin uses `@pro-laico/core`'s `generateLivePreviewPath`, which builds the URL from `PREVIEW_SECRET` + `NEXT_PUBLIC_SERVER_URL`. Pass your own to override it. Pass a `getCached` getter (built with `createCssGetCached`) to attach the standalone CSS hook so this package generates the stylesheet itself:
 
 ```ts
 import { buildConfig } from 'payload'
@@ -82,8 +82,9 @@ const getCached = createCssGetCached()
 export default buildConfig({
   plugins: [
     stylesPlugin({
-      generateLivePreviewPath: yourPreviewUrl,
       getCached,
+      // generateLivePreviewPath is optional; omit it to use the @pro-laico/core
+      // default, or pass your own to override.
     }),
   ],
 })
@@ -249,7 +250,7 @@ When you save a design set, shortcut set, or page, the `cssHook` regenerates the
 
 <TypeTable
   type={{
-    generateLivePreviewPath: { type: '(args) => Promise<string> | string', description: 'Required. Builds the live-preview URL for the active set. Shared by both collections.' },
+    generateLivePreviewPath: { type: '(args) => Promise<string> | string', default: 'core generateLivePreviewPath', description: "Optional. Builds the live-preview URL for the active set, shared by both collections. Defaults to @pro-laico/core's generateLivePreviewPath (built from PREVIEW_SECRET + NEXT_PUBLIC_SERVER_URL); pass your own to override." },
     atomicHook: { type: 'CollectionBeforeChangeHook', description: "Wire the project's all-in-one hook (from @pro-laico/atomic) to handle CSS (plus forms / actions) for both collections." },
     getCached: { type: 'CssProcessorGetCached', description: 'Provide a (tag, draft) getter (build one with createCssGetCached from @pro-laico/styles/cache) to attach the standalone cssHook, so this package generates CSS on its own without @pro-laico/atomic.' },
     cssHookOptions: { type: 'CssHookOptions', description: 'Forwarded to the standalone cssHook when getCached is set, to override the slugs and storage globals it reads and writes. See its keys below.' },
@@ -310,7 +311,8 @@ All options at their defaults, as a working starting point:
 
 ```ts
 stylesPlugin({
-  generateLivePreviewPath, // required (no default)
+  // generateLivePreviewPath is optional; omitted here so it defaults to
+  // @pro-laico/core's generateLivePreviewPath. Pass your own to override.
   enabled: true,
   // Wire CSS one way: pass getCached (standalone) OR atomicHook (template). Neither has a default.
   getCached: createCssGetCached(),
@@ -347,7 +349,7 @@ Everything `@pro-laico/styles` ships, grouped by what it's for.
       location: '@pro-laico/styles',
       description: 'The plugin itself. Registers the designSet + shortcutSet collections and the CSS storage globals. Default and named export.',
       params: {
-        options: { type: 'StylesPluginOptions', description: 'See the Options table above. `generateLivePreviewPath` is required; pass `getCached` (standalone) or `atomicHook` (template) to wire CSS generation.' },
+        options: { type: 'StylesPluginOptions', description: 'See the Options table above. `generateLivePreviewPath` is optional (defaults to `@pro-laico/core`\'s helper); pass `getCached` (standalone) or `atomicHook` (template) to wire CSS generation.' },
       },
       returns: { type: 'Plugin', description: 'A Payload config plugin you add to `buildConfig({ plugins: [...] })`.' },
       example: `import { buildConfig } from 'payload'
@@ -356,10 +358,8 @@ import { createCssGetCached } from '@pro-laico/styles/cache'
 
 export default buildConfig({
   plugins: [
-    stylesPlugin({
-      generateLivePreviewPath: yourPreviewUrl,
-      getCached: createCssGetCached(),
-    }),
+    // generateLivePreviewPath is optional; it defaults to @pro-laico/core's helper.
+    stylesPlugin({ getCached: createCssGetCached() }),
   ],
 })`,
     },

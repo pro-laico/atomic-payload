@@ -6,25 +6,12 @@ import { buildConfig } from 'payload'
 import type { CollectionAfterChangeHook, Config, Plugin, SharpDependency } from 'payload'
 import { sqliteAdapter } from '@payloadcms/db-sqlite'
 
-import { getServerSideURL, revalidateTag } from '@pro-laico/core'
+import { generateLivePreviewPath, revalidateTag } from '@pro-laico/core'
 import { createCssHook, stylesPlugin } from '@pro-laico/styles'
 import { createCssGetCached } from '@pro-laico/styles/cache'
 
 import { createPages } from '@/collections/pages'
 import { Users } from '@/collections/users'
-
-/** Builds the live-preview iframe URL. The styles demo has a single rendered
- *  page (`/`), so every designSet / shortcutSet preview points at the home page;
- *  the secret is required by `createPreviewRouteHandler`. */
-const stylesLivePreviewUrl = (): string => {
-  const params = new URLSearchParams({
-    slug: 'designSet',
-    path: '/',
-    collection: 'designSet',
-    previewSecret: process.env.PREVIEW_SECRET || '',
-  })
-  return `${getServerSideURL()}/next/preview?${params.toString()}`
-}
 
 /**
  * The standalone `cssHook` needs a `(tag, draft)` getter for the active
@@ -89,8 +76,9 @@ export default buildConfig({
     // you want them. `stylesPlugin` also auto-wires the zap schema extension
     // into `typescript.schema`, so `generate:types` works without importing zap.
     stylesPlugin({
-      enabled: true,
-      generateLivePreviewPath: stylesLivePreviewUrl,
+      // designSet / shortcutSet docs have no resolvable href, so `fallbackPath: '/'`
+      // points every preview at the demo's single rendered page.
+      generateLivePreviewPath: (args) => generateLivePreviewPath(args, { fallbackPath: '/' }),
       getCached,
     }),
     revalidateStylesPlugin,

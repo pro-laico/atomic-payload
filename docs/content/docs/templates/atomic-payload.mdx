@@ -63,7 +63,7 @@ Open `http://localhost:3000/admin` and create the first admin user.
 </Steps>
 
 <Callout type="info">
-  Once running, it's recommended to seed the database from the **Seed database** banner on the main admin dashboard. Seeding wipes and replaces existing data, so once you've seeded, set `INCLUDE_SEED=false` in your `.env` to drop the seed endpoint and its dashboard banner.
+  Once running, it's recommended to seed the database from the **Seed database** banner on the main admin dashboard. Seeding wipes and replaces existing data, so once you've seeded, pass `enabled: false` to `seedPlugin()` in `src/plugins/index.ts` to drop the seed endpoint and its dashboard banner.
 </Callout>
 
 ## Optional integrations

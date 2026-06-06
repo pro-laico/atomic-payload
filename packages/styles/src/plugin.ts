@@ -1,6 +1,7 @@
 import type { CollectionBeforeChangeHook, Config, PayloadRequest, Plugin } from 'payload'
 
 import { toJSONSchemaExtensions } from '@pro-laico/zap'
+import { generateLivePreviewPath as defaultPreviewPath } from '@pro-laico/core'
 
 import type { CssProcessorGetCached } from './cssProcessor'
 import { baseStorage } from './globals/storage'
@@ -27,8 +28,12 @@ export type StylesShortcutSetOptions = Partial<Omit<ShortcutSetCollectionOptions
 export interface StylesPluginOptions {
   /** Wired to both collections' `hooks.beforeChange` (typically the project `atomicHook`). */
   atomicHook?: CollectionBeforeChangeHook
-  /** Same contract as the template `generateLivePreviewPath` helper. Shared by both collections. */
-  generateLivePreviewPath: (args: { data: Partial<unknown>; req: PayloadRequest }) => Promise<string> | string
+  /**
+   * The live-preview URL builder shared by both collections. Optional: defaults to
+   * `@pro-laico/core`'s `generateLivePreviewPath`, which builds the URL from
+   * `PREVIEW_SECRET` + `NEXT_PUBLIC_SERVER_URL`. Pass your own to override.
+   */
+  generateLivePreviewPath?: (args: { data: Partial<unknown>; req: PayloadRequest }) => Promise<string> | string
   /** When false, the whole plugin is a no-op. Defaults to true. */
   enabled?: boolean
   /**
@@ -82,7 +87,7 @@ export const stylesPlugin =
     const {
       enabled = true,
       atomicHook,
-      generateLivePreviewPath,
+      generateLivePreviewPath = defaultPreviewPath,
       designSet: designSetOpt,
       shortcutSet: shortcutSetOpt,
       getCached,

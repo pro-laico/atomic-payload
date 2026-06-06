@@ -12,18 +12,25 @@ type Props = {
 export type GeneratePreviewPathOptions = {
   /** Defaults to `'pages'`. */
   pagesSlug?: string
+  /**
+   * The path the preview falls back to when the document has no resolvable href
+   * or `testPath` (e.g. a global-like document, or a single-page demo where every
+   * preview targets the home page). Defaults to `'/testing'`.
+   */
+  fallbackPath?: string
 }
 
 /** Generates the URL Payload's admin "live preview" iframe should hit. Handles
  *  pages-with-href (uses the latest breadcrumb), pages-with-testPath (looks up
- *  the target page), and falls back to `/testing`. The host project must
- *  provide a `/next/preview` route handler (see
+ *  the target page), and falls back to `fallbackPath` (default `/testing`). The
+ *  host project must provide a `/next/preview` route handler (see
  *  `@pro-laico/core/next/preview`). */
 export const generateLivePreviewPath = async ({ data, req: { payload } }: Props, options: GeneratePreviewPathOptions = {}): Promise<string> => {
   const pagesSlug = (options.pagesSlug ?? 'pages') as CollectionSlug
+  const fallbackPath = options.fallbackPath ?? '/testing'
   try {
     let slug = typeof data?.title === 'string' ? data.title : 'testing'
-    let path = '/testing'
+    let path = fallbackPath
     const href = data?.breadcrumbs && data?.breadcrumbs?.length > 0 ? data?.breadcrumbs[data?.breadcrumbs?.length - 1]?.url : undefined
 
     if (typeof data?.testPath === 'string') {
@@ -51,6 +58,6 @@ export const generateLivePreviewPath = async ({ data, req: { payload } }: Props,
     return getClientSideURL() + url
   } catch (_error) {
     payload.logger.error('Error generating live preview path')
-    return '/testing'
+    return fallbackPath
   }
 }

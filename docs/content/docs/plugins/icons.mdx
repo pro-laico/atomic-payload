@@ -64,7 +64,7 @@ export default buildConfig({
 This registers two collections: **Icon** (where you upload SVG files) and **IconSet** (where you group icons under a named set and mark one set active). To register only the upload collection and skip the grouping concept, pass `includeIconSet: false`.
 
 <Callout type="info">
-  Want live preview on icon sets? Pass `iconSetOptions.livePreviewUrl` (see [Options](#options)). The [atomic-payload template](/docs/templates/atomic-payload) wires this up for you (see the other tab).
+  Icon sets get live preview by default: `iconSetOptions.livePreviewUrl` defaults to `@pro-laico/core`'s `generateLivePreviewPath` (built from `PREVIEW_SECRET` + `NEXT_PUBLIC_SERVER_URL`). Pass your own `iconSetOptions.livePreviewUrl` to override it or point preview elsewhere (see [Options](#options)).
 </Callout>
 </Step>
 
@@ -223,7 +223,7 @@ Extension points for the **IconSet** collection. Each field-injection option lan
 
 <TypeTable
   type={{
-    livePreviewUrl: { type: '(args) => string | Promise<string>', description: 'Builds the live preview URL for IconSet edits. Typically delegates to your project’s generateLivePreviewPath helper. When set, it wires both the legacy iframe preview and Payload 3 live preview.' },
+    livePreviewUrl: { type: '(args) => string | Promise<string>', default: "core's generateLivePreviewPath", description: 'Builds the live preview URL for IconSet edits, wiring both the legacy iframe preview and Payload 3 live preview. Live preview is on by default: this defaults to @pro-laico/core’s generateLivePreviewPath (built from PREVIEW_SECRET + NEXT_PUBLIC_SERVER_URL). Pass your own to override it or point preview elsewhere.' },
     extraSettingsFields: { type: 'Field[]', default: '[]', description: 'Compact fields packed INTO the row next to the title and active toggle. Best for narrow fields (booleans, short selects, slug-style text).' },
     fields: { type: 'Field[]', default: '[]', description: 'Full-width, set-level fields appended below the title/active row. Use for descriptions, relationships, and arrays that need more horizontal space.' },
     iconRowFields: { type: 'Field[]', default: '[]', description: 'Per-icon fields appended to each row in the set, after the existing name + icon fields (e.g. aliases, category).' },
@@ -240,6 +240,8 @@ Extension points for the **IconSet** collection. Each field-injection option lan
 All options at their defaults, as a working starting point:
 
 ```ts
+import { generateLivePreviewPath } from '@pro-laico/core'
+
 iconsPlugin({
   enabled: true,
   includeIconSet: true,
@@ -248,12 +250,15 @@ iconsPlugin({
     // hooks and collection are unset
   },
   iconSetOptions: {
+    // livePreviewUrl defaults to core's generateLivePreviewPath, so live preview
+    // is already wired; pass your own only to override it.
+    livePreviewUrl: ({ data, req }) => generateLivePreviewPath({ data, req }),
     extraSettingsFields: [],
     fields: [],
     iconRowFields: [],
     useAsTitle: 'title',
     group: 'Sets',
-    // livePreviewUrl and hooks are unset (no live preview until you pass livePreviewUrl)
+    // hooks is unset
   },
 })
 ```
@@ -281,7 +286,7 @@ Grouped by what each export is for.
       location: '@pro-laico/icons',
       description: 'The plugin itself. Registers the Icon collection and, by default, the IconSet collection. Default and named export.',
       params: {
-        'options?': { type: 'IconsPluginOptions', description: 'See the Options table above. Every key is optional; pass `iconSetOptions.livePreviewUrl` to wire live preview, or `includeIconSet: false` to register the upload collection only.' },
+        'options?': { type: 'IconsPluginOptions', description: 'See the Options table above. Every key is optional; IconSet live preview is wired by default, so pass `iconSetOptions.livePreviewUrl` only to override it, or `includeIconSet: false` to register the upload collection only.' },
       },
       returns: { type: 'Plugin', description: 'A Payload config plugin you add to `buildConfig({ plugins: [...] })`.' },
       example: `import { buildConfig } from 'payload'
@@ -290,6 +295,7 @@ import { generateLivePreviewPath } from '@pro-laico/core'
 
 export default buildConfig({
   plugins: [
+    // IconSet live preview is on by default; this shows overriding the URL builder.
     iconsPlugin({
       iconSetOptions: {
         livePreviewUrl: ({ data, req }) => generateLivePreviewPath({ data, req }),

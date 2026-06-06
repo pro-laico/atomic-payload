@@ -2,70 +2,63 @@ import type { Plugin } from 'payload'
 
 import { seedPlugin } from '@pro-laico/seed'
 import { sitePlugin } from '@pro-laico/site'
-import { formsPlugin } from '@pro-laico/atomic/forms'
+import { fontsPlugin } from '@pro-laico/fonts'
+import { imagesPlugin } from '@pro-laico/images'
+import { pluginComposer } from '@pro-laico/core'
+import { atomicHook } from '@pro-laico/atomic/hook'
 import { trackingPlugin } from '@pro-laico/tracking'
-import { revalidationPlugin } from '@pro-laico/core'
+import { muxVideoPlugin } from '@pro-laico/mux-video'
+import { formsPlugin } from '@pro-laico/atomic/forms'
 import { actionsPlugin } from '@pro-laico/atomic/actions'
 
-import { fontsPluginConfig } from './fonts'
 import { iconsPluginConfig } from './icons'
-import { imagesPluginConfig } from './images'
 import { stylesPluginConfig } from './styles'
-import { muxVideoPluginConfig } from './muxVideo'
 import { nestedDocsPluginConfig } from './nestedDocs'
-import { childBlocksPluginConfig } from './childBlocks'
 import { jsonSchemaPluginConfig } from './jsonSchema'
+import { childBlocksPluginConfig } from './childBlocks'
 import { formBuilderPluginConfig } from './formBuilder'
 import { blurDataUrlsPluginConfig } from './blurDataUrls'
 import { vercelBlobStoragePluginConfig } from './vercelBlobStorage'
 
 // Notes on plugin composition:
-// - `Font` is registered via `fontsPlugin` (see `./fonts`).
-// - `Icon` and `iconSet` are registered via `iconsPlugin` (see `./icons`).
-// - The `designSet` and `shortcutSet` collections (each individually toggleable) plus the
-//   draftStorage / publishedStorage CSS globals are registered via `stylesPlugin` (see `./designSets`).
-// - `trackingPlugin` registers the `Tracking` global (GTM + PostHog autocapture tabs +
-//   analytics toggles) — it used to live in the template.
-// - `seedPlugin` mounts `POST /api/seed` and the `BeforeDashboard` SEED DATABASE
-//   banner. The bundled atomic-payload seed runs by default; pass `seed: …` to
-//   override. Gate registration on `INCLUDE_SEED`.
+// - `Font` is registered via `fontsPlugin`; `Icon` and `iconSet` via `iconsPlugin`
+//   (see `./icons`); the `designSet` / `shortcutSet` collections plus the CSS
+//   storage globals via `stylesPlugin` (see `./styles`).
 // - `sitePlugin` registers the Pages, Header, Footer collections plus the
-//   SiteMetaData and Settings globals — the opinionated "site shape" that used
-//   to live in the template. (The CSS storage globals now ship with `stylesPlugin`.)
-// - `imagesPlugin` registers the Images and Favicons collections.
-//   `blurDataUrlsPluginConfig` (see `./blurDataUrls`) is applied separately
-//   *after* it so blur fields land on the registered Images collection.
-// - `muxVideoPlugin` registers the MuxVideo extension collection and applies
-//   `@oversightstudio/mux-video`'s upstream plugin to it.
-// - `formsPlugin` prepends default submit-form blocks; pass `formBlocks: […]` for more.
-// - `actionsPlugin` prepends default action blocks; pass `actionBlocks: […]` for more.
-// - `revalidationPlugin` attaches beforeChange / afterDelete revalidation hooks
-//   to the listed slugs.
+//   SiteMetaData and Settings globals.
+// - `imagesPlugin` registers Images + Favicons; `blurDataUrlsPluginConfig` runs
+//   after it so blur fields land on the registered Images collection.
+// - `muxVideoPlugin` registers the MuxVideo collection; `trackingPlugin` the
+//   `Tracking` global; `seedPlugin` the SEED DATABASE banner + `POST /api/seed`.
+// - `formsPlugin` / `actionsPlugin` prepend the default form / action blocks.
+// - `pluginComposer` returns every plugin below followed by a finalizer that runs
+//   LAST: it attaches the shared `atomicHook` to the atomic-content collections
+//   (designSet, shortcutSet, pages, header, footer, iconSet) and the revalidation
+//   dispatchers to every collection and global. Running last, it also wires the
+//   `forms` / `form-submissions` collections that `formBuilderPluginConfig`
+//   registers, so there are no slug arrays to keep in sync.
 
-export const plugins: Plugin[] = [
-  sitePlugin({ enabled: true }),
-  jsonSchemaPluginConfig,
-  formsPlugin({ enabled: true }),
-  actionsPlugin({ enabled: true }),
-  // childBlocksPluginConfig weaves the @pro-laico/styles ClassNameField into the default
-  // child blocks via generic prepend/append fields (see ./childBlocks). The block packages
-  // (icons/images/mux-video/richtext) no longer depend on @pro-laico/styles themselves.
-  childBlocksPluginConfig,
-  trackingPlugin({ enabled: true }),
-  seedPlugin({ enabled: process.env.INCLUDE_SEED === 'true' }),
-  fontsPluginConfig,
-  iconsPluginConfig,
-  imagesPluginConfig,
-  stylesPluginConfig,
-  revalidationPlugin({
-    enabled: true,
-    collectionSlugs: ['icon', 'iconSet', 'images', 'forms', 'form-submissions'],
-    deleteCollectionSlugs: ['header', 'footer', 'iconSet', 'designSet', 'shortcutSet', 'pages'],
-    globalSlugs: ['siteMetaData', 'tracking', 'settings'],
-  }),
-  muxVideoPluginConfig,
-  nestedDocsPluginConfig,
-  formBuilderPluginConfig,
-  blurDataUrlsPluginConfig,
-  vercelBlobStoragePluginConfig,
-]
+export const plugins: Plugin[] = pluginComposer({
+  atomicHook,
+  plugins: [
+    sitePlugin(),
+    jsonSchemaPluginConfig,
+    formsPlugin(),
+    actionsPlugin(),
+    // childBlocksPluginConfig weaves the @pro-laico/styles ClassNameField into the default
+    // child blocks via generic prepend/append fields (see ./childBlocks). The block packages
+    // (icons/images/mux-video/richtext) no longer depend on @pro-laico/styles themselves.
+    childBlocksPluginConfig,
+    trackingPlugin(),
+    seedPlugin(),
+    fontsPlugin(),
+    imagesPlugin(),
+    muxVideoPlugin(),
+    iconsPluginConfig,
+    stylesPluginConfig,
+    nestedDocsPluginConfig,
+    formBuilderPluginConfig,
+    blurDataUrlsPluginConfig,
+    vercelBlobStoragePluginConfig,
+  ],
+})

@@ -648,13 +648,13 @@ export interface Config {
     header: Header;
     footer: Footer;
     font: Font;
-    icon: Icon;
-    iconSet: IconSet;
     images: Image;
     favicons: Favicon;
+    'mux-video': MuxVideo;
+    icon: Icon;
+    iconSet: IconSet;
     designSet: DesignSet;
     shortcutSet: ShortcutSet;
-    'mux-video': MuxVideo;
     forms: Form;
     'form-submissions': FormSubmission;
     'payload-kv': PayloadKv;
@@ -670,13 +670,13 @@ export interface Config {
     header: HeaderSelect<false> | HeaderSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
     font: FontSelect<false> | FontSelect<true>;
-    icon: IconSelect<false> | IconSelect<true>;
-    iconSet: IconSetSelect<false> | IconSetSelect<true>;
     images: ImagesSelect<false> | ImagesSelect<true>;
     favicons: FaviconsSelect<false> | FaviconsSelect<true>;
+    'mux-video': MuxVideoSelect<false> | MuxVideoSelect<true>;
+    icon: IconSelect<false> | IconSelect<true>;
+    iconSet: IconSetSelect<false> | IconSetSelect<true>;
     designSet: DesignSetSelect<false> | DesignSetSelect<true>;
     shortcutSet: ShortcutSetSelect<false> | ShortcutSetSelect<true>;
-    'mux-video': MuxVideoSelect<false> | MuxVideoSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
@@ -2490,14 +2490,6 @@ export interface PayloadLockedDocument {
         value: string | Font;
       } | null)
     | ({
-        relationTo: 'icon';
-        value: string | Icon;
-      } | null)
-    | ({
-        relationTo: 'iconSet';
-        value: string | IconSet;
-      } | null)
-    | ({
         relationTo: 'images';
         value: string | Image;
       } | null)
@@ -2506,16 +2498,24 @@ export interface PayloadLockedDocument {
         value: string | Favicon;
       } | null)
     | ({
+        relationTo: 'mux-video';
+        value: string | MuxVideo;
+      } | null)
+    | ({
+        relationTo: 'icon';
+        value: string | Icon;
+      } | null)
+    | ({
+        relationTo: 'iconSet';
+        value: string | IconSet;
+      } | null)
+    | ({
         relationTo: 'designSet';
         value: string | DesignSet;
       } | null)
     | ({
         relationTo: 'shortcutSet';
         value: string | ShortcutSet;
-      } | null)
-    | ({
-        relationTo: 'mux-video';
-        value: string | MuxVideo;
       } | null)
     | ({
         relationTo: 'forms';
@@ -2706,45 +2706,6 @@ export interface FontSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "icon_select".
- */
-export interface IconSelect<T extends boolean = true> {
-  optimized?: T;
-  svgString?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  url?: T;
-  thumbnailURL?: T;
-  filename?: T;
-  mimeType?: T;
-  filesize?: T;
-  width?: T;
-  height?: T;
-  focalX?: T;
-  focalY?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "iconSet_select".
- */
-export interface IconSetSelect<T extends boolean = true> {
-  active?: T;
-  title?: T;
-  testPath?: T;
-  iconsArray?:
-    | T
-    | {
-        name?: T;
-        icon?: T;
-        id?: T;
-      };
-  'apf-active'?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  _status?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "images_select".
  */
 export interface ImagesSelect<T extends boolean = true> {
@@ -2853,6 +2814,70 @@ export interface FaviconsSelect<T extends boolean = true> {
   height?: T;
   focalX?: T;
   focalY?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "mux-video_select".
+ */
+export interface MuxVideoSelect<T extends boolean = true> {
+  title?: T;
+  assetId?: T;
+  duration?: T;
+  posterTimestamp?: T;
+  aspectRatio?: T;
+  maxWidth?: T;
+  maxHeight?: T;
+  playbackOptions?:
+    | T
+    | {
+        playbackId?: T;
+        playbackPolicy?: T;
+        playbackUrl?: T;
+        posterUrl?: T;
+        gifUrl?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "icon_select".
+ */
+export interface IconSelect<T extends boolean = true> {
+  optimized?: T;
+  svgString?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  url?: T;
+  thumbnailURL?: T;
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
+  focalX?: T;
+  focalY?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "iconSet_select".
+ */
+export interface IconSetSelect<T extends boolean = true> {
+  active?: T;
+  title?: T;
+  testPath?: T;
+  iconsArray?:
+    | T
+    | {
+        name?: T;
+        icon?: T;
+        id?: T;
+      };
+  'apf-active'?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -3171,31 +3196,6 @@ export interface ShortcutSetSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "mux-video_select".
- */
-export interface MuxVideoSelect<T extends boolean = true> {
-  title?: T;
-  assetId?: T;
-  duration?: T;
-  posterTimestamp?: T;
-  aspectRatio?: T;
-  maxWidth?: T;
-  maxHeight?: T;
-  playbackOptions?:
-    | T
-    | {
-        playbackId?: T;
-        playbackPolicy?: T;
-        playbackUrl?: T;
-        posterUrl?: T;
-        gifUrl?: T;
-        id?: T;
-      };
-  updatedAt?: T;
-  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

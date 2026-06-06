@@ -4,7 +4,7 @@ import { fileURLToPath } from 'node:url'
 import sharp from 'sharp'
 import { buildConfig } from 'payload'
 import type { SharpDependency } from 'payload'
-import { getServerSideURL } from '@pro-laico/core'
+import { generateLivePreviewPath } from '@pro-laico/core'
 import { iconsPlugin } from '@pro-laico/icons'
 import { sqliteAdapter } from '@payloadcms/db-sqlite'
 
@@ -15,19 +15,6 @@ const dirname = path.dirname(filename)
 
 const serverURL = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000'
 
-/** Builds the live-preview iframe URL for IconSet edits. The icons demo has a
- *  single rendered page (`/`), so all iconSet previews point at the home page;
- *  the secret is required by `createPreviewRouteHandler`. */
-const iconSetLivePreviewUrl = (): string => {
-  const params = new URLSearchParams({
-    slug: 'iconSet',
-    path: '/',
-    collection: 'iconSet',
-    previewSecret: process.env.PREVIEW_SECRET || '',
-  })
-  return `${getServerSideURL()}/next/preview?${params.toString()}`
-}
-
 export default buildConfig({
   sharp: sharp as unknown as SharpDependency,
   serverURL,
@@ -35,7 +22,9 @@ export default buildConfig({
   collections: [Users],
   graphQL: { disable: true },
   secret: process.env.PAYLOAD_SECRET || '',
-  plugins: [iconsPlugin({ enabled: true, iconSetOptions: { livePreviewUrl: iconSetLivePreviewUrl } })],
+  // The iconSet docs have no resolvable href, so `fallbackPath: '/'` points every
+  // iconSet preview at the demo's single rendered page.
+  plugins: [iconsPlugin({ iconSetOptions: { livePreviewUrl: (args) => generateLivePreviewPath(args, { fallbackPath: '/' }) } })],
   typescript: { outputFile: path.resolve(dirname, 'payload-types.ts') },
   db: sqliteAdapter({ client: { url: process.env.DATABASE_URI || 'file:./icons-only.db' } }),
   admin: {

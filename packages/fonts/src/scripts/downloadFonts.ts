@@ -43,6 +43,13 @@ export type RunDownloadFontsOptions = {
    * Default `/api/fonts/export` or `ATOMIC_FONTS_ENDPOINT`.
    */
   endpointPath?: string
+  /**
+   * When true, failures also print the full underlying error object (stack,
+   * cause, …). Defaults to false (or `ATOMIC_FONTS_VERBOSE`), so a routine local
+   * failure shows only the short message. Enable with the `--verbose` / `-v` CLI
+   * flag or `ATOMIC_FONTS_VERBOSE=true` when you need to debug the error itself.
+   */
+  verbose?: boolean
 }
 
 function resolveOptions(overrides?: RunDownloadFontsOptions) {
@@ -53,6 +60,7 @@ function resolveOptions(overrides?: RunDownloadFontsOptions) {
     localFontSrcPrefix: overrides?.localFontSrcPrefix ?? process.env.ATOMIC_FONTS_SRC_PREFIX ?? '../../public/fonts',
     cssVariablePrefix: overrides?.cssVariablePrefix ?? process.env.ATOMIC_FONTS_CSS_VAR_PREFIX ?? '--font-set',
     endpointPath: overrides?.endpointPath ?? process.env.ATOMIC_FONTS_ENDPOINT ?? '/api/fonts/export',
+    verbose: overrides?.verbose ?? process.env.ATOMIC_FONTS_VERBOSE === 'true',
   }
 }
 
@@ -106,7 +114,10 @@ export default fonts
 
   function warnAndKeep(message: string, error?: unknown): void {
     console.warn(colors.red(message))
-    if (error) console.warn(error)
+    if (error) {
+      if (opts.verbose) console.warn(error)
+      else console.warn(colors.orange('Re-run with --verbose (or set ATOMIC_FONTS_VERBOSE=true) to see the full error.'))
+    }
     console.warn(colors.orange('Font download failed — existing fonts left untouched'))
   }
 
@@ -155,7 +166,8 @@ export default fonts
       extensions[role] = ext
       console.log(`${colors.green('✓')} Downloaded ${role} font`)
     } catch (err) {
-      console.warn(colors.red(`Failed to write ${role} font`), err)
+      console.warn(colors.red(`Failed to write ${role} font`))
+      if (opts.verbose) console.warn(err)
     }
   }
 

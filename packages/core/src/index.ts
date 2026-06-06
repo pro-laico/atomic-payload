@@ -34,6 +34,11 @@ export { createJSONSchemaExtensions, jsonSchemaPlugin } from './jsonSchema'
 // /////////////////////////////////////
 export * from './kernel'
 // /////////////////////////////////////
+// Plugin composer — returns the plugins plus a trailing finalizer that wires shared concerns
+// /////////////////////////////////////
+export { DEFAULT_ATOMIC_HOOK_SLUGS, pluginComposer } from './composer'
+export type { AtomicWiringOptions, PluginComposerOptions, PluginComposerRevalidateOptions } from './composer'
+// /////////////////////////////////////
 // Revalidation plugin + JSON-schema plugin
 // /////////////////////////////////////
 export { default, revalidationPlugin } from './plugin'

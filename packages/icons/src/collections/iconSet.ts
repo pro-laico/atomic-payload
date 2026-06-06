@@ -5,6 +5,7 @@ import {
   APFControlsPath,
   APField,
   generateAPFFields,
+  generateLivePreviewPath,
   mergeHooks,
   revalidateCacheCollectionAfterChange,
   revalidateCacheOnDelete,
@@ -59,10 +60,10 @@ type Hooks = NonNullable<CollectionConfig['hooks']>
  */
 export interface IconSetCollectionOptions {
   /**
-   * Live preview URL generator. When supplied, wires both `admin.preview`
-   * (legacy iframe preview) and `admin.livePreview.url` (Payload 3 live
-   * preview). Typically delegates to your project's `generateLivePreviewPath`
-   * helper.
+   * Live preview URL generator. Wires both `admin.preview` (legacy iframe
+   * preview) and `admin.livePreview.url` (Payload 3 live preview). Optional:
+   * defaults to `@pro-laico/core`'s `generateLivePreviewPath` (built from
+   * `PREVIEW_SECRET` + `NEXT_PUBLIC_SERVER_URL`). Pass your own to override.
    *
    * @example
    * ```ts
@@ -172,7 +173,7 @@ export interface IconSetCollectionOptions {
  */
 export const createIconSetCollection = (opts: IconSetCollectionOptions = {}): CollectionConfig => {
   const {
-    livePreviewUrl,
+    livePreviewUrl = ({ data, req }) => generateLivePreviewPath({ data, req }),
     extraSettingsFields = [],
     useAsTitle = 'title',
     group = 'Sets',
@@ -257,11 +258,11 @@ export const createIconSetCollection = (opts: IconSetCollectionOptions = {}): Co
 }
 
 /**
- * Default `IconSet` collection with no live preview wired. Equivalent to
- * `createIconSetCollection()`. Built-in revalidation hooks from
- * `@pro-laico/core` are always attached.
+ * Default `IconSet` collection. Equivalent to `createIconSetCollection()`, so
+ * live preview defaults to `@pro-laico/core`'s `generateLivePreviewPath` and the
+ * built-in revalidation hooks from `@pro-laico/core` are always attached.
  *
- * For live preview, additive hooks, or extra fields, use
+ * To override the live preview URL, add hooks, or add extra fields, use
  * {@link createIconSetCollection}; for plugin-level wiring, use `iconsPlugin`
  * with `iconSetOptions`.
  */

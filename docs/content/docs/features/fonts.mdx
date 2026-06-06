@@ -36,6 +36,12 @@ pnpm generate:fonts
 
 It fetches the active fonts from a **running, reachable Payload instance** (calling the plugin's export endpoint at `FONT_DOWNLOAD_URL` and authenticating with `PAYLOAD_SECRET`), then writes the font files to `public/fonts` and the generated `definition.ts` that `next/font/local` consumes. It runs automatically on every build via `prebuild`, and you can re-run it any time the active selection changes.
 
+If a download fails, it prints a short message by default and leaves your existing fonts in place. To see the full error, re-run it with `--verbose` (or set `ATOMIC_FONTS_VERBOSE=true`):
+
+```bash
+pnpm generate:fonts --verbose
+```
+
 <Callout type="info">
   `generate:fonts` needs a Payload instance to fetch from. In CI or on a deploy, point `FONT_DOWNLOAD_URL` at your site. For **local development**, before anything's deployed, a `setup:fonts` wrapper boots a temporary dev server, runs the download against it, and shuts it down. See the [fonts plugin Notes](/docs/plugins/fonts#notes).
 </Callout>

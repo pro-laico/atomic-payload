@@ -10,7 +10,6 @@ import { childBlocksPlugin } from '@pro-laico/atomic/children'
 //
 // Pass `childBlocks: [myBlock, …]` to append more blocks alongside the defaults.
 export const childBlocksPluginConfig = childBlocksPlugin({
-  enabled: true,
   classNameField: ClassNameField,
   blockFields: {
     SimpleTextChild: {

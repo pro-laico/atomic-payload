@@ -109,7 +109,21 @@ const revalidateCacheOnDelete = createRevalidateCacheOnDelete({
 })
 ```
 
-The slug-bound default hooks (exported from `@pro-laico/core` as `revalidateCacheCollection` and `revalidateCacheOnDelete`) stay bound to the conventional slug set, so existing imports keep working unchanged. The simplest path of all is the bundled `revalidationPlugin` (the default export of `@pro-laico/core`), which wires the standard collection and global revalidation hooks for you.
+The slug-bound default hooks (exported from `@pro-laico/core` as `revalidateCacheCollection` and `revalidateCacheOnDelete`) stay bound to the conventional slug set, so existing imports keep working unchanged.
+
+The simplest, app-level path is `pluginComposer` from `@pro-laico/core`. You pass it every plugin, and the finalizer it appends attaches the revalidation hooks to every collection and global for you (plus the shared `atomicHook` to the atomic-content collections). Because that finalizer runs last, it covers collections registered by third-party plugins too, so there are no slug lists to maintain:
+
+```ts
+import { pluginComposer } from '@pro-laico/core'
+import { atomicHook } from '@pro-laico/atomic/hook'
+
+export const plugins = pluginComposer({
+  atomicHook,
+  plugins: [/* every plugin */],
+})
+```
+
+When you want explicit control instead of the broad wiring, drop to `revalidationPlugin` (the default export of `@pro-laico/core`), which attaches the revalidation hooks to only the collection and global slugs you name. It is the lower-level building block `pluginComposer` uses under the hood.
 
 ## Notes
 

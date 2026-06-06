@@ -95,6 +95,14 @@ Running it needs `tsx` installed (a dev dependency). When it runs, it calls the 
 - Writes a small generated file at `src/app/definition.ts` that hooks those fonts into `next/font/local`.
 
 Because it reads a running Payload instance, it needs a few [environment variables](#environment-variables) and a reachable site. It runs on every build; you can also run it any time with `pnpm generate:fonts` after changing the active fonts. Working locally with nothing deployed yet? See [Notes](#notes) for a one-command wrapper.
+
+If a download fails (for example the site is unreachable or a font file can't be written), the step prints a short message by default and leaves any existing fonts in place. To see the full error while debugging, re-run it with `--verbose` (or `-v`):
+
+```bash
+pnpm generate:fonts --verbose
+```
+
+You can also set `ATOMIC_FONTS_VERBOSE=true` to turn this on without passing the flag.
 </Step>
 
 <Step>
@@ -207,6 +215,7 @@ The download step calls the plugin's `/api/fonts/export` endpoint to fetch the a
 | --- | --- |
 | `FONT_DOWNLOAD_URL` | The running Payload instance to fetch from (your dev server or deploy). |
 | `PAYLOAD_SECRET` | Authenticates the request: sent as `Authorization: Bearer`, compared against the server's own secret. |
+| `ATOMIC_FONTS_VERBOSE` | Set to `true` to print the full error on a failed download (same as passing `--verbose`). Off by default, so failures show only a short message. |
 
 You can change where the files and the generated module go with optional overrides: `ATOMIC_FONTS_OUTPUT_DIR` (default `./public/fonts`), `ATOMIC_FONTS_DEFINITION_FILE` (default `./src/app/definition.ts`), and `ATOMIC_FONTS_CSS_VAR_PREFIX` (default `--font-set`), among others.
 
@@ -333,7 +342,7 @@ export default buildConfig({
       location: '@pro-laico/fonts/scripts/downloadFonts',
       description: "The font download step as a function. It fetches the active fonts from the plugin's export endpoint (authenticating with `PAYLOAD_SECRET`), writes them into `public/fonts`, and generates the `src/app/definition.ts` module. The `generate:fonts` command is a thin wrapper around it; call this directly from your own build script when you need to pass options in code.",
       params: {
-        'overrides?': { type: 'RunDownloadFontsOptions', description: 'Override the defaults in code: `siteUrl`, `fontsOutputDir`, `definitionFile`, `cssVariablePrefix`, `endpointPath`, and more. Each falls back to its env var (e.g. `ATOMIC_FONTS_OUTPUT_DIR`) then a built-in default.' },
+        'overrides?': { type: 'RunDownloadFontsOptions', description: 'Override the defaults in code: `siteUrl`, `fontsOutputDir`, `definitionFile`, `cssVariablePrefix`, `endpointPath`, and more. Each falls back to its env var (e.g. `ATOMIC_FONTS_OUTPUT_DIR`) then a built-in default. Pass `verbose: true` (falls back to `ATOMIC_FONTS_VERBOSE`) to print the full error when a download fails instead of just the short message.' },
       },
       returns: { type: 'Promise<void>', description: 'Resolves once the font files and the generated module are written (or skipped when `FONT_DOWNLOAD_URL` / `PAYLOAD_SECRET` are missing).' },
       example: `import { runDownloadFonts } from '@pro-laico/fonts/scripts/downloadFonts'

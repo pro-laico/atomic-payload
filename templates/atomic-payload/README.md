@@ -24,5 +24,5 @@ npx @pro-laico/create-atomic-payload
 - `@pro-laico/mux-video` — the `MuxVideo` collection for video upload/playback through the admin.
 - `@pro-laico/richtext` — the Lexical editor configuration (`defaultLexical`).
 - `@pro-laico/tracking` — the `Tracking` global (GTM + PostHog autocapture + Vercel Analytics).
-- `@pro-laico/seed` — the `SEED DATABASE` admin banner and `POST /api/seed` route (gated by `INCLUDE_SEED`).
+- `@pro-laico/seed` — the `SEED DATABASE` admin banner and `POST /api/seed` route.
 - `@pro-laico/zap` — schema-extension support pulled in by the styles/types pipeline.

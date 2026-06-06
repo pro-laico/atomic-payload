@@ -67,6 +67,7 @@ export default buildConfig({
   plugins: [
     iconsPlugin({
       iconSetOptions: {
+        // Live preview is on by default; pass this only to override the URL builder.
         livePreviewUrl: yourPreview,
         extraSettingsFields: [
           // e.g. a test path relationship
@@ -77,7 +78,7 @@ export default buildConfig({
 })
 ```
 
-Both collections accept additive `fields` and `hooks`. `iconSetOptions` also takes `extraSettingsFields` (compact, in-row fields next to title/active), `fields` (full-width set-level fields), and `iconRowFields` (per-icon metadata on each row). If you want the `atomicHook` snapshot behavior on `IconSet`, attach it explicitly through the additive `hooks` option.
+Both collections accept additive `fields` and `hooks`. `iconSetOptions` also takes `extraSettingsFields` (compact, in-row fields next to title/active), `fields` (full-width set-level fields), and `iconRowFields` (per-icon metadata on each row). Live preview on `IconSet` edits is wired by default (it falls back to `@pro-laico/core`'s `generateLivePreviewPath`), so `livePreviewUrl` is only needed to override that. If you want the `atomicHook` snapshot behavior on `IconSet`, attach it explicitly through the additive `hooks` option.
 
 See the [icons plugin](/docs/plugins/icons) for the full option tables and subpath exports.
 

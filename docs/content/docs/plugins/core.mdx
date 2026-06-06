@@ -41,14 +41,43 @@ yarn add @pro-laico/core
 
 ## Setup
 
-You usually get `@pro-laico/core` transitively, and the [atomic-payload template](/docs/templates/atomic-payload) wires up everything below for you. When you reach for it directly, there are two pieces worth knowing.
+You usually get `@pro-laico/core` transitively, and the [atomic-payload template](/docs/templates/atomic-payload) wires up everything below for you. When you reach for it directly, these are the pieces worth knowing.
 
 <Steps>
 
 <Step>
-### Wire the plugins into your Payload config
+### Compose your plugins with `pluginComposer`
 
-The package ships two Payload plugins. `revalidationPlugin` attaches cache-revalidation hooks to the collection and global slugs you name; `jsonSchemaPlugin` extends `payload generate:types` so block fields get accurate generated types. Add whichever you need to `buildConfig`:
+`pluginComposer` is the recommended way to assemble an Atomic Payload app's plugins. You pass it every plugin (including third-party ones), plus the shared `atomicHook`, and it returns a `Plugin[]` you drop straight into `buildConfig`: the plugins you gave it, followed by a finalizer it appends. Because the finalizer runs last, it sees the fully-assembled config and wires the cross-cutting concerns for you: it attaches the shared `atomicHook` to the atomic-content collections, and attaches the revalidation hooks to every collection and global. There are no slug lists to keep in sync.
+
+```ts
+import { buildConfig } from 'payload'
+import { pluginComposer } from '@pro-laico/core'
+import { atomicHook } from '@pro-laico/atomic/hook'
+import { sitePlugin } from '@pro-laico/site'
+import { formsPlugin } from '@pro-laico/atomic/forms'
+
+export const plugins = pluginComposer({
+  atomicHook,
+  plugins: [
+    sitePlugin(),
+    formsPlugin(),
+    // ...every other plugin, including third-party ones
+  ],
+})
+
+export default buildConfig({
+  plugins,
+})
+```
+
+This is how the [atomic-payload template](/docs/templates/atomic-payload) wires its plugins. The finalizer running last means it also reaches collections registered by third-party plugins (such as `@payloadcms/plugin-form-builder`'s `forms` and `form-submissions`), so they get revalidation without you naming them.
+</Step>
+
+<Step>
+### Or wire `revalidationPlugin` directly
+
+When you want explicit control instead of the broad composer wiring, reach for `revalidationPlugin`: it attaches cache-revalidation hooks to only the collection and global slugs you name. `pluginComposer` uses these same hooks under the hood, so this is the lower-level building block. Add it to `buildConfig` like any other plugin:
 
 ```ts
 import { buildConfig } from 'payload'
@@ -64,8 +93,12 @@ export default buildConfig({
   ],
 })
 ```
+</Step>
 
-The template registers `jsonSchemaPlugin` alongside it, passing the block lists each `@pro-laico` plugin contributes so the generated types stay precise.
+<Step>
+### Generate accurate block types with `jsonSchemaPlugin`
+
+`jsonSchemaPlugin` extends `payload generate:types` so block fields get accurate generated types. Add it to your `plugins` array (or pass it through `pluginComposer` with the rest), giving it the block lists each `@pro-laico` plugin contributes so the generated types stay precise. The template registers it this way.
 </Step>
 
 <Step>
@@ -105,6 +138,51 @@ The rest of the package (fields, hooks, cache helpers, URL and metadata utilitie
 See [Caching & revalidation](/docs/concepts/caching) for how the tags are derived and how a read-side tag matches the revalidate side.
 
 ## Options
+
+### `pluginComposer(options)`
+
+<TypeTable
+  type={{
+    plugins: { type: 'Plugin[]', description: 'Required. Every plugin to compose, in order. The composer returns them followed by the finalizer, so the cross-cutting wiring always runs last.' },
+    atomicHook: { type: 'CollectionBeforeChangeHook', description: 'The shared atomicHook (from @pro-laico/atomic/hook). When set, the finalizer attaches it to the atomic-content collections. Own it here rather than threading it into individual plugins.' },
+    atomicHookSlugs: { type: 'string[]', default: 'DEFAULT_ATOMIC_HOOK_SLUGS', description: 'The collection slugs the atomicHook is attached to. Replaces the default set when given.' },
+    additionalAtomicHookSlugs: { type: 'string[]', description: 'Extra slugs to add to the default set instead of replacing it. Ignored when atomicHookSlugs is set.' },
+    revalidate: { type: 'false | PluginComposerRevalidateOptions', default: 'attach to all', description: 'Revalidation wiring. By default the finalizer attaches the core revalidation hooks to every collection and global (they self-select by slug). Pass false to skip it, or an object to override per phase. See its keys below.' },
+    enabled: { type: 'boolean', default: 'true', description: 'Set false to return the plugins unchanged with no finalizer, so none of the cross-cutting wiring is applied.' },
+  }}
+/>
+
+<Accordions>
+
+<Accordion title="revalidate keys">
+
+<TypeTable
+  type={{
+    collectionBeforeChange: { type: 'CollectionBeforeChangeHook | false', default: 'core revalidateCache', description: 'The collection beforeChange hook. Pass false to skip that phase.' },
+    collectionAfterDelete: { type: 'CollectionAfterDeleteHook | false', default: 'core revalidateCacheOnDelete', description: 'The collection afterDelete hook. Pass false to skip that phase.' },
+    globalBeforeChange: { type: 'GlobalBeforeChangeHook | false', default: 'core global revalidateCache', description: 'The global beforeChange hook. Pass false to skip that phase.' },
+    collectionSlugs: { type: 'string[]', description: 'Restrict the beforeChange attach to these collection slugs. Omit to attach to all.' },
+    deleteCollectionSlugs: { type: 'string[]', description: 'Restrict the afterDelete attach to these collection slugs. Omit to attach to all.' },
+    globalSlugs: { type: 'string[]', description: 'Restrict the global attach to these global slugs. Omit to attach to all.' },
+  }}
+/>
+
+</Accordion>
+
+</Accordions>
+
+All options at their defaults, as a working starting point:
+
+```ts
+pluginComposer({
+  plugins: [], // required (every plugin to compose)
+  atomicHook, // attaches to the atomic-content collections when set
+  atomicHookSlugs: ['designSet', 'shortcutSet', 'pages', 'header', 'footer', 'iconSet'], // DEFAULT_ATOMIC_HOOK_SLUGS
+  // additionalAtomicHookSlugs is unset by default
+  // revalidate defaults to attaching the core hooks to every collection and global
+  enabled: true,
+})
+```
 
 ### `revalidationPlugin(options?)`
 
@@ -199,10 +277,41 @@ jsonSchemaPlugin({
 
 `@pro-laico/core` is large and spans several import subpaths, so its surface is grouped below by what each piece does and where it comes from.
 
-### The plugins
+### Plugins & composition
 
 <ExportTable
   exports={{
+    pluginComposer: {
+      type: 'function',
+      location: '@pro-laico/core',
+      description: 'Composes an app\'s plugins. Pass every plugin plus the shared atomicHook; it returns the plugins followed by a finalizer that runs last and wires the cross-cutting concerns (the atomicHook on the atomic-content collections, plus revalidation on every collection and global) over the fully-assembled config.',
+      params: {
+        opts: { type: 'PluginComposerOptions', description: 'See the Options table above. `plugins` is required; `atomicHook`, `revalidate`, `atomicHookSlugs`, and `enabled` tune the cross-cutting wiring.' },
+      },
+      returns: { type: 'Plugin[]', description: 'The passed plugins followed by the appended finalizer. Assign it to `plugins` and spread into `buildConfig({ plugins })`.' },
+      example: `import { buildConfig } from 'payload'
+import { pluginComposer } from '@pro-laico/core'
+import { atomicHook } from '@pro-laico/atomic/hook'
+import { sitePlugin } from '@pro-laico/site'
+import { formsPlugin } from '@pro-laico/atomic/forms'
+
+export const plugins = pluginComposer({
+  atomicHook,
+  plugins: [sitePlugin(), formsPlugin()],
+})
+
+export default buildConfig({ plugins })`,
+    },
+    DEFAULT_ATOMIC_HOOK_SLUGS: {
+      type: 'constant',
+      location: '@pro-laico/core',
+      description: 'The collection slugs pluginComposer attaches the atomicHook to by default: designSet, shortcutSet, pages, header, footer, iconSet. Override with the atomicHookSlugs option, or extend with additionalAtomicHookSlugs.',
+    },
+    'composer types': {
+      type: 'type',
+      location: '@pro-laico/core',
+      description: 'The pluginComposer option types: PluginComposerOptions, AtomicWiringOptions (the cross-cutting wiring fields), and PluginComposerRevalidateOptions (the per-phase revalidate override).',
+    },
     revalidationPlugin: {
       type: 'plugin',
       location: '@pro-laico/core',
@@ -496,9 +605,9 @@ export async function generateMetadata({ params }) {
       description: 'Builds the URL Payload\'s admin live-preview iframe should hit. Pass it as a collection\'s `admin.livePreview.url`. The host project must also mount the `/next/preview` route handler.',
       params: {
         args: { type: '{ data, req }', description: 'The in-flight document `data` and the Payload `req`, as Payload passes them to the live-preview URL builder.' },
-        'options?': { type: '{ pagesSlug?: string }', description: 'Override the pages collection slug. Defaults to `pages`.' },
+        'options?': { type: '{ pagesSlug?: string; fallbackPath?: string }', description: 'Override the pages collection slug (`pagesSlug`, defaults to `pages`) and the path the preview falls back to when the document has no resolvable href or `testPath` (`fallbackPath`, defaults to `/testing`). Set `fallbackPath` to point a global-like document or a single-page site at a fixed page, e.g. `(args) => generateLivePreviewPath(args, { fallbackPath: "/" })`.' },
       },
-      returns: { type: 'Promise<string>', description: 'The absolute preview URL (falls back to `/testing`).' },
+      returns: { type: 'Promise<string>', description: 'The absolute preview URL (falls back to `fallbackPath`, default `/testing`).' },
       example: `import { generateLivePreviewPath } from '@pro-laico/core'
 
 export const Pages = {

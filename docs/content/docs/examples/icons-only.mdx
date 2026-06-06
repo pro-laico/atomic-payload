@@ -9,7 +9,7 @@ A minimal Atomic Payload template that exercises the **`@pro-laico/icons`** plug
 
 This example demonstrates **`@pro-laico/icons`** in isolation:
 
-- `iconsPlugin({ enabled: true, iconSetOptions: { livePreviewUrl } })` registered in `payload.config.ts` adds the `icon` and `iconSet` collections to the admin UI.
+- `iconsPlugin({ iconSetOptions: { livePreviewUrl } })` registered in `payload.config.ts` adds the `icon` and `iconSet` collections to the admin UI.
 - `POST /api/seed` seeds two icon sets: a "Demo Icon Set" (active) and a "Second Demo Set", each holding the same six SVG icons (arrow-right, check, cog, heart, star, x). It is auth-gated to logged-in admins and idempotent.
 - `/` renders every `Icon` doc inline by inlining its `svgString` field, and renders each `IconSet` as a labelled grid.
 - Live preview is wired for `iconSet` edits: open any iconSet in the admin, click the **Live Preview** tab, and edits propagate to the home page in real time via `<LivePreviewListener>` and the `/next/preview` route handler.

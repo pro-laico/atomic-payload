@@ -10,13 +10,12 @@ import { FormRateLimitBlockType, FormSanitationBlockType, FormValidationBlockTyp
 const _instantiate = [Runner, Attributer, CollectionSchemas] // Ensure the nested schemas are added to global registry before type generation
 
 export const jsonSchemaPluginConfig = jsonSchemaPlugin({
-  enabled: true,
   toJSONSchemaExtensions,
   generateBlocksType,
   blocks: {
     ChildBlocks: ChildBlockType.options,
-    BackdropChildren: BackdropChildSlug.options,
     ActionBlocks: ActionBlockType.options,
+    BackdropChildren: BackdropChildSlug.options,
     FormRateLimitBlocks: FormRateLimitBlockType.options,
     FormSanitationBlocks: FormSanitationBlockType.options,
     FormValidationBlocks: FormValidationBlockType.options,

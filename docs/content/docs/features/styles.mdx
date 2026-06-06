@@ -44,7 +44,7 @@ Everything is managed in the Payload admin:
 
 The styles plugin registers the `designSet` and `shortcutSet` collections (each toggleable) plus the CSS storage globals. Key options:
 
-- `generateLivePreviewPath`: **required**; generates the live-preview URL for the active design set, shared by both collections.
+- `generateLivePreviewPath`: optional; generates the live-preview URL for the active design set, shared by both collections. Defaults to `@pro-laico/core`'s `generateLivePreviewPath` (built from `PREVIEW_SECRET` + `NEXT_PUBLIC_SERVER_URL`); pass your own to override.
 - `atomicHook`: optional `beforeChange` hook that wraps `createCssProcessor` and `processDesignSet`.
 - `enabled`: defaults to `true`; set `false` to make the whole plugin a no-op.
 - `getCached`: optional; pass a `(tag, draft)` getter (build one with `createCssGetCached` from `@pro-laico/styles/cache`) to attach the standalone `cssHook`, producing CSS without `@pro-laico/atomic`.
