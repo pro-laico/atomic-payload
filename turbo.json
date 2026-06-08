@@ -1,0 +1,14 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "globalPassThroughEnv": ["PAYLOAD_SECRET", "MONGODB_URI", "NEXT_PUBLIC_SERVER_URL", "PREVIEW_SECRET", "FONT_DOWNLOAD_URL", "NODE_OPTIONS"],
+  "tasks": {
+    "typecheck": {},
+    "build": {
+      "outputs": ["dist/**", ".next/**", "!.next/cache/**"]
+    },
+    "//#check:ci": { "cache": false },
+    "//#test:unit": { "cache": false },
+    "//#test:int": { "cache": false },
+    "test:scaffolds": { "cache": false }
+  }
+}
