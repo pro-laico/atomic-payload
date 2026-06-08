@@ -5,6 +5,7 @@ node_modules
 
 # TypeScript
 tsconfig.tsbuildinfo
+next-env.d.ts
 
 # SQLite (if using the local SQLite DB adapter — file created at runtime)
 *.db
