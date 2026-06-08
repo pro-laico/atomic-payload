@@ -1,4 +1,5 @@
-import type { Page, ShortcutSet } from '@pro-laico/site/schema'
+import type { Page } from '@pro-laico/site/schema'
+import type { ShortcutSet } from '@pro-laico/styles/schema'
 
 type ShortcutSetArgs = { page: Page }
 

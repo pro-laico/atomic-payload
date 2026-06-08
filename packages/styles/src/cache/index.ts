@@ -5,10 +5,9 @@ import { type CollectionSlug, getPayload, type GlobalSlug, type Where } from 'pa
 
 import { getPayloadConfig } from '@pro-laico/core/config'
 import { withCache } from '@pro-laico/core/cache/primitives'
-import type { ShortcutSet } from '@pro-laico/site/schema'
 
 import type { CssProcessorGetCached } from '../cssProcessor'
-import type { DesignSet } from '../types/payload-augment'
+import type { DesignSet, ShortcutSet } from '../types/payload-augment'
 
 /** The active design set. */
 export const getCachedDesignSet = cache(

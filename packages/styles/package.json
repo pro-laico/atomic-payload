@@ -93,7 +93,6 @@
   },
   "dependencies": {
     "@pro-laico/zap": "workspace:*",
-    "@pro-laico/site": "workspace:*",
     "@pro-laico/core": "workspace:*"
   },
   "peerDependencies": {

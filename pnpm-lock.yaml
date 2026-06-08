@@ -625,9 +625,6 @@ importers:
       '@pro-laico/core':
         specifier: workspace:*
         version: link:../core
-      '@pro-laico/site':
-        specifier: workspace:*
-        version: link:../site
       '@pro-laico/zap':
         specifier: workspace:*
         version: link:../zap

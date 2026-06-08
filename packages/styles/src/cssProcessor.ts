@@ -1,9 +1,8 @@
 import { deepMerge } from '@pro-laico/core'
-import type { ShortcutSet } from '@pro-laico/site/schema'
 import { createGenerator, type PresetWind4Theme, presetAttributify, presetTypography, presetWind4 } from 'unocss'
 
 import manualLogger from './utilities/manualLogger'
-import type { DesignSet } from './types/payload-augment'
+import type { DesignSet, ShortcutSet } from './types/payload-augment'
 import { defaultAtomicClasses } from './designSet/defaults'
 import type { CollectionsWithStoredAtomicClasses, cssProcessorType } from './types/css'
 

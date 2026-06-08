@@ -4,8 +4,7 @@
  * from `src/index.ts`.
  */
 
-import type { ShortcutSet } from '@pro-laico/site/schema'
-import type { DesignSet } from '@pro-laico/styles/schema'
+import type { DesignSet, ShortcutSet } from '@pro-laico/styles/schema'
 
 declare module 'payload' {
   export interface RequestContext {
