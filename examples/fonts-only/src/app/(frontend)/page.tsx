@@ -39,7 +39,7 @@ export default async function HomePage() {
   // Fonts can be selected in the `fontSet` global but not yet downloaded into
   // `definition.ts` by `generate:fonts` — in which case the specimens render in
   // system fonts. Detect that gap so we can tell the reader to run the step.
-  const downloaded = Object.values(definitionFonts).filter((font) => font.variable).length
+  const downloaded = Object.values(definitionFonts as Record<string, { variable?: string }>).filter((font) => font.variable).length
   const needsGenerate = fonts.length > 0 && downloaded < fonts.length
 
   return (

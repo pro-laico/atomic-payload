@@ -4,7 +4,7 @@
   "private": true,
   "description": "Atomic Payload - Payload CMS starter with Tailwind. Monorepo with templates and plugins.",
   "license": "MIT",
-  "packageManager": "pnpm@11.5.1",
+  "packageManager": "pnpm@11.5.2",
   "scripts": {
     "dev": "pnpm --filter atomic-payload dev",
     "build": "pnpm --filter atomic-payload build",
