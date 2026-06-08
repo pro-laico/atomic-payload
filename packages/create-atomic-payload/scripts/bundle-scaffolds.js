@@ -94,16 +94,18 @@ const SCAFFOLD_BIOME_CONFIG = {
 }
 
 // pnpm 10.16+ no longer reads the `pnpm` field from package.json; native build
-// scripts must be allowlisted here. Without it, `pnpm install` exits non-zero
-// (ERR_PNPM_IGNORED_BUILDS) and sharp ships without its native binary. Mirrors the
-// monorepo root's allowed builds so scaffolded projects behave like the source.
-const SCAFFOLD_PNPM_WORKSPACE = `onlyBuiltDependencies:
-  - '@swc/core'
-  - core-js
-  - esbuild
-  - protobufjs
-  - sharp
-  - unrs-resolver
+// scripts must be approved here. Without it, `pnpm install` exits non-zero
+// (ERR_PNPM_IGNORED_BUILDS) and sharp ships without its native binary. pnpm 11 uses
+// the `allowBuilds` map (it ignores the older `onlyBuiltDependencies` array and
+// re-prompts) — this mirrors the monorepo root's `allowBuilds` so scaffolded
+// projects build exactly like the source.
+const SCAFFOLD_PNPM_WORKSPACE = `allowBuilds:
+  '@swc/core': true
+  core-js: true
+  esbuild: true
+  protobufjs: true
+  sharp: true
+  unrs-resolver: true
 `
 
 /** Build a map of @pro-laico/<name> → version from each packages/<name>/package.json. */
