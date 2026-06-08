@@ -8,8 +8,10 @@
  * version read from `packages/<name>/package.json` before bundling. A
  * `workspace:*` reference with no matching `packages/<name>` directory fails
  * loudly so we don't ship a broken tarball. Each scaffold also gets a
- * self-contained `biome.json` (the monorepo's root config governs the workspace,
- * so scaffolds don't keep nested copies, but end users need their own).
+ * self-contained `biome.json` and `pnpm-workspace.yaml` (the monorepo's root
+ * configs govern the workspace, so scaffolds don't keep nested copies — and a
+ * nested `pnpm-workspace.yaml` in the dev tree would break the monorepo — but end
+ * users need their own).
  */
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -91,6 +93,19 @@ const SCAFFOLD_BIOME_CONFIG = {
   overrides: [{ includes: ['**/*.config.{js,mjs,cjs,ts}', '**/scripts/**'], linter: { rules: { suspicious: { noConsole: 'off' } } } }],
 }
 
+// pnpm 10.16+ no longer reads the `pnpm` field from package.json; native build
+// scripts must be allowlisted here. Without it, `pnpm install` exits non-zero
+// (ERR_PNPM_IGNORED_BUILDS) and sharp ships without its native binary. Mirrors the
+// monorepo root's allowed builds so scaffolded projects behave like the source.
+const SCAFFOLD_PNPM_WORKSPACE = `onlyBuiltDependencies:
+  - '@swc/core'
+  - core-js
+  - esbuild
+  - protobufjs
+  - sharp
+  - unrs-resolver
+`
+
 /** Build a map of @pro-laico/<name> → version from each packages/<name>/package.json. */
 function readWorkspaceVersions() {
   const versions = new Map()
@@ -131,6 +146,9 @@ function bundleScaffold(scaffold, workspaceVersions) {
   // Rewrite `workspace:*` deps to caret-pinned versions.
   const destPkgPath = path.join(dest, 'package.json')
   const destPkg = JSON.parse(readFileSync(destPkgPath, 'utf8'))
+  // The `pnpm` field is ignored by modern pnpm (settings moved to
+  // pnpm-workspace.yaml, written below); drop it so it can't emit a warning.
+  delete destPkg.pnpm
   const unresolved = []
   for (const depField of ['dependencies', 'devDependencies', 'peerDependencies', 'optionalDependencies']) {
     const deps = destPkg[depField]
@@ -152,6 +170,7 @@ function bundleScaffold(scaffold, workspaceVersions) {
   }
   writeFileSync(destPkgPath, `${JSON.stringify(destPkg, null, 2)}\n`)
   writeFileSync(path.join(dest, 'biome.json'), `${JSON.stringify(SCAFFOLD_BIOME_CONFIG, null, 2)}\n`)
+  writeFileSync(path.join(dest, 'pnpm-workspace.yaml'), SCAFFOLD_PNPM_WORKSPACE)
 }
 
 if (existsSync(scaffoldsDest)) rmSync(scaffoldsDest, { recursive: true })
