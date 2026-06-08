@@ -1,0 +1,92 @@
+{
+  "name": "@pro-laico/site",
+  "version": "0.1.0",
+  "description": "Opinionated site shape for Atomic Payload — Pages, Header, Footer collections + SiteMetaData and Settings globals, paired with a single `sitePlugin()` that registers them all.",
+  "license": "MIT",
+  "type": "module",
+  "publishConfig": {
+    "access": "public",
+    "main": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "exports": {
+      ".": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "./schema": {
+        "types": "./dist/types/payload-augment.d.ts",
+        "default": "./dist/types/payload-augment.js"
+      },
+      "./cache": {
+        "types": "./dist/cache/index.d.ts",
+        "default": "./dist/cache/index.js"
+      },
+      "./zap": {
+        "types": "./dist/zap.d.ts",
+        "default": "./dist/zap.js"
+      },
+      "./components/frontend": {
+        "types": "./dist/components/frontend/index.d.ts",
+        "default": "./dist/components/frontend/index.js"
+      }
+    }
+  },
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
+    },
+    "./schema": {
+      "types": "./src/types/payload-augment.ts",
+      "default": "./src/types/payload-augment.ts"
+    },
+    "./cache": {
+      "types": "./src/cache/index.ts",
+      "default": "./src/cache/index.ts"
+    },
+    "./zap": {
+      "types": "./src/zap.ts",
+      "default": "./src/zap.ts"
+    },
+    "./components/frontend": {
+      "types": "./src/components/frontend/index.ts",
+      "default": "./src/components/frontend/index.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "pnpm clean && pnpm copyfiles && pnpm build:types && pnpm build:swc",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "build:swc": "swc ./src -d ./dist --config-file ../../.swcrc --strip-leading-paths",
+    "build:types": "tsc -p tsconfig.build.json --emitDeclarationOnly --noCheck",
+    "clean": "rimraf dist tsconfig.tsbuildinfo",
+    "copyfiles": "copyfiles -u 1 \"src/**/*.{scss,css,svg,json,ttf,woff,woff2,eot}\" dist/",
+    "prepack": "pnpm build"
+  },
+  "dependencies": {
+    "@pro-laico/images": "workspace:*",
+    "@pro-laico/zap": "workspace:*",
+    "@pro-laico/core": "workspace:*",
+    "@pro-laico/styles": "workspace:*",
+    "@pro-laico/atomic": "workspace:*"
+  },
+  "peerDependencies": {
+    "@payloadcms/plugin-nested-docs": ">=3.0.0",
+    "payload": ">=3.0.0",
+    "react": ">=19.0.0"
+  },
+  "devDependencies": {
+    "@payloadcms/plugin-nested-docs": "^3.79.0",
+    "@types/react": "^19.2.14",
+    "payload": "^3.79.0",
+    "react": "^19.2.4",
+    "typescript": "5.8.3"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

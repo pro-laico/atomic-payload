@@ -1,0 +1,94 @@
+---
+title: "Add to an existing project"
+description: "Drop one or more @pro-laico/* plugins into a Payload + Next.js app you already have."
+---
+
+Add Atomic Payload's plugins to a Payload + Next.js project you already have, no scaffolding required.
+
+## Steps
+
+<Steps>
+
+<Step>
+
+### Install the plugin
+
+Every Atomic Payload plugin is a standalone `@pro-laico/*` package you install with your package manager. Add the one you want, here `@pro-laico/styles`:
+
+<Tabs groupId="package-manager" items={['pnpm', 'npm', 'yarn']}>
+
+<Tab value="pnpm">
+
+```bash
+pnpm add @pro-laico/styles
+```
+
+</Tab>
+
+<Tab value="npm">
+
+```bash
+npm install @pro-laico/styles
+```
+
+</Tab>
+
+<Tab value="yarn">
+
+```bash
+yarn add @pro-laico/styles
+```
+
+</Tab>
+
+</Tabs>
+
+Repeat for any other plugins you need.
+
+</Step>
+
+<Step>
+
+### Register it in your Payload config
+
+Each plugin follows the same standard package shape: a `(opts) => (config) => config` factory exported as both the **default** and a **named** export. Add the factory to your config's `plugins` array:
+
+```ts
+import { buildConfig } from 'payload'
+import { stylesPlugin } from '@pro-laico/styles'
+
+export default buildConfig({
+  plugins: [stylesPlugin()],
+})
+```
+
+The barrel each plugin exports is safe to import from `payload.config.ts`, because client-only code lives behind subpaths, so it never leaks into your config bundle. Raw collections, hooks, fields, and components are also available as named imports for advanced consumers.
+
+</Step>
+
+<Step>
+
+### Regenerate types
+
+Atomic Payload's packages type themselves against the kernel's single `PayloadAugment` interface via [cross-package type augmentation](/docs/concepts/type-augmentation). Each package ships its block shapes through a `schema` subpath; your project fills the interface in once with a generated augmentation file. Regenerate it after adding a plugin:
+
+```bash
+pnpm generate:types
+```
+
+This regenerates Payload's `payload-types.ts` and appends `payload-types.augment.d.ts`, so every package's schema stubs resolve to your project's concrete shapes.
+
+</Step>
+
+</Steps>
+
+<Callout type="info">
+  Each plugin's own page documents its required and optional peer dependencies plus its full option set. Check the plugin page before wiring it up, since some plugins need extra setup (for example, mounting a provider at your app root) beyond registering the factory.
+</Callout>
+
+## Next
+
+<Cards>
+  <Card title="Browse all plugins" href="/docs/plugins" />
+  <Card title="Type augmentation" href="/docs/concepts/type-augmentation" />
+</Cards>

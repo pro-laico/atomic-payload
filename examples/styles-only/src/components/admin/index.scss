@@ -1,0 +1,27 @@
+.dashboard .styles-before-dashboard {
+  margin-bottom: base(1.5);
+
+  &__banner h4 {
+    margin: 0;
+  }
+
+  &__lead {
+    margin: base(0.75) 0;
+    max-width: 48rem;
+  }
+
+  &__footer {
+    margin-top: base(0.75);
+  }
+
+  & a:hover {
+    opacity: 0.85;
+  }
+
+  .seed-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: base(0.5);
+    margin: base(0.5) 0;
+  }
+}

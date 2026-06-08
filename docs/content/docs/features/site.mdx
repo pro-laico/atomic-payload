@@ -1,0 +1,60 @@
+---
+title: "Pages, Header, Footer & SEO"
+description: "The site-shape surface (Pages, Header, and Footer collections plus the SiteMetaData and Settings globals) that gives every project the structure of a website."
+---
+
+## Overview
+
+Where every other feature contributes one capability, the **site** feature contributes the **shape** of an Atomic Payload site. It registers the collections and globals every project needs to look like a website:
+
+- **`pages`**: the main content collection.
+- **`header`**: site-wide navigation.
+- **`footer`**: site-wide footer.
+- **`siteMetaData`** global: the single source of truth for site-level metadata (SEO).
+- **`settings`** global: site-wide settings.
+
+Locking this shape down means every project models pages, header, and footer the same way, so navigation wires up consistently and seeding has a known set of slugs to populate.
+
+## How it works
+
+Each piece owns a distinct part of the site:
+
+- **`pages`** is the main content collection. Each page carries an SEO tab and a settings tab, plus a children-blocks field for Atomic content, so a page is composed from the same atomic blocks you build elsewhere in the admin.
+- **`header`** is site-wide navigation. It's modeled as a collection rather than a global, so you can keep several versions and mark one **active**. The active document is the one the frontend renders.
+- **`footer`** follows the same pattern as the header: a collection where one document is marked active and rendered.
+- **`siteMetaData`** is a global holding the site name, default description, default Open Graph image, and light/dark favicons. It's the single source of truth for SEO defaults across the site.
+- **`settings`** is a global for the persistent store version (a draft and a published value). Bumping it resets the stored client state, which you reach for when you change actions and things stop behaving.
+
+Together these compose the site: pages supply the content, the header and footer frame it as navigation and chrome, and the globals supply the metadata and store settings that apply site-wide.
+
+<Callout type="info">
+  The draft/published CSS storage globals that previously lived here now ship from `@pro-laico/styles`, so the site feature no longer registers them.
+</Callout>
+
+## Using it
+
+Everything is managed from the Payload admin:
+
+- **Pages**: create and edit pages in the `pages` collection. Fill in the page's content with atomic child blocks, set per-page options in its settings tab, and override SEO in its SEO tab.
+- **Header**: edit the `header` collection to manage site-wide navigation. Because it's a collection, you can maintain more than one and flip the **active** toggle to choose which one renders.
+- **Footer**: manage the `footer` collection the same way as the header, marking one active.
+- **Settings**: open the `settings` global if you need to reset the persistent store version.
+- **SEO / metadata**: open the `siteMetaData` global to set your site name, default description, favicons, and default Open Graph image. These act as the defaults that a page's own SEO tab can override.
+
+## Configuration
+
+The site feature is registered by a single `sitePlugin()`, with no required options: adding the plugin wires up all the collections and globals above. The plugin is intentionally unopinionated about cross-package wiring (the atomic hook, the nested-docs plugin, the live-preview URL, JSON-schema setup), which is the template's job, because those choices depend on which other plugins you've enabled.
+
+For collection and global slugs, subpath imports, and the full export list, see the site plugin reference.
+
+## Provided by
+
+<Cards>
+  <Card title="@pro-laico/site" href="/docs/plugins/site" />
+</Cards>
+
+## Related
+
+<Cards>
+  <Card title="Atomic Blocks" href="/docs/features/atomic-blocks" />
+</Cards>

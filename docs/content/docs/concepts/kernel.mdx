@@ -1,0 +1,73 @@
+---
+title: "The kernel: Get and PayloadAugment"
+description: "The type-indirection layer in @pro-laico/core that lets plugin schema stubs resolve to a project's concrete generated types."
+---
+
+The **kernel** lives in `@pro-laico/core` (`src/kernel.ts`), and its types are re-exported from the package's root barrel. It is the indirection layer that lets every Atomic Payload package reference the consuming app's generated `payload-types.ts` shapes without hard-coding them.
+
+## What & why
+
+Atomic Payload is plugin-based, and every plugin defines its own schema stubs. But the concrete types (your collections, globals, and blocks) only exist in the consuming project's generated `payload-types.ts`. A plugin can't import them directly without creating a hard dependency on a file it doesn't own.
+
+The kernel solves this with a single indirection point: domain packages (`atomic`, `site`, `styles`, …) write their stubs against one `PayloadAugment` interface declared in `@pro-laico/core`. The consumer project fills that interface in **once**, and every package's stubs resolve to the project's real shapes.
+
+<Callout type="info">
+  Without augmentation, each stub falls back to a permissive default so the package still compiles cleanly on its own. Augmentation simply upgrades those defaults to the project's concrete types.
+</Callout>
+
+## How it works
+
+### `PayloadAugment`
+
+`PayloadAugment` is an empty index interface. Consumer projects extend it via module augmentation, using a generated `payload-types.augment.d.ts` (produced by `payload generate:types && core-augment-types`) to supply concrete shapes from their `payload-types.ts`.
+
+```ts
+export interface PayloadAugment {}
+```
+
+### `Get<K, F>`
+
+`Get<K, F>` looks up the key `K` in the augmented `PayloadAugment` interface and returns its type, falling back to `F` when that key isn't augmented.
+
+```ts
+export type Get<K extends string, F> = PayloadAugment extends Record<K, infer T> ? T : F
+```
+
+A package writes its stub as `Get<'X', Default>`. When the project augments `'X'`, the stub becomes the concrete type; otherwise it stays the default. The root config stub is defined exactly this way:
+
+```ts
+export type Config = Get<'Config', DefaultConfig>
+```
+
+### `ExtractOrDefault<U, V>`
+
+`ExtractOrDefault<U, V>` behaves like `Extract<U, V>`, but guards against the case where `Extract` collapses to `never`. That happens when `U` is an un-augmented default (e.g. `DefaultBlock`, whose discriminant is `string`): narrowing it by a specific literal `V` yields `never`. Instead, it falls back to `U & V`, preserving the discriminant literal.
+
+```ts
+export type ExtractOrDefault<U, V> = [Extract<U, V>] extends [never] ? U & V : Extract<U, V>
+```
+
+## Notes / gotchas
+
+<Callout type="warn">
+  Use `ExtractOrDefault<U, V>` instead of `Extract<U, V>` whenever `U` may be an un-augmented default fallback like `DefaultBlock`. Plain `Extract` collapses to `never` when the augmentation is missing, but `ExtractOrDefault` falls back to `U & V` so the discriminant literal survives even before the project fills in `PayloadAugment`.
+</Callout>
+
+<Callout type="info">
+  The default fallbacks are chosen so each domain package compiles without augmentation: `DefaultConfig['collections']` indexes by `string`, `DefaultBlock` carries a `blockType: string` discriminator, and `DefaultActionFn` carries a `type: string` discriminator.
+</Callout>
+
+<Callout type="info">
+  `@pro-laico/core` ships a `core-augment-types` CLI. The template's `generate:types` script chains it after `payload generate:types` to write the project-specific `PayloadAugment` augmentation alongside `payload-types.ts`:
+
+  ```bash
+  pnpm payload generate:types && pnpm core-augment-types
+  ```
+</Callout>
+
+## Related
+
+<Cards>
+  <Card title="Cross-package type augmentation" href="/docs/concepts/type-augmentation" />
+  <Card title="@pro-laico/core" href="/docs/plugins/core" />
+</Cards>

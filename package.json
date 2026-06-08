@@ -4,7 +4,7 @@
   "private": true,
   "description": "Atomic Payload - Payload CMS starter with Tailwind. Monorepo with templates and plugins.",
   "license": "MIT",
-  "packageManager": "pnpm@10.32.0",
+  "packageManager": "pnpm@11.5.2",
   "scripts": {
     "dev": "pnpm --filter atomic-payload dev",
     "build": "pnpm --filter atomic-payload build",
@@ -12,18 +12,23 @@
     "download:fonts": "pnpm --filter atomic-payload download:fonts",
     "generate:types": "pnpm --filter atomic-payload generate:types",
     "generate:importmap": "pnpm --filter atomic-payload generate:importmap",
-    "lint": "pnpm -r lint",
-    "create": "pnpm --filter create-atomic-payload exec node bin/cli.js"
+    "lint": "biome lint .",
+    "format": "biome format --write .",
+    "check": "biome check --write .",
+    "check:ci": "biome check .",
+    "typecheck": "pnpm -r typecheck",
+    "create": "pnpm --filter create-atomic-payload exec node bin/cli.js",
+    "release": "pnpm --filter @tools/releaser release",
+    "publish-packages": "pnpm --filter @tools/releaser publish-packages"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.2.0",
+    "@swc/cli": "0.7.9",
+    "@swc/core": "1.15.3",
+    "copyfiles": "^2.4.1",
+    "rimraf": "^6.0.1"
   },
   "engines": {
     "node": "24.x"
-  },
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "core-js",
-      "esbuild",
-      "sharp",
-      "unrs-resolver"
-    ]
   }
 }

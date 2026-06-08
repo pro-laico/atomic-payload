@@ -1,0 +1,115 @@
+{
+  "name": "@pro-laico/styles",
+  "version": "0.1.0",
+  "description": "Atomic Payload styles: designSet + shortcutSet collections, token fields, CSS preflight pipeline, UnoCSS processor and processDesignSet pipeline. The single package responsible for all CSS handling (frontend + Payload admin/runtime).",
+  "license": "MIT",
+  "type": "module",
+  "publishConfig": {
+    "access": "public",
+    "main": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "exports": {
+      ".": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "./schema": {
+        "types": "./dist/types/payload-augment.d.ts",
+        "default": "./dist/types/payload-augment.js"
+      },
+      "./cache": {
+        "types": "./dist/cache/index.d.ts",
+        "default": "./dist/cache/index.js"
+      },
+      "./fields/className": {
+        "types": "./dist/fields/className.d.ts",
+        "default": "./dist/fields/className.js"
+      },
+      "./ui/rowLabels/shortcut": {
+        "types": "./dist/ui/rowLabels/shortcut/index.d.ts",
+        "default": "./dist/ui/rowLabels/shortcut/index.js"
+      },
+      "./ui/rowLabels/color": {
+        "types": "./dist/ui/rowLabels/color.d.ts",
+        "default": "./dist/ui/rowLabels/color.js"
+      },
+      "./ui/rowLabels/animation": {
+        "types": "./dist/ui/rowLabels/animation.d.ts",
+        "default": "./dist/ui/rowLabels/animation.js"
+      },
+      "./ui/rowLabels/designToken": {
+        "types": "./dist/ui/rowLabels/designToken.d.ts",
+        "default": "./dist/ui/rowLabels/designToken.js"
+      }
+    }
+  },
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
+    },
+    "./schema": {
+      "types": "./src/types/payload-augment.ts",
+      "default": "./src/types/payload-augment.ts"
+    },
+    "./cache": {
+      "types": "./src/cache/index.ts",
+      "default": "./src/cache/index.ts"
+    },
+    "./fields/className": {
+      "types": "./src/fields/className.ts",
+      "default": "./src/fields/className.ts"
+    },
+    "./ui/rowLabels/shortcut": {
+      "types": "./src/ui/rowLabels/shortcut/index.tsx",
+      "default": "./src/ui/rowLabels/shortcut/index.tsx"
+    },
+    "./ui/rowLabels/color": {
+      "types": "./src/ui/rowLabels/color.tsx",
+      "default": "./src/ui/rowLabels/color.tsx"
+    },
+    "./ui/rowLabels/animation": {
+      "types": "./src/ui/rowLabels/animation.tsx",
+      "default": "./src/ui/rowLabels/animation.tsx"
+    },
+    "./ui/rowLabels/designToken": {
+      "types": "./src/ui/rowLabels/designToken.tsx",
+      "default": "./src/ui/rowLabels/designToken.tsx"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "pnpm clean && pnpm copyfiles && pnpm build:types && pnpm build:swc",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "build:swc": "swc ./src -d ./dist --config-file ../../.swcrc --strip-leading-paths",
+    "build:types": "tsc -p tsconfig.build.json --emitDeclarationOnly --noCheck",
+    "clean": "rimraf dist tsconfig.tsbuildinfo",
+    "copyfiles": "copyfiles -u 1 \"src/**/*.{scss,css,svg,json,ttf,woff,woff2,eot}\" dist/",
+    "prepack": "pnpm build"
+  },
+  "dependencies": {
+    "@pro-laico/zap": "workspace:*",
+    "@pro-laico/core": "workspace:*"
+  },
+  "peerDependencies": {
+    "@payloadcms/ui": ">=3.0.0",
+    "payload": ">=3.0.0",
+    "react": ">=19.0.0",
+    "unocss": ">=66.0.0"
+  },
+  "devDependencies": {
+    "@payloadcms/ui": "^3.79.0",
+    "@types/react": "^19.2.14",
+    "payload": "^3.79.0",
+    "react": "^19.2.4",
+    "typescript": "5.8.3",
+    "unocss": "^66.6.6"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

@@ -1,0 +1,13 @@
+import type { GroupField } from 'payload'
+
+import { APField } from '@pro-laico/core'
+
+export const TextSettingsTab: GroupField = {
+  type: 'group',
+  label: 'Text Settings',
+  admin: {
+    hideGutter: true,
+    condition: (_, sd) => Boolean(sd?.type === 'input' && (sd?.inputType === 'text' || sd?.inputType === 'textarea' || sd?.inputType === 'email')),
+  },
+  fields: [APField({ type: 'textarea', apf: ['form'], name: 'textPlaceholder' }), APField({ type: 'textarea', apf: ['form'], name: 'textDefault' })],
+}

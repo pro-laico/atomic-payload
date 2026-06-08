@@ -1,0 +1,42 @@
+@import "tailwindcss";
+@import "fumadocs-ui/css/neutral.css";
+@import "fumadocs-ui/css/preset.css";
+
+/*
+ * Design tokens adapted from atomicpayload.com: a shadcn-neutral UI (handled by
+ * Fumadocs' neutral preset) with the green brand accent + teal secondary.
+ * Fonts are intentionally the docs site's own (not atomicpayload's).
+ */
+@theme {
+  --color-brand: oklch(87.62% 0.24 148.61);
+  --color-brand-secondary: oklch(73.03% 0.052 183.44);
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-source-serif), ui-serif, Georgia, serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, monospace;
+  --font-display: var(--font-space-grotesk), var(--font-inter), sans-serif;
+}
+
+:root {
+  --brand-primary: oklch(87.62% 0.24 148.61);
+  --brand-secondary: oklch(73.03% 0.052 183.44);
+  --radius: 0.625rem;
+  /* Deepened green so accent links/active states stay readable on a light bg. */
+  --color-fd-primary: oklch(0.62 0.17 148.61);
+}
+
+.dark {
+  /* The full brand green reads well on the dark background. */
+  --color-fd-primary: var(--brand-primary);
+}
+
+html {
+  scrollbar-gutter: stable;
+}
+
+html > body[data-scroll-locked] {
+  /* biome-ignore-start lint/complexity/noImportantStyles: deliberately overrides the inline margin-right / --removed-body-scroll-bar-size that Fumadocs' scroll-lock (react-remove-scroll) injects on the body; `scrollbar-gutter: stable` already reserves the space, so without !important the page shifts when a dialog/sidebar opens */
+  margin-right: 0px !important;
+  --removed-body-scroll-bar-size: 0px !important;
+  /* biome-ignore-end lint/complexity/noImportantStyles: end scroll-lock override */
+}

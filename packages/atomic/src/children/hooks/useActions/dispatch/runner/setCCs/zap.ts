@@ -1,0 +1,14 @@
+﻿import { z } from '@pro-laico/zap'
+import { cookieConsentKeys } from '../../../../../../actions/fields/strict/registry/cookieConsent'
+
+export const SetCCSchema = z.ap.add(
+  z.object({
+    type: z.literal('RunSetCC'),
+    values: z.discriminatedUnion('perform', [
+      z.object({ perform: z.literal('decline') }),
+      z.object({ perform: z.literal('preference'), key: z.ap.get('CookieConsentPreferenceKeys', cookieConsentKeys) }),
+      z.object({ perform: z.literal('accept'), acceptAll: z.boolean().optional() }),
+    ]),
+  }),
+  { id: 'RunSetCC' },
+)

@@ -1,0 +1,556 @@
+---
+title: "@pro-laico/site"
+description: "The ready-made site shape for Atomic Payload: Pages, Header, and Footer collections plus site-wide Settings and SEO metadata, all from one sitePlugin()."
+---
+
+`@pro-laico/site` gives you the bones of a website out of the box: a **Pages** collection, editable **Header** and **Footer**, site-wide **Settings**, and **SEO / metadata** defaults. Instead of remodeling the same collections on every project, you start with a sensible, ready-to-edit site structure. It's a Tool package, so most people get it through the [atomic-payload template](/docs/templates/atomic-payload), which wires it up alongside the other plugins, rather than installing it on its own.
+
+<Callout type="info">
+  `@pro-laico/site` is a Tool package, a building block of the Atomic Payload stack, meant to be used alongside `@pro-laico/core` and the other `@pro-laico/*` packages (most easily via the [atomic-payload template](/docs/templates/atomic-payload)), not on its own.
+</Callout>
+
+## Installation
+
+<Tabs groupId="package-manager" items={['pnpm', 'npm', 'yarn']}>
+
+<Tab value="pnpm">
+
+```bash
+pnpm add @pro-laico/site
+```
+
+</Tab>
+
+<Tab value="npm">
+
+```bash
+npm install @pro-laico/site
+```
+
+</Tab>
+
+<Tab value="yarn">
+
+```bash
+yarn add @pro-laico/site
+```
+
+</Tab>
+
+</Tabs>
+
+<Callout type="info">
+  `payload` and `react` are peers you already have in a Payload + Next.js app. `@payloadcms/plugin-nested-docs` is also required: the **Pages** collection uses it for parent/child page nesting (it powers the page tree and breadcrumbs). Add it and wire it for the `pages` collection (see Setup).
+</Callout>
+
+## Setup
+
+<Tabs items={['Standalone', 'With the atomic-payload template']}>
+
+<Tab value="Standalone">
+
+Adding the site shape to your own Payload + Next.js project.
+
+<Steps>
+
+<Step>
+### Add the plugin to your Payload config
+
+```ts
+import { buildConfig } from 'payload'
+import { sitePlugin } from '@pro-laico/site'
+
+export default buildConfig({
+  plugins: [sitePlugin()],
+})
+```
+
+This registers everything in one go:
+
+- **Pages**: your routable pages, with a title, slug, derived `href`, a published-at date, parent/child nesting, page content, an **SEO** tab, and per-page settings.
+- **Header** and **Footer**: single-purpose collections for the site chrome you render around every page, each with its own content and an `active` toggle.
+- **Settings**: a site-wide global for the persistent store version (draft and published).
+- **Site MetaData**: site-wide SEO fallbacks (site name, default description, default Open Graph image, and light/dark favicons).
+
+All four collections and both globals show up under a **Website** admin group.
+</Step>
+
+<Step>
+### Wire up nested-docs for pages
+
+The **Pages** collection uses `@payloadcms/plugin-nested-docs` for its parent field and breadcrumbs, so add that plugin and point it at `pages`:
+
+```ts
+import { buildConfig } from 'payload'
+import { nestedDocsPlugin } from '@payloadcms/plugin-nested-docs'
+import { sitePlugin } from '@pro-laico/site'
+
+export default buildConfig({
+  plugins: [
+    sitePlugin(),
+    nestedDocsPlugin({
+      collections: ['pages'],
+      parentFieldSlug: 'parent',
+      breadcrumbsFieldSlug: 'breadcrumbs',
+      generateURL: (docs) => docs.reduce((url, doc) => `${url}/${doc.slug}`, ''),
+      generateLabel: (docs) => docs.reduce((url, doc) => `${url}/${doc.slug}`, ''),
+    }),
+  ],
+})
+```
+
+`@pro-laico/site` stays deliberately unopinionated about this and other cross-package choices (which collections run the atomic hook, the live-preview URL, JSON-schema type generation) so it doesn't force a wiring on you. Those depend on what other plugins you've enabled.
+</Step>
+
+<Step>
+### Add content in the admin
+
+Open the **Pages**, **Header**, and **Footer** collections to build out your site, fill in **Site MetaData** for your SEO fallbacks, and leave **Settings** at its defaults unless you need to reset the persistent store.
+</Step>
+
+<Step>
+### Render the header, footer, and pages in your app
+
+Use it in your app. See [Using it in your app](#using-it-in-your-app) below.
+</Step>
+
+</Steps>
+
+</Tab>
+
+<Tab value="With the atomic-payload template">
+
+The [atomic-payload template](/docs/templates/atomic-payload) already includes `@pro-laico/site` and wires it up for you: the plugin, the nested-docs configuration for pages, and the frontend layout that renders the header, footer, and page content. You just edit content in the admin.
+
+<Steps>
+
+<Step>
+### Build your site in the admin
+
+Add pages under the **Pages** collection (nest them with the parent field to build your URL tree), edit the **Header** and **Footer**, and set your SEO fallbacks in **Site MetaData**, all under the **Website** admin group.
+</Step>
+
+<Step>
+### Let the layout render it
+
+The template's frontend layout already pulls the active header and footer and the page content and renders them, so your edits show up on the site without any extra wiring.
+</Step>
+
+</Steps>
+
+</Tab>
+
+</Tabs>
+
+## Using it in your app
+
+The package ships ready-made **Header** and **Footer** renderers at `@pro-laico/site/components/frontend`. They're server components: hand each one the matching document and it renders that document's blocks. Place them around your page content in the root layout:
+
+```tsx
+// app/(frontend)/layout.tsx
+import { Footer, Header } from '@pro-laico/site/components/frontend'
+
+export default async function RootLayout({
+  children,
+  header,
+  footer,
+}: {
+  children: React.ReactNode
+  header: HeaderDoc
+  footer: FooterDoc
+}) {
+  return (
+    <html lang="en">
+      <body>
+        <Header header={header} />
+        {children}
+        <Footer footer={footer} />
+      </body>
+    </html>
+  )
+}
+```
+
+The template fetches the active `header` and `footer` documents through the [cache getters](#caching--revalidation) below and passes them in. Each component renders that document's `children` blocks and applies its class name; if no document is found it falls back to an empty header / footer:
+
+```tsx
+// app/(frontend)/layout.tsx
+import { getCachedFooter, getCachedHeader } from '@pro-laico/site/cache'
+import { Footer, Header } from '@pro-laico/site/components/frontend'
+import { draftMode } from 'next/headers'
+
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const { isEnabled: draft } = await draftMode()
+
+  const header = await getCachedHeader(draft)
+  const footer = await getCachedFooter(draft)
+
+  return (
+    <html lang="en">
+      <body>
+        <Header header={header} />
+        {children}
+        <Footer footer={footer} />
+      </body>
+    </html>
+  )
+}
+```
+
+Render page content the same way. A `[...slug]` route resolves the page by its `href` and hands its `children` blocks to the atomic renderer:
+
+```tsx
+// app/(frontend)/[...slug]/page.tsx
+import { getCachedPageByHref, getCachedPages } from '@pro-laico/site/cache'
+import { RenderChildren } from '@pro-laico/atomic/children/render'
+import { draftMode } from 'next/headers'
+import { notFound } from 'next/navigation'
+
+export default async function Page({ params }: { params: Promise<{ slug?: string[] }> }) {
+  const { isEnabled: draft } = await draftMode()
+  const { slug } = await params
+
+  const pages = await getCachedPages(draft)
+  const page = await getCachedPageByHref(`/${slug?.join('/') || ''}`, draft, pages)
+  if (!page) return notFound()
+
+  return (
+    <main className={page.mainClassName || undefined}>
+      <RenderChildren blocks={page.children} />
+    </main>
+  )
+}
+```
+
+## Caching & revalidation
+
+`@pro-laico/site` ships server-side getters at `@pro-laico/site/cache` so a page reads its chrome and content once instead of re-querying Payload on every render:
+
+- `getCachedHeader(draft)` / `getCachedFooter(draft)`: the active header / footer documents.
+- `getCachedPages(draft)`: every page `href` (used for `generateStaticParams` and to validate a requested path).
+- `getCachedPageByHref(href, draft, pages)`: a single page resolved by its `href`.
+- `getCachedSitemap(draft)`: the sitemap entries for every indexable page.
+- `getCachedSiteMetadata(draft)`: the site-wide SEO fallbacks from the `siteMetaData` global.
+
+Saving a page, header, footer, or your site metadata in the admin revalidates the matching tag (`page` / `pages`, `header`, `footer`, `sitemap`, `site-metadata`), and the collections also revalidate on delete, so the next read serves fresh content. See [Caching & revalidation](/docs/concepts/caching) for how the tags and `withCache` work.
+
+## Options
+
+`sitePlugin(options?)` accepts a single option. It stays unopinionated about cross-package wiring (the atomic hook, nested-docs, live preview, type generation), so there's nothing else to configure here:
+
+<TypeTable
+  type={{
+    enabled: { type: 'boolean', default: 'true', description: 'Set false to turn the plugin off. It leaves your config untouched and registers nothing.' },
+  }}
+/>
+
+All options at their defaults, as a working starting point:
+
+```ts
+sitePlugin({
+  enabled: true,
+})
+```
+
+## Exports
+
+Grouped by what they're for.
+
+### The plugin
+
+<ExportTable
+  exports={{
+    sitePlugin: {
+      type: 'plugin',
+      location: '@pro-laico/site',
+      description: 'The plugin itself. Registers the Pages / Header / Footer collections and the Settings / SiteMetaData globals. Default and named export.',
+      params: {
+        'options?': { type: 'SitePluginOptions', description: 'Only `enabled` (defaults to `true`). See the Options table above.' },
+      },
+      returns: { type: 'Plugin', description: 'A Payload config plugin you add to `buildConfig({ plugins: [...] })`.' },
+      example: `import { buildConfig } from 'payload'
+import { sitePlugin } from '@pro-laico/site'
+
+export default buildConfig({
+  plugins: [sitePlugin()],
+})`,
+    },
+    SitePluginOptions: { type: 'type', location: '@pro-laico/site', description: "The TypeScript type for the plugin's options." },
+  }}
+/>
+
+### Collections
+
+<ExportTable
+  exports={{
+    Pages: { type: 'collection', location: '@pro-laico/site', description: 'The routable pages collection (title, slug, href, parent nesting, content, SEO, and settings). Import it to register or extend it yourself.' },
+    Header: { type: 'collection', location: '@pro-laico/site', description: 'The header collection for the chrome rendered above every page.' },
+    Footer: { type: 'collection', location: '@pro-laico/site', description: 'The footer collection for the chrome rendered below every page.' },
+  }}
+/>
+
+### Fields
+
+<ExportTable
+  exports={{
+    SEOTab: {
+      type: 'field',
+      location: '@pro-laico/site',
+      description: 'The drop-in SEO tab (title, description, Open Graph image, light / dark favicons, and the `noIndex` / `priority` / `changeFrequency` sitemap settings). Compose it into your own page-like collections so they share the same SEO shape the built-in Pages collection uses.',
+      params: {},
+      returns: { type: 'Tab', description: 'A Payload `tabs` field entry (named `meta`, with `interfaceName: PageSEO`) you drop into a collection’s `tabs` array.' },
+      example: `import type { CollectionConfig } from 'payload'
+import { SEOTab } from '@pro-laico/site'
+
+// give your own page-like collection the same SEO tab the built-in Pages uses
+export const Articles: CollectionConfig = {
+  slug: 'articles',
+  fields: [
+    { name: 'title', type: 'text' },
+    { type: 'tabs', tabs: [SEOTab()] },
+  ],
+}`,
+    },
+    SettingsTab: {
+      type: 'field',
+      location: '@pro-laico/site',
+      description: 'The drop-in page settings tab (dev mode toggle, nested-docs breadcrumbs, and the generated page-function storage fields). Pass the collection’s list of atomic page functions so the admin controls and the generated storage fields share one source of truth.',
+      params: {
+        apFunctions: { type: 'APFunction[]', description: 'The page’s atomic page-function list, passed in from the collection so the admin controls and the generated storage fields can’t drift.' },
+      },
+      returns: { type: 'Tab', description: 'A Payload `tabs` field entry (labelled `Settings`) you drop into a collection’s `tabs` array.' },
+      example: `import type { CollectionConfig } from 'payload'
+import { SettingsTab } from '@pro-laico/site'
+
+const apFunctions = [/* the collection’s atomic page functions */]
+
+export const Articles: CollectionConfig = {
+  slug: 'articles',
+  fields: [{ type: 'tabs', tabs: [SettingsTab(apFunctions)] }],
+}`,
+    },
+  }}
+/>
+
+### Frontend
+
+<ExportTable
+  exports={{
+    'Header (component)': {
+      type: 'component',
+      location: '@pro-laico/site/components/frontend',
+      description: 'Server component that renders a header document’s blocks and applies its class name. Pass the active header document and place it above your page content. Falls back to an empty header when no document is found.',
+      params: {
+        header: { type: 'Header', description: 'The active header document, usually from `getCachedHeader(draft)`.' },
+      },
+      returns: { type: 'Promise<JSX.Element>', description: 'A `<header>` element rendering the document’s `children` blocks.' },
+      exampleLang: 'tsx',
+      example: `import { getCachedHeader } from '@pro-laico/site/cache'
+import { Header } from '@pro-laico/site/components/frontend'
+import { draftMode } from 'next/headers'
+
+// app/(frontend)/layout.tsx
+export default async function RootLayout({ children }) {
+  const { isEnabled: draft } = await draftMode()
+  const header = await getCachedHeader(draft)
+  return (
+    <body>
+      <Header header={header} />
+      {children}
+    </body>
+  )
+}`,
+    },
+    'Footer (component)': {
+      type: 'component',
+      location: '@pro-laico/site/components/frontend',
+      description: 'Server component that renders a footer document’s blocks and applies its class name. Pass the active footer document and place it below your page content. Falls back to an empty footer when no document is found.',
+      params: {
+        footer: { type: 'Footer', description: 'The active footer document, usually from `getCachedFooter(draft)`.' },
+      },
+      returns: { type: 'Promise<JSX.Element>', description: 'A `<footer>` element rendering the document’s `children` blocks.' },
+      exampleLang: 'tsx',
+      example: `import { getCachedFooter } from '@pro-laico/site/cache'
+import { Footer } from '@pro-laico/site/components/frontend'
+
+const footer = await getCachedFooter(false)
+return <Footer footer={footer} />`,
+    },
+  }}
+/>
+
+### Cache getters
+
+<ExportTable
+  exports={{
+    getCachedHeader: {
+      type: 'function',
+      location: '@pro-laico/site/cache',
+      description: 'Cached read of the active header document. Wrapped so a page reads it once instead of re-querying Payload on every render, and revalidated when the header is saved or deleted.',
+      params: { draft: { type: 'boolean', description: 'Read the draft (`true`) or published (`false`) variant.' } },
+      returns: { type: 'Promise<Header>', description: 'The active header document.' },
+      exampleLang: 'tsx',
+      example: `import { getCachedHeader } from '@pro-laico/site/cache'
+import { Header } from '@pro-laico/site/components/frontend'
+import { draftMode } from 'next/headers'
+
+// app/(frontend)/layout.tsx
+const { isEnabled: draft } = await draftMode()
+const header = await getCachedHeader(draft)
+return <Header header={header} />`,
+    },
+    getCachedFooter: {
+      type: 'function',
+      location: '@pro-laico/site/cache',
+      description: 'Cached read of the active footer document, revalidated when the footer is saved or deleted.',
+      params: { draft: { type: 'boolean', description: 'Draft or published variant.' } },
+      returns: { type: 'Promise<Footer>', description: 'The active footer document.' },
+      exampleLang: 'tsx',
+      example: `import { getCachedFooter } from '@pro-laico/site/cache'
+
+const footer = await getCachedFooter(false)`,
+    },
+    getCachedPages: {
+      type: 'function',
+      location: '@pro-laico/site/cache',
+      description: 'Cached read of every page `href`. Use it to pre-build routes (`generateStaticParams`) and to check a requested path before fetching the page. `createGetCachedPages(slug)` binds it to a non-default pages collection.',
+      params: { draft: { type: 'boolean', description: 'All pages for draft (`true`), live pages for published (`false`).' } },
+      returns: { type: 'Promise<string[]>', description: 'Every page `href`.' },
+      example: `import { getCachedPages } from '@pro-laico/site/cache'
+
+// app/(frontend)/[...slug]/page.tsx
+export async function generateStaticParams() {
+  const routes = await getCachedPages(false)
+  return routes.filter((href) => href !== '/').map((href) => ({ slug: href.split('/').slice(1) }))
+}`,
+    },
+    getCachedPageByHref: {
+      type: 'function',
+      location: '@pro-laico/site/cache',
+      description: 'Cached read of a single page resolved by its `href`. Returns the slice a route renders (`children` blocks, `mainClassName`, `meta`, `id`), or `undefined` when the path isn’t in the page list. `createGetCachedPageByHref(slug)` binds it to a non-default pages collection.',
+      params: {
+        href: { type: 'string', description: 'The page path to resolve, e.g. `/about`.' },
+        draft: { type: 'boolean', description: 'Draft or published variant.' },
+        pages: { type: 'string[]', description: 'The known page hrefs, usually from `getCachedPages(draft)`, used to skip a Payload query for unknown paths.' },
+      },
+      returns: { type: 'Promise<PageReturn | undefined>', description: 'The page slice, or `undefined` if not found.' },
+      exampleLang: 'tsx',
+      example: `import { getCachedPageByHref, getCachedPages } from '@pro-laico/site/cache'
+import { RenderChildren } from '@pro-laico/atomic/children/render'
+import { draftMode } from 'next/headers'
+import { notFound } from 'next/navigation'
+
+// app/(frontend)/[...slug]/page.tsx
+export default async function Page({ params }) {
+  const { isEnabled: draft } = await draftMode()
+  const { slug } = await params
+  const pages = await getCachedPages(draft)
+  const page = await getCachedPageByHref(\`/\${slug?.join('/') || ''}\`, draft, pages)
+  if (!page) return notFound()
+  return <RenderChildren blocks={page.children} />
+}`,
+    },
+    getCachedSitemap: {
+      type: 'function',
+      location: '@pro-laico/site/cache',
+      description: 'Cached read of the sitemap entries (url, priority, last modified, change frequency) for every indexable page. `createGetCachedSitemap(slug)` binds it to a non-default pages collection.',
+      params: { draft: { type: 'boolean', description: 'Draft or published variant.' } },
+      returns: { type: 'Promise<SiteMapEntry[]>', description: 'One entry per indexable page.' },
+      example: `import { getCachedSitemap } from '@pro-laico/site/cache'
+
+// app/(frontend)/sitemap.ts
+export default async function sitemap() {
+  const entries = await getCachedSitemap(false)
+  return entries.map(({ url, lastModified, changeFrequency, priority }) => ({ url, lastModified, changeFrequency, priority }))
+}`,
+    },
+    getCachedSiteMetadata: {
+      type: 'function',
+      location: '@pro-laico/site/cache',
+      description: 'Cached read of the site-wide SEO fallbacks (site name, default description, default Open Graph image, favicons) from the `siteMetaData` global. Revalidated when the global is saved.',
+      params: { draft: { type: 'boolean', description: 'Draft or published variant.' } },
+      returns: { type: 'Promise<SiteMetaDatum | undefined>', description: 'The site-metadata document.' },
+      example: `import { getCachedPageByHref, getCachedPages, getCachedSiteMetadata } from '@pro-laico/site/cache'
+import { GenerateMetaData } from '@pro-laico/core'
+
+// app/(frontend)/[...slug]/page.tsx
+export async function generateMetadata({ params }) {
+  const { slug } = await params
+  const pages = await getCachedPages(false)
+  const page = await getCachedPageByHref(\`/\${slug?.join('/') || ''}\`, false, pages)
+  const siteMetadata = await getCachedSiteMetadata(false)
+  return GenerateMetaData({ page, siteMetadata })
+}`,
+    },
+    createGetCachedPages: {
+      type: 'function',
+      location: '@pro-laico/site/cache',
+      description: 'Factory that binds the pages-list getter to a pages collection slug. Use it when your routable pages live in a collection other than `pages`. `getCachedPages` is this called with the default slug.',
+      params: {
+        'pagesSlug?': { type: 'string', description: 'The pages collection slug. Defaults to `pages`.' },
+      },
+      returns: { type: '(draft: boolean) => Promise<string[]>', description: 'A pages-list getter bound to your slug.' },
+      example: `import { createGetCachedPages } from '@pro-laico/site/cache'
+
+// routable docs live in an \`articles\` collection
+const getArticleHrefs = createGetCachedPages('articles')
+const hrefs = await getArticleHrefs(false)`,
+    },
+    createGetCachedPageByHref: {
+      type: 'function',
+      location: '@pro-laico/site/cache',
+      description: 'Factory that binds the page-by-href getter to a pages collection slug. `getCachedPageByHref` is this called with the default slug.',
+      params: {
+        'pagesSlug?': { type: 'string', description: 'The pages collection slug. Defaults to `pages`.' },
+      },
+      returns: { type: '(href: string, draft: boolean, pages: string[]) => Promise<PageReturn | undefined>', description: 'A page-by-href getter bound to your slug.' },
+      example: `import { createGetCachedPageByHref } from '@pro-laico/site/cache'
+
+const getArticle = createGetCachedPageByHref('articles')
+const article = await getArticle('/articles/hello', false, hrefs)`,
+    },
+    createGetCachedSitemap: {
+      type: 'function',
+      location: '@pro-laico/site/cache',
+      description: 'Factory that binds the sitemap getter to a pages collection slug. `getCachedSitemap` is this called with the default slug.',
+      params: {
+        'pagesSlug?': { type: 'string', description: 'The pages collection slug. Defaults to `pages`.' },
+      },
+      returns: { type: '(draft: boolean) => Promise<SiteMapEntry[]>', description: 'A sitemap getter bound to your slug.' },
+      example: `import { createGetCachedSitemap } from '@pro-laico/site/cache'
+
+const getArticleSitemap = createGetCachedSitemap('articles')
+const entries = await getArticleSitemap(false)`,
+    },
+    'PageReturn (type)': { type: 'type', location: '@pro-laico/site/cache', description: 'The slice `getCachedPageByHref` returns (`children`, `mainClassName`, `meta`, `id`), the part a route renders.' },
+    'SiteMapEntry (type)': { type: 'type', location: '@pro-laico/site/cache', description: 'A single sitemap entry (`url`, `priority`, `lastModified`, `changeFrequency`).' },
+  }}
+/>
+
+### Schemas
+
+<ExportTable
+  exports={{
+    CollectionSchemas: { type: 'object', location: '@pro-laico/site/zap', description: 'The zap registry schemas for the site collection slugs. Register them before generating types (the JSON-schema step uses these). Default export.' },
+  }}
+/>
+
+### Types
+
+<ExportTable
+  exports={{
+    'Page (type)': { type: 'type', location: '@pro-laico/site/schema', description: 'TypeScript type for typed access to your page documents.' },
+    'Header (type)': { type: 'type', location: '@pro-laico/site/schema', description: 'TypeScript type for typed access to your header document.' },
+    'Footer (type)': { type: 'type', location: '@pro-laico/site/schema', description: 'TypeScript type for typed access to your footer document.' },
+    'SiteMetaDatum (type)': { type: 'type', location: '@pro-laico/site/schema', description: 'TypeScript type for typed access to your site-metadata document.' },
+  }}
+/>
+
+## Related
+
+<Cards>
+  <Card title="Pages, Header, Footer & SEO" href="/docs/features/site" />
+  <Card title="@pro-laico/styles" href="/docs/plugins/styles" />
+  <Card title="@pro-laico/atomic" href="/docs/plugins/atomic" />
+  <Card title="atomic-payload template" href="/docs/templates/atomic-payload" />
+</Cards>

@@ -1,0 +1,116 @@
+﻿'use client'
+import { useEffect, useMemo, useRef, useState } from 'react'
+import { Toast } from '@base-ui-components/react/toast'
+
+import type { FormResponse } from '@pro-laico/atomic/forms'
+import type { AtomicChild } from '@pro-laico/atomic/children/schema'
+import type { ActionContext, FullFormContext } from '@pro-laico/atomic/actions'
+
+import { useActionContext } from './useActionContext'
+
+/** Dynamic import avoids a server-module / getCached init cycle during client graph evaluation (Next collect page data). */
+let submitFormLoader: Promise<typeof import('@pro-laico/atomic/forms/submitForm/serverFunction').submitForm> | null = null
+function loadSubmitForm() {
+  submitFormLoader ??= import('@pro-laico/atomic/forms/submitForm/serverFunction').then((m) => m.submitForm)
+  return submitFormLoader
+}
+
+export type UseFormProps = { block: AtomicChild }
+
+export type UseFormReturns = {
+  context: ActionContext
+  handleReset: () => void
+  formRef: React.RefObject<HTMLFormElement | null>
+  handleSubmit: (e: React.FormEvent<HTMLFormElement>) => Promise<void>
+}
+
+export function useForm(props: UseFormProps): UseFormReturns {
+  const { block } = props
+  const { formName } = block
+  const toastManager = Toast.useToastManager()
+
+  const formRef = useRef<HTMLFormElement | null>(null)
+  const [formStatus, setFormStatus] = useState<string | null>(null)
+  const [submissionId, setSubmissionId] = useState<string | null>(null)
+  const [formResponse, setFormResponse] = useState<FormResponse | null>(null)
+
+  const fullFormContext: FullFormContext = useMemo(() => ({ formRef, formResponse, submissionId }), [formResponse, submissionId])
+  const context = useActionContext({ fullFormContext })
+
+  useEffect(() => {
+    if (!formName) return
+    const formStatus = context.atomicStore.getValue(formName, false)
+    setFormStatus(formStatus as string | null)
+  }, [formName, context])
+
+  function setStatus(status: 'pending' | 'success' | 'error' | 'reset', response?: FormResponse) {
+    if (status === 'reset') setSubmissionId(null)
+    if (status === 'reset' || status === 'pending') setFormResponse(null)
+    if (formName) context.atomicStore.setValue(formName, status, false)
+    if (response) context.atomicStore.setValue(`${formName}-response`, { form: response.fm, ...response.im }, false)
+  }
+
+  useEffect(() => {
+    if (!formName) return
+    switch (formStatus) {
+      case 'setPending': {
+        if (formRef.current && !formRef.current.checkValidity()) {
+          formRef.current.reportValidity()
+          setStatus('error')
+          return
+        }
+        formRef.current?.requestSubmit()
+        break
+      }
+      case 'setReset': {
+        formRef.current?.reset()
+        break
+      }
+    }
+    //KNOWN ISSUE: Need to update to next 16+ to properly remove setStatus as a dep with useEffectEvent.
+    // biome-ignore lint/correctness/useExhaustiveDependencies: setStatus is unstable but intentionally listed; revisit with useEffectEvent on Next 16+.
+  }, [formName, formStatus, setStatus])
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    if (!formRef?.current) {
+      setStatus('error')
+      console.error('useForm handleSubmit: formRef is null')
+      return
+    }
+
+    const formData = new FormData(formRef.current)
+
+    setStatus('pending')
+
+    const submissionID = Date.now().toString()
+    setSubmissionId(submissionID)
+
+    const clientData = {
+      timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || 'unknown',
+      screenWidth: `${window.screen.width}`,
+      screenHeight: `${window.screen.height}`,
+      preferences: context.atomicStore.preferences,
+    }
+
+    try {
+      const toastID = block.formToastEnabled ? toastManager.add({ type: 'loading', description: block.lm || 'Submitting form...' }) : undefined
+
+      const submitFormSF = await loadSubmitForm()
+      const response = await submitFormSF({ blockID: block.id, formData, submissionID, clientData })
+
+      if (response.success && toastID) toastManager.update(toastID, { type: 'success', description: response.fm })
+      else if (toastID) toastManager.update(toastID, { type: 'error', description: response.fm })
+      if (toastID) setTimeout(() => toastManager.close(toastID), 5000)
+
+      setFormResponse(response)
+      setStatus(response.success ? 'success' : 'error', response)
+    } catch (error: unknown) {
+      setStatus('error', error as FormResponse)
+    }
+  }
+
+  const handleReset = () => setStatus('reset')
+
+  return { handleSubmit, handleReset, context, formRef }
+}

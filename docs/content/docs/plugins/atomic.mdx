@@ -1,0 +1,749 @@
+---
+title: "@pro-laico/atomic"
+description: "Turns the nested blocks editors build in the Payload admin into a working, interactive website: reusable content blocks, point-and-click actions, and a complete form pipeline."
+---
+
+`@pro-laico/atomic` turns what editors build in the Payload admin into a real, interactive website. It powers reusable content blocks you can nest inside one another, point-and-click interactivity like dialogs, popovers, and theme toggles, and a full form pipeline with built-in sanitation, validation, and rate limiting.
+
+This is foundational tooling. You rarely install it on its own. The [atomic-payload template](/docs/templates/atomic-payload) and the other `@pro-laico/*` plugins bring it along, and a lot of its work happens behind the scenes when content is saved. But it also ships the React pieces your own app renders with (the block renderer, the form submission action, and the client store behind interactive blocks), so this page covers that frontend surface too.
+
+<Callout type="info">
+  `@pro-laico/atomic` is a Tool package, a building block of the Atomic Payload stack, meant to be used alongside `@pro-laico/core` and the other `@pro-laico/*` packages (most easily via the [atomic-payload template](/docs/templates/atomic-payload)), not on its own.
+</Callout>
+
+## Installation
+
+<Tabs groupId="package-manager" items={['pnpm', 'npm', 'yarn']}>
+
+<Tab value="pnpm">
+
+```bash
+pnpm add @pro-laico/atomic
+```
+
+</Tab>
+
+<Tab value="npm">
+
+```bash
+npm install @pro-laico/atomic
+```
+
+</Tab>
+
+<Tab value="yarn">
+
+```bash
+yarn add @pro-laico/atomic
+```
+
+</Tab>
+
+</Tabs>
+
+<Callout type="info">
+  `payload`, `next`, `react`, `react-dom`, `server-only`, `@payloadcms/ui`, and `@payloadcms/richtext-lexical` are peers you already have in a Payload + Next.js app. `unocss` (CSS generation), `zustand` (the client store behind interactive blocks), and `@mux/blurup` (Mux video placeholders) are optional, so install them only if you use those features.
+</Callout>
+
+## Setup
+
+The package is organized into four areas you wire up in your Payload config: actions, the save-time hook, forms, and child blocks. Each registers independently, so you can add only the ones you need.
+
+<Tabs items={['Standalone', 'With the atomic-payload template']}>
+
+<Tab value="Standalone">
+
+Wiring atomic into your own Payload + Next.js project.
+
+<Steps>
+
+<Step>
+### Register the block plugins
+
+Add the actions, forms, and child-blocks plugins to your config. Each prepends its blocks to `config.blocks`; order matters, so keep them in this sequence (child blocks first in the merged list, then actions, then form blocks):
+
+```ts
+import { buildConfig } from 'payload'
+import { formsPlugin } from '@pro-laico/atomic/forms'
+import { actionsPlugin } from '@pro-laico/atomic/actions'
+import { childBlocksPlugin } from '@pro-laico/atomic/children'
+
+export default buildConfig({
+  plugins: [
+    formsPlugin(),
+    actionsPlugin(),
+    childBlocksPlugin(),
+  ],
+})
+```
+
+- `childBlocksPlugin()` registers the nestable content blocks editors build pages from (Atomic, SimpleText, RichText, Image, Video, Icon, SVG).
+- `actionsPlugin()` registers the built-in action blocks (theme toggle, cookie consent, form submit, dynamic store, portal open).
+- `formsPlugin()` registers the default submit-form processing blocks (rate limiting, sanitation, validation).
+</Step>
+
+<Step>
+### Add fields to the child blocks (optional)
+
+The child blocks ship with no styling fields of their own, so they don't depend on `@pro-laico/styles`. Use `blockFields` (keyed by block slug) to prepend or append your own fields per block, for example the `@pro-laico/styles` `ClassNameField` so editors can type utility classes:
+
+```ts
+import { ClassNameField } from '@pro-laico/styles'
+import { childBlocksPlugin } from '@pro-laico/atomic/children'
+
+childBlocksPlugin({
+  blockFields: {
+    SVGChild: { prependFields: [ClassNameField({ label: 'SVG Atomic Classes' })] },
+    ImageChild: { prependFields: [ClassNameField({ label: 'Image Atomic Classes' })] },
+    // …any other block, any fields you like
+  },
+})
+```
+
+<Callout type="info">
+  `AtomicChild` is a special case. It stays on a dedicated `classNameField` option rather than `blockFields`. Pass `classNameField: ClassNameField` to wire it up.
+</Callout>
+</Step>
+
+<Step>
+### Attach the save-time hook
+
+When a page is saved, atomic walks its blocks once to collect the styles, actions, and forms the frontend needs, generate the CSS, and revalidate caches. `createAtomicHook` builds that `beforeChange` hook from a CSS getter and the action storage processor; `atomicHookPlugin` attaches it to the collections you name. The CSS getter comes from `createCssGetCached` (in `@pro-laico/styles/cache`), which uses styles' own getters and the injected `header` / `footer` getters from `@pro-laico/site/cache`:
+
+```ts
+import { buildConfig } from 'payload'
+import { createCssGetCached } from '@pro-laico/styles/cache'
+import { getCachedFooter, getCachedHeader } from '@pro-laico/site/cache'
+import { atomicHookPlugin, createAtomicHook } from '@pro-laico/atomic/hook'
+import { ActionBlockStorageProcessor } from '@pro-laico/atomic/actions/processor'
+
+const getCached = createCssGetCached({ getHeader: getCachedHeader, getFooter: getCachedFooter })
+const atomicHook = createAtomicHook({ getCached, ActionBlockStorageProcessor })
+
+export default buildConfig({
+  plugins: [
+    atomicHookPlugin({ hook: atomicHook, collectionSlugs: ['pages'] }),
+  ],
+})
+```
+
+The ready-made `atomicHook` export wires those dependencies lazily for you (using the template's conventional slug names), so you can pass it straight through. That's what the template does (see the other tab).
+</Step>
+
+<Step>
+### Render the blocks on the frontend
+
+`RenderChildren` walks a saved block tree and renders each block (Server Component). Pass it the `children` array from a page you fetched:
+
+```tsx
+// app/(frontend)/[...slug]/page.tsx
+import { RenderChildren } from '@pro-laico/atomic/children/render'
+
+export default async function Page() {
+  const page = await getPage() // however you load your page
+
+  return (
+    <main>
+      <RenderChildren blocks={page.children} />
+    </main>
+  )
+}
+```
+</Step>
+
+<Step>
+### Wrap your app with the client store
+
+Interactive blocks (dialogs, popovers, theme toggles, the dynamic store) read their state from a client store. Wrap your frontend in `AtomicStoreProvider`, seeding it with the actions atomic stored for the page:
+
+```tsx
+// app/(frontend)/layout.tsx
+import { AtomicStoreProvider } from '@pro-laico/atomic/hook/client'
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en">
+      <body>
+        <AtomicStoreProvider initialState={storedAtomicActions}>{children}</AtomicStoreProvider>
+      </body>
+    </html>
+  )
+}
+```
+</Step>
+
+<Step>
+### Use the form submission action
+
+Forms rendered by `RenderChildren` submit through atomic's `submitForm` server action, which runs the stored rate-limiting, sanitation, and validation pipeline before writing the submission. Import it from its own subpath (kept separate so it isn't pulled into config evaluation):
+
+```ts
+import { submitForm } from '@pro-laico/atomic/forms/submitForm/serverFunction'
+```
+
+For form submissions to reach the right URL in production, set the [environment variables](#environment-variables) below.
+</Step>
+
+</Steps>
+
+</Tab>
+
+<Tab value="With the atomic-payload template">
+
+The [atomic-payload template](/docs/templates/atomic-payload) already wires all of this: the plugins, the save-time hook, the renderer, the client store, and the form action. You usually don't touch any of it; you just build pages in the admin.
+
+<Steps>
+
+<Step>
+### It's already registered
+
+The template's plugin list adds `formsPlugin`, `actionsPlugin`, and `childBlocksPlugin`, and weaves the `@pro-laico/styles` `ClassNameField` into the child blocks for you. The save-time hook is the ready-made `atomicHook`, handed to `@pro-laico/styles` so it runs on the content collections.
+
+```ts
+import { atomicHook } from '@pro-laico/atomic/hook'
+import { stylesPlugin } from '@pro-laico/styles'
+
+stylesPlugin({ atomicHook /* …other options */ })
+```
+</Step>
+
+<Step>
+### Build pages in the admin
+
+Open a page in the admin and assemble it from the child blocks (text, images, icons, rich text, video) and action blocks (theme toggle, cookie consent, form submit, dynamic store, portals). Saving runs the hook, which generates the styles and stores the actions and forms the frontend needs.
+</Step>
+
+<Step>
+### The frontend is already wired
+
+The template's `[...slug]/page.tsx` renders pages with `RenderChildren`, its `(frontend)/layout.tsx` wraps the app in `AtomicStoreProvider`, and forms submit through the `submitForm` server action. Set [`NEXT_PUBLIC_SERVER_URL`](#environment-variables) so submissions resolve correctly in production.
+</Step>
+
+</Steps>
+
+</Tab>
+
+</Tabs>
+
+## Caching & revalidation
+
+Atomic ships server-side cache getters from `@pro-laico/atomic/cache`, wrapped so a page doesn't re-query Payload on every render:
+
+- `getCachedAtomicActions(draft)`: the stored actions snapshot you seed `AtomicStoreProvider` with.
+- `getCachedAtomicForms(draft)` / `getCachedBackendForms()` / `getCachedAllForms(draft, atomicForms, backendForms)`: the stored form definitions the `submitForm` action reads before processing a submission.
+- `getCachedFormSubmissions(formTitle)`: a form's submissions.
+
+The save-time `atomicHook` (the same one wired in Setup) revalidates the matching tags as it stores a page's data, including `atomic-actions`, `atomic-forms`, `atomic-classes`, `pages`, and the per-page `page` tag, so the next read serves fresh data and live preview updates. See [Caching & revalidation](/docs/concepts/caching) for how the tags and `withCache` work.
+
+## Options
+
+Each plugin factory takes its own options object. All accept `enabled` (set `false` to turn it off).
+
+`actionsPlugin(options?)`:
+
+<TypeTable
+  type={{
+    enabled: { type: 'boolean', default: 'true', description: 'Set false to skip registering the action blocks.' },
+    actionBlocks: { type: 'Block[]', default: '[]', description: 'Extra Payload blocks merged after the built-in action blocks and before any blocks already on your config.' },
+  }}
+/>
+
+All `actionsPlugin` options at their defaults:
+
+```ts
+actionsPlugin({
+  enabled: true,
+  actionBlocks: [], // no extra action blocks
+})
+```
+
+`formsPlugin(options?)`:
+
+<TypeTable
+  type={{
+    enabled: { type: 'boolean', default: 'true', description: 'Set false to skip registering the submit-form blocks.' },
+    formBlocks: { type: 'Block[]', default: '[]', description: 'Extra form / input processing blocks merged after the package defaults and before any blocks already on your config.' },
+  }}
+/>
+
+All `formsPlugin` options at their defaults:
+
+```ts
+formsPlugin({
+  enabled: true,
+  formBlocks: [], // no extra form-processing blocks
+})
+```
+
+`childBlocksPlugin(options?)`:
+
+<TypeTable
+  type={{
+    enabled: { type: 'boolean', default: 'true', description: 'Set false to skip registering the child blocks.' },
+    childBlocks: { type: 'Block[]', default: '[]', description: 'Extra Payload blocks to register as child blocks, merged after the defaults.' },
+    blockFields: { type: 'Partial<Record<GenericChildBlockSlug, BlockFieldExtensions>>', default: '{}', description: 'Per-block fields to prepend or append, keyed by block slug (e.g. wiring the @pro-laico/styles ClassNameField onto SVGChild or ImageChild). See its keys below.' },
+    classNameField: { type: 'ClassNameFieldWrapper', description: 'The class-name field for the AtomicChild block (its special case, not covered by blockFields). Pass the @pro-laico/styles ClassNameField to wire it up.' },
+  }}
+/>
+
+The `blockFields` option is keyed by child-block slug, and each entry takes the same `{ prependFields, appendFields }` shape:
+
+<Accordions>
+
+<Accordion title="blockFields keys">
+
+The keys are the six non-Atomic child-block slugs: `SimpleTextChild`, `RichTextChild`, `ImageChild`, `VideoChild`, `IconChild`, and `SVGChild`. (`AtomicChild` is the special case handled by `classNameField`.) Each maps to a `BlockFieldExtensions` object:
+
+<TypeTable
+  type={{
+    prependFields: { type: 'Field[]', description: "Fields inserted at the start of that block's primary content tab. The common use is the @pro-laico/styles ClassNameField so editors can type utility classes." },
+    appendFields: { type: 'Field[]', description: "Fields inserted at the end of that block's primary content tab." },
+  }}
+/>
+
+</Accordion>
+
+</Accordions>
+
+All `childBlocksPlugin` options at their defaults:
+
+```ts
+import { ClassNameField } from '@pro-laico/styles'
+
+childBlocksPlugin({
+  enabled: true,
+  childBlocks: [], // no extra child blocks
+  blockFields: {}, // no per-block prepend/append fields
+  classNameField: ClassNameField, // optional; wires AtomicChild's class field
+})
+```
+
+`atomicHookPlugin(options)`:
+
+<TypeTable
+  type={{
+    enabled: { type: 'boolean', default: 'true', description: 'Set false to skip attaching the hook.' },
+    hook: { type: 'CollectionBeforeChangeHook', description: 'Required. The hook to attach. Build it with createAtomicHook, or pass the ready-made atomicHook export.' },
+    collectionSlugs: { type: 'string[]', description: 'Required. The collections that should run the hook on save.' },
+  }}
+/>
+
+All `atomicHookPlugin` options at their defaults:
+
+```ts
+import { atomicHook } from '@pro-laico/atomic/hook'
+
+atomicHookPlugin({
+  enabled: true,
+  hook: atomicHook, // required (no default)
+  collectionSlugs: ['pages'], // required (no default)
+})
+```
+
+## Environment variables
+
+Atomic reads these when resolving the URL form submissions POST to. They're optional in development (it falls back to `http://localhost:3000`), but a production deploy should set one.
+
+| Variable | Purpose |
+| --- | --- |
+| `NEXT_PUBLIC_SERVER_URL` | The public URL of your site, used to build the form submission endpoint. |
+| `VERCEL_PROJECT_PRODUCTION_URL` | Fallback on Vercel when `NEXT_PUBLIC_SERVER_URL` isn't set; atomic prefixes it with `https://`. |
+
+## Exports
+
+Atomic exposes most of its surface through namespaced subpaths (`@pro-laico/atomic/{actions,hook,forms,children,cache}` and their sub-subpaths). The package root re-exports the three block plugin factories (`actionsPlugin`, `formsPlugin`, `childBlocksPlugin`), the `ChildrenBlocksField`, and the ready-made `atomicHook` as a convenience; everything else lives on its subpath. The full subpath list is in the package's `package.json` `exports`. The key public pieces:
+
+### Plugins & options
+
+<ExportTable
+  exports={{
+    childBlocksPlugin: {
+      type: 'plugin',
+      location: '@pro-laico/atomic/children',
+      description: 'Registers the nestable content child blocks (Atomic, SimpleText, RichText, Image, Video, Icon, SVG). Also re-exported from the root.',
+      params: {
+        'options?': { type: 'ChildBlocksPluginOptions', description: 'See the Options table above. `blockFields` prepends/appends fields per block; `classNameField` wires the AtomicChild class field.' },
+      },
+      returns: { type: 'Plugin', description: 'A Payload config plugin you add to `buildConfig({ plugins: [...] })`.' },
+      example: `import { buildConfig } from 'payload'
+import { ClassNameField } from '@pro-laico/styles'
+import { childBlocksPlugin } from '@pro-laico/atomic/children'
+
+export default buildConfig({
+  plugins: [
+    childBlocksPlugin({
+      classNameField: ClassNameField,
+      blockFields: {
+        SVGChild: { prependFields: [ClassNameField({ label: 'SVG Atomic Classes' })] },
+      },
+    }),
+  ],
+})`,
+    },
+    actionsPlugin: {
+      type: 'plugin',
+      location: '@pro-laico/atomic/actions',
+      description: 'Registers the built-in action blocks (theme toggle, cookie consent, form submit, dynamic store, portal). Also re-exported from the root.',
+      params: {
+        'options?': { type: 'ActionsPluginOptions', description: 'See the Options table above. `actionBlocks` merges extra blocks after the defaults.' },
+      },
+      returns: { type: 'Plugin', description: 'A Payload config plugin you add to `buildConfig({ plugins: [...] })`.' },
+      example: `import { buildConfig } from 'payload'
+import { actionsPlugin } from '@pro-laico/atomic/actions'
+
+export default buildConfig({
+  plugins: [actionsPlugin()],
+})`,
+    },
+    formsPlugin: {
+      type: 'plugin',
+      location: '@pro-laico/atomic/forms',
+      description: 'Registers the default submit-form processing blocks (rate limiting, sanitation, validation). Also re-exported from the root.',
+      params: {
+        'options?': { type: 'FormsPluginOptions', description: 'See the Options table above. `formBlocks` merges extra processing blocks after the defaults.' },
+      },
+      returns: { type: 'Plugin', description: 'A Payload config plugin you add to `buildConfig({ plugins: [...] })`. Run it before actionsPlugin and childBlocksPlugin so block order stays correct.' },
+      example: `import { buildConfig } from 'payload'
+import { formsPlugin } from '@pro-laico/atomic/forms'
+import { actionsPlugin } from '@pro-laico/atomic/actions'
+import { childBlocksPlugin } from '@pro-laico/atomic/children'
+
+export default buildConfig({
+  plugins: [formsPlugin(), actionsPlugin(), childBlocksPlugin()],
+})`,
+    },
+    atomicHookPlugin: {
+      type: 'plugin',
+      location: '@pro-laico/atomic/hook',
+      description: "Attaches the save-time hook to your content collections' beforeChange.",
+      params: {
+        options: { type: 'AtomicHookPluginOptions', description: '`hook` is the beforeChange hook to attach (the ready-made `atomicHook` or one from `createAtomicHook`); `collectionSlugs` are the collections that should run it on save.' },
+      },
+      returns: { type: 'Plugin', description: 'A Payload config plugin that adds the hook to the listed collections.' },
+      example: `import { buildConfig } from 'payload'
+import { atomicHook, atomicHookPlugin } from '@pro-laico/atomic/hook'
+
+export default buildConfig({
+  plugins: [
+    atomicHookPlugin({ hook: atomicHook, collectionSlugs: ['pages'] }),
+  ],
+})`,
+    },
+    ChildBlocksPluginOptions: { type: 'type', location: '@pro-laico/atomic/children', description: 'The options type for childBlocksPlugin.' },
+    ActionsPluginOptions: { type: 'type', location: '@pro-laico/atomic/actions', description: 'The options type for actionsPlugin.' },
+    FormsPluginOptions: { type: 'type', location: '@pro-laico/atomic/forms', description: 'The options type for formsPlugin.' },
+    AtomicHookPluginOptions: { type: 'type', location: '@pro-laico/atomic/hook', description: 'The options type for atomicHookPlugin.' },
+  }}
+/>
+
+### Children
+
+<ExportTable
+  exports={{
+    RenderChildren: {
+      type: 'component',
+      location: '@pro-laico/atomic/children/render',
+      description: "The frontend renderer, a Server Component that walks a page's saved block tree and renders each block.",
+      params: {
+        blocks: { type: "Page['children']", description: 'The saved block array from a page you fetched.' },
+      },
+      returns: { type: 'Promise<JSX.Element>', description: 'The rendered block tree (it is an async Server Component).' },
+      exampleLang: 'tsx',
+      example: `// app/(frontend)/[...slug]/page.tsx
+import { RenderChildren } from '@pro-laico/atomic/children/render'
+
+export default async function Page() {
+  const page = await getPage() // however you load your page
+
+  return (
+    <main className={page.mainClassName || undefined}>
+      <RenderChildren blocks={page.children} />
+    </main>
+  )
+}`,
+    },
+    buildChildBlocks: {
+      type: 'function',
+      location: '@pro-laico/atomic/children',
+      description: 'Builds the default child block configs directly, for when you compose blocks yourself instead of using the plugin.',
+      params: {
+        'options?': { type: '{ blockFields?, classNameField? }', description: 'The same `blockFields` (per-block prepend/append) and `classNameField` the plugin accepts.' },
+      },
+      returns: { type: 'Block[]', description: 'The default child blocks (Atomic, SimpleText, RichText, Image, Video, Icon, SVG).' },
+      example: `import { buildChildBlocks } from '@pro-laico/atomic/children'
+import { ClassNameField } from '@pro-laico/styles'
+
+// compose your own blocks field instead of using childBlocksPlugin:
+const blocks = buildChildBlocks({
+  classNameField: ClassNameField,
+  blockFields: { SVGChild: { prependFields: [ClassNameField()] } },
+})`,
+    },
+    childBlocks: { type: 'object', location: '@pro-laico/atomic/children', description: 'The default child block definitions.' },
+    ChildrenBlocksField: {
+      type: 'field',
+      location: '@pro-laico/atomic/children',
+      description: 'The reusable `children` blocks field (a ready-made Payload blocks field, not a factory) that holds nested child blocks. Drop it into your own collection or global. Also re-exported from the root.',
+      example: `import type { CollectionConfig } from 'payload'
+import { ChildrenBlocksField } from '@pro-laico/atomic/children'
+
+export const Pages: CollectionConfig = {
+  slug: 'pages',
+  fields: [
+    { name: 'title', type: 'text' },
+    ChildrenBlocksField,
+  ],
+}`,
+    },
+  }}
+/>
+
+### Hook
+
+<ExportTable
+  exports={{
+    createAtomicHook: {
+      type: 'function',
+      location: '@pro-laico/atomic/hook',
+      description: 'Builds the save-time beforeChange hook from your CSS cache reader and action storage processor. Walks a saved page once to collect classes, actions, and forms, generate CSS, and revalidate caches. Use it when you need non-default slug names; otherwise pass the ready-made `atomicHook`.',
+      params: {
+        options: { type: 'CreateAtomicHookOptions', description: 'Requires `getCached` (build one with `createCssGetCached` from `@pro-laico/styles/cache`) and `ActionBlockStorageProcessor` (from `@pro-laico/atomic/actions/processor`). Optional slug-config keys (`pagesSlug`, `designSetSlug`, `cssCacheTagBySlug`, `cssStorageGlobals`, …) default to the template names.' },
+      },
+      returns: { type: 'CollectionBeforeChangeHook', description: 'Attach it to your content collections via `atomicHookPlugin` (or `stylesPlugin`).' },
+      example: `import { createCssGetCached } from '@pro-laico/styles/cache'
+import { getCachedFooter, getCachedHeader } from '@pro-laico/site/cache'
+import { atomicHookPlugin, createAtomicHook } from '@pro-laico/atomic/hook'
+import { ActionBlockStorageProcessor } from '@pro-laico/atomic/actions/processor'
+
+const getCached = createCssGetCached({ getHeader: getCachedHeader, getFooter: getCachedFooter })
+const hook = createAtomicHook({ getCached, ActionBlockStorageProcessor })
+
+// in buildConfig:
+atomicHookPlugin({ hook, collectionSlugs: ['pages'] })`,
+    },
+    atomicHook: {
+      type: 'function',
+      location: '@pro-laico/atomic/hook',
+      description: "The ready-made hook using the template's conventional slug names. Its dependencies are lazily imported on first run, so pass it straight to atomicHookPlugin (or stylesPlugin) without configuring anything.",
+      params: {
+        args: { type: 'BeforeChangeHookArgs', description: "Payload's beforeChange hook arguments. You normally don't call this yourself; you hand it to a plugin." },
+      },
+      returns: { type: 'Promise<unknown>', description: 'The processed document data (it is a `CollectionBeforeChangeHook`).' },
+      example: `import { atomicHook, atomicHookPlugin } from '@pro-laico/atomic/hook'
+
+// hand it to the plugin (or to stylesPlugin({ atomicHook })):
+atomicHookPlugin({ hook: atomicHook, collectionSlugs: ['pages'] })`,
+    },
+    unsetActive: {
+      type: 'function',
+      location: '@pro-laico/atomic/hook',
+      description: 'Helper that clears the previously-active document when a new one is marked active (only one design set, header, footer, etc. can be active at a time).',
+      params: {
+        args: { type: '{ id, draft, req, slug }', description: 'The doc id being activated, the draft flag, the Payload request, and the collection slug.' },
+      },
+      returns: { type: 'Promise<string | undefined>', description: 'The slug of the doc that was unset (so the hook can revalidate it), or undefined.' },
+      example: `import { unsetActive } from '@pro-laico/atomic/hook'
+
+// inside a beforeChange hook, when data.active is true:
+const unsetSlug = await unsetActive({ id, draft, req, slug: collection.slug })`,
+    },
+    AtomicStoreProvider: {
+      type: 'component',
+      location: '@pro-laico/atomic/hook/client',
+      description: 'Client provider that holds the state behind interactive blocks (dialogs, popovers, theme toggles, dynamic store). Wrap your frontend in it, seeding it with the actions atomic stored for the page.',
+      params: {
+        initialState: { type: 'AtomicStoreInitialState', description: 'The stored actions snapshot, from `getCachedAtomicActions(draft)`.' },
+        children: { type: 'React.ReactNode', description: 'Your app tree.' },
+      },
+      returns: { type: 'JSX.Element', description: 'A context provider wrapping `children`.' },
+      exampleLang: 'tsx',
+      example: `// app/(frontend)/layout.tsx
+import { draftMode } from 'next/headers'
+import { getCachedAtomicActions } from '@pro-laico/atomic/cache'
+import { AtomicStoreProvider } from '@pro-laico/atomic/hook/client'
+
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const { isEnabled: draft } = await draftMode()
+  const storedAtomicActions = await getCachedAtomicActions(draft)
+
+  return (
+    <html lang="en">
+      <body>
+        <AtomicStoreProvider initialState={storedAtomicActions}>{children}</AtomicStoreProvider>
+      </body>
+    </html>
+  )
+}`,
+    },
+    useAtomicStore: {
+      type: 'function',
+      location: '@pro-laico/atomic/hook/client',
+      description: 'Client hook to read from the atomic store inside your own components. Must be used under `AtomicStoreProvider`.',
+      params: {
+        selector: { type: '(store: AtomicStore) => T', description: 'Selects the slice of store state you want.' },
+      },
+      returns: { type: 'T', description: 'The selected value, re-rendering when it changes.' },
+      exampleLang: 'tsx',
+      example: `'use client'
+import { useAtomicStore } from '@pro-laico/atomic/hook/client'
+
+export function ThemeLabel() {
+  const theme = useAtomicStore((store) => store.getValue('theme', false))
+  return <span>{String(theme)}</span>
+}`,
+    },
+  }}
+/>
+
+### Forms
+
+<ExportTable
+  exports={{
+    submitForm: {
+      type: 'function',
+      location: '@pro-laico/atomic/forms/submitForm/serverFunction',
+      description: "The server action that runs the stored rate-limit / sanitation / validation pipeline and writes the submission. Kept on its own subpath so it isn't pulled into config evaluation. Forms rendered by RenderChildren already call it; you only import it directly for a custom form UI.",
+      params: {
+        submissionData: { type: 'SubmitFormProps', description: '`formData` (the FormData), `submissionID` (a unique id you generate), `blockID` (the atomic form block id), and `clientData` (timezone / screen / preferences).' },
+      },
+      returns: { type: 'Promise<FormResponse>', description: '`{ success, fm (form message), im (per-input messages), … }`.' },
+      exampleLang: 'tsx',
+      example: `'use client'
+import { submitForm } from '@pro-laico/atomic/forms/submitForm/serverFunction'
+
+export function ContactForm({ blockID }: { blockID: string }) {
+  async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    const formData = new FormData(e.currentTarget)
+    const clientData = {
+      timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+      screenWidth: \`\${window.screen.width}\`,
+      screenHeight: \`\${window.screen.height}\`,
+      preferences: {},
+    }
+    const res = await submitForm({ blockID, formData, submissionID: Date.now().toString(), clientData })
+    if (!res.success) console.error(res.fm)
+  }
+
+  return <form onSubmit={onSubmit}>{/* inputs */}</form>
+}`,
+    },
+    defaultSubmitFormBlocks: { type: 'object', location: '@pro-laico/atomic/forms', description: 'The default array of submit-form processing blocks formsPlugin registers.' },
+    SubmitFormFunction: { type: 'type', location: '@pro-laico/atomic/forms', description: 'The signature of the submitForm server action.' },
+  }}
+/>
+
+### Actions
+
+<ExportTable
+  exports={{
+    AllActionBlocks: { type: 'object', location: '@pro-laico/atomic/actions', description: 'The array of built-in action block definitions actionsPlugin registers.' },
+    ActionOptions: { type: 'object', location: '@pro-laico/atomic/actions', description: 'The option definitions for each built-in action.' },
+    ActionFilters: { type: 'object', location: '@pro-laico/atomic/actions', description: 'Filters that constrain which actions apply where.' },
+    ActionBlockStorageProcessor: {
+      type: 'class',
+      location: '@pro-laico/atomic/actions/processor',
+      description: 'Collects the action data from a page tree at save time. You pass the class itself (not an instance) into createAtomicHook, which instantiates one per save and walks the block tree through it. Kept on its own subpath so actions stay out of config evaluation.',
+      params: {
+        '(constructor)': { type: '() => ActionBlockStorageProcessor', description: 'Takes no arguments. createAtomicHook calls `new ActionBlockStorageProcessor()` once per save.' },
+      },
+      returns: { type: 'ActionBlockStorageProcessor', description: 'An instance with `before` / `after` / `getAllActionBlocks` methods the hook drives as it traverses the tree.' },
+      example: `import { createAtomicHook } from '@pro-laico/atomic/hook'
+import { ActionBlockStorageProcessor } from '@pro-laico/atomic/actions/processor'
+
+// pass the class through to the hook builder; it instantiates it per save:
+const hook = createAtomicHook({ getCached, ActionBlockStorageProcessor })`,
+    },
+  }}
+/>
+
+### Cache getters
+
+Server-side reads from `@pro-laico/atomic/cache`, revalidated by the save-time `atomicHook`. See [Caching & revalidation](#caching--revalidation).
+
+<ExportTable
+  exports={{
+    getCachedAtomicActions: {
+      type: 'function',
+      location: '@pro-laico/atomic/cache',
+      description: "Cached read of the stored actions snapshot from the settings global. This is what you seed AtomicStoreProvider with so interactive blocks have their state on first render.",
+      params: { draft: { type: 'boolean', description: 'Read the draft (`true`) or published (`false`) variant.' } },
+      returns: { type: 'Promise<AtomicStoreInitialState>', description: 'The stored actions snapshot.' },
+      exampleLang: 'tsx',
+      example: `import { draftMode } from 'next/headers'
+import { getCachedAtomicActions } from '@pro-laico/atomic/cache'
+import { AtomicStoreProvider } from '@pro-laico/atomic/hook/client'
+
+// app/(frontend)/layout.tsx
+const { isEnabled: draft } = await draftMode()
+const storedAtomicActions = await getCachedAtomicActions(draft)
+return <AtomicStoreProvider initialState={storedAtomicActions}>{children}</AtomicStoreProvider>`,
+    },
+    getCachedAtomicForms: {
+      type: 'function',
+      location: '@pro-laico/atomic/cache',
+      description: 'Cached read of every stored atomic form across page-like docs. The submitForm action uses it to find the form a submission targets. `createGetCachedAtomicForms(slug)` binds it to a non-default pages collection.',
+      params: { draft: { type: 'boolean', description: 'Draft or published variant.' } },
+      returns: { type: 'Promise<StoredAtomicForm[]>', description: 'The stored atomic forms.' },
+      example: `import { getCachedAtomicForms, createGetCachedAtomicForms } from '@pro-laico/atomic/cache'
+
+const forms = await getCachedAtomicForms(false)
+
+// or bind a non-default pages slug:
+const getArticleForms = createGetCachedAtomicForms('articles')`,
+    },
+    getCachedBackendForms: {
+      type: 'function',
+      location: '@pro-laico/atomic/cache',
+      description: 'Cached read of every backend form (the `forms` collection). `createGetCachedBackendForms(slug)` binds it to a non-default forms collection.',
+      params: {},
+      returns: { type: 'Promise<Form[]>', description: 'Every backend form definition.' },
+      example: `import { getCachedBackendForms } from '@pro-laico/atomic/cache'
+
+const backendForms = await getCachedBackendForms()`,
+    },
+    getCachedAllForms: {
+      type: 'function',
+      location: '@pro-laico/atomic/cache',
+      description: 'Merges stored atomic forms with their backend form ids, so a submission can be matched to the right backend form. The submitForm action calls it for you.',
+      params: {
+        draft: { type: 'boolean', description: 'Draft or published variant.' },
+        atomicForms: { type: 'StoredAtomicForm[]', description: 'From getCachedAtomicForms.' },
+        backendForms: { type: 'Form[]', description: 'From getCachedBackendForms.' },
+      },
+      returns: { type: 'Promise<ModifiedStoredAtomicForm[]>', description: 'Atomic forms with their resolved backendFormID.' },
+      example: `import { getCachedAllForms, getCachedAtomicForms, getCachedBackendForms } from '@pro-laico/atomic/cache'
+
+const backendForms = await getCachedBackendForms()
+const atomicForms = await getCachedAtomicForms(false)
+const allForms = await getCachedAllForms(false, atomicForms, backendForms)`,
+    },
+    getCachedFormSubmissions: {
+      type: 'function',
+      location: '@pro-laico/atomic/cache',
+      description: "Cached read of a form's submissions, matched by the form's title.",
+      params: { formTitle: { type: 'string', description: 'The title of the backend form whose submissions you want.' } },
+      returns: { type: 'Promise<FormSubmission[]>', description: 'The submissions stored for that form.' },
+      example: `import { getCachedFormSubmissions } from '@pro-laico/atomic/cache'
+
+const submissions = await getCachedFormSubmissions('Contact')`,
+    },
+  }}
+/>
+
+### Types
+
+<ExportTable
+  exports={{
+    'Schema types': { type: 'type', location: '@pro-laico/atomic/{actions,hook,forms,children}/schema', description: 'Per-area TypeScript types for typed access to stored actions, forms, and child block data.' },
+  }}
+/>
+
+## Related
+
+<Cards>
+  <Card title="Atomic Blocks" href="/docs/features/atomic-blocks" />
+  <Card title="Actions" href="/docs/features/actions" />
+  <Card title="Forms" href="/docs/features/forms" />
+  <Card title="Styles" href="/docs/plugins/styles" />
+</Cards>

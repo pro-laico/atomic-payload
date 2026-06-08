@@ -1,0 +1,55 @@
+name: Publish packages
+
+# Publishes all @pro-laico/* packages to npm when a release tag (created by
+# `pnpm release`) is pushed: `git push --follow-tags`.
+#
+# Auth: npm **Trusted Publishing** (OIDC) — no long-lived NPM_TOKEN. Each package
+# must already exist on npm with a Trusted Publisher pointing at this repo +
+# workflow file (npmjs.com -> package -> Settings -> Trusted Publisher). A brand-new
+# package CANNOT be published via OIDC; publish its first version locally
+# (`npm login` + `pnpm publish-packages`), then add the trusted publisher.
+# See PUBLISHING.md.
+#
+# NOTE: an earlier pnpm 11 OIDC 404 regression (https://github.com/pnpm/pnpm/issues/11513)
+# was fixed in pnpm 11.1.3, so the pinned pnpm (11.5.2) handles OIDC correctly. If
+# auth ever 404s anyway, uncomment the NPM_TOKEN fallback at the bottom (or use
+# `npm publish`).
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: read
+  id-token: write # required for npm trusted publishing + provenance (OIDC)
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          registry-url: https://registry.npmjs.org
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # Trusted Publishing: pnpm/npm exchanges the short-lived OIDC token
+      # automatically at publish time (no secret). Provenance is generated
+      # automatically; --provenance is kept explicit since id-token: write is set.
+      - name: Publish to npm (trusted publishing + provenance)
+        run: pnpm publish-packages --yes --provenance --tag latest
+        env:
+          NPM_CONFIG_PROVENANCE: 'true'
+
+      # --- Fallback: long-lived token. If OIDC is ever unavailable, add a granular
+      # NPM_TOKEN repo secret, then UNCOMMENT the auth step below and move it ABOVE
+      # the publish step so auth is set first.
+      # - name: Configure npm auth
+      #   run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" >> .npmrc

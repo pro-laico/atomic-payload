@@ -1,0 +1,96 @@
+{
+  "name": "@pro-laico/images",
+  "version": "0.1.0",
+  "description": "Atomic Payload images package. Provides Images + Favicons Payload upload collections, a FaviconField helper, an ImageChild block factory, and a plugin factory. @oversightstudio/blur-data-urls is an optional peer the consumer wires manually.",
+  "license": "MIT",
+  "type": "module",
+  "publishConfig": {
+    "access": "public",
+    "main": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "exports": {
+      ".": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "./schema": {
+        "types": "./dist/types/payload-augment.d.ts",
+        "default": "./dist/types/payload-augment.js"
+      },
+      "./cache": {
+        "types": "./dist/cache/index.d.ts",
+        "default": "./dist/cache/index.js"
+      },
+      "./blocks/imageChild": {
+        "types": "./dist/blocks/imageChild/block.d.ts",
+        "default": "./dist/blocks/imageChild/block.js"
+      },
+      "./blocks/imageChild/component": {
+        "types": "./dist/blocks/imageChild/component.d.ts",
+        "default": "./dist/blocks/imageChild/component.js"
+      }
+    }
+  },
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
+    },
+    "./schema": {
+      "types": "./src/types/payload-augment.ts",
+      "default": "./src/types/payload-augment.ts"
+    },
+    "./cache": {
+      "types": "./src/cache/index.ts",
+      "default": "./src/cache/index.ts"
+    },
+    "./blocks/imageChild": {
+      "types": "./src/blocks/imageChild/block.ts",
+      "default": "./src/blocks/imageChild/block.ts"
+    },
+    "./blocks/imageChild/component": {
+      "types": "./src/blocks/imageChild/component.tsx",
+      "default": "./src/blocks/imageChild/component.tsx"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "pnpm clean && pnpm copyfiles && pnpm build:types && pnpm build:swc",
+    "clean": "rimraf dist tsconfig.tsbuildinfo",
+    "prepack": "pnpm build",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "build:swc": "swc ./src -d ./dist --config-file ../../.swcrc --strip-leading-paths",
+    "build:types": "tsc -p tsconfig.build.json --emitDeclarationOnly --noCheck",
+    "copyfiles": "copyfiles -u 1 \"src/**/*.{scss,css,svg,json,ttf,woff,woff2,eot}\" dist/"
+  },
+  "dependencies": {
+    "@pro-laico/core": "workspace:*",
+    "@pro-laico/atomic": "workspace:*"
+  },
+  "peerDependencies": {
+    "@oversightstudio/blur-data-urls": ">=1.0.0",
+    "next": ">=15.0.0",
+    "payload": ">=3.0.0",
+    "react": ">=19.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@oversightstudio/blur-data-urls": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@oversightstudio/blur-data-urls": "^1.0.4",
+    "@types/react": "^19.2.14",
+    "next": "^16.1.6",
+    "payload": "^3.79.0",
+    "react": "^19.2.4",
+    "typescript": "5.8.3"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

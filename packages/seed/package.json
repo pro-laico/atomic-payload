@@ -1,0 +1,70 @@
+{
+  "name": "@pro-laico/seed",
+  "version": "0.1.0",
+  "description": "Atomic Payload seed integration. Provides a Payload plugin that wires up a `POST /api/seed` endpoint and a `BeforeDashboard` admin banner with a SEED DATABASE button. Ships an opinionated default seed for atomic-payload templates; consumers may override by passing `seed: …`.",
+  "license": "MIT",
+  "type": "module",
+  "publishConfig": {
+    "access": "public",
+    "main": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "exports": {
+      ".": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "./admin/beforeDashboard": {
+        "types": "./dist/components/admin/BeforeDashboard.d.ts",
+        "default": "./dist/components/admin/BeforeDashboard.js"
+      }
+    }
+  },
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
+    },
+    "./admin/beforeDashboard": {
+      "types": "./src/components/admin/BeforeDashboard.tsx",
+      "default": "./src/components/admin/BeforeDashboard.tsx"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "pnpm clean && pnpm copyfiles && pnpm build:types && pnpm build:swc",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "build:swc": "swc ./src -d ./dist --config-file ../../.swcrc --strip-leading-paths",
+    "build:types": "tsc -p tsconfig.build.json --emitDeclarationOnly --noCheck",
+    "clean": "rimraf dist tsconfig.tsbuildinfo",
+    "copyfiles": "copyfiles -u 1 \"src/**/*.{scss,css,svg,json,ttf,woff,woff2,eot}\" dist/",
+    "prepack": "pnpm build"
+  },
+  "dependencies": {
+    "@pro-laico/icons": "workspace:*",
+    "@pro-laico/site": "workspace:*",
+    "@pro-laico/styles": "workspace:*",
+    "@pro-laico/core": "workspace:*",
+    "@pro-laico/atomic": "workspace:*"
+  },
+  "peerDependencies": {
+    "@payloadcms/ui": ">=3.0.0",
+    "next": ">=15.0.0",
+    "payload": ">=3.0.0",
+    "react": ">=19.0.0"
+  },
+  "devDependencies": {
+    "@payloadcms/ui": "^3.79.0",
+    "@types/react": "^19.2.14",
+    "next": "^16.1.6",
+    "payload": "^3.79.0",
+    "react": "^19.2.4",
+    "typescript": "5.8.3"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

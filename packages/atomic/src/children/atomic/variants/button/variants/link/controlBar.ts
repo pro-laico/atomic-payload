@@ -1,0 +1,80 @@
+import type { CollectionSlug, EmailField as EmailFieldType, RelationshipField, RowField, SelectField, TextField, UploadField } from 'payload'
+
+const linkTypeField: SelectField = {
+  name: 'linkType',
+  type: 'select',
+  label: 'Link Type',
+  required: true,
+  interfaceName: 'AtomicButtonLinkTypes',
+  options: [
+    { label: 'Internal Link', value: 'internalLink' },
+    { label: 'External Link', value: 'externalLink' },
+    { label: 'Download', value: 'download' },
+    { label: 'Email', value: 'email' },
+    { label: 'Phone', value: 'phone' },
+  ],
+  admin: { width: '25%', condition: (_, sd) => Boolean(sd?.buttonType === 'link') },
+}
+
+const DownloadField: UploadField = {
+  name: 'download',
+  type: 'upload',
+  relationTo: 'images',
+  label: 'Download',
+  required: true,
+  admin: {
+    width: '25%',
+    allowCreate: false,
+    condition: (_, sd) => Boolean(sd?.linkType && sd?.linkType === 'download'),
+  },
+}
+
+const EmailField: EmailFieldType = {
+  name: 'email',
+  type: 'email',
+  label: 'Email',
+  required: true,
+  admin: { width: '25%', condition: (_, sd) => Boolean(sd?.linkType && sd?.linkType === 'email') },
+}
+
+const ExternalLinkField: TextField = {
+  name: 'externalLink',
+  type: 'text',
+  required: true,
+  admin: { width: '25%', condition: (_, sd) => Boolean(sd?.linkType === 'externalLink') },
+}
+
+const buildInternalLinkField = (pagesSlug: string): RelationshipField => ({
+  name: 'internalLink',
+  type: 'relationship',
+  relationTo: pagesSlug as CollectionSlug,
+  required: true,
+  admin: {
+    width: '25%',
+    allowEdit: false,
+    allowCreate: false,
+    condition: (_, sd) => Boolean(sd?.linkType && sd?.linkType === 'internalLink'),
+  },
+})
+
+const PhoneField: TextField = {
+  name: 'phone',
+  type: 'text',
+  admin: {
+    width: '25%',
+    placeholder: '+1 123 456 7890 ',
+    condition: (_, sd) => Boolean(sd?.linkType && sd?.linkType === 'phone'),
+  },
+}
+
+/** Factory: builds the link-button control bar with the consumer's pages collection slug
+ *  bound to the `internalLink` relationship. Defaults to `'pages'`. */
+export const createLinkControlBarFields = (pagesSlug: string = 'pages'): RowField => ({
+  type: 'row',
+  admin: { condition: (_, sd) => Boolean(sd?.buttonType === 'link') },
+  fields: [linkTypeField, buildInternalLinkField(pagesSlug), ExternalLinkField, DownloadField, EmailField, PhoneField],
+})
+
+/** Default link-button control bar bound to `pagesSlug = 'pages'`. Use
+ *  `createLinkControlBarFields(slug)` to bind a different slug. */
+export const LinkControlBarFields: RowField = createLinkControlBarFields()

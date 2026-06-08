@@ -1,0 +1,147 @@
+---
+title: "Caching & revalidation"
+description: "Fast, tag-based reads for Payload content, with correct invalidation when documents are saved or deleted."
+---
+
+Everything in the Atomic Payload project is cached with a tag specific to the content being fetched. This allows for minimal cache invalidation when content is updated, and ensures the content is always up to date.
+
+## What & why
+
+Server components fetch globals and collections (pages, header, footer, icons, design sets, forms) constantly. Hitting Payload on every render is slow, but a naive cache goes stale the moment an editor saves. The cache layer solves both: reads go through Next.js `unstable_cache`, keyed and tagged per entity, and Payload hooks call `revalidateTag` when the underlying document changes.
+
+Each plugin owns the getter for its own data, so what you can read is exactly what you installed. Core keeps only the shared plumbing:
+
+- `@pro-laico/<plugin>/cache` (for example `@pro-laico/site/cache`, `@pro-laico/styles/cache`) export the cached getters for that plugin's collections and globals.
+- `@pro-laico/core/cache` exports `withCache`, the primitive every getter wraps its fetch with.
+- `@pro-laico/core/config` holds the registered Payload config, and `@pro-laico/core` ships the revalidation hooks.
+
+<Callout type="info">
+  The getters and `withCache` import `server-only`, so they live on `/cache` subpaths rather than a package barrel a client component might pull in. Stick to those subpaths and bundlers won't fight you.
+</Callout>
+
+## How it works
+
+### Reads with direct getters
+
+Import the getter for the data you want from the plugin that owns it, then call it. Each getter takes only what it needs (usually a `draft` flag, sometimes an id), reads the Payload config registered at startup, and returns the parsed result:
+
+```tsx
+import { getCachedHeader, getCachedPageByHref, getCachedPages } from '@pro-laico/site/cache'
+import { getCachedDesignSet } from '@pro-laico/styles/cache'
+
+// in a Server Component:
+const header = await getCachedHeader(draft)
+const ds = await getCachedDesignSet(draft)
+
+const pages = await getCachedPages(draft)
+const page = await getCachedPageByHref('/about', draft, pages)
+```
+
+There is no central `getCached` dispatcher: if a project doesn't install `@pro-laico/icons`, then `getCachedIconSet` simply isn't importable, so you can't ask for data that isn't there.
+
+### Register the config once
+
+The getters reach Payload's Local API without importing `@payload-config` from package source. Your app registers the config once at startup, in `instrumentation.ts`:
+
+```ts
+// src/instrumentation.ts
+export async function register(): Promise<void> {
+  if (process.env.NEXT_RUNTIME !== 'nodejs') return
+  const { registerPayloadConfig } = await import('@pro-laico/core/config')
+  const { default: configPromise } = await import('@payload-config')
+  registerPayloadConfig(configPromise)
+}
+```
+
+Every getter then resolves that config internally, so you never thread it through call sites. Getters are also wrapped in React's `cache()`, so the same getter called twice in one render only fetches once.
+
+### The `withCache` primitive
+
+Under the hood every getter wraps its fetch in `withCache` from `@pro-laico/core/cache`. It takes the fetcher plus a tag (and an optional id, draft flag, and extra dependency tags), then derives the `unstable_cache` key and the full tag set for you, so the read-side tags always match the revalidate side:
+
+```ts
+import { withCache } from '@pro-laico/core/cache'
+import { getPayloadConfig } from '@pro-laico/core/config'
+import { getPayload } from 'payload'
+
+export const getCachedTracking = (draft: boolean) =>
+  withCache(
+    async () => {
+      const payload = await getPayload({ config: getPayloadConfig() })
+      return payload.findGlobal({ slug: 'tracking', draft })
+    },
+    { tag: 'tracking', draft },
+  )
+```
+
+Getters bound to a configurable collection (pages, forms) also ship `create*` factory variants, so you can point them at your own slug:
+
+```ts
+import { createGetCachedPages } from '@pro-laico/site/cache'
+
+const getCachedArticles = createGetCachedPages('articles')
+```
+
+### Revalidation hooks & factories
+
+Cached reads only stay correct because Payload hooks bust the matching tags when documents change. `core` ships two factories:
+
+- **`createRevalidateCache(handlers)`** builds a `beforeChange` hook that dispatches to a per-slug handler when a document is written, revalidating the tags that depend on it.
+- **`createRevalidateCacheOnDelete(handlers)`** is the `afterDelete` counterpart, for revalidating when a document is removed.
+
+Each takes a `slug → handler` map, so you wire revalidation for exactly the collections you have:
+
+```ts
+import { createRevalidateCache, createRevalidateCacheOnDelete, revalidateTag } from '@pro-laico/core'
+
+const revalidateCache = createRevalidateCache({
+  pages: async ({ data }) => {
+    await revalidateTag('pages', false)
+    await revalidateTag('page', data?.href, false)
+  },
+})
+
+const revalidateCacheOnDelete = createRevalidateCacheOnDelete({
+  pages: async ({ doc }) => {
+    await revalidateTag('pages', false)
+    await revalidateTag('page', doc?.href, false)
+  },
+})
+```
+
+The slug-bound default hooks (exported from `@pro-laico/core` as `revalidateCacheCollection` and `revalidateCacheOnDelete`) stay bound to the conventional slug set, so existing imports keep working unchanged.
+
+The simplest, app-level path is `pluginComposer` from `@pro-laico/core`. You pass it every plugin, and the finalizer it appends attaches the revalidation hooks to every collection and global for you (plus the shared `atomicHook` to the atomic-content collections). Because that finalizer runs last, it covers collections registered by third-party plugins too, so there are no slug lists to maintain:
+
+```ts
+import { pluginComposer } from '@pro-laico/core'
+import { atomicHook } from '@pro-laico/atomic/hook'
+
+export const plugins = pluginComposer({
+  atomicHook,
+  plugins: [/* every plugin */],
+})
+```
+
+When you want explicit control instead of the broad wiring, drop to `revalidationPlugin` (the default export of `@pro-laico/core`), which attaches the revalidation hooks to only the collection and global slugs you name. It is the lower-level building block `pluginComposer` uses under the hood.
+
+## Notes
+
+<Callout type="warn">
+  Prefer revalidating in `afterChange` over `beforeChange` for plain collections. Busting the cache in `beforeChange` runs *before* the write commits, so a concurrent read can re-cache the **old** document. The `afterChange` variant (`createRevalidateCacheAfterChange` / `revalidateCacheCollectionAfterChange`) runs after commit, where the persisted state is available.
+</Callout>
+
+<Callout type="info">
+  Revalidation handlers no-op while seeding. The dispatchers skip when `context.isSeed` is set, so a seed run doesn't trigger a storm of cache invalidations.
+</Callout>
+
+<Callout type="info">
+  `withCache` derives every dependency tag from the tag, id, and draft flag (including the merged `draft` / `published` tags), so a cached read is invalidated by each tag that should affect it. You don't tag entries by hand.
+</Callout>
+
+## Related
+
+<Cards>
+  <Card title="@pro-laico/core" href="/docs/plugins/core" />
+  <Card title="Slugs & overrides" href="/docs/concepts/slugs" />
+</Cards>

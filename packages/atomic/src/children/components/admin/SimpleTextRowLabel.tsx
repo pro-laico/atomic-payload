@@ -1,0 +1,43 @@
+﻿'use client'
+
+import { Pill, RowLabel, SectionTitle, useRowLabel } from '@payloadcms/ui'
+
+import type { SimpleTextChild } from '@pro-laico/atomic/children/schema'
+
+const TRUNCATE_LENGTH = 50
+const TRUNCATE_SUFFIX = '...'
+
+export const SimpleTextRowLabel = () => {
+  const { data, path, rowNumber } = useRowLabel<SimpleTextChild>()
+  const { text } = data
+
+  let elaborationPill: string | null = null
+  if (text) elaborationPill = text.length > TRUNCATE_LENGTH ? `"${text.slice(0, TRUNCATE_LENGTH)}${TRUNCATE_SUFFIX}"` : `"${text}"`
+
+  const formattedRowNumber = String(rowNumber ?? 0).padStart(2, '0')
+
+  return (
+    <RowLabel
+      path={path}
+      rowNumber={rowNumber}
+      label={
+        <>
+          <span>{formattedRowNumber}</span>
+          <Pill pillStyle="white" size="small">
+            Simple Text
+          </Pill>
+          {elaborationPill && (
+            <Pill pillStyle="white" size="small">
+              {elaborationPill}
+            </Pill>
+          )}
+          <SectionTitle path={`${path}.blockName`} readOnly={false} />
+        </>
+      }
+    />
+  )
+}
+
+SimpleTextRowLabel.displayName = 'SimpleTextRowLabel'
+
+export default SimpleTextRowLabel

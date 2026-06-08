@@ -1,0 +1,81 @@
+﻿import type { AtomicStore, ConsentPreferences, ConsentSlice } from '@pro-laico/atomic/hook'
+import type { StateCreator } from 'zustand'
+
+const COOKIE_EXPIRY_YEARS = 1
+export const STORAGE_KEYS = {
+  COOKIE_CONSENT: 'cookieConsent',
+  COOKIE_PREFERENCES: 'cookiePreferences',
+} as const
+
+const DEFAULT_PREFERENCES: ConsentPreferences = {
+  functional: true,
+  security: true,
+  analytics: false,
+  marketing: false,
+  userData: false,
+  adPersonalization: false,
+  contentPersonalization: false,
+}
+
+const setCookie = (name: string, value: string, expiryYears: number = COOKIE_EXPIRY_YEARS) => {
+  const date = new Date()
+  date.setFullYear(date.getFullYear() + expiryYears)
+  // biome-ignore lint/suspicious/noDocumentCookie: Cookie Store API has limited browser support; document.cookie is the portable choice for consent cookies.
+  document.cookie = `${name}=${value}; expires=${date.toUTCString()}; path=/; SameSite=Lax; Secure`
+}
+
+const safeStorageOperation = <T>(operation: () => T, fallback: T): T => {
+  try {
+    return operation()
+  } catch (error) {
+    console.error('Storage operation failed:', error)
+    return fallback
+  }
+}
+
+export const consentSlice: StateCreator<AtomicStore, [], [], ConsentSlice> = (set) => ({
+  hasConsented: null,
+  previouslyConsented: null,
+  preferences: DEFAULT_PREFERENCES,
+  setPreference: (category, value) => {
+    set((state) => ({ preferences: { ...state.preferences, [category]: category === 'functional' || category === 'security' ? true : value } }))
+  },
+  acceptCookies: (preferences) => {
+    const newPreferences = { ...DEFAULT_PREFERENCES, ...preferences, functional: true, security: true }
+
+    safeStorageOperation(() => {
+      setCookie(STORAGE_KEYS.COOKIE_CONSENT, 'true')
+      // Mirror the granular preferences into a cookie so the server (e.g. the
+      // form-submission pipeline) can enforce consent — localStorage is not
+      // readable server-side and client-posted preferences are untrusted.
+      setCookie(STORAGE_KEYS.COOKIE_PREFERENCES, encodeURIComponent(JSON.stringify(newPreferences)))
+      localStorage.setItem(STORAGE_KEYS.COOKIE_CONSENT, 'true')
+      localStorage.setItem(STORAGE_KEYS.COOKIE_PREFERENCES, JSON.stringify(newPreferences))
+      sessionStorage.removeItem(STORAGE_KEYS.COOKIE_CONSENT)
+    }, null)
+
+    set({ hasConsented: true, previouslyConsented: true, preferences: newPreferences })
+  },
+  declineCookies: () => {
+    const declinedPreferences = {
+      ...DEFAULT_PREFERENCES,
+      analytics: false,
+      marketing: false,
+      userData: false,
+      adPersonalization: false,
+      contentPersonalization: false,
+    }
+
+    safeStorageOperation(() => {
+      setCookie(STORAGE_KEYS.COOKIE_CONSENT, 'false')
+      // Write the declined preferences so the server reads an explicit "deny"
+      // rather than falling back to defaults on a missing cookie.
+      setCookie(STORAGE_KEYS.COOKIE_PREFERENCES, encodeURIComponent(JSON.stringify(declinedPreferences)))
+      localStorage.removeItem(STORAGE_KEYS.COOKIE_CONSENT)
+      localStorage.removeItem(STORAGE_KEYS.COOKIE_PREFERENCES)
+      sessionStorage.setItem(STORAGE_KEYS.COOKIE_CONSENT, 'false')
+    }, null)
+
+    set({ previouslyConsented: true, hasConsented: false, preferences: declinedPreferences })
+  },
+})

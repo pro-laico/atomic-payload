@@ -1,0 +1,112 @@
+---
+title: "Releasing & publishing"
+description: "Lockstep versioning across the workspace and npm publishing of every public package."
+---
+
+Every `@pro-laico/*` package shares one version (Payload-style lockstep) and ships together. Versioning happens locally with `pnpm release`; publishing happens in CI on the pushed tag with `pnpm publish-packages`.
+
+## Lockstep versioning
+
+`pnpm release` reads the **root `package.json` version** as the source of truth, computes the next version from your chosen bump, and stamps that **same version** into the root plus every releasable workspace project: all `packages/*`, `templates/*`, and `examples/*`. Only the `version` line is rewritten, so Biome formatting is preserved. It then commits `chore(release): vX.Y.Z` and creates an annotated `vX.Y.Z` tag.
+
+Internal `workspace:*` dependencies are left untouched: pnpm rewrites them to the concrete version automatically at publish time.
+
+Always dry-run first. It prints the version table and writes nothing:
+
+```bash
+pnpm release --dry-run
+```
+
+To pass a bump type or other flags, invoke through the package filter so arguments forward cleanly:
+
+```bash
+pnpm --filter @tools/releaser release --bump minor                    # 0.2.0 -> 0.3.0
+pnpm --filter @tools/releaser release --bump major                    # 0.2.0 -> 1.0.0
+pnpm --filter @tools/releaser release --bump prerelease --preid beta  # 0.2.0 -> 0.2.1-beta.0
+```
+
+<Callout type="info">
+  A bare `pnpm release` does a `patch` bump (e.g. `0.2.0 -> 0.2.1`) and prompts for confirmation before writing.
+</Callout>
+
+### Flags
+
+| Flag | Default | Effect |
+| --- | --- | --- |
+| `--bump <patch\|minor\|major\|prerelease>` | `patch` | Which part of the version to bump. |
+| `--preid <id>` | `beta` | Prerelease identifier (only used with `--bump prerelease`). |
+| `--dry-run` | `false` | Print the plan, write nothing, run no git commands. |
+| `--yes` | `false` | Skip the interactive confirmation prompt. |
+| `--skip-git` | `false` | Stamp the version files but do not commit or tag. |
+
+## Publishing
+
+`pnpm publish-packages` builds and publishes every **non-private `packages/*`** to npm. Templates, examples, and `tools/*` are never published. Each `pnpm publish` runs the package's `prepack` (swc/tsc build; the CLI also bundles its scaffolds), and pnpm rewrites `workspace:*` deps to the concrete shared version.
+
+```bash
+pnpm publish-packages --dry-run           # build + pack every package, no upload
+pnpm publish-packages                      # publish at dist-tag "latest" (prompts)
+pnpm publish-packages --tag beta           # publish under a different dist-tag
+pnpm publish-packages --provenance --yes   # CI: signed provenance, no prompt
+```
+
+<Callout type="info">
+  Versions already on the registry are skipped, so re-running after a partial failure is safe.
+</Callout>
+
+### Flags
+
+| Flag | Default | Effect |
+| --- | --- | --- |
+| `--tag <name>` | `latest` | npm dist-tag to publish under. |
+| `--provenance` | `false` | Emit npm provenance (requires CI OIDC, fails locally). |
+| `--dry-run` | `false` | Build + pack every package without uploading. |
+| `--yes` | `false` | Skip the confirmation prompt. |
+
+## The full flow
+
+<Steps>
+
+<Step>
+
+### Bump and tag
+
+Run the lockstep version bump. It stamps the version everywhere, then commits and tags.
+
+```bash
+pnpm release --bump <patch|minor|major|prerelease>
+```
+
+</Step>
+
+<Step>
+
+### Push the tag
+
+```bash
+git push --follow-tags
+```
+
+</Step>
+
+<Step>
+
+### CI publishes
+
+Pushing a `v*` tag triggers `.github/workflows/release.yml`, which runs `pnpm publish-packages --yes --provenance` on the pushed tag, building and publishing every public package with npm provenance.
+
+</Step>
+
+</Steps>
+
+<Callout type="warn">
+  One-time setup for CI publishing: add an npm automation token as the `NPM_TOKEN` repo secret, and ensure the npm account/org can publish the `@pro-laico` scope.
+</Callout>
+
+To publish locally instead of through CI, run `pnpm publish-packages` yourself after `pnpm release`.
+
+## Related
+
+<Cards>
+  <Card title="Contributing" href="/docs/contributing" />
+</Cards>

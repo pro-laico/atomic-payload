@@ -1,0 +1,60 @@
+{
+  "name": "@pro-laico/zap",
+  "version": "0.1.0",
+  "description": "Zod with Atomic Payload extensions - a registry-aware schema layer used across the Atomic Payload packages and templates. Re-exports zod and adds the `z.ap` helper class for registering and retrieving schemas typed against AtomicRegistry.",
+  "license": "MIT",
+  "type": "module",
+  "publishConfig": {
+    "access": "public",
+    "main": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "exports": {
+      ".": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "./schema": {
+        "types": "./dist/types/payload-augment.d.ts",
+        "default": "./dist/types/payload-augment.js"
+      }
+    }
+  },
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
+    },
+    "./schema": {
+      "types": "./src/types/payload-augment.ts",
+      "default": "./src/types/payload-augment.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "pnpm clean && pnpm copyfiles && pnpm build:types && pnpm build:swc",
+    "build:swc": "swc ./src -d ./dist --config-file ../../.swcrc --strip-leading-paths",
+    "build:types": "tsc -p tsconfig.build.json --emitDeclarationOnly",
+    "clean": "rimraf dist tsconfig.tsbuildinfo",
+    "copyfiles": "copyfiles -u 1 \"src/**/*.{scss,css,svg,json}\" dist/",
+    "prepack": "pnpm build",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "server-only": "^0.0.1",
+    "traverse": "^0.6.11",
+    "zod": "4.1.11",
+    "@pro-laico/core": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/json-schema": "^7.0.15",
+    "@types/traverse": "^0.6.37",
+    "typescript": "5.8.3"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

@@ -1,12 +1,12 @@
-import { default as default_1e1f605507ac4d81abdbc5831da0e1b6 } from '@/ui/apf/label'
-import { default as default_fc544a7c902aadc9bfc55ed907448dfb } from '@/ui/apf/field'
-import { default as default_8a7ac2c7c79c3ec2e1d6951d48900455 } from '@/ui/fields/slug'
-import { default as default_689cb8f6b693e47473455b66ff5e9bfa } from '@/ui/apf/controls'
-import { default as default_48cbfad44bafa59cfcf74fd784130a9a } from '@/ui/rowLabels/icon'
-import { default as default_e39b5279f914254b017758220055f1a8 } from '@/ui/rowLabels/designToken'
-import { default as default_e41ccc36c719f166558960cc3fb01689 } from '@/ui/rowLabels/color'
-import { default as default_16d35abd1d6b5b4f200680015a2919c3 } from '@/ui/rowLabels/animation'
-import { default as default_21421aa6013972524cf1183a781258a6 } from '@/ui/rowLabels/shortcut'
+import { default as default_1829119640c413d2e92b9395ebcbec08 } from '@pro-laico/core/admin/label'
+import { default as default_92c83403e3094d2517a01c4331eb9f55 } from '@pro-laico/core/admin/field'
+import { default as default_adcc44335943ae45d0ba046bb2fab13d } from '@pro-laico/core/ui/fields/slug'
+import { default as default_5770d5be3ef2af64ca07e77507de9256 } from '@pro-laico/core/admin/controls'
+import { default as default_f06b9a2c6ea8d20df2a8420456cf8189 } from '@pro-laico/icons/admin/iconRowLabel'
+import { default as default_b81c0a0eceb7b4d14ec50545f4a4fc23 } from '@pro-laico/styles/ui/rowLabels/designToken'
+import { default as default_f12e76bf0547e4170c0ab3f2160c348e } from '@pro-laico/styles/ui/rowLabels/color'
+import { default as default_6dfc632d12171d9e6dc466f2e1f932f9 } from '@pro-laico/styles/ui/rowLabels/animation'
+import { default as default_fb3933fa980f3ffbf875befb8aa38b5a } from '@pro-laico/styles/ui/rowLabels/shortcut'
 import { MuxUploaderField as MuxUploaderField_c369a797e256de625eba826a6acb8608 } from '@oversightstudio/mux-video/elements'
 import { MuxVideoImageCell as MuxVideoImageCell_c369a797e256de625eba826a6acb8608 } from '@oversightstudio/mux-video/elements'
 import { RscEntryLexicalCell as RscEntryLexicalCell_44fe37237e0ebf4470c9990d8cb7b07e } from '@payloadcms/richtext-lexical/rsc'
@@ -28,28 +28,29 @@ import { StrikethroughFeatureClient as StrikethroughFeatureClient_e70f5e05f09f93
 import { UnderlineFeatureClient as UnderlineFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { BoldFeatureClient as BoldFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { ItalicFeatureClient as ItalicFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
-import { default as default_270f6bb8ae1323fe93100b8caf0d00e3 } from '@/ui/blocks/actionBlock'
-import { default as default_afd76833cc6ce7bb362fa549a0a6fedb } from '@/ui/blocks/inputBlock'
-import { default as default_8d0556207b1635189a14fae8651677fc } from '@/ui/decorative/coloredEnd'
-import { default as default_7e0ebf8349626d5066c84607ea93eeb9 } from '@/ui/rowLabels/atomic'
-import { default as default_f1f0bac5666a44c5e8419518e1dd9915 } from '@/ui/rowLabels/simpleText'
-import { default as default_11ffef28c6d9fb8a04df535fd3b7f3ac } from '@/ui/fields/iconSelect'
+import { default as default_43998a5142c7a86afa662eea14f61a90 } from '@pro-laico/atomic/children/admin/actionBlock'
+import { default as default_69fe033a6b2e3f12152ab53b9eaa0201 } from '@pro-laico/atomic/children/admin/inputBlock'
+import { default as default_21c0e1ee0403b3b52219b3a0e96bcb0b } from '@pro-laico/atomic/children/admin/coloredEnd'
+import { default as default_3c625db04a316070f486ca31016b45d4 } from '@pro-laico/atomic/children/admin/atomicRowLabel'
+import { default as default_0c40a4f95e0f986a8447b28878625f9d } from '@pro-laico/atomic/children/admin/simpleTextRowLabel'
+import { default as default_457074a5ec488aebf77fc4c416cf2256 } from '@pro-laico/atomic/children/admin/iconSelect'
 import { default as default_31e7983ad92c1ad30fcfef2a2c92e0de } from '@/ui/assets/Icon'
 import { default as default_0b906f3c09bdf05f31dac97d0009f13f } from '@/ui/assets/Logo'
-import { default as default_45314b1f13e96bdb34e5fc218cfc22ae } from '@/ui/root/siteTriggers'
+import { default as default_5f312500a59d96a842bd2b79d9c2541c } from '@pro-laico/seed/admin/beforeDashboard'
+import { default as default_33399356445e29cf1ece7b7fe614db9c } from '@pro-laico/core/ui/root/siteTriggers'
 import { VercelBlobClientUploadHandler as VercelBlobClientUploadHandler_16c82c5e25f430251a3e3ba57219ff4e } from '@payloadcms/storage-vercel-blob/client'
 import { CollectionCards as CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1 } from '@payloadcms/next/rsc'
 
 export const importMap = {
-  "@/ui/apf/label#default": default_1e1f605507ac4d81abdbc5831da0e1b6,
-  "@/ui/apf/field#default": default_fc544a7c902aadc9bfc55ed907448dfb,
-  "@/ui/fields/slug#default": default_8a7ac2c7c79c3ec2e1d6951d48900455,
-  "@/ui/apf/controls#default": default_689cb8f6b693e47473455b66ff5e9bfa,
-  "@/ui/rowLabels/icon#default": default_48cbfad44bafa59cfcf74fd784130a9a,
-  "@/ui/rowLabels/designToken#default": default_e39b5279f914254b017758220055f1a8,
-  "@/ui/rowLabels/color#default": default_e41ccc36c719f166558960cc3fb01689,
-  "@/ui/rowLabels/animation#default": default_16d35abd1d6b5b4f200680015a2919c3,
-  "@/ui/rowLabels/shortcut#default": default_21421aa6013972524cf1183a781258a6,
+  "@pro-laico/core/admin/label#default": default_1829119640c413d2e92b9395ebcbec08,
+  "@pro-laico/core/admin/field#default": default_92c83403e3094d2517a01c4331eb9f55,
+  "@pro-laico/core/ui/fields/slug#default": default_adcc44335943ae45d0ba046bb2fab13d,
+  "@pro-laico/core/admin/controls#default": default_5770d5be3ef2af64ca07e77507de9256,
+  "@pro-laico/icons/admin/iconRowLabel#default": default_f06b9a2c6ea8d20df2a8420456cf8189,
+  "@pro-laico/styles/ui/rowLabels/designToken#default": default_b81c0a0eceb7b4d14ec50545f4a4fc23,
+  "@pro-laico/styles/ui/rowLabels/color#default": default_f12e76bf0547e4170c0ab3f2160c348e,
+  "@pro-laico/styles/ui/rowLabels/animation#default": default_6dfc632d12171d9e6dc466f2e1f932f9,
+  "@pro-laico/styles/ui/rowLabels/shortcut#default": default_fb3933fa980f3ffbf875befb8aa38b5a,
   "@oversightstudio/mux-video/elements#MuxUploaderField": MuxUploaderField_c369a797e256de625eba826a6acb8608,
   "@oversightstudio/mux-video/elements#MuxVideoImageCell": MuxVideoImageCell_c369a797e256de625eba826a6acb8608,
   "@payloadcms/richtext-lexical/rsc#RscEntryLexicalCell": RscEntryLexicalCell_44fe37237e0ebf4470c9990d8cb7b07e,
@@ -71,15 +72,16 @@ export const importMap = {
   "@payloadcms/richtext-lexical/client#UnderlineFeatureClient": UnderlineFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "@payloadcms/richtext-lexical/client#BoldFeatureClient": BoldFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "@payloadcms/richtext-lexical/client#ItalicFeatureClient": ItalicFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
-  "@/ui/blocks/actionBlock#default": default_270f6bb8ae1323fe93100b8caf0d00e3,
-  "@/ui/blocks/inputBlock#default": default_afd76833cc6ce7bb362fa549a0a6fedb,
-  "@/ui/decorative/coloredEnd#default": default_8d0556207b1635189a14fae8651677fc,
-  "@/ui/rowLabels/atomic#default": default_7e0ebf8349626d5066c84607ea93eeb9,
-  "@/ui/rowLabels/simpleText#default": default_f1f0bac5666a44c5e8419518e1dd9915,
-  "@/ui/fields/iconSelect#default": default_11ffef28c6d9fb8a04df535fd3b7f3ac,
+  "@pro-laico/atomic/children/admin/actionBlock#default": default_43998a5142c7a86afa662eea14f61a90,
+  "@pro-laico/atomic/children/admin/inputBlock#default": default_69fe033a6b2e3f12152ab53b9eaa0201,
+  "@pro-laico/atomic/children/admin/coloredEnd#default": default_21c0e1ee0403b3b52219b3a0e96bcb0b,
+  "@pro-laico/atomic/children/admin/atomicRowLabel#default": default_3c625db04a316070f486ca31016b45d4,
+  "@pro-laico/atomic/children/admin/simpleTextRowLabel#default": default_0c40a4f95e0f986a8447b28878625f9d,
+  "@pro-laico/atomic/children/admin/iconSelect#default": default_457074a5ec488aebf77fc4c416cf2256,
   "@/ui/assets/Icon#default": default_31e7983ad92c1ad30fcfef2a2c92e0de,
   "@/ui/assets/Logo#default": default_0b906f3c09bdf05f31dac97d0009f13f,
-  "@/ui/root/siteTriggers#default": default_45314b1f13e96bdb34e5fc218cfc22ae,
+  "@pro-laico/seed/admin/beforeDashboard#default": default_5f312500a59d96a842bd2b79d9c2541c,
+  "@pro-laico/core/ui/root/siteTriggers#default": default_33399356445e29cf1ece7b7fe614db9c,
   "@payloadcms/storage-vercel-blob/client#VercelBlobClientUploadHandler": VercelBlobClientUploadHandler_16c82c5e25f430251a3e3ba57219ff4e,
   "@payloadcms/next/rsc#CollectionCards": CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1
 }

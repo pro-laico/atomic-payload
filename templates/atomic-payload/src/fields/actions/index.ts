@@ -1,6 +1,0 @@
-export * from './keyText'
-export * from './setData'
-export * from './changeKey'
-export * from './persisted'
-export * from './initialValueCheckbox'
-export * from './strict'

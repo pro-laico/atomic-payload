@@ -1,0 +1,84 @@
+---
+title: "Environment & prerequisites"
+description: "The env vars and external services a scaffolded project needs to run."
+---
+
+Set the environment variables and external accounts a freshly scaffolded Atomic Payload project needs before it will boot.
+
+## Required variables
+
+Copy `.env.example` to `.env`, then fill in these four values:
+
+<Steps>
+
+<Step>
+
+### `MONGODB_URI`
+
+The MongoDB connection string Payload stores all your data in. The easiest free-tier path is Vercel: **Storage → Create Database → MongoDB Atlas**, then copy the URI it gives you.
+
+```bash
+MONGODB_URI="mongodb+srv://<username>:<password>@<cluster-name>.mongodb.net/my_database?retryWrites=true&w=majority"
+```
+
+</Step>
+
+<Step>
+
+### `PAYLOAD_SECRET`
+
+A random string Payload uses to encrypt JWT auth tokens. Generate any sufficiently long secret (for example with `openssl rand -hex 32`) and keep it stable per environment.
+
+```bash
+PAYLOAD_SECRET=524AFEAC8E77853C6AC1C2EBCB266
+```
+
+</Step>
+
+<Step>
+
+### `BLOB_READ_WRITE_TOKEN`
+
+The Vercel Blob token used for media and file uploads. Create a Blob store in Vercel (**Storage → Create Database → Blob**) and copy `BLOB_READ_WRITE_TOKEN` from the store's `.env.local`.
+
+```bash
+BLOB_READ_WRITE_TOKEN="vercel_blob_rw_..."
+```
+
+</Step>
+
+<Step>
+
+### `NEXT_PUBLIC_SERVER_URL`
+
+The public URL the app runs at, used to configure CORS, format links, and more. Use `http://localhost:3000` for local dev, and set it to your deployed URL (e.g. `https://<project-name>.vercel.app`) in production. No trailing slash.
+
+```bash
+NEXT_PUBLIC_SERVER_URL=http://localhost:3000
+```
+
+</Step>
+
+</Steps>
+
+<Callout type="info">
+  The template also ships `PREVIEW_SECRET` (validates draft-preview requests): generate it like `PAYLOAD_SECRET`. The font download (`generate:fonts`) needs no credentials of its own: it calls the fonts plugin's export endpoint at `FONT_DOWNLOAD_URL` and authenticates with `PAYLOAD_SECRET`.
+</Callout>
+
+## Optional integrations
+
+These are off by default, so wire them up only if you need them. Full setup steps live on the template page.
+
+<Callout type="info">
+  - **Mux** (`MUX_TOKEN_ID`, `MUX_TOKEN_SECRET`, `MUX_WEBHOOK_SIGNING_SECRET`): upload and serve video through the admin dashboard.
+  - **Resend** (`RESEND_API_KEY`): send transactional email on form submissions.
+  - **Vercel deploy webhook** (`VERCEL_DEPLOY_WEBHOOK_URL`): trigger a redeploy from the admin UI.
+
+  See **Template Setup** in the template README for the step-by-step account and token configuration for each.
+</Callout>
+
+## Next
+
+<Cards>
+  <Card title="Core concepts" href="/docs/concepts/architecture" />
+</Cards>

@@ -1,0 +1,51 @@
+# Atomic Payload Styles Plugin
+
+The single home for all CSS handling in Atomic Payload: the `designSet` + `shortcutSet` collections, token fields and admin row-labels, and the runtime UnoCSS processor that turns the active design set into CSS for both the frontend and Payload's admin. Part of [Atomic Payload](https://atomicpayload.com).
+
+- [Documentation](https://atomicpayload.com/docs/plugins/styles)
+- [Source code](https://github.com/pro-laico/atomic-payload/tree/main/packages/styles)
+- [Documentation source](https://github.com/pro-laico/atomic-payload/tree/main/docs/content/docs/plugins/styles.mdx)
+
+## Features
+
+### Tailwind Styles
+
+Write Tailwind directly in the Payload admin dashboard, so you can have custom styled blocks wherever you need them.
+
+![styles](https://github.com/user-attachments/assets/6ccc46be-5431-4191-97c8-d070fb4969ff)
+
+### UnoCSS Shortcuts
+
+UnoCSS powers our style generation, so we can leverage the built in Shortcut functionality to group our styles for reuse across your website.
+
+![shortcuts](https://github.com/user-attachments/assets/decf0194-1523-46dd-b8d0-ba82e7d7970e)
+
+### Design Tokens
+
+Create reusable values related to your website design. Including colors, sizings, screen sizes, animations and more!
+
+![tokens](https://github.com/user-attachments/assets/b9344462-adf9-40f6-b96e-773a627a1058)
+
+### Design Sets
+
+Design Sets are the equivalent of a complete Tailwind config file and can completely alter the appearance of your website. Only one design set can be active at a time, meaning you can build new concept designs and easily swap back and forth to see which you prefer.
+
+![designsets](https://github.com/user-attachments/assets/882fcb15-2f22-479d-95cd-89b479b9b54d)
+
+## Atomic Payload dependencies
+
+- `@pro-laico/core` — shared kernel the plugin builds on.
+- `@pro-laico/zap` — the schema registry that wires the design-set / shortcut-set type stubs.
+- `@pro-laico/site` — type-only relationship for the fields/slugs the processor reads.
+
+## Exports
+
+| Import | What's there |
+| --- | --- |
+| `@pro-laico/styles` | `stylesPlugin` (default + named) and its options types, the `ClassNameField` field, and the CSS pipeline (`createCssProcessor`, `createCssHook`, `processDesignSet`) with their types. |
+| `@pro-laico/styles/schema` | Schema stubs (`DesignSet`, `CollectionThatUsesCSSProcessorSlug`, `CollectionWithStoredAtomicClassesSlug`) for the `PayloadAugment` registry. |
+| `@pro-laico/styles/fields/className` | The `ClassNameField` factory. |
+| `@pro-laico/styles/ui/rowLabels/shortcut` | Admin row-label React component for shortcuts. |
+| `@pro-laico/styles/ui/rowLabels/color` | Admin row-label React component for colors. |
+| `@pro-laico/styles/ui/rowLabels/animation` | Admin row-label React component for animations. |
+| `@pro-laico/styles/ui/rowLabels/designToken` | Admin row-label React component for design tokens. |

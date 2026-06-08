@@ -1,0 +1,77 @@
+---
+title: "Actions"
+description: "Add interactivity and reactivity to atomic blocks: dialogs, popovers, theme toggling, data attributes, and form submission."
+---
+
+Actions create interactivity and reactivity for all atomic blocks. They cover functionality such as opening and closing dialogs and popovers, toggling dark mode, converting stateful values to data attributes, and submitting forms.
+
+## Overview
+
+Most of what makes a website feel alive happens after the page loads: a dialog opens, a popover toggles, the theme flips to dark mode, a form submits. Actions are how Atomic Payload adds that interactivity and reactivity to atomic blocks, without writing front-end code.
+
+Built-in actions include:
+
+- **Theme toggle**: switch between light and dark mode.
+- **Form submit**: submit a form (see [Forms](/docs/features/forms)).
+- **Cookie consent**: gate behavior on a consent choice.
+- **dynamicStore**: convert stateful values to data attributes, so blocks can react to state.
+- **Portal**: open and close dialogs and popovers.
+
+Actions are stored as data on a block and executed on the client when their trigger fires.
+
+## How it works
+
+Actions use a **block structure**, so the set of available actions is extendable: you add new functionality by adding a new action block. The built-ins (theme toggle, form submit, cookie consent, dynamicStore, portal) are simply the actions registered out of the box.
+
+Action blocks attach to atomic blocks: they're stored as data on the block they belong to, normalized at save time, and then executed on the client when their trigger fires. The child blocks system wires children to the action system, so any atomic block in the tree can carry actions.
+
+## Using it
+
+You add actions to a block directly in the Payload admin, no code required:
+
+1. Open the atomic block you want to make interactive.
+2. Add an action block to it (for example, a portal action to open a dialog, or a theme toggle).
+3. Configure the action's options on that block.
+
+Because actions are block data, they travel with the block, including through Payload's copy-paste-duplicate, so reusable interactive components carry their behavior with them.
+
+## Configuration
+
+Actions are provided by the `actions` namespace of `@pro-laico/atomic` and registered with the `actionsPlugin` factory:
+
+```ts
+import { buildConfig } from 'payload'
+import { actionsPlugin } from '@pro-laico/atomic/actions'
+
+export default buildConfig({
+  plugins: [actionsPlugin()],
+})
+```
+
+Relevant exports from `@pro-laico/atomic/actions`:
+
+- `AllActionBlocks`: the registered set of action blocks, contributed via plugin options.
+- `ActionBlockStorageProcessor`: runs at `beforeChange` to normalize action data.
+- `ActionFilters`: predicates for filtering which action blocks apply.
+
+Additional subpaths:
+
+| Subpath | What's there |
+| --- | --- |
+| `@pro-laico/atomic/actions/schema` | `payload-augment` types for action blocks |
+| `@pro-laico/atomic/actions/zap` | The action block-type union for zap-generated JSON schema |
+
+See the [@pro-laico/atomic](/docs/plugins/atomic) plugin page for the full export surface.
+
+## Provided by
+
+<Cards>
+  <Card title="@pro-laico/atomic" href="/docs/plugins/atomic" />
+</Cards>
+
+## Related
+
+<Cards>
+  <Card title="Forms" href="/docs/features/forms" />
+  <Card title="Atomic Blocks" href="/docs/features/atomic-blocks" />
+</Cards>

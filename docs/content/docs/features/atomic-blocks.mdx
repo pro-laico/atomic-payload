@@ -1,0 +1,77 @@
+---
+title: "Atomic Blocks"
+description: "Build entire custom components from recursive child blocks, then reuse them with Payload's copy-paste-duplicate."
+---
+
+## Overview
+
+Atomic Blocks are the recursive content model behind every page you build in the Atomic Payload dashboard. Using **Atomic Child Blocks**, you compose entire custom components (nesting blocks inside blocks) directly in the Payload admin, without touching code.
+
+Because the model is recursive, a child block can contain its own children, which can contain theirs, all the way down. Combined with Payload's **copy-paste-duplicate (CPD)** functionality, you can reuse a component you've built with ease: copy a block, paste it elsewhere, and tweak.
+
+<Callout type="info">
+  Once Payload CMS implements Sanity-style CPD, you'll be able to reuse components across projects too.
+</Callout>
+
+## How it works
+
+Atomic Blocks are provided by the `children` namespace of `@pro-laico/atomic`. Its `childBlocksPlugin` registers the default child blocks, with the `AtomicChild` container and the built-in `SimpleTextChild` leaf forming the recursive tree:
+
+- **`AtomicChild`**: the recursive container. It nests other child blocks inside itself, so a single component is really a tree of blocks.
+- **`SimpleTextChild`**: the built-in leaf for text content.
+
+Sibling packages contribute the rest of the default blocks (RichText, Image, Video, Icon, and SVG), pulled in from their own factories. Some live behind their own subpaths, for example `@pro-laico/images/blocks/imageChild` and `@pro-laico/icons/blocks/iconChild`, so the set of blocks you can nest reflects the packages installed.
+
+On the front end, the `children/render` subpath provides the React component that **walks the tree and renders each child**, producing the final HTML. The `children` namespace also wires children into the action system, so blocks in the tree can carry interactivity.
+
+## Using it
+
+In the admin, you build a component by nesting `AtomicChild` blocks and dropping content blocks (`SimpleTextChild`, image children, icon children, and any others contributed by installed plugins) inside them. Because the structure is recursive, you can keep nesting to build up arbitrarily deep components.
+
+Once a component is built, use Payload's **copy-paste-duplicate** to reuse it: duplicate the block and adjust the copy rather than rebuilding from scratch.
+
+On the front end, render the tree with the child renderer:
+
+```ts
+import { RenderChildren } from '@pro-laico/atomic/children/render'
+```
+
+The renderer walks the block tree and renders each child in turn, so the component you assembled in the admin becomes working markup on the site.
+
+## Configuration
+
+`childBlocksPlugin(options?)` registers the child-block system. Child blocks no longer hard-depend on `@pro-laico/styles`; you wire fields in **per block** via `blockFields` (keyed by block slug). Each block accepts generic `prependFields` / `appendFields`, spread at the start / end of the block's primary content tab:
+
+```ts
+import { childBlocksPlugin } from '@pro-laico/atomic/children'
+import { ClassNameField } from '@pro-laico/styles'
+
+childBlocksPlugin({
+  blockFields: {
+    SVGChild: { prependFields: [ClassNameField({ label: 'SVG Atomic Classes' })] },
+    ImageChild: { prependFields: [ClassNameField({ label: 'Image Atomic Classes' })] },
+    // …other blocks, any fields you like
+  },
+})
+```
+
+<Callout type="info">
+  `AtomicChild` is a special case, intentionally left on the older `classNameField` passthrough for now (its content / trigger / backdrop styling spots aren't covered by the generic `blockFields` mechanism). Pass `classNameField: ClassNameField` to supply it.
+</Callout>
+
+Each package exposes a block **factory** (`createIconBlock`, `createSvgBlock`, `createImageBlock`, `createVideoBlock`, `createRichTextBlock`, `createSimpleTextBlock`) that accepts those generic field extensions, while the static exports (`Icon`, `Image`, …) and the `childBlocks` array carry no extra fields.
+
+For the full set of options, subpaths, and exports, see the atomic plugin reference.
+
+## Provided by
+
+<Cards>
+  <Card title="@pro-laico/atomic" href="/docs/plugins/atomic" />
+</Cards>
+
+## Related
+
+<Cards>
+  <Card title="Actions" href="/docs/features/actions" />
+  <Card title="Forms" href="/docs/features/forms" />
+</Cards>

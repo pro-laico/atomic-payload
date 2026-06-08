@@ -1,0 +1,174 @@
+---
+title: "atomic-payload"
+description: "The full Payload + Next.js + Tailwind starter that wires up every Atomic Payload plugin: environment setup, deployment, and optional Mux/Resend integrations."
+---
+
+## Overview
+
+**Atomic Payload** is the complete starter template that brings the whole platform together: **Payload** for the CMS and admin, **Next.js** for the frontend and API routes, and **Tailwind** for styling, with every Atomic Payload plugin already installed and configured. Use this guide whether you scaffolded a project with `npx @pro-laico/create-atomic-payload` or you're developing from the monorepo template folder.
+
+<Callout type="info">
+  Developing the monorepo itself? See `MONOREPO.md` in the repo root for structure, local dev, and per-plugin instructions.
+</Callout>
+
+## Setup
+
+<Steps>
+
+<Step>
+
+### Get required connections
+
+Set up the two external services the template needs:
+
+- Obtain a `MONGODB_URI`. The easiest path is through Vercel for a free-tier cluster: `Storage → Create Database → MongoDB Atlas`.
+- Create a Blob store in Vercel (`Storage → Create Database → Blob`) and copy the `BLOB_READ_WRITE_TOKEN` from `.env.local`.
+
+</Step>
+
+<Step>
+
+### Configure your project
+
+Copy `.env.example` to `.env`, then add the MongoDB URI and Blob token, and generate the Payload and Preview secrets.
+
+```bash
+# Mongo DB connection string
+MONGODB_URI="mongodb+srv://<username>:<password>@<cluster-name>.mongodb.net/my_database?retryWrites=true&w=majority"
+# Vercel Blob Read Write Secret
+BLOB_READ_WRITE_TOKEN="vercel_blob_rw_laogivGHAOSNeoFS_KJAGsjmeHSkaLQUVhUSHmfPGIXCbHe"
+
+# Used to encrypt JWT tokens
+PAYLOAD_SECRET=524AFEAC8E77853C6AC1C2EBCB266
+# Used to validate preview requests
+PREVIEW_SECRET=77E41879964C5D1C251661663DCD3
+```
+
+</Step>
+
+<Step>
+
+### Create the first admin user
+
+Start the dev server:
+
+```bash
+pnpm dev
+```
+
+Open `http://localhost:3000/admin` and create the first admin user.
+
+</Step>
+
+</Steps>
+
+<Callout type="info">
+  Once running, it's recommended to seed the database from the **Seed database** banner on the main admin dashboard. Seeding wipes and replaces existing data, so once you've seeded, pass `enabled: false` to `seedPlugin()` in `src/plugins/index.ts` to drop the seed endpoint and its dashboard banner.
+</Callout>
+
+## Optional integrations
+
+<Accordions>
+
+<Accordion title="Vercel rebuild webhook">
+
+Trigger a rebuild of your deployment with a Vercel webhook, mainly useful when updating fonts.
+
+1. Go to your project dashboard, then `Settings → Git → Deploy Hooks`.
+2. Add a name and select the branch to rebuild (usually `main`).
+3. Copy the hook URL and add it to your Vercel env:
+
+```bash
+VERCEL_DEPLOY_WEBHOOK_URL=https://api.vercel.com/v1/integrations/deploy/prj_55B6CE7961E311671658DBFD8B59C
+```
+
+</Accordion>
+
+<Accordion title="Mux setup">
+
+Upload and serve video through the Payload admin dashboard.
+
+1. **Account setup**
+   - Create a Mux account.
+   - Create a new environment, set it to **Production**, and configure access controls.
+2. **Access token**
+   - In Mux, go to `Settings → Access Tokens` and create a new token.
+   - Select **Payload Admin** and enable all permissions.
+   - Copy the **Token ID** to `MUX_TOKEN_ID` and the **Secret Key** to `MUX_TOKEN_SECRET`.
+3. **Webhook**
+   - In Mux, go to `Settings → Webhooks`.
+   - Add a webhook for your live site with the route `/api/mux/webhook` (e.g. `<live-site-url>/api/mux/webhook`).
+   - Copy the generated secret to `MUX_WEBHOOK_SIGNING_SECRET`.
+
+```bash
+# Mux Secrets. For mux video block component.
+MUX_TOKEN_ID=bd47f2c1e-5a8b-4f92-9b3e-2c1d7a6f4e91
+MUX_TOKEN_SECRET=K9ZpY1cE8M7R0xBqW3uT4nD2JH6OaLwFhVQ5S/ImsPjGkUoXyAetCzNrbf0d+8lH
+MUX_WEBHOOK_SIGNING_SECRET=7k4qv9xrmhsj2p1d8zf6bwl0ntgy5cqe
+```
+
+</Accordion>
+
+<Accordion title="Resend setup">
+
+Send emails programmatically on form submissions using Resend.
+
+1. **Get an API key**
+   - In the Resend dashboard, go to **API Keys**.
+   - Create and name a new API key, then copy it to `RESEND_API_KEY`:
+
+   ```bash
+   RESEND_API_KEY=qR8_LpWzNy_7vKDmHT2JXsFo9BbUyRcAeLQ
+   ```
+
+2. **Set up the sender domain**
+   - Go to **Domains** and create a new domain (use a purchased domain, preferably a subdomain such as `notifications.atomicpayload.com`).
+   - Follow the Resend setup instructions.
+   - In your repo, at `src/payload.config.ts`, uncomment all code related to the `resendAdapter` and modify it to fit your implementation.
+
+</Accordion>
+
+</Accordions>
+
+## Deploy
+
+<Steps>
+
+<Step>
+
+### Import your repo into Vercel
+
+Create a new project in Vercel by importing your repo, but before hitting **Create**, point your local `.env` at the deployed URL so it's ready to copy into Vercel:
+
+```bash
+NEXT_PUBLIC_SERVER_URL='https://<project-name>.vercel.app'
+FONT_DOWNLOAD_URL='https://<project-name>.vercel.app'   # the build's font download targets this
+```
+
+</Step>
+
+<Step>
+
+### Configure Vercel environment variables
+
+- Copy all environment variables above into the Vercel project settings.
+- Set both `NEXT_PUBLIC_SERVER_URL` and `FONT_DOWNLOAD_URL` to your deployed URL (e.g. `https://<project-name>.vercel.app`).
+
+</Step>
+
+<Step>
+
+### Deploy
+
+Trigger a deploy and wait for the build to complete. You now have a working version of Atomic Payload.
+
+</Step>
+
+</Steps>
+
+## Related
+
+<Cards>
+  <Card title="Quick start" href="/docs/getting-started/quick-start" />
+  <Card title="Plugins" href="/docs/plugins" />
+</Cards>

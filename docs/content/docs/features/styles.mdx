@@ -1,0 +1,69 @@
+---
+title: "Styles"
+description: "Write Tailwind in the admin, with design tokens, design sets, and UnoCSS shortcuts authored as Payload documents."
+---
+
+## Overview
+
+`@pro-laico/styles` brings styling into the Payload admin: **write Tailwind directly in the dashboard**, so you can have custom styled blocks wherever you need them, with no separate stylesheet to maintain and no redeploy to tweak a design.
+
+Backing that up are three admin-authored building blocks:
+
+- **Design tokens**: reusable values for your design (colors, sizings, screen sizes, animations, and more).
+- **Design sets**: the equivalent of a complete Tailwind config file, authored as a Payload document. Only one is active at a time.
+- **UnoCSS shortcuts**: reusable groupings of styles, the equivalent of writing a Tailwind component class once and applying it everywhere.
+
+UnoCSS powers the style generation, which is why the built-in shortcut functionality is available to group styles for reuse across your website.
+
+## How it works
+
+Styling flows through a **design-set → CSS-processor pipeline**, all owned by the styles plugin:
+
+- A **`ClassNameField`** is the admin textarea the plugin gives your blocks and components. You type the actual Tailwind and UnoCSS classes (and any shortcut names) right here, next to the content they style. The field is tagged so the processor collects every value into the generated stylesheet, so this is the field through which a design set's tokens and a shortcut set's shortcuts actually get applied to a component in the admin.
+- A **`designSet`** document is the full theme, the Tailwind-config equivalent authored inside Payload. It has tabs for colors, sizing, screens, animations, and arbitrary design tokens. **Tokens are values** (colors, sizes); they live on the design set.
+- A **`shortcutSet`** document holds the reusable **UnoCSS shortcuts**, which are **class compositions** rather than values. This split mirrors UnoCSS's own split between theme and shortcuts: tokens vs. reusable class compositions.
+- On save, a `beforeChange` pass (`processDesignSet`) compiles a `designSet` document's tokens, colors, prose styles, and preflights into storage fields.
+- The runtime **UnoCSS processor** (`createCssProcessor`) reads the **active** design set plus the shortcut set plus the stored atomic classes (the values collected from every `ClassNameField`) and writes the generated CSS into the storage globals. That generated CSS is used for both the frontend and Payload's admin.
+
+**Only one design set is active at a time.** The CSS processor reads the currently active design set on every change and re-generates CSS from it, so switching which set is active swaps the entire design. Because of that, you can **build alternative designs as draft documents and easily swap back and forth** to see which you prefer: switching active sets is how you swap a whole look.
+
+**The `ClassNameField` works on its own.** The `designSet` and `shortcutSet` collections are each optional, so you can toggle either off in the plugin options and still style your site. Disable both and you can write plain Tailwind and UnoCSS utility classes in the `ClassNameField`, and the processor compiles them straight to CSS with no tokens or shortcuts to define. Add a design set when you want reusable tokens, and a shortcut set when you want to name reusable class compositions, layering those on top of the raw classes you are already writing.
+
+The runtime also reserves a set of **protected names** (identifiers it uses internally) so user-defined shortcut names don't collide with them.
+
+## Using it
+
+Everything is managed in the Payload admin:
+
+- **Write Tailwind on your blocks.** Type Tailwind and UnoCSS classes straight into the `ClassNameField` on blocks in the dashboard to get custom-styled components wherever you need them. This works with or without a design set or shortcut set, so you can start with plain utility classes and add tokens or shortcuts later.
+- **Manage design tokens.** Edit colors, sizings, screen sizes, animations, and other tokens on the active `designSet` document's tabs, with no Tailwind config file to touch.
+- **Manage design sets.** Create multiple `designSet` documents and toggle which one is active. Keep alternates as drafts and switch the active set to change the whole site's appearance.
+- **Manage shortcuts.** Author reusable UnoCSS shortcuts in the `shortcutSet` collection to group styles for reuse across your website. Default shortcuts ship as read-only rows in the admin for reference.
+
+## Configuration
+
+The styles plugin registers the `designSet` and `shortcutSet` collections (each toggleable) plus the CSS storage globals. Key options:
+
+- `generateLivePreviewPath`: optional; generates the live-preview URL for the active design set, shared by both collections. Defaults to `@pro-laico/core`'s `generateLivePreviewPath` (built from `PREVIEW_SECRET` + `NEXT_PUBLIC_SERVER_URL`); pass your own to override.
+- `atomicHook`: optional `beforeChange` hook that wraps `createCssProcessor` and `processDesignSet`.
+- `enabled`: defaults to `true`; set `false` to make the whole plugin a no-op.
+- `getCached`: optional; pass a `(tag, draft)` getter (build one with `createCssGetCached` from `@pro-laico/styles/cache`) to attach the standalone `cssHook`, producing CSS without `@pro-laico/atomic`.
+- `cssHookOptions`: optional; forwarded to `createCssHook` when `getCached` is set (slug/global overrides).
+- `includeStorageGlobals`: defaults to `true`; set `false` to skip registering the draft/published CSS storage globals.
+- `registerTypescriptSchema`: defaults to `true`; appends `@pro-laico/zap`'s schema so `generate:types` resolves the designSet field `$ref`s. Set `false` if you already wire the zap schema yourself.
+- `designSet`: pass `false` (or `{ enabled: false }`) to omit the collection; pass `access` / `collection` to shallow-merge per-collection settings, and `fontField` (a Payload Field) to populate the Fonts tab.
+- `shortcutSet`: same pattern as `designSet` (including the nested `enabled` toggle), and additionally accepts `defaultShortcuts` (read-only rows shown in the admin).
+
+For the full option reference, see the styles plugin's options below.
+
+## Provided by
+
+<Cards>
+  <Card title="@pro-laico/styles" href="/docs/plugins/styles" />
+</Cards>
+
+## Related
+
+<Cards>
+  <Card title="Atomic Blocks" href="/docs/features/atomic-blocks" />
+</Cards>

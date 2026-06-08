@@ -1,0 +1,14 @@
+import type { TextField } from 'payload'
+
+import { APField } from '@pro-laico/core'
+
+const description = "The message to display when the validation fails. Use {{inputName}} to display the input's value."
+
+/** Used in form SVR block fields to set the validation message. */
+export const ValidationMessageField: TextField = APField({
+  type: 'text',
+  apf: ['form'],
+  required: true,
+  admin: { description },
+  name: 'validationMessage',
+})

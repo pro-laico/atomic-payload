@@ -1,0 +1,69 @@
+---
+title: "Architecture & the plugin model"
+description: "How Atomic Payload composes a Payload app from focused, independently usable plugins."
+---
+
+Atomic Payload is not a monolith you adopt wholesale. It's a set of focused Payload plugins (`@pro-laico/styles`, `@pro-laico/site`, `@pro-laico/atomic`, `@pro-laico/tracking`, and the rest), each owning a single scope of responsibility. You compose the ones you need in your `payload.config.ts` and skip the ones you don't.
+
+## What & why
+
+Every package is its own scope of responsibility, with its own README. That separation is deliberate:
+
+- **Independently usable.** Each plugin can be installed on its own (`pnpm add @pro-laico/<name>`) and dropped into any Payload + Next.js app. The `examples/` directory exercises single plugins (`fonts-only`, `icons-only`, `styles-only`) in isolation precisely to prove this.
+- **Composable.** The full starter template uses every plugin, but nothing forces you to. Add tracking without styles, or styles without site, and each one still resolves.
+- **A shared kernel underneath.** Domain packages type their block shapes against a single `PayloadAugment` interface from `@pro-laico/core`, and the `zap` package gives every plugin a shared Zod-based schema registry. So the plugins stay decoupled at the runtime level while staying coherent at the type level.
+
+The reading order for the packages themselves runs from the foundations up: `zap` (the schema registry everything types against), then `core` (the kernel), then `styles`, `site`, and `atomic` (the integration layer), then the feature plugins and the CLI.
+
+## How it works
+
+Every plugin package follows the same shape. The heart of it is a plugin factory with the signature `(opts) => (config) => config`, exported **both** as the package's default export **and** as a named export:
+
+```ts
+// payload.config.ts
+import { sitePlugin } from '@pro-laico/site'
+import { stylesPlugin } from '@pro-laico/styles'
+import { trackingPlugin } from '@pro-laico/tracking'
+import { buildConfig } from 'payload'
+
+export default buildConfig({
+  plugins: [
+    stylesPlugin(),
+    sitePlugin(),
+    trackingPlugin(),
+  ],
+})
+```
+
+Each plugin is a function you call with its options. Calling it returns a `(config) => config` transform that Payload applies to your config, registering that plugin's collections, globals, hooks, and fields. You compose plugins simply by listing them in the `plugins` array.
+
+A full app usually composes them through `pluginComposer` from `@pro-laico/core`. You hand it every plugin (including third-party ones) plus the shared `atomicHook`, and it returns the same `Plugin[]` you spread into `buildConfig`: your plugins, followed by a finalizer it appends. Because that finalizer runs last, it sees the fully-assembled config and wires the cross-cutting concerns there (the `atomicHook` on the atomic-content collections, and the revalidation hooks on every collection and global), so there are no slug lists to keep in sync and collections registered by third-party plugins are covered too. The [atomic-payload template](/docs/templates/atomic-payload) composes its plugins this way.
+
+Beyond the factory, each package also exports its **raw collections, hooks, fields, and components** as named imports, for advanced consumers who want to wire pieces in by hand rather than take the whole plugin. The `@pro-laico/tracking` package, for instance, exposes the individual `PostHogProvider`, `GoogleTagManagerProvider`, and `VercelProvider` components under its `/provider` subpath so you can wire each analytics provider in yourself instead of using the composite `TrackingProvider`.
+
+A few conventions keep this consistent across every package:
+
+- A `schema` subpath exports the package's `payload-augment` types, so `zap` knows about its block shapes.
+- The `index.ts` barrel is always safe to import from `payload.config.ts`. No client-only code leaks into it.
+- Client components and server-only utilities live behind subpaths to keep bundles clean.
+
+<Callout type="info">
+  Because the `index.ts` barrel is server-safe, client components (like the tracking providers) sit behind their own subpath imports such as `@pro-laico/tracking/provider`. Reach for the subpath when you need the client-side pieces.
+</Callout>
+
+## Notes
+
+<Callout type="info">
+  Atomic-payload-conventional slugs (`pages`, `header`, `footer`, `designSet`, `iconSet`, `forms`, and the rest) are **not** hardcoded. Every plugin's default export stays bound to those conventional slugs so existing imports keep working, but you can override them through factory variants like `atomicHookWith(slugConfig)`, `createRevalidateCache(handlers)`, and the per-package cache factories (`createGetCachedPages(slug)`).
+</Callout>
+
+<Callout type="info">
+  All `@pro-laico/*` packages share one version (Payload-style lockstep) and are published together, so when you add a plugin to an existing install, pin it to the same version as the rest.
+</Callout>
+
+## Related
+
+<Cards>
+  <Card title="The kernel" href="/docs/concepts/kernel" />
+  <Card title="Plugins" href="/docs/plugins" />
+</Cards>

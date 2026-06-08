@@ -1,0 +1,326 @@
+{
+  "name": "@pro-laico/atomic",
+  "version": "0.1.0",
+  "description": "Atomic Payload runtime: action blocks, beforeChange hook + CSS/UnoCSS processor, form processing pipeline, and child blocks plugin. Replaces the older ap-actions + ap-atomic-hook + ap-forms + children packages.",
+  "license": "MIT",
+  "type": "module",
+  "publishConfig": {
+    "access": "public",
+    "main": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "exports": {
+      ".": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "./cache": {
+        "types": "./dist/cache/index.d.ts",
+        "default": "./dist/cache/index.js"
+      },
+      "./actions": {
+        "types": "./dist/actions/index.d.ts",
+        "default": "./dist/actions/index.js"
+      },
+      "./actions/schema": {
+        "types": "./dist/actions/types/payload-augment.d.ts",
+        "default": "./dist/actions/types/payload-augment.js"
+      },
+      "./actions/zap": {
+        "types": "./dist/actions/blocks/zap.d.ts",
+        "default": "./dist/actions/blocks/zap.js"
+      },
+      "./actions/processor": {
+        "types": "./dist/actions/blocks/processor.d.ts",
+        "default": "./dist/actions/blocks/processor.js"
+      },
+      "./hook": {
+        "types": "./dist/hook/index.d.ts",
+        "default": "./dist/hook/index.js"
+      },
+      "./hook/schema": {
+        "types": "./dist/hook/types/payload-augment.d.ts",
+        "default": "./dist/hook/types/payload-augment.js"
+      },
+      "./hook/client": {
+        "types": "./dist/hook/frontEnd/atomicStore/index.d.ts",
+        "default": "./dist/hook/frontEnd/atomicStore/index.js"
+      },
+      "./forms": {
+        "types": "./dist/forms/index.d.ts",
+        "default": "./dist/forms/index.js"
+      },
+      "./forms/schema": {
+        "types": "./dist/forms/types/payload-augment.d.ts",
+        "default": "./dist/forms/types/payload-augment.js"
+      },
+      "./forms/submitForm/form/zap": {
+        "types": "./dist/forms/submitForm/form/zap.d.ts",
+        "default": "./dist/forms/submitForm/form/zap.js"
+      },
+      "./forms/submitForm/input/zap": {
+        "types": "./dist/forms/submitForm/input/zap.d.ts",
+        "default": "./dist/forms/submitForm/input/zap.js"
+      },
+      "./forms/submitForm/serverFunction": {
+        "types": "./dist/forms/submitForm/serverFunction.d.ts",
+        "default": "./dist/forms/submitForm/serverFunction.js"
+      },
+      "./children": {
+        "types": "./dist/children/index.d.ts",
+        "default": "./dist/children/index.js"
+      },
+      "./children/schema": {
+        "types": "./dist/children/types/payload-augment.d.ts",
+        "default": "./dist/children/types/payload-augment.js"
+      },
+      "./children/zap": {
+        "types": "./dist/children/zap.d.ts",
+        "default": "./dist/children/zap.js"
+      },
+      "./children/useActions/zap": {
+        "types": "./dist/children/hooks/useActions/dispatch/zap.d.ts",
+        "default": "./dist/children/hooks/useActions/dispatch/zap.js"
+      },
+      "./children/render": {
+        "types": "./dist/children/render/index.d.ts",
+        "default": "./dist/children/render/index.js"
+      },
+      "./children/fields/coloredEnd": {
+        "types": "./dist/children/fields/coloredEnd.d.ts",
+        "default": "./dist/children/fields/coloredEnd.js"
+      },
+      "./children/fields/tagType": {
+        "types": "./dist/children/fields/tagType.d.ts",
+        "default": "./dist/children/fields/tagType.js"
+      },
+      "./children/fields/tabs/settings": {
+        "types": "./dist/children/fields/tabs/settings.d.ts",
+        "default": "./dist/children/fields/tabs/settings.js"
+      },
+      "./children/admin": {
+        "types": "./dist/children/components/admin/index.d.ts",
+        "default": "./dist/children/components/admin/index.js"
+      },
+      "./children/admin/warningIcon": {
+        "types": "./dist/children/components/admin/warningIcon.d.ts",
+        "default": "./dist/children/components/admin/warningIcon.js"
+      },
+      "./children/admin/coloredEnd": {
+        "types": "./dist/children/components/admin/coloredEnd.d.ts",
+        "default": "./dist/children/components/admin/coloredEnd.js"
+      },
+      "./children/admin/actionBlock": {
+        "types": "./dist/children/components/admin/actionBlock.d.ts",
+        "default": "./dist/children/components/admin/actionBlock.js"
+      },
+      "./children/admin/inputBlock": {
+        "types": "./dist/children/components/admin/inputBlock.d.ts",
+        "default": "./dist/children/components/admin/inputBlock.js"
+      },
+      "./children/admin/iconSelect": {
+        "types": "./dist/children/components/admin/iconSelect.d.ts",
+        "default": "./dist/children/components/admin/iconSelect.js"
+      },
+      "./children/admin/atomicRowLabel": {
+        "types": "./dist/children/components/admin/AtomicRowLabel.d.ts",
+        "default": "./dist/children/components/admin/AtomicRowLabel.js"
+      },
+      "./children/admin/simpleTextRowLabel": {
+        "types": "./dist/children/components/admin/SimpleTextRowLabel.d.ts",
+        "default": "./dist/children/components/admin/SimpleTextRowLabel.js"
+      }
+    }
+  },
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
+    },
+    "./cache": {
+      "types": "./src/cache/index.ts",
+      "default": "./src/cache/index.ts"
+    },
+    "./actions": {
+      "types": "./src/actions/index.ts",
+      "default": "./src/actions/index.ts"
+    },
+    "./actions/schema": {
+      "types": "./src/actions/types/payload-augment.ts",
+      "default": "./src/actions/types/payload-augment.ts"
+    },
+    "./actions/zap": {
+      "types": "./src/actions/blocks/zap.ts",
+      "default": "./src/actions/blocks/zap.ts"
+    },
+    "./actions/processor": {
+      "types": "./src/actions/blocks/processor.ts",
+      "default": "./src/actions/blocks/processor.ts"
+    },
+    "./hook": {
+      "types": "./src/hook/index.ts",
+      "default": "./src/hook/index.ts"
+    },
+    "./hook/schema": {
+      "types": "./src/hook/types/payload-augment.ts",
+      "default": "./src/hook/types/payload-augment.ts"
+    },
+    "./hook/client": {
+      "types": "./src/hook/frontEnd/atomicStore/index.tsx",
+      "default": "./src/hook/frontEnd/atomicStore/index.tsx"
+    },
+    "./forms": {
+      "types": "./src/forms/index.ts",
+      "default": "./src/forms/index.ts"
+    },
+    "./forms/schema": {
+      "types": "./src/forms/types/payload-augment.ts",
+      "default": "./src/forms/types/payload-augment.ts"
+    },
+    "./forms/submitForm/form/zap": {
+      "types": "./src/forms/submitForm/form/zap.ts",
+      "default": "./src/forms/submitForm/form/zap.ts"
+    },
+    "./forms/submitForm/input/zap": {
+      "types": "./src/forms/submitForm/input/zap.ts",
+      "default": "./src/forms/submitForm/input/zap.ts"
+    },
+    "./forms/submitForm/serverFunction": {
+      "types": "./src/forms/submitForm/serverFunction.ts",
+      "default": "./src/forms/submitForm/serverFunction.ts"
+    },
+    "./children": {
+      "types": "./src/children/index.ts",
+      "default": "./src/children/index.ts"
+    },
+    "./children/schema": {
+      "types": "./src/children/types/payload-augment.ts",
+      "default": "./src/children/types/payload-augment.ts"
+    },
+    "./children/zap": {
+      "types": "./src/children/zap.ts",
+      "default": "./src/children/zap.ts"
+    },
+    "./children/useActions/zap": {
+      "types": "./src/children/hooks/useActions/dispatch/zap.ts",
+      "default": "./src/children/hooks/useActions/dispatch/zap.ts"
+    },
+    "./children/render": {
+      "types": "./src/children/render/index.ts",
+      "default": "./src/children/render/index.ts"
+    },
+    "./children/fields/coloredEnd": {
+      "types": "./src/children/fields/coloredEnd.ts",
+      "default": "./src/children/fields/coloredEnd.ts"
+    },
+    "./children/fields/tagType": {
+      "types": "./src/children/fields/tagType.ts",
+      "default": "./src/children/fields/tagType.ts"
+    },
+    "./children/fields/tabs/settings": {
+      "types": "./src/children/fields/tabs/settings.ts",
+      "default": "./src/children/fields/tabs/settings.ts"
+    },
+    "./children/admin": {
+      "types": "./src/children/components/admin/index.ts",
+      "default": "./src/children/components/admin/index.ts"
+    },
+    "./children/admin/warningIcon": {
+      "types": "./src/children/components/admin/warningIcon.ts",
+      "default": "./src/children/components/admin/warningIcon.ts"
+    },
+    "./children/admin/coloredEnd": {
+      "types": "./src/children/components/admin/coloredEnd.tsx",
+      "default": "./src/children/components/admin/coloredEnd.tsx"
+    },
+    "./children/admin/actionBlock": {
+      "types": "./src/children/components/admin/actionBlock.tsx",
+      "default": "./src/children/components/admin/actionBlock.tsx"
+    },
+    "./children/admin/inputBlock": {
+      "types": "./src/children/components/admin/inputBlock.tsx",
+      "default": "./src/children/components/admin/inputBlock.tsx"
+    },
+    "./children/admin/iconSelect": {
+      "types": "./src/children/components/admin/iconSelect.tsx",
+      "default": "./src/children/components/admin/iconSelect.tsx"
+    },
+    "./children/admin/atomicRowLabel": {
+      "types": "./src/children/components/admin/AtomicRowLabel.tsx",
+      "default": "./src/children/components/admin/AtomicRowLabel.tsx"
+    },
+    "./children/admin/simpleTextRowLabel": {
+      "types": "./src/children/components/admin/SimpleTextRowLabel.tsx",
+      "default": "./src/children/components/admin/SimpleTextRowLabel.tsx"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "pnpm clean && pnpm copyfiles && pnpm build:types && pnpm build:swc",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "build:swc": "swc ./src -d ./dist --config-file ../../.swcrc --strip-leading-paths",
+    "build:types": "tsc -p tsconfig.build.json --emitDeclarationOnly --noCheck",
+    "clean": "rimraf dist tsconfig.tsbuildinfo",
+    "copyfiles": "copyfiles -u 1 \"src/**/*.{scss,css,svg,json,ttf,woff,woff2,eot}\" dist/",
+    "prepack": "pnpm build"
+  },
+  "dependencies": {
+    "@base-ui-components/react": "1.0.0-rc.0",
+    "@pro-laico/core": "workspace:*",
+    "@pro-laico/icons": "workspace:*",
+    "@pro-laico/styles": "workspace:*",
+    "@pro-laico/images": "workspace:*",
+    "@pro-laico/mux-video": "workspace:*",
+    "@pro-laico/richtext": "workspace:*",
+    "@pro-laico/site": "workspace:*",
+    "@pro-laico/zap": "workspace:*",
+    "dayjs": "^1.11.19",
+    "next-themes": "^0.4.6",
+    "traverse": "^0.6.11"
+  },
+  "peerDependencies": {
+    "@mux/blurup": ">=1.0.0",
+    "@payloadcms/richtext-lexical": ">=3.0.0",
+    "@payloadcms/ui": ">=3.0.0",
+    "next": ">=15.0.0",
+    "payload": ">=3.0.0",
+    "react": ">=19.0.0",
+    "react-dom": ">=19.0.0",
+    "server-only": ">=0.0.1",
+    "unocss": ">=66.0.0",
+    "zustand": ">=5.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@mux/blurup": {
+      "optional": true
+    },
+    "unocss": {
+      "optional": true
+    },
+    "zustand": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@mux/blurup": "^1.0.2",
+    "@payloadcms/richtext-lexical": "^3.79.0",
+    "@payloadcms/ui": "^3.79.0",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "@types/traverse": "^0.6.37",
+    "next": "^16.1.6",
+    "payload": "^3.79.0",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "server-only": "^0.0.1",
+    "typescript": "5.8.3",
+    "unocss": "^66.6.6",
+    "zustand": "^5.0.11"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

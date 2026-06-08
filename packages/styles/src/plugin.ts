@@ -1,0 +1,150 @@
+import type { CollectionBeforeChangeHook, Config, PayloadRequest, Plugin } from 'payload'
+
+import { toJSONSchemaExtensions } from '@pro-laico/zap'
+import { generateLivePreviewPath as defaultPreviewPath } from '@pro-laico/core'
+
+import type { CssProcessorGetCached } from './cssProcessor'
+import { baseStorage } from './globals/storage'
+import { type CssHookOptions, createCssHook } from './hooks/cssHook'
+import { createDesignSetCollection, type DesignSetCollectionOptions } from './designSet/createCollection'
+import { createShortcutSetCollection, type ShortcutSetCollectionOptions } from './shortcutSet/createCollection'
+
+/**
+ * `designSet` collection activation + settings. The shared `atomicHook`,
+ * `cssHook`, and `generateLivePreviewPath` come from the top-level
+ * `stylesPlugin` options, so they're omitted here.
+ */
+export type StylesDesignSetOptions = Partial<Omit<DesignSetCollectionOptions, 'atomicHook' | 'cssHook' | 'generateLivePreviewPath'>> & {
+  /** When false, the `designSet` collection is not registered. Defaults to true. */
+  enabled?: boolean
+}
+
+/** `shortcutSet` collection activation + settings (same shape as `designSet`). */
+export type StylesShortcutSetOptions = Partial<Omit<ShortcutSetCollectionOptions, 'atomicHook' | 'cssHook' | 'generateLivePreviewPath'>> & {
+  /** When false, the `shortcutSet` collection is not registered. Defaults to true. */
+  enabled?: boolean
+}
+
+export interface StylesPluginOptions {
+  /** Wired to both collections' `hooks.beforeChange` (typically the project `atomicHook`). */
+  atomicHook?: CollectionBeforeChangeHook
+  /**
+   * The live-preview URL builder shared by both collections. Optional: defaults to
+   * `@pro-laico/core`'s `generateLivePreviewPath`, which builds the URL from
+   * `PREVIEW_SECRET` + `NEXT_PUBLIC_SERVER_URL`. Pass your own to override.
+   */
+  generateLivePreviewPath?: (args: { data: Partial<unknown>; req: PayloadRequest }) => Promise<string> | string
+  /** When false, the whole plugin is a no-op. Defaults to true. */
+  enabled?: boolean
+  /**
+   * `designSet` collection activation + settings.
+   * - `false` (or `{ enabled: false }`) → don't register the collection.
+   * - object → per-collection settings (`access`, `collection`).
+   * Defaults to enabled with default settings.
+   */
+  designSet?: false | StylesDesignSetOptions
+  /**
+   * `shortcutSet` collection activation + settings (same shape as `designSet`).
+   * Defaults to enabled with default settings.
+   */
+  shortcutSet?: false | StylesShortcutSetOptions
+  /**
+   * Provide a `getCached` to attach the standalone `cssHook` so this plugin
+   * processes CSS on its own (no `@pro-laico/atomic`). When `atomicHook` is also
+   * supplied, the cssHook stays inert and atomicHook does the work.
+   */
+  getCached?: CssProcessorGetCached
+  /** Forwarded to `createCssHook` when `getCached` is set (slug/global overrides). */
+  cssHookOptions?: CssHookOptions
+  /** When false, the plugin does not register the draft/published CSS storage globals. Defaults to true. */
+  includeStorageGlobals?: boolean
+  /**
+   * When true (default), the plugin appends `@pro-laico/zap`'s
+   * `toJSONSchemaExtensions` to `config.typescript.schema`, so `payload
+   * generate:types` resolves the designSet field `$ref`s (TokenString,
+   * TokenStorage, ProseColorStorage, …) without the consumer importing/wiring
+   * zap. Set false if you already wire the zap schema yourself (e.g. via
+   * `@pro-laico/core`'s `jsonSchemaPlugin`) to avoid a redundant pass.
+   */
+  registerTypescriptSchema?: boolean
+}
+
+/**
+ * Single plugin for CSS processing in Payload. Registers (each individually
+ * toggleable) the `designSet` + `shortcutSet` collections, the draft/published
+ * CSS storage globals, and — when `getCached` is supplied — a standalone
+ * `cssHook` that generates the stored stylesheet. The className field ships in
+ * this package too (`@pro-laico/styles/fields/className`).
+ *
+ * Pass `atomicHook` to delegate CSS (plus forms/actions/APF) to
+ * `@pro-laico/atomic`'s all-in-one hook; pass `getCached` (with or without
+ * `atomicHook`) to wire the standalone CSS hook. With both, the cssHook is
+ * inert and atomicHook processes CSS.
+ */
+export const stylesPlugin =
+  (opts: StylesPluginOptions): Plugin =>
+  (config: Config): Config => {
+    const {
+      enabled = true,
+      atomicHook,
+      generateLivePreviewPath = defaultPreviewPath,
+      designSet: designSetOpt,
+      shortcutSet: shortcutSetOpt,
+      getCached,
+      cssHookOptions,
+      includeStorageGlobals = true,
+      registerTypescriptSchema = true,
+    } = opts
+    if (!enabled) return config
+
+    const cssHook: CollectionBeforeChangeHook | undefined = getCached ? createCssHook(getCached, cssHookOptions) : undefined
+
+    const collections = [...(config.collections ?? [])]
+
+    if (designSetOpt !== false) {
+      const slice: StylesDesignSetOptions = designSetOpt && typeof designSetOpt === 'object' ? designSetOpt : {}
+      if (slice.enabled !== false) {
+        const { enabled: _enabled, access, collection, fontField } = slice
+        collections.push(
+          createDesignSetCollection({
+            atomicHook,
+            generateLivePreviewPath,
+            cssHook,
+            ...(access !== undefined ? { access } : {}),
+            ...(collection !== undefined ? { collection } : {}),
+            ...(fontField !== undefined ? { fontField } : {}),
+          }),
+        )
+      }
+    }
+
+    if (shortcutSetOpt !== false) {
+      const slice: StylesShortcutSetOptions = shortcutSetOpt && typeof shortcutSetOpt === 'object' ? shortcutSetOpt : {}
+      if (slice.enabled !== false) {
+        const { enabled: _enabled, access, collection, defaultShortcuts } = slice
+        collections.push(
+          createShortcutSetCollection({
+            atomicHook,
+            generateLivePreviewPath,
+            cssHook,
+            ...(access !== undefined ? { access } : {}),
+            ...(collection !== undefined ? { collection } : {}),
+            ...(defaultShortcuts !== undefined ? { defaultShortcuts } : {}),
+          }),
+        )
+      }
+    }
+
+    const globals = includeStorageGlobals ? [...(config.globals ?? []), baseStorage('draft'), baseStorage('published')] : config.globals
+
+    // Inject the zap schema dumper so `generate:types` resolves the designSet
+    // field `$ref`s without the consumer importing zap. The zap registry is
+    // populated when the field modules load above.
+    const typescript = registerTypescriptSchema
+      ? { ...config.typescript, schema: [...(config.typescript?.schema ?? []), toJSONSchemaExtensions] }
+      : config.typescript
+
+    return { ...config, collections, globals, typescript }
+  }
+
+export default stylesPlugin

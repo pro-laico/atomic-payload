@@ -1,0 +1,103 @@
+---
+title: "icons-only"
+description: "Minimal example: @pro-laico/icons in isolation, with the Icon and IconSet collections and a small page that renders them."
+---
+
+A minimal Atomic Payload template that exercises the **`@pro-laico/icons`** plugin on its own, with no design sets, child blocks, forms, or tracking wired in. Just the `Icon` and `IconSet` collections plus a small Next.js page that renders them.
+
+## What it shows
+
+This example demonstrates **`@pro-laico/icons`** in isolation:
+
+- `iconsPlugin({ iconSetOptions: { livePreviewUrl } })` registered in `payload.config.ts` adds the `icon` and `iconSet` collections to the admin UI.
+- `POST /api/seed` seeds two icon sets: a "Demo Icon Set" (active) and a "Second Demo Set", each holding the same six SVG icons (arrow-right, check, cog, heart, star, x). It is auth-gated to logged-in admins and idempotent.
+- `/` renders every `Icon` doc inline by inlining its `svgString` field, and renders each `IconSet` as a labelled grid.
+- Live preview is wired for `iconSet` edits: open any iconSet in the admin, click the **Live Preview** tab, and edits propagate to the home page in real time via `<LivePreviewListener>` and the `/next/preview` route handler.
+
+## Scaffold it
+
+<Tabs groupId="package-manager" items={['npm', 'pnpm']}>
+
+<Tab value="npm">
+
+```bash
+npx @pro-laico/create-atomic-payload my-icons --template icons-only
+```
+
+</Tab>
+
+<Tab value="pnpm">
+
+```bash
+pnpm dlx @pro-laico/create-atomic-payload my-icons --template icons-only
+```
+
+</Tab>
+
+</Tabs>
+
+Then set up and run it:
+
+```bash
+cp .env.example .env       # set long PAYLOAD_SECRET + PREVIEW_SECRET (DATABASE_URI is optional)
+cp gitignore.template .gitignore
+pnpm install
+pnpm generate:types        # generates src/payload-types.ts + augment
+pnpm generate:importmap    # populates src/app/(payload)/admin/importMap.js
+pnpm dev
+```
+
+<Callout type="info">
+  The demo ships with the SQLite adapter (`@payloadcms/db-sqlite`) wired to a local file at `./icons-only.db`, with no database server required. Swap to Postgres or MongoDB by changing the import + `db:` call in `src/payload.config.ts` and installing the matching `@payloadcms/db-*` package.
+</Callout>
+
+## How it works
+
+1. Open `http://localhost:3000/admin` and create your first user.
+2. Go back to `http://localhost:3000`. The seed button is now visible: click it to create the sample icons and sets.
+3. The page now renders the icons. Refresh after editing in the admin to see updates.
+
+A few details worth knowing:
+
+- The seed endpoint reads each set's SVG files from `src/seed/icons/` and `src/seed/icons-two/` at request time, then uses Payload's local API (`payload.create`) to feed the SVG bytes directly via the `file` argument, so the upload pipeline (including the icons plugin's `formatSVGHook`) runs end-to-end.
+- The page uses `dangerouslySetInnerHTML` to inline each icon's `svgString` field. Because the icons are uploaded SVGs that pass through `formatSVGHook`, the strings are already optimized and stripped of script tags by SVGO.
+- Workspace dependency direction: this template depends on `@pro-laico/icons`, which in turn pulls in `@pro-laico/core` and `@pro-laico/atomic`.
+
+## What to look at
+
+```plaintext
+src/
+  payload.config.ts                     # buildConfig: the only place iconsPlugin runs
+  instrumentation.ts                    # registerPayloadConfig for the cache getters
+  collections/users.ts                  # auth collection (required by Payload)
+  seed/
+    sampleIcons.ts                      # reads the SVG folders into icon-set manifests
+    icons/                              # SVGs for the active "Demo Icon Set"
+    icons-two/                          # SVGs for the "Second Demo Set"
+  app/
+    (frontend)/
+      layout.tsx                        # plain HTML layout, no design system
+      page.tsx                          # demo page: lists icons + sets, seed button
+      CodeBlock.tsx                     # Shiki-highlighted snippets on the page
+      next/preview/route.ts             # live-preview entry route handler
+      next/exit-preview/route.ts        # exits live-preview / draft mode
+    (payload)/
+      layout.tsx                        # Payload admin RootLayout
+      custom.scss                       # admin overrides (empty)
+      admin/
+        importMap.js                    # `pnpm generate:importmap` populates this
+        [[...segments]]/
+          page.tsx                      # Payload admin entry
+          not-found.tsx
+      api/
+        [...slug]/route.ts              # Payload REST endpoint
+        seed/route.ts                   # POST /api/seed → seeds the sample sets
+        reset/route.ts                  # POST /api/reset → clears the seeded data
+```
+
+## Related
+
+<Cards>
+  <Card title="Icons feature guide" href="/docs/features/icons" />
+  <Card title="@pro-laico/icons" href="/docs/plugins/icons" />
+</Cards>

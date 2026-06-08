@@ -1,5 +1,6 @@
-import path from 'path'
-import { existsSync } from 'fs'
+import { existsSync } from 'node:fs'
+import path from 'node:path'
+
 import type { NextConfig } from 'next'
 import bundleAnalyzer from '@next/bundle-analyzer'
 import { withPayload } from '@payloadcms/next/withPayload'
