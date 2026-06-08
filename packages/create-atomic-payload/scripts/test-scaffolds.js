@@ -123,7 +123,11 @@ async function main() {
   })
 
   if (values.help) {
-    console.log(readFileSync(fileURLToPath(import.meta.url), 'utf8').split('*/')[0].replace(/^#![^\n]*\n/, ''))
+    console.log(
+      readFileSync(fileURLToPath(import.meta.url), 'utf8')
+        .split('*/')[0]
+        .replace(/^#![^\n]*\n/, ''),
+    )
     return
   }
 
@@ -196,7 +200,12 @@ async function main() {
           r.typecheck = (await run('pnpm', ['typecheck'], projectDir)) === 0
         }
         if (doBuild) {
-          writeFileSync(path.join(projectDir, '.env'), `${Object.entries(TEST_ENV).map(([k, v]) => `${k}=${v}`).join('\n')}\n`)
+          writeFileSync(
+            path.join(projectDir, '.env'),
+            `${Object.entries(TEST_ENV)
+              .map(([k, v]) => `${k}=${v}`)
+              .join('\n')}\n`,
+          )
           log(`[${scaffold.name}] Build (next build)`)
           r.build = (await run('pnpm', ['build'], projectDir, TEST_ENV)) === 0
         }
