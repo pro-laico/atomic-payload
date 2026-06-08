@@ -3,6 +3,11 @@
   "version": "0.3.0",
   "description": "Atomic Payload tracking integration. Home for all tracking-related functionality (Tracking global, PostHog autocapture provider, Google Tag Manager tab + provider, Vercel Analytics provider, composite TrackingProvider) plugged into atomic-payload.",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pro-laico/atomic-payload.git",
+    "directory": "packages/tracking"
+  },
   "type": "module",
   "publishConfig": {
     "access": "public",

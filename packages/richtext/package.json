@@ -3,6 +3,11 @@
   "version": "0.3.0",
   "description": "Atomic Payload rich-text package. Provides the RichTextChild block, a default Lexical editor preset, and a JSX renderer for serialized Lexical content.",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pro-laico/atomic-payload.git",
+    "directory": "packages/richtext"
+  },
   "type": "module",
   "publishConfig": {
     "access": "public",

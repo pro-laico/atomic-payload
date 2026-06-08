@@ -3,6 +3,11 @@
   "version": "0.3.0",
   "description": "Atomic Payload styles: designSet + shortcutSet collections, token fields, CSS preflight pipeline, UnoCSS processor and processDesignSet pipeline. The single package responsible for all CSS handling (frontend + Payload admin/runtime).",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pro-laico/atomic-payload.git",
+    "directory": "packages/styles"
+  },
   "type": "module",
   "publishConfig": {
     "access": "public",

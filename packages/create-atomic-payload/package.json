@@ -6,6 +6,11 @@
   "version": "0.3.0",
   "description": "Scaffold a new Atomic Payload project or example - the Payload CMS starter where all you need to know is Tailwind.",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pro-laico/atomic-payload.git",
+    "directory": "packages/create-atomic-payload"
+  },
   "type": "module",
   "bin": {
     "create-atomic-payload": "bin/cli.js"
