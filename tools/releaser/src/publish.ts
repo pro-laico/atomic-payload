@@ -4,6 +4,7 @@ import { createInterface } from 'node:readline/promises'
 import { execFileSync } from 'node:child_process'
 
 import { getPublishablePackages } from './getPackageDetails'
+import { publishWithRetry } from './publishWithRetry'
 
 /**
  * Publish every publishable package (non-private `packages/*`) to npm — modeled
@@ -90,11 +91,7 @@ async function main(): Promise<void> {
     if (values.provenance) args.push('--provenance')
     if (dryRun) args.push('--dry-run')
     console.log(`\n→ ${p.name}@${p.version}`)
-    try {
-      execFileSync('pnpm', args, { ...RUN_OPTS, cwd: p.dir, stdio: 'inherit' })
-    } catch {
-      failed.push(p.name)
-    }
+    if (!publishWithRetry(args, p.dir)) failed.push(p.name)
   }
 
   if (failed.length > 0) {
