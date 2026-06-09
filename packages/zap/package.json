@@ -49,15 +49,15 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
+    "@pro-laico/core": "workspace:*",
     "server-only": "^0.0.1",
     "traverse": "^0.6.11",
-    "zod": "4.1.11",
-    "@pro-laico/core": "workspace:*"
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@types/json-schema": "^7.0.15",
     "@types/traverse": "^0.6.37",
-    "typescript": "5.8.3"
+    "typescript": "^6.0.3"
   },
   "engines": {
     "node": ">=18"

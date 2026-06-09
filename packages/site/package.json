@@ -73,11 +73,11 @@
     "prepack": "pnpm build"
   },
   "dependencies": {
-    "@pro-laico/images": "workspace:*",
-    "@pro-laico/zap": "workspace:*",
+    "@pro-laico/atomic": "workspace:*",
     "@pro-laico/core": "workspace:*",
+    "@pro-laico/images": "workspace:*",
     "@pro-laico/styles": "workspace:*",
-    "@pro-laico/atomic": "workspace:*"
+    "@pro-laico/zap": "workspace:*"
   },
   "peerDependencies": {
     "@payloadcms/plugin-nested-docs": ">=3.0.0",
@@ -85,11 +85,11 @@
     "react": ">=19.0.0"
   },
   "devDependencies": {
-    "@payloadcms/plugin-nested-docs": "^3.79.0",
-    "@types/react": "^19.2.14",
-    "payload": "^3.79.0",
-    "react": "^19.2.4",
-    "typescript": "5.8.3"
+    "@payloadcms/plugin-nested-docs": "^3.85.0",
+    "@types/react": "^19.2.17",
+    "payload": "^3.85.0",
+    "react": "^19.2.7",
+    "typescript": "^6.0.3"
   },
   "engines": {
     "node": ">=18"

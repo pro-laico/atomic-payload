@@ -121,8 +121,8 @@
     "copyfiles": "copyfiles -u 1 \"src/**/*.{scss,css,svg,json,ttf,woff,woff2,eot}\" dist/"
   },
   "dependencies": {
-    "@pro-laico/core": "workspace:*",
-    "@pro-laico/atomic": "workspace:*"
+    "@pro-laico/atomic": "workspace:*",
+    "@pro-laico/core": "workspace:*"
   },
   "peerDependencies": {
     "@payloadcms/ui": ">=3.0.0",
@@ -142,16 +142,16 @@
     }
   },
   "devDependencies": {
+    "@payloadcms/ui": "^3.85.0",
     "@tools/test-helpers": "workspace:*",
-    "@payloadcms/ui": "^3.79.0",
-    "@types/react": "^19.2.14",
-    "next": "^16.1.6",
-    "payload": "^3.79.0",
-    "react": "^19.2.4",
+    "@types/react": "^19.2.17",
+    "next": "^16.2.7",
+    "payload": "^3.85.0",
+    "react": "^19.2.7",
     "server-only": "^0.0.1",
     "svg-path-bbox": "^2.1.0",
-    "svgo": "^3.3.3",
-    "typescript": "5.8.3"
+    "svgo": "^4.0.1",
+    "typescript": "^6.0.3"
   },
   "engines": {
     "node": ">=18"

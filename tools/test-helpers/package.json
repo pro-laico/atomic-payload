@@ -13,12 +13,12 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@payloadcms/db-sqlite": "3.79.0",
-    "mongodb-memory-server": "^10.1.4",
-    "payload": "^3.79.0"
+    "@payloadcms/db-sqlite": "^3.85.0",
+    "mongodb-memory-server": "^11.2.0",
+    "payload": "^3.85.0"
   },
   "devDependencies": {
-    "@types/node": "^22.19.15",
-    "typescript": "5.8.3"
+    "@types/node": "^25.9.2",
+    "typescript": "^6.0.3"
   }
 }

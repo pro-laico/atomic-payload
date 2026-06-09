@@ -27,7 +27,7 @@ const scaffoldsDest = path.join(__dirname, '..', 'scaffolds')
 
 // Self-contained Biome config written into every scaffolded project.
 const SCAFFOLD_BIOME_CONFIG = {
-  $schema: 'https://biomejs.dev/schemas/2.4.15/schema.json',
+  $schema: 'https://biomejs.dev/schemas/2.4.16/schema.json',
   vcs: { enabled: true, clientKind: 'git', useIgnoreFile: true, defaultBranch: 'main' },
   files: {
     includes: [

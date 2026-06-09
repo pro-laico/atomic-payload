@@ -4,20 +4,6 @@ packages:
   - 'examples/*'
   - 'tools/*'
   - 'docs'
-# Pin a single react / react-dom across the workspace. Without this, transitive
-# UI libs (@floating-ui, @base-ui) pulled react-dom@19.2.7 while the direct
-# `^19.2.4` specs stayed at 19.2.4 — two react-dom versions splinter @payloadcms/ui
-# (which peers on react-dom) into multiple instances, so workspace packages
-# consumed as `src` (e.g. @pro-laico/core's APFieldComponent) resolve a different
-# @payloadcms/ui than the admin app and lose its React context (useConfig() → undefined).
-overrides:
-  react: 19.2.4
-  react-dom: 19.2.4
-  # `docs` pins next@16.2.6 while the template/packages resolved 16.1.6 — two next
-  # versions also splinter @payloadcms/ui (which peers on next). Pin one (16.2.6,
-  # satisfies the template's `^16.1.6` and docs' exact pin) so every workspace
-  # package shares a single next, collapsing @payloadcms/ui to one instance.
-  next: 16.2.6
 allowBuilds:
   '@swc/core': true
   core-js: true

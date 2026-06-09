@@ -4,9 +4,9 @@ import type { CollectionBeforeChangeHook, Payload } from 'payload'
 import type { PluginConfig } from 'svgo'
 
 // Strip executable content from untrusted SVG uploads before they're stored and
-// later inlined via dangerouslySetInnerHTML: <script> elements + on* event
-// handlers. svgo 3.x has no `removeScripts`, so compose builtins.
-const sanitizePlugins: PluginConfig[] = ['removeScriptElement', { name: 'removeAttrs', params: { attrs: ['on.*'] } }]
+// later inlined via dangerouslySetInnerHTML: <script> elements (svgo 4's
+// `removeScripts`, renamed from 3.x's `removeScriptElement`) + on* event handlers.
+const sanitizePlugins: PluginConfig[] = ['removeScripts', { name: 'removeAttrs', params: { attrs: ['on.*'] } }]
 
 // svgo has no builtin for javascript: URLs, so scrub (xlink:)href values from
 // the serialized output as a final pass.
