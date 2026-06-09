@@ -45,6 +45,10 @@ yarn add @pro-laico/tracking
 
 <Tab value="Standalone">
 
+<Callout type="info">
+  `@pro-laico/core` comes bundled with this plugin — it's a dependency, not a separate install. Its cached reads reach Payload through a config you register once in your Next.js instrumentation hook (`registerPayloadConfig`); see [@pro-laico/core → Setup](/docs/plugins/core#setup) to wire it up.
+</Callout>
+
 Adding analytics to your own Payload + Next.js project.
 
 <Steps>
@@ -108,21 +112,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 <Step>
 ### Register your Payload config
 
-`getCachedTracking` reaches Payload's Local API through a config you register once at startup. Add an `instrumentation.ts` so the cached getter can resolve the global:
-
-```ts
-// src/instrumentation.ts
-export async function register(): Promise<void> {
-  if (process.env.NEXT_RUNTIME !== 'nodejs') return
-
-  const { registerPayloadConfig } = await import('@pro-laico/core/config')
-  const { default: configPromise } = await import('@payload-config')
-
-  registerPayloadConfig(configPromise)
-}
-```
-
-Saving the **Tracking** global revalidates the `tracking` tag, so a change in the admin flows through to the next page view.
+`getCachedTracking` reaches Payload's Local API through the config you register once in your instrumentation hook (see the callout above and [@pro-laico/core → Setup](/docs/plugins/core#setup)). With that in place, saving the **Tracking** global revalidates the `tracking` tag, so a change in the admin flows through to the next page view.
 </Step>
 
 </Steps>

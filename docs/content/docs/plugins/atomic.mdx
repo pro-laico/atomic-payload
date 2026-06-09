@@ -55,6 +55,10 @@ The package is organized into four areas you wire up in your Payload config: act
 
 Wiring atomic into your own Payload + Next.js project.
 
+<Callout type="info">
+  `@pro-laico/core` comes bundled with this plugin — it's a dependency, not a separate install. Its cached reads reach Payload through a config you register once in your Next.js instrumentation hook (`registerPayloadConfig`); see [@pro-laico/core → Setup](/docs/plugins/core#setup) to wire it up.
+</Callout>
+
 <Steps>
 
 <Step>

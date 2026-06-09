@@ -62,7 +62,7 @@ export { DevModeField } from './fields/devMode'
 // /////////////////////////////////////
 export { slugField } from './fields/slug'
 export { StorageTab } from './fields/storageTab'
-export { TestPathField } from './fields/testPath'
+export { createTestPathField, TestPathField } from './fields/testPath'
 export { UniqueTitleField } from './fields/uniqueTitle'
 // /////////////////////////////////////
 // Field-level hooks
