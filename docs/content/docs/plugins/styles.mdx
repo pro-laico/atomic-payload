@@ -36,7 +36,7 @@ yarn add @pro-laico/styles
 </Tabs>
 
 <Callout type="info">
-  `payload`, `@payloadcms/ui`, and `react` are peers you already have in a Payload app. `unocss` is also a required peer. It's the engine that turns your authored classes and design set into CSS, so install it if you don't have it yet.
+  `payload`, `@payloadcms/ui`, `react`, and `server-only` are peers you already have in a Payload + Next.js app. `unocss` is also a required peer. It's the engine that turns your authored classes and design set into CSS, so install it if you don't have it yet.
 </Callout>
 
 ## How the CSS reaches your app
@@ -59,6 +59,10 @@ You wire the CSS hook one of two ways, and the Setup tabs below show both:
 <Tabs items={['Standalone', 'With the atomic-payload template']}>
 
 <Tab value="Standalone">
+
+<Callout type="info">
+  `@pro-laico/core` comes bundled with this plugin — it's a dependency, not a separate install. Its cached reads reach Payload through a config you register once in your Next.js instrumentation hook (`registerPayloadConfig`); see [@pro-laico/core → Setup](/docs/plugins/core#setup) to wire it up.
+</Callout>
 
 Adding styles to your own Payload + Next.js project, with no `@pro-laico/atomic`.
 
@@ -546,6 +550,7 @@ const withChrome = createCssGetCached({ getHeader: getCachedHeader, getFooter: g
 <ExportTable
   exports={{
     DesignSet: { type: 'type', location: '@pro-laico/styles/schema', description: 'TypeScript type for typed access to your design-set documents.' },
+    ShortcutSet: { type: 'type', location: '@pro-laico/styles/schema', description: 'TypeScript type for typed access to your shortcut-set documents.' },
     CollectionThatUsesCSSProcessorSlug: { type: 'type', location: '@pro-laico/styles/schema', description: 'The slug type for collections the CSS processor reads.' },
     CollectionWithStoredAtomicClassesSlug: { type: 'type', location: '@pro-laico/styles/schema', description: 'The slug type for collections that store atomic classes.' },
     CollectionThatUsesCSSProcessor: { type: 'type', location: '@pro-laico/styles', description: 'The document type for a collection the CSS processor reads (for typing a custom processor or hook).' },

@@ -47,6 +47,10 @@ yarn add @pro-laico/richtext
 
 This package isn't a `buildConfig` plugin you add to the `plugins` array. Instead it hands you the pieces to wire rich text into your project yourself: an editor preset for the whole admin, a block your editors can drop into a page, and a renderer for the frontend. The [atomic-payload template](/docs/templates/atomic-payload) wires all three for you, so the steps below are the standalone path.
 
+<Callout type="info">
+  `@pro-laico/core` comes bundled with this plugin — it's a dependency, not a separate install — and provides the shared fields, hooks, and utilities this plugin builds on. See [@pro-laico/core → Setup](/docs/plugins/core#setup).
+</Callout>
+
 <Steps>
 
 <Step>

@@ -53,6 +53,10 @@ yarn add @pro-laico/seed
 
 <Tab value="Standalone">
 
+<Callout type="info">
+  `@pro-laico/core` comes bundled with this plugin — it's a dependency, not a separate install — and provides the shared fields, hooks, and utilities this plugin builds on. See [@pro-laico/core → Setup](/docs/plugins/core#setup).
+</Callout>
+
 Adding seeding to your own Payload + Next.js project.
 
 <Steps>
@@ -243,12 +247,12 @@ export default buildConfig({
     seed: {
       type: 'function',
       location: '@pro-laico/seed',
-      description: 'The bundled default seed. Clears and recreates a starter design set, icon set, header/footer, sample pages, and site metadata, all inside the request transaction. This is what the endpoint runs unless you pass your own `seed` option.',
+      description: 'The bundled default seed. Clears and recreates a starter design set, icon set, header/footer, sample pages, and site metadata. This is what the endpoint runs unless you pass your own `seed` option. It deliberately does not run inside a database transaction (the first write to a fresh collection creates its namespace, which a transaction forbids), so it clears-and-recreates and is safely re-runnable instead of relying on rollback.',
       params: {
-        args: { type: '{ payload: Payload; req: PayloadRequest }', description: 'The Payload instance and the request, threaded through every write so the whole seed runs in one transaction (a mid-seed failure rolls back).' },
+        args: { type: '{ payload: Payload; req: PayloadRequest }', description: 'The Payload instance and the request, threaded through every write for request context (the writes run with `overrideAccess: true` as trusted server-side calls).' },
         'slugConfig?': { type: 'SeedSlugConfig', description: 'Optional per-slug overrides (`pages`, `header`, `footer`, `forms`, `icon`, `iconSet`, `designSet`, `shortcutSet`, `siteMetaDataGlobal`). Each is a string; any you omit falls back to the matching Atomic Payload slug. See the SeedSlugConfig keys under Options.' },
       },
-      returns: { type: 'Promise<void>', description: 'Resolves once the database has been seeded; it writes through Payload rather than returning the created documents.' },
+      returns: { type: 'Promise<void>', description: 'Resolves once the database has been seeded; it writes through Payload rather than returning the created documents. If a write fails it throws (the endpoint catches it and returns 500); there is no transactional rollback.' },
       example: `import type { Endpoint } from 'payload'
 import { seed } from '@pro-laico/seed'
 

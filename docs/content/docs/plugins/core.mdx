@@ -36,7 +36,7 @@ yarn add @pro-laico/core
 </Tabs>
 
 <Callout type="info">
-  `@base-ui-components/react`, `@payloadcms/live-preview-react`, `@payloadcms/ui`, `next`, `payload`, `react`, and `server-only` are required peers you already have in a Payload + Next.js app. The sibling `@pro-laico/*` packages (`atomic`, `images`, `site`, `styles`, `tracking`) are optional peers: install only the ones you use.
+  `@base-ui/react`, `@payloadcms/live-preview-react`, `@payloadcms/ui`, `next`, `payload`, `react`, and `server-only` are required peers you already have in a Payload + Next.js app. The sibling `@pro-laico/*` packages (`atomic`, `images`, `site`, `styles`, `tracking`) are optional peers: install only the ones you use.
 </Callout>
 
 ## Setup
@@ -436,7 +436,19 @@ const fields = [DevModeField()]`,
     TestPathField: {
       type: 'field',
       location: '@pro-laico/core',
-      description: 'A relationship field for the live-preview test path, bound to the `pages` collection. Use `createTestPathField(slug)` for a non-default pages slug.',
+      description: 'A relationship field for the live-preview test path, bound to the `pages` collection. Equivalent to `createTestPathField()`; use `createTestPathField(slug)` for a non-default pages slug.',
+    },
+    createTestPathField: {
+      type: 'function',
+      location: '@pro-laico/core',
+      description: 'Factory for the live-preview `testPath` relationship field, bound to the pages collection slug you pass.',
+      params: {
+        'pagesSlug?': { type: 'string', description: 'The pages collection slug the relationship points at. Defaults to `pages`.' },
+      },
+      returns: { type: 'RelationshipField', description: 'A `testPath` relationship field for that pages slug.' },
+      example: `import { createTestPathField } from '@pro-laico/core'
+
+const fields = [createTestPathField('docs')]`,
     },
     UniqueTitleField: {
       type: 'field',

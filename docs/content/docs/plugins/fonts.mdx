@@ -47,6 +47,10 @@ yarn add @pro-laico/fonts
 
 Adding fonts to your own Payload + Next.js project.
 
+<Callout type="info">
+  `@pro-laico/core` comes bundled with this plugin — it's a dependency, not a separate install — and provides the shared fields, hooks, and utilities this plugin builds on. See [@pro-laico/core → Setup](/docs/plugins/core#setup).
+</Callout>
+
 <Steps>
 
 <Step>
@@ -84,12 +88,12 @@ This registers the **Font** collection (where you upload font files) and the **`
 {
   "scripts": {
     "prebuild": "pnpm generate:fonts",
-    "generate:fonts": "pnpm exec tsx node_modules/@pro-laico/fonts/src/scripts/cli.ts"
+    "generate:fonts": "atomic-fonts-download"
   }
 }
 ```
 
-Running it needs `tsx` installed (a dev dependency). When it runs, it calls the fonts plugin's export endpoint on a running Payload instance (your deploy, or a local dev server), authenticating with your `PAYLOAD_SECRET`, and:
+`atomic-fonts-download` is the CLI `@pro-laico/fonts` installs (its `bin`), so it's available to your scripts with no extra dev dependency. When it runs, it calls the fonts plugin's export endpoint on a running Payload instance (your deploy, or a local dev server), authenticating with your `PAYLOAD_SECRET`, and:
 
 - Downloads the active font files into `public/fonts`.
 - Writes a small generated file at `src/app/definition.ts` that hooks those fonts into `next/font/local`.
