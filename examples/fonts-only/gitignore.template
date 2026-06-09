@@ -5,6 +5,7 @@ node_modules
 
 # TypeScript
 tsconfig.tsbuildinfo
+next-env.d.ts
 
 # Payload
 src/payload-types.ts

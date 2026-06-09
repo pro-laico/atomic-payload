@@ -170,6 +170,17 @@ function bundleScaffold(scaffold, workspaceVersions) {
     for (const entry of unresolved) console.error(`  - ${entry}`)
     process.exit(1)
   }
+
+  // Scaffolds run the fonts CLI from source via tsx — that resolves in the
+  // monorepo (workspace `src`) but the published @pro-laico/fonts ships only
+  // `dist` (with the `atomic-fonts-download` bin), so the src path 404s for end
+  // users at `pnpm build`. Rewrite to the published bin.
+  const FONTS_SRC_CLI = 'tsx node_modules/@pro-laico/fonts/src/scripts/cli.ts'
+  for (const [name, cmd] of Object.entries(destPkg.scripts ?? {})) {
+    if (typeof cmd === 'string' && cmd.includes(FONTS_SRC_CLI)) {
+      destPkg.scripts[name] = cmd.replace(FONTS_SRC_CLI, 'atomic-fonts-download')
+    }
+  }
   writeFileSync(destPkgPath, `${JSON.stringify(destPkg, null, 2)}\n`)
   writeFileSync(path.join(dest, 'biome.json'), `${JSON.stringify(SCAFFOLD_BIOME_CONFIG, null, 2)}\n`)
   writeFileSync(path.join(dest, 'pnpm-workspace.yaml'), SCAFFOLD_PNPM_WORKSPACE)

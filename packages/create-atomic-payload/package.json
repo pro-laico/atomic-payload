@@ -22,7 +22,8 @@
   ],
   "scripts": {
     "prepack": "node scripts/bundle-scaffolds.js",
-    "create": "node bin/cli.js"
+    "create": "node bin/cli.js",
+    "test:scaffolds": "node scripts/test-scaffolds.js"
   },
   "dependencies": {
     "chalk": "^5.3.0",

@@ -43,9 +43,16 @@ const DEFAULT_SEED_SLUGS: Required<SeedSlugConfig> = {
 }
 
 export const seed = async ({ payload, req }: { payload: Payload; req: PayloadRequest }, slugConfig: SeedSlugConfig = {}): Promise<void> => {
-  // Threading `req` keeps every write in the request's transaction (so a
-  // mid-seed failure rolls back); `overrideAccess: true` makes the trusted
-  // server-side bypass explicit; `isSeed` lets hooks skip side effects.
+  // `req` is threaded for request context; `overrideAccess: true` makes the
+  // trusted server-side bypass explicit; `isSeed` lets hooks skip side effects.
+  //
+  // NOTE: this seed must NOT run inside a database transaction. On a fresh DB the
+  // first write to each collection/global implicitly CREATES its MongoDB
+  // namespace, which the server refuses to do inside a transaction (a transient
+  // "Collection namespace '…' is already in use" error). The atomic-payload
+  // template disables transactions at the adapter for this reason (see its
+  // mongooseAdapter `transactionOptions: false`); the seed clears-and-recreates
+  // and is safely re-runnable, so it needs no transactional rollback.
   const args = { depth: 0, context: { isSeed: true }, req, overrideAccess: true }
   const slugs = { ...DEFAULT_SEED_SLUGS, ...slugConfig }
   const collections: CollectionSlug[] = [
@@ -87,15 +94,25 @@ export const seed = async ({ payload, req }: { payload: Payload; req: PayloadReq
   ])
 
   payload.logger.info('Seeding Icons...')
-  const icons = (await Promise.all([
-    payload.create({ collection: slugs.icon, ...args, data: logoIcon, file: logoBuffer } as Parameters<typeof payload.create>[0]),
-    payload.create({ collection: slugs.icon, ...args, data: menuIcon, file: menuBuffer } as Parameters<typeof payload.create>[0]),
-    payload.create({ collection: slugs.icon, ...args, data: checkIcon, file: checkBuffer } as Parameters<typeof payload.create>[0]),
-    payload.create({ collection: slugs.icon, ...args, data: closeIcon, file: closeBuffer } as Parameters<typeof payload.create>[0]),
-    payload.create({ collection: slugs.icon, ...args, data: themeIcon, file: themeBuffer } as Parameters<typeof payload.create>[0]),
-    payload.create({ collection: slugs.icon, ...args, data: cookieIcon, file: cookieBuffer } as Parameters<typeof payload.create>[0]),
-    payload.create({ collection: slugs.icon, ...args, data: githubIcon, file: githubBuffer } as Parameters<typeof payload.create>[0]),
-  ])) as unknown as Icon[]
+  // Upload icons SEQUENTIALLY, not via Promise.all. Every create here shares this
+  // one `req`, and Payload assigns the uploaded file onto `req.file` (see
+  // createLocalReq → createLocal in payload core). Running them in parallel races
+  // on that single slot: the last buffer wins for every create, so all icons get
+  // the same file and collide on the unique `filename`. Awaiting each in turn
+  // keeps `req.file` stable for the duration of its own create. (7 small SVGs.)
+  const iconSeeds: { data: Omit<Icon, 'createdAt' | 'updatedAt' | 'id'>; file: File }[] = [
+    { data: logoIcon, file: logoBuffer },
+    { data: menuIcon, file: menuBuffer },
+    { data: checkIcon, file: checkBuffer },
+    { data: closeIcon, file: closeBuffer },
+    { data: themeIcon, file: themeBuffer },
+    { data: cookieIcon, file: cookieBuffer },
+    { data: githubIcon, file: githubBuffer },
+  ]
+  const icons: Icon[] = []
+  for (const { data, file } of iconSeeds) {
+    icons.push((await payload.create({ collection: slugs.icon, ...args, data, file } as Parameters<typeof payload.create>[0])) as unknown as Icon)
+  }
 
   payload.logger.info(`Seeding pages...`)
   //Used as the default testing page for collections.

@@ -18,15 +18,32 @@
     "check:ci": "biome check .",
     "typecheck": "pnpm -r typecheck",
     "create": "pnpm --filter create-atomic-payload exec node bin/cli.js",
+    "build:all": "turbo run build",
+    "test": "cross-env PAYLOAD_SECRET=test-secret MONGODB_URI=mongodb://127.0.0.1:27017/test NEXT_PUBLIC_SERVER_URL=http://localhost:3000 PREVIEW_SECRET=test-preview FONT_DOWNLOAD_URL=http://localhost:3000 turbo run check:ci typecheck test:unit build test:int test:template-seed test:examples test:scaffolds",
+    "test:fast": "cross-env PAYLOAD_SECRET=test-secret MONGODB_URI=mongodb://127.0.0.1:27017/test NEXT_PUBLIC_SERVER_URL=http://localhost:3000 PREVIEW_SECRET=test-preview FONT_DOWNLOAD_URL=http://localhost:3000 turbo run check:ci typecheck test:unit test:int",
+    "test:unit": "vitest run --project unit",
+    "test:int": "vitest run --project int",
+    "test:template-seed": "vitest run --project template-seed",
+    "test:examples": "vitest run --project example-seed:fonts-only --project example-seed:icons-only --project example-seed:styles-only",
+    "test:watch": "vitest",
+    "test:scaffolds": "pnpm --filter create-atomic-payload test:scaffolds",
     "release": "pnpm --filter @tools/releaser release",
     "publish-packages": "pnpm --filter @tools/releaser publish-packages"
   },
   "devDependencies": {
+    "@pro-laico/core": "workspace:*",
+    "@pro-laico/seed": "workspace:*",
+    "@tools/test-helpers": "workspace:*",
+    "payload": "^3.79.0",
     "@biomejs/biome": "^2.2.0",
     "@swc/cli": "0.7.9",
     "@swc/core": "1.15.3",
+    "@vitejs/plugin-react-swc": "^4.3.1",
     "copyfiles": "^2.4.1",
-    "rimraf": "^6.0.1"
+    "cross-env": "^10.1.0",
+    "rimraf": "^6.0.1",
+    "turbo": "^2.9.16",
+    "vitest": "^4.1.8"
   },
   "engines": {
     "node": "24.x"
