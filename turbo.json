@@ -9,6 +9,7 @@
     "//#check:ci": { "cache": false },
     "//#test:unit": { "cache": false },
     "//#test:int": { "cache": false },
+    "//#test:template-seed": { "cache": false },
     "test:scaffolds": { "cache": false }
   }
 }

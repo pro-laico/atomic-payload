@@ -1,6 +1,8 @@
 import { sqliteAdapter } from '@payloadcms/db-sqlite'
 import { buildConfig, getPayload, type CollectionConfig, type Payload, type Plugin } from 'payload'
 
+export { startMongoReplSet, type MongoReplSet } from './mongo'
+
 // Minimal auth collection so Payload boots a valid config; also a stable target
 // for a generic CRUD round-trip that proves the in-memory DB works.
 const Users: CollectionConfig = { slug: 'users', auth: true, fields: [] }

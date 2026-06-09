@@ -43,5 +43,12 @@ export function withCache<T>(fetcher: () => Promise<T>, { tag, tid, draft, extra
   if (tid) tags.push(mt([tag, tid, draftTag]))
   for (const extra of extraTags) if (extra) tags.push(extra)
 
-  return unstable_cache(fetcher, keyParts, { tags })()
+  // Outside a Next request/render context (e.g. while seeding the database or
+  // from a CLI script) there's no incremental cache, so `unstable_cache` throws
+  // `Invariant: incrementalCache missing`. Fall back to the uncached fetcher so
+  // the caller still gets its data; rethrow anything else.
+  return unstable_cache(fetcher, keyParts, { tags })().catch((err: unknown) => {
+    if (err instanceof Error && err.message.includes('incrementalCache missing')) return fetcher()
+    throw err
+  })
 }
