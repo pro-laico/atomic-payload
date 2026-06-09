@@ -16,8 +16,11 @@ export async function generateStaticParams() {
   try {
     const routes = await getCachedPages(false)
     if (!routes || !Array.isArray(routes)) return []
-    const returns = routes.filter((href) => href !== '/').map((href) => ({ slug: href.split('/').slice(1) }))
-    return returns || []
+    // Optional catch-all: the home `/` is `{ slug: [] }`, `/a/b` is `{ slug: ['a', 'b'] }`.
+    // Including `/` here is what gets the home page prerendered instead of falling
+    // through to the layout's force-dynamic (which left `/` as the only dynamic,
+    // blank-in-production route).
+    return routes.map((href) => ({ slug: href.split('/').slice(1).filter(Boolean) }))
   } catch {
     // e.g. MongoDB unreachable during `next build` in CI — pages are still served dynamically
     return []
