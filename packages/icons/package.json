@@ -1,6 +1,6 @@
 {
   "name": "@pro-laico/icons",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Atomic Payload icons package. Provides Icon and IconSet Payload collections, an SVG-optimizing formatSVG hook, SVG extraction helpers, and the AtomicIcon component.",
   "license": "MIT",
   "repository": {

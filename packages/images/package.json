@@ -1,6 +1,6 @@
 {
   "name": "@pro-laico/images",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Atomic Payload images package. Provides Images + Favicons Payload upload collections, a FaviconField helper, an ImageChild block factory, and a plugin factory. @oversightstudio/blur-data-urls is an optional peer the consumer wires manually.",
   "license": "MIT",
   "repository": {

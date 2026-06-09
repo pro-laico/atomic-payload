@@ -1,6 +1,6 @@
 {
   "name": "@pro-laico/fonts",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Atomic Payload fonts package. Provides the Font upload collection and a CLI script for downloading fonts from the active design set to disk for use with next/font/local.",
   "license": "MIT",
   "repository": {

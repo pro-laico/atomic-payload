@@ -1,6 +1,6 @@
 {
   "name": "@pro-laico/core",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Atomic Payload core: kernel types (PayloadAugment / Get<>), APF (Atomic Payload Functions), shared utilities, cache helpers, revalidation plugin, JSON-schema plugin, and admin / frontend UI primitives. Replaces the older ap-types + ap-apf + ap-utils trio.",
   "license": "MIT",
   "repository": {
