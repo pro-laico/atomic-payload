@@ -97,23 +97,25 @@
     "prepack": "pnpm build"
   },
   "dependencies": {
-    "@pro-laico/zap": "workspace:*",
-    "@pro-laico/core": "workspace:*"
+    "@pro-laico/core": "workspace:*",
+    "@pro-laico/zap": "workspace:*"
   },
   "peerDependencies": {
     "@payloadcms/ui": ">=3.0.0",
     "payload": ">=3.0.0",
     "react": ">=19.0.0",
+    "server-only": ">=0.0.1",
     "unocss": ">=66.0.0"
   },
   "devDependencies": {
+    "@payloadcms/ui": "^3.85.0",
     "@tools/test-helpers": "workspace:*",
-    "@payloadcms/ui": "^3.79.0",
-    "@types/react": "^19.2.14",
-    "payload": "^3.79.0",
-    "react": "^19.2.4",
-    "typescript": "5.8.3",
-    "unocss": "^66.6.6"
+    "@types/react": "^19.2.17",
+    "payload": "^3.85.0",
+    "react": "^19.2.7",
+    "server-only": "^0.0.1",
+    "typescript": "^6.0.3",
+    "unocss": "^66.7.0"
   },
   "engines": {
     "node": ">=18"

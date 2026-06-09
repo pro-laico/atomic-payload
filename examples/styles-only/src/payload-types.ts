@@ -661,10 +661,7 @@ export interface UnoThemeAnimation {
   keyframes?: RSS;
   durations?: RSS;
   timingFns?: RSS;
-  properties?: RSRSS;
-  counts?: {
-    [k: string]: string | number;
-  };
+  counts?: RSS;
 }
 /**
  * Type: {@link RSRSS} Record<string, Record<string, string>>

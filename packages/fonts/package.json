@@ -73,9 +73,9 @@
   },
   "devDependencies": {
     "@tools/test-helpers": "workspace:*",
-    "dotenv": "^17.3.1",
-    "payload": "^3.79.0",
-    "typescript": "5.8.3"
+    "dotenv": "^17.4.2",
+    "payload": "^3.85.0",
+    "typescript": "^6.0.3"
   },
   "engines": {
     "node": ">=18"

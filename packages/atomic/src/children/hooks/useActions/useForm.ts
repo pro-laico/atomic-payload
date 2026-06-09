@@ -1,6 +1,6 @@
 ﻿'use client'
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { Toast } from '@base-ui-components/react/toast'
+import { Toast } from '@base-ui/react/toast'
 
 import type { FormResponse } from '@pro-laico/atomic/forms'
 import type { AtomicChild } from '@pro-laico/atomic/children/schema'

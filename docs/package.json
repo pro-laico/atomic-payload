@@ -12,26 +12,26 @@
     "format": "biome format --write"
   },
   "dependencies": {
-    "@next/third-parties": "^16.1.6",
-    "fumadocs-core": "16.9.3",
-    "fumadocs-mdx": "15.0.10",
-    "fumadocs-ui": "16.9.3",
+    "@next/third-parties": "^16.2.7",
+    "fumadocs-core": "^16.9.3",
+    "fumadocs-mdx": "^15.0.11",
+    "fumadocs-ui": "^16.9.3",
     "lucide-react": "^1.17.0",
-    "next": "16.2.6",
-    "posthog-js": "^1.360.0",
-    "react": "^19.2.6",
-    "react-dom": "^19.2.6",
+    "next": "^16.2.7",
+    "posthog-js": "^1.382.0",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
     "tailwind-merge": "^3.6.0"
   },
   "devDependencies": {
+    "@biomejs/biome": "^2.4.16",
     "@tailwindcss/postcss": "^4.3.0",
-    "@types/mdx": "^2.0.13",
-    "@types/node": "^25.9.1",
-    "@types/react": "^19.2.15",
+    "@types/mdx": "^2.0.14",
+    "@types/node": "^25.9.2",
+    "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
     "postcss": "^8.5.15",
     "tailwindcss": "^4.3.0",
-    "typescript": "^6.0.3",
-    "@biomejs/biome": "^2.4.16"
+    "typescript": "^6.0.3"
   }
 }

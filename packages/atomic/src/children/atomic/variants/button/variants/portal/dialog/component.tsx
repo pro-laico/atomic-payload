@@ -9,11 +9,11 @@ import { useActionContext } from '../../../../../../hooks/useActions/useActionCo
 import { usePortalActions } from '../../../../../../hooks/useActions/usePortal'
 import { useToDa } from '../../../../../../hooks/useActions/useToDa'
 
-const Root = dynamic(() => import('@base-ui-components/react/dialog').then((mod) => mod.Dialog.Root))
-const Trigger = dynamic(() => import('@base-ui-components/react/dialog').then((mod) => mod.Dialog.Trigger))
-const Popup = dynamic(() => import('@base-ui-components/react/dialog').then((mod) => mod.Dialog.Popup), { ssr: false })
-const Portal = dynamic(() => import('@base-ui-components/react/dialog').then((mod) => mod.Dialog.Portal), { ssr: false })
-const Backdrop = dynamic(() => import('@base-ui-components/react/dialog').then((mod) => mod.Dialog.Backdrop), { ssr: false })
+const Root = dynamic(() => import('@base-ui/react/dialog').then((mod) => mod.Dialog.Root))
+const Trigger = dynamic(() => import('@base-ui/react/dialog').then((mod) => mod.Dialog.Trigger))
+const Popup = dynamic(() => import('@base-ui/react/dialog').then((mod) => mod.Dialog.Popup), { ssr: false })
+const Portal = dynamic(() => import('@base-ui/react/dialog').then((mod) => mod.Dialog.Portal), { ssr: false })
+const Backdrop = dynamic(() => import('@base-ui/react/dialog').then((mod) => mod.Dialog.Backdrop), { ssr: false })
 
 export const AtomicButtonPortalDialog: React.FC<RenderChild<AtomicChild>> = (props) => {
   const { block, pt, triggerChildren, contentChildren, backdropChildren } = props

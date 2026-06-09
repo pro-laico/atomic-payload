@@ -88,7 +88,7 @@ export interface Config {
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
   };
   db: {
-    defaultIDType: string;
+    defaultIDType: number;
   };
   fallbackLocale: null;
   globals: {};
@@ -132,7 +132,7 @@ export interface UserAuthOperations {
  * via the `definition` "users".
  */
 export interface User {
-  id: string;
+  id: number;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -157,7 +157,7 @@ export interface User {
  * via the `definition` "icon".
  */
 export interface Icon {
-  id: string;
+  id: number;
   optimized?: string | null;
   svgString?: string | null;
   updatedAt: string;
@@ -177,7 +177,7 @@ export interface Icon {
  * via the `definition` "iconSet".
  */
 export interface IconSet {
-  id: string;
+  id: number;
   active: boolean;
   title: string;
   iconsArray?:
@@ -189,7 +189,7 @@ export interface IconSet {
         /**
          * Select an icon
          */
-        icon?: (string | null) | Icon;
+        icon?: (number | null) | Icon;
         id?: string | null;
       }[]
     | null;
@@ -203,7 +203,7 @@ export interface IconSet {
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
-  id: string;
+  id: number;
   key: string;
   data:
     | {
@@ -220,7 +220,7 @@ export interface PayloadKv {
  * via the `definition` "payload-jobs".
  */
 export interface PayloadJob {
-  id: string;
+  id: number;
   /**
    * Input data provided to the job
    */
@@ -312,24 +312,24 @@ export interface PayloadJob {
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
-  id: string;
+  id: number;
   document?:
     | ({
         relationTo: 'users';
-        value: string | User;
+        value: number | User;
       } | null)
     | ({
         relationTo: 'icon';
-        value: string | Icon;
+        value: number | Icon;
       } | null)
     | ({
         relationTo: 'iconSet';
-        value: string | IconSet;
+        value: number | IconSet;
       } | null);
   globalSlug?: string | null;
   user: {
     relationTo: 'users';
-    value: string | User;
+    value: number | User;
   };
   updatedAt: string;
   createdAt: string;
@@ -339,10 +339,10 @@ export interface PayloadLockedDocument {
  * via the `definition` "payload-preferences".
  */
 export interface PayloadPreference {
-  id: string;
+  id: number;
   user: {
     relationTo: 'users';
-    value: string | User;
+    value: number | User;
   };
   key?: string | null;
   value?:
@@ -362,7 +362,7 @@ export interface PayloadPreference {
  * via the `definition` "payload-migrations".
  */
 export interface PayloadMigration {
-  id: string;
+  id: number;
   name?: string | null;
   batch?: number | null;
   updatedAt: string;
@@ -519,10 +519,10 @@ export interface TaskSchedulePublish {
     locale?: string | null;
     doc?: {
       relationTo: 'iconSet';
-      value: string | IconSet;
+      value: number | IconSet;
     } | null;
     global?: string | null;
-    user?: (string | null) | User;
+    user?: (number | null) | User;
   };
   output?: unknown;
 }

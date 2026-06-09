@@ -49,11 +49,11 @@
     "prepack": "pnpm build"
   },
   "dependencies": {
+    "@pro-laico/atomic": "workspace:*",
+    "@pro-laico/core": "workspace:*",
     "@pro-laico/icons": "workspace:*",
     "@pro-laico/site": "workspace:*",
-    "@pro-laico/styles": "workspace:*",
-    "@pro-laico/core": "workspace:*",
-    "@pro-laico/atomic": "workspace:*"
+    "@pro-laico/styles": "workspace:*"
   },
   "peerDependencies": {
     "@payloadcms/ui": ">=3.0.0",
@@ -62,12 +62,12 @@
     "react": ">=19.0.0"
   },
   "devDependencies": {
-    "@payloadcms/ui": "^3.79.0",
-    "@types/react": "^19.2.14",
-    "next": "^16.1.6",
-    "payload": "^3.79.0",
-    "react": "^19.2.4",
-    "typescript": "5.8.3"
+    "@payloadcms/ui": "^3.85.0",
+    "@types/react": "^19.2.17",
+    "next": "^16.2.7",
+    "payload": "^3.85.0",
+    "react": "^19.2.7",
+    "typescript": "^6.0.3"
   },
   "engines": {
     "node": ">=18"

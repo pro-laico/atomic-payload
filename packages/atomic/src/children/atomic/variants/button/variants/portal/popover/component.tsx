@@ -9,13 +9,13 @@ import { useActionContext } from '../../../../../../hooks/useActions/useActionCo
 import { usePortalActions } from '../../../../../../hooks/useActions/usePortal'
 import { useToDa } from '../../../../../../hooks/useActions/useToDa'
 
-const Root = dynamic(() => import('@base-ui-components/react/popover').then((mod) => mod.Popover.Root))
-const Trigger = dynamic(() => import('@base-ui-components/react/popover').then((mod) => mod.Popover.Trigger))
-const Popup = dynamic(() => import('@base-ui-components/react/popover').then((mod) => mod.Popover.Popup), { ssr: false })
-const Arrow = dynamic(() => import('@base-ui-components/react/popover').then((mod) => mod.Popover.Arrow), { ssr: false })
-const Portal = dynamic(() => import('@base-ui-components/react/popover').then((mod) => mod.Popover.Portal), { ssr: false })
-const Backdrop = dynamic(() => import('@base-ui-components/react/popover').then((mod) => mod.Popover.Backdrop), { ssr: false })
-const Positioner = dynamic(() => import('@base-ui-components/react/popover').then((mod) => mod.Popover.Positioner), { ssr: false })
+const Root = dynamic(() => import('@base-ui/react/popover').then((mod) => mod.Popover.Root))
+const Trigger = dynamic(() => import('@base-ui/react/popover').then((mod) => mod.Popover.Trigger))
+const Popup = dynamic(() => import('@base-ui/react/popover').then((mod) => mod.Popover.Popup), { ssr: false })
+const Arrow = dynamic(() => import('@base-ui/react/popover').then((mod) => mod.Popover.Arrow), { ssr: false })
+const Portal = dynamic(() => import('@base-ui/react/popover').then((mod) => mod.Popover.Portal), { ssr: false })
+const Backdrop = dynamic(() => import('@base-ui/react/popover').then((mod) => mod.Popover.Backdrop), { ssr: false })
+const Positioner = dynamic(() => import('@base-ui/react/popover').then((mod) => mod.Popover.Positioner), { ssr: false })
 
 export const AtomicButtonPortalPopover: React.FC<RenderChild<AtomicChild>> = (props) => {
   const { block, pt, triggerChildren, contentChildren, backdropChildren } = props
