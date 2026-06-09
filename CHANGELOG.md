@@ -6,7 +6,7 @@ the whole workspace.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
-## [Unreleased] — Dependency refresh
+## [0.3.2] - 2026-06-09
 
 Every dependency across all packages, examples, templates, tools, and docs was
 bumped to its latest version and all deliberate exact version pins were removed
@@ -56,10 +56,27 @@ are generated from the template + examples at pack time).
 
 ### Added
 
+- `createTestPathField(pagesSlug?)` is now exported from `@pro-laico/core` (the
+  factory behind `TestPathField`), so you can bind the live-preview test-path field
+  to a non-default pages collection slug.
 - `scripts/check-generated.mjs` and a `test:generated` step (runs after the Turbo
   suite in `pnpm test`) that re-runs `generate:importmap` / `generate:types` for
   every app and fails if the committed output drifts — guarding against stale
   Payload artifacts after future dependency bumps.
+
+### Docs
+
+- Reworked the plugin setup guides for the post-refresh codebase. Every plugin page
+  now notes that `@pro-laico/core` ships bundled (a dependency, not a separate
+  install) and links to its Setup — and the pages whose cached reads depend on it
+  point at the `registerPayloadConfig` instrumentation wiring.
+- Full accuracy pass against the current source: corrected the
+  `@base-ui-components/react` → `@base-ui/react` peer on the core page, added the
+  missing `server-only` peer to the icons and styles pages, fixed the
+  `@pro-laico/seed` page's incorrect claim that the seed runs in a transaction (it
+  deliberately doesn't — it clears-and-recreates and is re-runnable), switched the
+  fonts standalone guide to the published `atomic-fonts-download` bin, and
+  documented `ShortcutSet` and `createTestPathField`.
 
 ### Upgrade notes
 

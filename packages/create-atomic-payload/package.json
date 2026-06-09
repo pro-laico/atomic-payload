@@ -3,7 +3,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "Scaffold a new Atomic Payload project or example - the Payload CMS starter where all you need to know is Tailwind.",
   "license": "MIT",
   "repository": {

@@ -1,6 +1,6 @@
 {
   "name": "fonts-only",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "Minimal Atomic Payload template demonstrating @pro-laico/fonts in isolation — upload fonts to the Font collection, pick the active set, and serve them with next/font/local.",
   "license": "MIT",
   "type": "module",

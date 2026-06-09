@@ -1,6 +1,6 @@
 {
   "name": "icons-only",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "Minimal Atomic Payload template demonstrating @pro-laico/icons in isolation. Includes seed data and a demo page that renders the seeded icons.",
   "license": "MIT",
   "type": "module",
