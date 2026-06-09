@@ -10,6 +10,7 @@
     "//#test:unit": { "cache": false },
     "//#test:int": { "cache": false },
     "//#test:template-seed": { "cache": false },
+    "//#test:examples": { "cache": false },
     "test:scaffolds": { "cache": false }
   }
 }
