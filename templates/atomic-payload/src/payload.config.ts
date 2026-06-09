@@ -32,7 +32,12 @@ export default buildConfig({
   // implicitly creates its namespace, which Mongo refuses to do inside a
   // transaction. It also lets the app run against a standalone (non-replica-set)
   // local MongoDB in dev, where transactions aren't available at all.
-  db: mongooseAdapter({ url: process.env.MONGODB_URI || '', collectionsSchemaOptions: { pages: { minimize: true } }, allowAdditionalKeys: false, transactionOptions: false }),
+  db: mongooseAdapter({
+    url: process.env.MONGODB_URI || '',
+    collectionsSchemaOptions: { pages: { minimize: true } },
+    allowAdditionalKeys: false,
+    transactionOptions: false,
+  }),
   blocks: [],
   /*   email: resendAdapter({
     defaultFromAddress: 'chad@notifications.atomicpayload.com',

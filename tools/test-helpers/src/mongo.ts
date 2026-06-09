@@ -38,6 +38,9 @@ export async function startMongoReplSet(dbName = 'atomic-payload-test'): Promise
   })
   return {
     uri: replSet.getUri(dbName),
-    stop: () => replSet.stop(),
+    // `replSet.stop()` resolves to a boolean; the helper exposes a void Promise.
+    stop: async () => {
+      await replSet.stop()
+    },
   }
 }
