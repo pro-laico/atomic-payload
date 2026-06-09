@@ -2,13 +2,13 @@ import { default as default_1829119640c413d2e92b9395ebcbec08 } from '@pro-laico/
 import { default as default_92c83403e3094d2517a01c4331eb9f55 } from '@pro-laico/core/admin/field'
 import { default as default_adcc44335943ae45d0ba046bb2fab13d } from '@pro-laico/core/ui/fields/slug'
 import { default as default_5770d5be3ef2af64ca07e77507de9256 } from '@pro-laico/core/admin/controls'
+import { MuxUploaderField as MuxUploaderField_c369a797e256de625eba826a6acb8608 } from '@oversightstudio/mux-video/elements'
+import { MuxVideoImageCell as MuxVideoImageCell_c369a797e256de625eba826a6acb8608 } from '@oversightstudio/mux-video/elements'
 import { default as default_f06b9a2c6ea8d20df2a8420456cf8189 } from '@pro-laico/icons/admin/iconRowLabel'
 import { default as default_b81c0a0eceb7b4d14ec50545f4a4fc23 } from '@pro-laico/styles/ui/rowLabels/designToken'
 import { default as default_f12e76bf0547e4170c0ab3f2160c348e } from '@pro-laico/styles/ui/rowLabels/color'
 import { default as default_6dfc632d12171d9e6dc466f2e1f932f9 } from '@pro-laico/styles/ui/rowLabels/animation'
 import { default as default_fb3933fa980f3ffbf875befb8aa38b5a } from '@pro-laico/styles/ui/rowLabels/shortcut'
-import { MuxUploaderField as MuxUploaderField_c369a797e256de625eba826a6acb8608 } from '@oversightstudio/mux-video/elements'
-import { MuxVideoImageCell as MuxVideoImageCell_c369a797e256de625eba826a6acb8608 } from '@oversightstudio/mux-video/elements'
 import { RscEntryLexicalCell as RscEntryLexicalCell_44fe37237e0ebf4470c9990d8cb7b07e } from '@payloadcms/richtext-lexical/rsc'
 import { RscEntryLexicalField as RscEntryLexicalField_44fe37237e0ebf4470c9990d8cb7b07e } from '@payloadcms/richtext-lexical/rsc'
 import { LexicalDiffComponent as LexicalDiffComponent_44fe37237e0ebf4470c9990d8cb7b07e } from '@payloadcms/richtext-lexical/rsc'
@@ -41,18 +41,19 @@ import { default as default_33399356445e29cf1ece7b7fe614db9c } from '@pro-laico/
 import { VercelBlobClientUploadHandler as VercelBlobClientUploadHandler_16c82c5e25f430251a3e3ba57219ff4e } from '@payloadcms/storage-vercel-blob/client'
 import { CollectionCards as CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1 } from '@payloadcms/next/rsc'
 
+/** @type import('payload').ImportMap */
 export const importMap = {
   "@pro-laico/core/admin/label#default": default_1829119640c413d2e92b9395ebcbec08,
   "@pro-laico/core/admin/field#default": default_92c83403e3094d2517a01c4331eb9f55,
   "@pro-laico/core/ui/fields/slug#default": default_adcc44335943ae45d0ba046bb2fab13d,
   "@pro-laico/core/admin/controls#default": default_5770d5be3ef2af64ca07e77507de9256,
+  "@oversightstudio/mux-video/elements#MuxUploaderField": MuxUploaderField_c369a797e256de625eba826a6acb8608,
+  "@oversightstudio/mux-video/elements#MuxVideoImageCell": MuxVideoImageCell_c369a797e256de625eba826a6acb8608,
   "@pro-laico/icons/admin/iconRowLabel#default": default_f06b9a2c6ea8d20df2a8420456cf8189,
   "@pro-laico/styles/ui/rowLabels/designToken#default": default_b81c0a0eceb7b4d14ec50545f4a4fc23,
   "@pro-laico/styles/ui/rowLabels/color#default": default_f12e76bf0547e4170c0ab3f2160c348e,
   "@pro-laico/styles/ui/rowLabels/animation#default": default_6dfc632d12171d9e6dc466f2e1f932f9,
   "@pro-laico/styles/ui/rowLabels/shortcut#default": default_fb3933fa980f3ffbf875befb8aa38b5a,
-  "@oversightstudio/mux-video/elements#MuxUploaderField": MuxUploaderField_c369a797e256de625eba826a6acb8608,
-  "@oversightstudio/mux-video/elements#MuxVideoImageCell": MuxVideoImageCell_c369a797e256de625eba826a6acb8608,
   "@payloadcms/richtext-lexical/rsc#RscEntryLexicalCell": RscEntryLexicalCell_44fe37237e0ebf4470c9990d8cb7b07e,
   "@payloadcms/richtext-lexical/rsc#RscEntryLexicalField": RscEntryLexicalField_44fe37237e0ebf4470c9990d8cb7b07e,
   "@payloadcms/richtext-lexical/rsc#LexicalDiffComponent": LexicalDiffComponent_44fe37237e0ebf4470c9990d8cb7b07e,

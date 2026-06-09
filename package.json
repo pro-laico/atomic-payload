@@ -19,7 +19,7 @@
     "typecheck": "pnpm -r typecheck",
     "create": "pnpm --filter create-atomic-payload exec node bin/cli.js",
     "build:all": "turbo run build",
-    "test": "cross-env PAYLOAD_SECRET=test-secret MONGODB_URI=mongodb://127.0.0.1:27017/test NEXT_PUBLIC_SERVER_URL=http://localhost:3000 PREVIEW_SECRET=test-preview FONT_DOWNLOAD_URL=http://localhost:3000 turbo run check:ci typecheck test:unit build test:int test:template-seed test:examples test:scaffolds",
+    "test": "cross-env PAYLOAD_SECRET=test-secret MONGODB_URI=mongodb://127.0.0.1:27017/test NEXT_PUBLIC_SERVER_URL=http://localhost:3000 PREVIEW_SECRET=test-preview FONT_DOWNLOAD_URL=http://localhost:3000 turbo run check:ci typecheck test:unit build test:int test:template-seed test:examples test:scaffolds && pnpm test:generated",
     "test:fast": "cross-env PAYLOAD_SECRET=test-secret MONGODB_URI=mongodb://127.0.0.1:27017/test NEXT_PUBLIC_SERVER_URL=http://localhost:3000 PREVIEW_SECRET=test-preview FONT_DOWNLOAD_URL=http://localhost:3000 turbo run check:ci typecheck test:unit test:int",
     "test:unit": "vitest run --project unit",
     "test:int": "vitest run --project int",
@@ -27,6 +27,7 @@
     "test:examples": "vitest run --project example-seed:fonts-only --project example-seed:icons-only --project example-seed:styles-only",
     "test:watch": "vitest",
     "test:scaffolds": "pnpm --filter create-atomic-payload test:scaffolds",
+    "test:generated": "node scripts/check-generated.mjs",
     "release": "pnpm --filter @tools/releaser release",
     "publish-packages": "pnpm --filter @tools/releaser publish-packages"
   },
