@@ -7,8 +7,10 @@
   "exports": {},
   "scripts": {
     "dev": "next dev",
+    "prebuild": "pnpm generate:icons",
     "build": "next build",
     "start": "next start",
+    "generate:icons": "pnpm exec tsx node_modules/@pro-laico/icons/src/scan/cli.ts src --component IconChildTile",
     "lint": "biome lint .",
     "format": "biome format --write .",
     "check": "biome check --write .",
@@ -38,6 +40,7 @@
     "@types/node": "^25.9.2",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
+    "tsx": "^4.22.4",
     "typescript": "^6.0.3"
   },
   "engines": {

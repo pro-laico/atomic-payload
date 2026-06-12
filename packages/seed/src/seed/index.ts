@@ -70,7 +70,35 @@ export const seed = async ({ payload, req }: { payload: Payload; req: PayloadReq
   await payload.updateGlobal({ slug: slugs.siteMetaDataGlobal, ...args, data: siteMetaData } as Parameters<typeof payload.updateGlobal>[0])
 
   payload.logger.info(`Clearing collections...`)
-  await Promise.all(collections.map((collection) => payload.db.deleteMany({ collection, req, where: {} })))
+  // Upload collections (e.g. `icon`) MUST be cleared through the delete OPERATION,
+  // not the raw `db.deleteMany`. Only the operation runs the configured storage
+  // adapter, so each stored object is removed alongside its row. A bare
+  // `db.deleteMany` drops the rows but orphans the files/blobs, and the next seed
+  // then collides on the still-present object — e.g. local disk would auto-rename,
+  // but Vercel Blob throws "this blob already exists". Non-upload collections stay
+  // on the faster `db.deleteMany`.
+  //
+  // `disableTransaction: true` is required because these run concurrently on the
+  // shared `req`. Without it, the delete operation would `initTransaction(req)`
+  // on a transaction-enabled adapter (Postgres, or Mongo on a replica set
+  // without `transactionOptions: false`), racing the sibling `db.deleteMany`
+  // calls on `req.transactionID` — a sibling can land on a session this op has
+  // already committed. Disabling it matches the raw `db.deleteMany` branch and
+  // the seed's overall "no transaction" stance (see the note above).
+  await Promise.all(
+    collections.map((collection) =>
+      payload.collections[collection]?.config.upload
+        ? payload.delete({
+            collection,
+            where: { id: { exists: true } },
+            req,
+            overrideAccess: true,
+            context: { isSeed: true },
+            disableTransaction: true,
+          })
+        : payload.db.deleteMany({ collection, req, where: {} }),
+    ),
+  )
   await Promise.all(
     collections
       .filter((collection) => Boolean(payload.collections[collection].config.versions))

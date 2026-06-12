@@ -171,15 +171,19 @@ function bundleScaffold(scaffold, workspaceVersions) {
     process.exit(1)
   }
 
-  // Scaffolds run the fonts CLI from source via tsx — that resolves in the
-  // monorepo (workspace `src`) but the published @pro-laico/fonts ships only
-  // `dist` (with the `atomic-fonts-download` bin), so the src path 404s for end
-  // users at `pnpm build`. Rewrite to the published bin.
-  const FONTS_SRC_CLI = 'tsx node_modules/@pro-laico/fonts/src/scripts/cli.ts'
+  // Scaffolds run some plugin CLIs from source via tsx — that resolves in the
+  // monorepo (workspace `src`) but the published packages ship only `dist` (with
+  // their published bins), so the src path 404s for end users at `pnpm build`.
+  // Rewrite each src CLI invocation to its published bin.
+  const SRC_CLI_TO_BIN = [
+    ['tsx node_modules/@pro-laico/fonts/src/scripts/cli.ts', 'atomic-fonts-download'],
+    ['tsx node_modules/@pro-laico/icons/src/scan/cli.ts', 'atomic-icons-scan'],
+  ]
   for (const [name, cmd] of Object.entries(destPkg.scripts ?? {})) {
-    if (typeof cmd === 'string' && cmd.includes(FONTS_SRC_CLI)) {
-      destPkg.scripts[name] = cmd.replace(FONTS_SRC_CLI, 'atomic-fonts-download')
-    }
+    if (typeof cmd !== 'string') continue
+    let rewritten = cmd
+    for (const [srcCli, bin] of SRC_CLI_TO_BIN) rewritten = rewritten.replace(srcCli, bin)
+    destPkg.scripts[name] = rewritten
   }
   writeFileSync(destPkgPath, `${JSON.stringify(destPkg, null, 2)}\n`)
   writeFileSync(path.join(dest, 'biome.json'), `${JSON.stringify(SCAFFOLD_BIOME_CONFIG, null, 2)}\n`)

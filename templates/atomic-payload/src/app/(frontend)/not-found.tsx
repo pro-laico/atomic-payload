@@ -4,6 +4,7 @@ import { draftMode } from 'next/headers'
 
 import { getCachedPageByHref, getCachedPages } from '@pro-laico/site/cache'
 import { RenderChildren } from '@pro-laico/atomic/children/render'
+import { Icon } from '@pro-laico/icons/Icon'
 
 //KNOWN ISSUE: 404 Page Does not display in production environment when directly viewing the /404 route.
 //Works in dev though, and works correctly when someone navigates to a non-existent page.
@@ -39,6 +40,7 @@ export default async function NotFound() {
           textAlign: 'center',
         }}
       >
+        <Icon name="alert-triangle" style={{ width: '3rem', height: '3rem', color: '#d1d5db', margin: '0 auto' }} />
         <h1
           style={{
             fontSize: '9rem',
@@ -73,7 +75,9 @@ export default async function NotFound() {
           <Link
             href="/"
             style={{
-              display: 'inline-block',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.5rem',
               borderRadius: '0.5rem',
               backgroundColor: 'black',
               padding: '0.75rem 1.5rem',
@@ -84,6 +88,7 @@ export default async function NotFound() {
               transition: 'background-color 0.2s ease, box-shadow 0.2s ease',
             }}
           >
+            <Icon name="arrow-left" style={{ width: '1rem', height: '1rem' }} />
             Back to home
           </Link>
         </div>

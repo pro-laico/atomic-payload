@@ -2,11 +2,13 @@ import { getPayload } from 'payload'
 import config from '@payload-config'
 import { redirect } from 'next/navigation'
 import { Icon } from '@pro-laico/icons/Icon'
+import { revalidateTag } from '@pro-laico/core'
 import { draftMode, headers as nextHeaders } from 'next/headers'
 import { extractSvgContent, extractSvgProps } from '@pro-laico/icons'
 import LivePreviewListener from '@pro-laico/core/components/frontend/LivePreviewListener'
 
 import { sampleIconSets } from '@/seed/sampleIcons'
+import { resetIcons, seedIcons } from '@/seed/seed'
 
 import { CodeBlock } from './CodeBlock'
 
@@ -20,25 +22,32 @@ type IconSetDoc = {
   iconsArray?: { id?: string | null; name?: string | null; icon?: IconDoc | string | number | null }[] | null
 }
 
-async function postTo(path: string): Promise<void> {
-  const reqHeaders = await nextHeaders()
-  const protocol = reqHeaders.get('x-forwarded-proto') ?? 'http'
-  const host = reqHeaders.get('host') ?? 'localhost:3000'
-  await fetch(`${protocol}://${host}${path}`, {
-    method: 'POST',
-    headers: { cookie: reqHeaders.get('cookie') ?? '' },
-  })
-}
-
+/**
+ * Run the seed/reset directly in the server action — same as the template's
+ * working flow. (The older version POSTed to `/api/seed` via a self-`fetch` with
+ * manually-forwarded cookies, which is fragile under Next server actions.) Auth
+ * comes from the same request headers the page used to gate these buttons, so a
+ * logged-in editor is always authorized here.
+ */
 async function seedAction(): Promise<void> {
   'use server'
-  await postTo('/api/seed')
+  const payload = await getPayload({ config })
+  const { user } = await payload.auth({ headers: await nextHeaders() })
+  if (user) {
+    await seedIcons({ payload })
+    await revalidateTag('iconSet', false)
+  }
   redirect('/')
 }
 
 async function resetAction(): Promise<void> {
   'use server'
-  await postTo('/api/reset')
+  const payload = await getPayload({ config })
+  const { user } = await payload.auth({ headers: await nextHeaders() })
+  if (user) {
+    await resetIcons({ payload })
+    await revalidateTag('iconSet', false)
+  }
   redirect('/')
 }
 
@@ -104,8 +113,9 @@ export default async function HomePage() {
           </p>
         )}
         <p className="empty" style={{ marginTop: 12, marginBottom: 0 }}>
-          <strong>Seed</strong> is idempotent — it skips icons whose filename already exists and IconSets whose title already exists.{' '}
-          <strong>Reset</strong> deletes every <code>icon</code> and <code>iconSet</code> doc.
+          <strong>Seed</strong> replaces the sample data — it clears every <code>iconSet</code> and deletes each sample <code>icon</code> (and its
+          file) before re-uploading, so re-running always lands on a clean, current state. <strong>Reset</strong> deletes every <code>icon</code> and{' '}
+          <code>iconSet</code> doc.
         </p>
       </div>
 

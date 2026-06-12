@@ -4,6 +4,7 @@ import { default as default_adcc44335943ae45d0ba046bb2fab13d } from '@pro-laico/
 import { default as default_5770d5be3ef2af64ca07e77507de9256 } from '@pro-laico/core/admin/controls'
 import { MuxUploaderField as MuxUploaderField_c369a797e256de625eba826a6acb8608 } from '@oversightstudio/mux-video/elements'
 import { MuxVideoImageCell as MuxVideoImageCell_c369a797e256de625eba826a6acb8608 } from '@oversightstudio/mux-video/elements'
+import { default as default_c3c5f78522fc5d7f5bd3cd2e58dc339b } from '@pro-laico/icons/admin/iconUsagePanel'
 import { default as default_f06b9a2c6ea8d20df2a8420456cf8189 } from '@pro-laico/icons/admin/iconRowLabel'
 import { default as default_b81c0a0eceb7b4d14ec50545f4a4fc23 } from '@pro-laico/styles/ui/rowLabels/designToken'
 import { default as default_f12e76bf0547e4170c0ab3f2160c348e } from '@pro-laico/styles/ui/rowLabels/color'
@@ -49,6 +50,7 @@ export const importMap = {
   "@pro-laico/core/admin/controls#default": default_5770d5be3ef2af64ca07e77507de9256,
   "@oversightstudio/mux-video/elements#MuxUploaderField": MuxUploaderField_c369a797e256de625eba826a6acb8608,
   "@oversightstudio/mux-video/elements#MuxVideoImageCell": MuxVideoImageCell_c369a797e256de625eba826a6acb8608,
+  "@pro-laico/icons/admin/iconUsagePanel#default": default_c3c5f78522fc5d7f5bd3cd2e58dc339b,
   "@pro-laico/icons/admin/iconRowLabel#default": default_f06b9a2c6ea8d20df2a8420456cf8189,
   "@pro-laico/styles/ui/rowLabels/designToken#default": default_b81c0a0eceb7b4d14ec50545f4a4fc23,
   "@pro-laico/styles/ui/rowLabels/color#default": default_f12e76bf0547e4170c0ab3f2160c348e,

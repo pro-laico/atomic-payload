@@ -13,6 +13,12 @@ import {
 
 import { authd } from '../access/authenticated'
 
+/** Admin import-map path for the IconSet "requested icons" usage panel. */
+export const IconUsagePanelPath = '@pro-laico/icons/admin/iconUsagePanel'
+
+/** Default scan command surfaced in the panel's empty state. */
+const DEFAULT_SCAN_COMMAND = 'npx atomic-icons-scan'
+
 const APFunctions: APFunction[] = ['active']
 
 const d = {
@@ -149,6 +155,34 @@ export interface IconSetCollectionOptions {
    * ```
    */
   iconRowFields?: Field[]
+  /**
+   * Adds the "Requested icons" panel to the Settings tab — a live diff between
+   * the icon names your repo requests (collected by the build-time
+   * `atomic-icons-scan` into a usage manifest) and the names defined in this
+   * set. Missing names are flagged with their `file:line`, so editors know
+   * exactly which icons the codebase still needs. Opt-in.
+   *
+   * @default false
+   * @example
+   * ```ts
+   * createIconSetCollection({ usagePanel: true })
+   * ```
+   */
+  usagePanel?: boolean
+  /**
+   * Path to the usage manifest the panel reads. Falls back to the
+   * `ICON_USAGE_MANIFEST` env var, then `icon-usage-manifest.json` resolved
+   * against the server's working directory. Only meaningful when
+   * {@link usagePanel} is `true`.
+   */
+  usageManifestPath?: string
+  /**
+   * Command shown in the panel's empty state, telling editors how to generate
+   * the manifest. Only meaningful when {@link usagePanel} is `true`.
+   *
+   * @default 'npx atomic-icons-scan'
+   */
+  usageScanCommand?: string
 }
 
 /**
@@ -180,7 +214,30 @@ export const createIconSetCollection = (opts: IconSetCollectionOptions = {}): Co
     hooks: extraHooks,
     fields: extraFields = [],
     iconRowFields = [],
+    usagePanel = false,
+    usageManifestPath,
+    usageScanCommand = DEFAULT_SCAN_COMMAND,
   } = opts
+
+  // Opt-in "requested icons" panel — a server UI field that reads the build-time
+  // usage manifest and diffs it against this set's icons. Appended full-width to
+  // the Settings tab, below any user `fields`.
+  const usageField: Field[] = usagePanel
+    ? [
+        {
+          name: 'iconUsage',
+          type: 'ui',
+          admin: {
+            components: {
+              Field: {
+                path: IconUsagePanelPath,
+                serverProps: { manifestPath: usageManifestPath, scanCommand: usageScanCommand },
+              },
+            },
+          },
+        },
+      ]
+    : []
 
   return {
     slug: 'iconSet',
@@ -202,7 +259,7 @@ export const createIconSetCollection = (opts: IconSetCollectionOptions = {}): Co
         tabs: [
           {
             label: 'Settings',
-            fields: [{ type: 'row', fields: [ActiveField(), titleField('New Icon Set'), ...extraSettingsFields] }, ...extraFields],
+            fields: [{ type: 'row', fields: [ActiveField(), titleField('New Icon Set'), ...extraSettingsFields] }, ...extraFields, ...usageField],
           },
           {
             label: 'Icons',

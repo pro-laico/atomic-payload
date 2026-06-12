@@ -14,8 +14,9 @@
     "start": "next start",
     "build": "next build",
     "dev": "next dev",
-    "prebuild": "pnpm generate:fonts",
+    "prebuild": "pnpm generate:fonts && pnpm generate:icons",
     "generate:fonts": "pnpm exec tsx node_modules/@pro-laico/fonts/src/scripts/cli.ts",
+    "generate:icons": "pnpm exec tsx node_modules/@pro-laico/icons/src/scan/cli.ts src",
     "generate:types": "cross-env NODE_OPTIONS=\"--conditions=react-server\" payload generate:types && core-augment-types",
     "generate:importmap": "cross-env NODE_OPTIONS=\"--conditions=react-server\" payload generate:importmap"
   },

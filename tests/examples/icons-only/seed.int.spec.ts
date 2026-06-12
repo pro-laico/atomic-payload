@@ -59,4 +59,27 @@ describe('icons-only example seed', () => {
     const filenames = icons.docs.map((d) => (d as { filename?: string }).filename).sort()
     expect(filenames).toEqual([...expectedFilenames].sort())
   })
+
+  it('re-seeding replaces the data instead of erroring or duplicating', async () => {
+    const { seedIcons } = await import('@/seed/seed')
+    const { sampleIconSets } = await import('@/seed/sampleIcons')
+
+    // Runs against the state left by the previous test (same in-memory DB), so
+    // this is the real re-seed path: every icon already exists on disk + in the
+    // DB. It must delete-then-recreate, not collide on the unique `filename`.
+    const { sets } = await seedIcons({ payload })
+
+    // Each icon already existed, so it's reported as replaced, not created.
+    const expectedFilenames = sampleIconSets.flatMap((s) => s.icons.map((i) => i.filename))
+    expect(sets.flatMap((s) => s.replaced).sort()).toEqual([...expectedFilenames].sort())
+    expect(sets.flatMap((s) => s.created)).toEqual([])
+
+    // Counts and filenames are unchanged — no duplicates, no `-1` suffixes.
+    const iconSets = await payload.count({ collection: 'iconSet', overrideAccess: true })
+    expect(iconSets.totalDocs).toBe(sampleIconSets.length)
+
+    const icons = await payload.find({ collection: 'icon', overrideAccess: true, limit: 0, pagination: false })
+    const filenames = icons.docs.map((d) => (d as { filename?: string }).filename).sort()
+    expect(filenames).toEqual([...expectedFilenames].sort())
+  })
 })
