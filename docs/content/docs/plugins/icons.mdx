@@ -654,7 +654,7 @@ The build-time scanner, the manifest readers, and the admin panel that powers th
       location: '@pro-laico/icons/scan',
       description: 'Walks a project’s source tree and builds the usage manifest by extracting every literal `<Icon name="…">`. Writes nothing itself: pair it with `writeIconUsageManifest` to persist the result.',
       params: {
-        'options?': { type: 'ScanOptions', description: '`{ roots?, cwd?, components?, extensions?, ignore? }`: which directories to walk (default `['src', 'app']`), which tag names count as icons (default `['Icon']`), and which file extensions/dirs to include or skip.' },
+        'options?': { type: 'ScanOptions', description: '`{ roots?, cwd?, components?, extensions?, ignore? }`: which directories to walk (default `[\'src\', \'app\']`), which tag names count as icons (default `[\'Icon\']`), and which file extensions/dirs to include or skip.' },
       },
       returns: { type: 'ScanResult', description: '`{ manifest, filesScanned }`: the assembled manifest plus the number of files read.' },
       example: `import { scanIconUsages, writeIconUsageManifest, resolveManifestPath } from '@pro-laico/icons/scan'
@@ -711,7 +711,7 @@ writeIconUsageManifest(manifest, resolveManifestPath())`,
       description: 'The pure, `fs`-free parser at the core of the scan: pulls every literal `name` out of one file’s text. Tag-aware (it parses each `<Icon …>` attribute list rather than running a naive regex) and collects only static string literals. Use it to scan source you already have in memory.',
       params: {
         source: { type: 'string', description: 'The full text of a single source file.' },
-        'options?': { type: 'ExtractOptions', description: '`{ components? }`: tag names to treat as icon usages (default `['Icon']`).' },
+        'options?': { type: 'ExtractOptions', description: '`{ components? }`: tag names to treat as icon usages (default `[\'Icon\']`).' },
       },
       returns: { type: 'ExtractedUsage[]', description: 'Each literal usage as `{ name, line, column }`, in source order.' },
       example: `import { extractIconUsages } from '@pro-laico/icons/scan'
