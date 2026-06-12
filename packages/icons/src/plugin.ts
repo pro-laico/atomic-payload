@@ -1,6 +1,7 @@
 import type { CollectionConfig, Config, Plugin } from 'payload'
 
 import { createIconCollection, type IconCollectionOptions } from './collections/icon'
+import { createIconRequestCollection, type IconRequestCollectionOptions } from './collections/iconRequest'
 import { createIconSetCollection, type IconSetCollectionOptions } from './collections/iconSet'
 
 /**
@@ -53,6 +54,23 @@ export interface IconsPluginOptions {
    * See {@link IconSetCollectionOptions} for the full surface.
    */
   iconSetOptions?: IconSetCollectionOptions
+  /**
+   * When `true`, registers the `iconRequest` diagnostic collection AND the
+   * `<Icon>` server component records every name that fails to resolve at
+   * runtime — throttled, deferred via `after()`, fire-and-forget. These live
+   * misses (including dynamic `name={…}` ones a static scan can't see) surface
+   * in the IconSet "Requested icons" panel alongside the build-time manifest.
+   *
+   * Force-disable the recorder at runtime with `ICON_USAGE_TRACKING=false`.
+   *
+   * @default false
+   */
+  trackRequests?: boolean
+  /**
+   * Extension points for the `iconRequest` collection — admin group, extra
+   * fields, hooks. Only meaningful when {@link trackRequests} is `true`.
+   */
+  iconRequestOptions?: IconRequestCollectionOptions
 }
 
 /**
@@ -97,11 +115,12 @@ export interface IconsPluginOptions {
 export const iconsPlugin =
   (opts: IconsPluginOptions = {}): Plugin =>
   (config: Config): Config => {
-    const { enabled = true, iconOptions, includeIconSet = true, iconSetOptions } = opts
+    const { enabled = true, iconOptions, includeIconSet = true, iconSetOptions, trackRequests = false, iconRequestOptions } = opts
     if (!enabled) return config
 
     const additions: CollectionConfig[] = [createIconCollection(iconOptions)]
     if (includeIconSet) additions.push(createIconSetCollection(iconSetOptions))
+    if (trackRequests) additions.push(createIconRequestCollection(iconRequestOptions))
 
     return { ...config, collections: [...(config.collections ?? []), ...additions] }
   }

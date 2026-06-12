@@ -55,6 +55,27 @@ In content, editors can place icons with the child blocks:
 
 Both render through the frontend renderer in `@pro-laico/atomic/children`.
 
+## Requested icons
+
+Icon names live in the CMS, not in your code, so a mistyped `<Icon name="cheveron" />` just falls back silently and nobody can tell which names your code actually needs. The "Requested icons" panel closes that gap: it makes the names your app asks for visible right inside the IconSet you're editing, so missing icons stop being a render-time surprise.
+
+It works in two layers:
+
+**A build-time scan.** The `atomic-icons-scan` command walks your source and collects every literal `<Icon name="...">` into a small manifest file. Run it as a `prebuild` step so the manifest is always fresh:
+
+```bash
+# scan ./src and ./app, write icon-usage-manifest.json
+npx atomic-icons-scan
+```
+
+Only string literals are collected (`name="x"`, `name={"x"}`, and the like). Dynamic `name={expr}` is intentionally skipped, because the scan never runs your code.
+
+**An opt-in admin panel.** Set `iconSetOptions.usagePanel: true` and the IconSet edit view gains a "Requested icons" panel. It reads the manifest and diffs it against the icons defined in the set you're editing, flagging any missing names with the `file:line` where they're requested. When no manifest exists yet, the panel tells editors to run the scan.
+
+You can also add a live layer. With `trackRequests: true`, the `<Icon>` server component records every name that fails to resolve against the active set, including dynamic `name={slug}` ones the static scan can't see. The recorder is throttled (at most once per name per minute), deferred so it never blocks the response, and best-effort, so a failed write is swallowed. Those misses appear in the same panel with a live count and last-seen date, and you can turn the recorder off entirely with the `ICON_USAGE_TRACKING=false` env var. The backing `iconRequest` collection is hidden from the sidebar nav and managed through the panel, which has a Clear button for pruning the list.
+
+See the [icons plugin](/docs/plugins/icons) for the full options and exports behind this panel.
+
 ## Configuration
 
 Icons are added by the `iconsPlugin`, which accepts two additive option bags: `iconOptions` for the `Icon` collection and `iconSetOptions` for the `IconSet` collection. User-supplied hooks always run **after** the built-ins, so `formatSVGHook` and the revalidation hooks always run first.
@@ -78,7 +99,7 @@ export default buildConfig({
 })
 ```
 
-Both collections accept additive `fields` and `hooks`. `iconSetOptions` also takes `extraSettingsFields` (compact, in-row fields next to title/active), `fields` (full-width set-level fields), and `iconRowFields` (per-icon metadata on each row). Live preview on `IconSet` edits is wired by default (it falls back to `@pro-laico/core`'s `generateLivePreviewPath`), so `livePreviewUrl` is only needed to override that. If you want the `atomicHook` snapshot behavior on `IconSet`, attach it explicitly through the additive `hooks` option.
+Both collections accept additive `fields` and `hooks`. `iconSetOptions` also takes `extraSettingsFields` (compact, in-row fields next to title/active), `fields` (full-width set-level fields), and `iconRowFields` (per-icon metadata on each row). It also accepts `usagePanel` (plus `usageManifestPath` and `usageScanCommand`) to turn on the "Requested icons" panel, and the top-level `iconsPlugin` accepts `trackRequests` to record runtime misses, both covered on the plugin page. Live preview on `IconSet` edits is wired by default (it falls back to `@pro-laico/core`'s `generateLivePreviewPath`), so `livePreviewUrl` is only needed to override that. If you want the `atomicHook` snapshot behavior on `IconSet`, attach it explicitly through the additive `hooks` option.
 
 See the [icons plugin](/docs/plugins/icons) for the full option tables and subpath exports.
 

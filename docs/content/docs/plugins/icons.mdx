@@ -190,6 +190,82 @@ const ChildBlocks = [IconChildBlock, SVGBlock /* …other children… */]
 
 Need a className field (or other fields) on the block? Build a customized one with the `createIconBlock` / `createSvgBlock` factories instead of the default export, and spread your fields in via `prependFields` / `appendFields`.
 
+## Requested-icons usage panel
+
+Icon names live in the CMS, so nothing connects the names your code asks for to the names a set actually defines. A typo in `<Icon name="chevvron" />` just falls back at render time, and nobody knows which names the code really needs. The usage panel closes that loop: a build-time scan collects the names your source requests, an opt-in admin panel diffs them against the set you're editing, and optional runtime tracking adds what production actually requested. The three setup steps build on each other, so you can stop after step one or go all the way.
+
+<Steps>
+
+<Step>
+### Scan your source for icon names
+
+The `atomic-icons-scan` command (published as the package's command) walks your source tree, finds every literal `<Icon name="...">` usage, and writes `icon-usage-manifest.json`. Run it as a prebuild script or CI step so the manifest stays current:
+
+```bash
+# scan ./src and ./app, write icon-usage-manifest.json
+npx atomic-icons-scan
+
+# explicit roots, output path, component names, and extensions
+npx atomic-icons-scan src app --out icon-usage-manifest.json --component Icon --ext tsx,jsx
+```
+
+Only string literals are collected: `name="x"`, `name='x'`, `name={"x"}`, and a non-interpolated `` name={`x`} ``. A dynamic `name={expr}` (a variable or interpolated value) is intentionally skipped, since a static scan cannot know its value. The names are matched exactly against each icon's kebab-cased `name`, the same way `<Icon>` resolves at runtime.
+
+You can also run the scan programmatically, for example from your own build script:
+
+```ts
+import { scanIconUsages, writeIconUsageManifest, resolveManifestPath } from '@pro-laico/icons/scan'
+
+const { manifest } = scanIconUsages({ roots: ['src', 'app'] })
+writeIconUsageManifest(manifest, resolveManifestPath())
+```
+</Step>
+
+<Step>
+### Show the panel in the admin
+
+Set `iconSetOptions.usagePanel: true` to add the "Requested icons" panel to the IconSet edit view. It reads the manifest server-side and diffs it live against the icons in the set you're editing, flagging the missing names with their `file:line`:
+
+```ts
+import { iconsPlugin } from '@pro-laico/icons'
+
+iconsPlugin({
+  iconSetOptions: {
+    usagePanel: true,
+    // optional: defaults to ICON_USAGE_MANIFEST, then icon-usage-manifest.json at cwd
+    usageManifestPath: 'icon-usage-manifest.json',
+  },
+})
+```
+
+The manifest path resolves in order: the `usageManifestPath` option, then the `ICON_USAGE_MANIFEST` env var, then `icon-usage-manifest.json` in the server's working directory. When no manifest exists yet, the panel renders a hint telling editors to run the scan.
+</Step>
+
+<Step>
+### Track runtime misses (live)
+
+The static scan only sees string literals. To also catch what production actually requests, including dynamic `<Icon name={slug} />` and genuine misses, set `trackRequests: true`:
+
+```ts
+import { iconsPlugin } from '@pro-laico/icons'
+
+iconsPlugin({
+  iconSetOptions: { usagePanel: true },
+  trackRequests: true,
+})
+```
+
+This registers the `iconRequest` collection and makes `<Icon>` record every name that fails to resolve against the active set. The recorder is throttled (at most once per name per minute per process), deferred via Next's `after()` so it never blocks the response, and best-effort (any failure is swallowed). These live misses, including the dynamic `name={slug}` ones the static scan can't see, show up in the panel's "Missing from this set" list with a live count and last-seen date. The `iconRequest` collection is hidden from the admin nav, since it's surfaced through the panel instead, which also has a "Clear runtime requests" button to wipe it.
+
+<Callout type="info">
+  The runtime recorder is on whenever `trackRequests` is true. To turn it off without changing config (for example in a specific environment), set the `ICON_USAGE_TRACKING=false` env var.
+</Callout>
+
+With all three in place, the panel becomes a three-way compare: names requested in code (the manifest) versus requested in production (`iconRequest`) versus defined in the set you're editing, so missing, dynamic-only, and present names are all visible at a glance.
+</Step>
+
+</Steps>
+
 ## Options
 
 `iconsPlugin(options?)` accepts two top-level toggles plus two additive option bags, one for each collection. Your own hooks always run **after** the built-ins, so the SVG cleanup and cache-revalidation hooks always run first.
@@ -199,7 +275,9 @@ Need a className field (or other fields) on the block? Build a customized one wi
     enabled: { type: 'boolean', default: 'true', description: 'Set false to turn the plugin off: neither Icon nor IconSet is registered. Useful behind a feature flag.' },
     includeIconSet: { type: 'boolean', default: 'true', description: 'When false, only the Icon upload collection is registered and the IconSet grouping collection is skipped.' },
     iconOptions: { type: 'IconCollectionOptions', description: 'Tweaks for the Icon collection: appended fields, additive hooks, and a final shallow-merge escape hatch. See its keys below.' },
-    iconSetOptions: { type: 'IconSetCollectionOptions', description: 'Tweaks for the IconSet collection: live preview, additive hooks, set-level fields, per-icon-row fields, and admin label overrides. See its keys below.' },
+    iconSetOptions: { type: 'IconSetCollectionOptions', description: 'Tweaks for the IconSet collection: live preview, additive hooks, set-level fields, per-icon-row fields, the requested-icons panel, and admin label overrides. See its keys below.' },
+    trackRequests: { type: 'boolean', default: 'false', description: 'When true, registers the diagnostic `iconRequest` collection AND makes `<Icon>` record every name that fails to resolve at runtime (throttled to once per name per minute per process, deferred via Next’s `after()` so it never blocks the response, and fire-and-forget). Force-disable the recorder with the `ICON_USAGE_TRACKING=false` env var. See the Requested-icons usage panel section.' },
+    iconRequestOptions: { type: 'IconRequestCollectionOptions', description: 'Additive extension points (admin group, extra fields, hooks) for the `iconRequest` collection. Only meaningful when `trackRequests` is true.' },
   }}
 />
 
@@ -232,6 +310,9 @@ Extension points for the **IconSet** collection. Each field-injection option lan
     fields: { type: 'Field[]', default: '[]', description: 'Full-width, set-level fields appended below the title/active row. Use for descriptions, relationships, and arrays that need more horizontal space.' },
     iconRowFields: { type: 'Field[]', default: '[]', description: 'Per-icon fields appended to each row in the set, after the existing name + icon fields (e.g. aliases, category).' },
     hooks: { type: "CollectionConfig['hooks']", description: 'Extra hooks merged in after the built-in revalidation hooks. This is also where you opt into the atomicHook snapshot behavior, via hooks.beforeChange.' },
+    usagePanel: { type: 'boolean', default: 'false', description: 'Adds the "Requested icons" panel to the IconSet edit view: a live diff between the icon names your repo requests (collected by the build-time scan into a usage manifest) and the names defined in this set, with the missing ones flagged by their file:line. See the Requested-icons usage panel section.' },
+    usageManifestPath: { type: 'string', description: 'Path to the usage manifest the panel reads. Falls back to the `ICON_USAGE_MANIFEST` env var, then `icon-usage-manifest.json` resolved against the server’s working directory. Only meaningful when usagePanel is true.' },
+    usageScanCommand: { type: 'string', default: "'npx atomic-icons-scan'", description: 'Command shown in the panel’s empty state, telling editors how to generate the manifest. Only meaningful when usagePanel is true.' },
     useAsTitle: { type: 'string', default: "'title'", description: 'Field shown as the document title in the admin.' },
     group: { type: 'string', default: "'Sets'", description: 'Sidebar group label for the IconSet collection.' },
   }}
@@ -562,6 +643,97 @@ const options = await getCachedIconOptions(true, iconSet)`,
   }}
 />
 
+### Usage scan & panel
+
+The build-time scanner, the manifest readers, and the admin panel that powers the [Requested-icons usage panel](#requested-icons-usage-panel). The scanner is also published as the package's `atomic-icons-scan` command, so you can run it without importing anything.
+
+<ExportTable
+  exports={{
+    scanIconUsages: {
+      type: 'function',
+      location: '@pro-laico/icons/scan',
+      description: 'Walks a project’s source tree and builds the usage manifest by extracting every literal `<Icon name="…">`. Writes nothing itself: pair it with `writeIconUsageManifest` to persist the result.',
+      params: {
+        'options?': { type: 'ScanOptions', description: '`{ roots?, cwd?, components?, extensions?, ignore? }`: which directories to walk (default `[\'src\', \'app\']`), which tag names count as icons (default `[\'Icon\']`), and which file extensions/dirs to include or skip.' },
+      },
+      returns: { type: 'ScanResult', description: '`{ manifest, filesScanned }`: the assembled manifest plus the number of files read.' },
+      example: `import { scanIconUsages, writeIconUsageManifest, resolveManifestPath } from '@pro-laico/icons/scan'
+
+// In a build script (e.g. behind a prebuild step):
+const { manifest } = scanIconUsages({ roots: ['src', 'app'] })
+writeIconUsageManifest(manifest, resolveManifestPath())`,
+    },
+    writeIconUsageManifest: {
+      type: 'function',
+      location: '@pro-laico/icons/scan',
+      description: 'Writes a manifest to disk as pretty-printed JSON (with a trailing newline). Returns the absolute path written.',
+      params: {
+        manifest: { type: 'IconUsageManifest', description: 'The manifest produced by `scanIconUsages`.' },
+        path: { type: 'string', description: 'Output path; resolved against the working directory when relative.' },
+      },
+      returns: { type: 'string', description: 'The absolute path the file was written to.' },
+      example: `import { scanIconUsages, writeIconUsageManifest, resolveManifestPath } from '@pro-laico/icons/scan'
+
+const { manifest } = scanIconUsages()
+const path = writeIconUsageManifest(manifest, resolveManifestPath())`,
+    },
+    loadIconUsageManifest: {
+      type: 'function',
+      location: '@pro-laico/icons/scan',
+      description: 'Reads and parses a manifest from disk. Returns `null` when the file is absent or unparseable, so callers can render a "run the scan" empty state rather than throwing. This is what the admin panel uses to load the manifest server-side.',
+      params: {
+        'path?': { type: 'string', description: 'Explicit manifest path; resolved via `resolveManifestPath` when omitted.' },
+        'cwd?': { type: 'string', description: 'Working directory the default path resolves against (defaults to `process.cwd()`).' },
+      },
+      returns: { type: 'IconUsageManifest | null', description: 'The parsed manifest, or `null` when missing/invalid.' },
+      example: `import { loadIconUsageManifest } from '@pro-laico/icons/scan'
+
+// Server-side: null means no manifest yet, so prompt the editor to run the scan.
+const manifest = loadIconUsageManifest()`,
+    },
+    resolveManifestPath: {
+      type: 'function',
+      location: '@pro-laico/icons/scan',
+      description: 'Resolves the manifest path in order: an explicit argument, then the `ICON_USAGE_MANIFEST` env var, then the default `icon-usage-manifest.json` filename under the working directory. The scanner, the CLI, and the panel all resolve the path the same way.',
+      params: {
+        'explicit?': { type: 'string', description: 'A path that wins over the env var and default when provided.' },
+        'cwd?': { type: 'string', description: 'Working directory the default filename resolves against (defaults to `process.cwd()`).' },
+      },
+      returns: { type: 'string', description: 'The absolute manifest path.' },
+      example: `import { scanIconUsages, writeIconUsageManifest, resolveManifestPath } from '@pro-laico/icons/scan'
+
+const { manifest } = scanIconUsages()
+writeIconUsageManifest(manifest, resolveManifestPath())`,
+    },
+    extractIconUsages: {
+      type: 'function',
+      location: '@pro-laico/icons/scan',
+      description: 'The pure, `fs`-free parser at the core of the scan: pulls every literal `name` out of one file’s text. Tag-aware (it parses each `<Icon …>` attribute list rather than running a naive regex) and collects only static string literals. Use it to scan source you already have in memory.',
+      params: {
+        source: { type: 'string', description: 'The full text of a single source file.' },
+        'options?': { type: 'ExtractOptions', description: '`{ components? }`: tag names to treat as icon usages (default `[\'Icon\']`).' },
+      },
+      returns: { type: 'ExtractedUsage[]', description: 'Each literal usage as `{ name, line, column }`, in source order.' },
+      example: `import { extractIconUsages } from '@pro-laico/icons/scan'
+
+// Names found in one file's text, without touching the filesystem:
+const usages = extractIconUsages(fileSource)`,
+    },
+    IconUsagePanel: {
+      type: 'component',
+      location: '@pro-laico/icons/admin/iconUsagePanel',
+      description: 'The server `UIField` that renders the "Requested icons" panel. Reads the build-time manifest (and the runtime `iconRequest` misses when tracking is on) and diffs them against the set you’re editing. Wired for you by `usagePanel: true`; you only import its path constant. Default and named export.',
+      params: {
+        '...props': { type: 'UIFieldServerComponent props (manifestPath?, scanCommand?)', description: 'The `serverProps` Payload passes through, set by `createIconSetCollection` from `usageManifestPath` / `usageScanCommand`.' },
+      },
+      returns: { type: 'Promise<JSX.Element>', description: 'The rendered Requested-icons panel (async server component).' },
+      example: `// You don't render this directly. Turning on usagePanel wires it:
+iconsPlugin({ iconSetOptions: { usagePanel: true } })`,
+    },
+    IconUsagePanelPath: { type: 'constant', location: '@pro-laico/icons', description: 'The admin import-map path for the usage panel. Re-export it from your `ui` barrel (the same way you re-export `IconLabelPath`) so `generate:importmap` can resolve it.' },
+  }}
+/>
+
 ### Types
 
 <ExportTable
@@ -569,6 +741,8 @@ const options = await getCachedIconOptions(true, iconSet)`,
     'Icon (type)': { type: 'type', location: '@pro-laico/icons/schema', description: 'TypeScript type for typed access to your Icon documents.' },
     'IconSet (type)': { type: 'type', location: '@pro-laico/icons/schema', description: 'TypeScript type for typed access to your IconSet documents.' },
     IconSetReturn: { type: 'type', location: '@pro-laico/icons/cache', description: 'The shape `getCachedIconSet` returns: `{ iconsArray: { name, icon }[] }`.' },
+    IconUsageManifest: { type: 'type', location: '@pro-laico/icons/scan', description: 'The shape of the usage manifest the scan writes and the panel reads: `{ version, generatedAt, names, usages }`.' },
+    IconUsage: { type: 'type', location: '@pro-laico/icons/scan', description: 'One recorded usage in the manifest: `{ name, file, line, column }`.' },
   }}
 />
 

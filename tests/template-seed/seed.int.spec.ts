@@ -100,4 +100,27 @@ describe('atomic-payload template seed (integration, MongoDB)', () => {
     const published = (await payload.findGlobal({ slug: 'publishedStorage', overrideAccess: true })) as { layoutCSS?: string }
     expect(published.layoutCSS?.length ?? 0).toBeGreaterThan(0)
   })
+
+  it('re-seeding replaces uploads cleanly (no orphaned files, no duplicates)', async () => {
+    // Runs against the state the previous test left behind — the real re-seed
+    // path. The clear step must remove each upload's STORED file (via the delete
+    // operation), not just its row. On local disk a leftover file would force the
+    // re-upload to `check-1.svg`; on Vercel Blob it would throw "blob already
+    // exists". Either way, asserting the exact filenames + counts catches it.
+    const req = await createLocalReq({}, payload)
+    await seed({ payload, req })
+
+    const counts = Object.fromEntries(
+      await Promise.all(
+        (['pages', 'icon', 'iconSet'] as const).map(
+          async (collection) => [collection, (await payload.count({ collection, overrideAccess: true })).totalDocs] as const,
+        ),
+      ),
+    )
+    expect(counts).toMatchObject({ pages: 4, icon: 7, iconSet: 1 })
+
+    const iconDocs = await payload.find({ collection: 'icon', overrideAccess: true, limit: 0, pagination: false })
+    const filenames = iconDocs.docs.map((d) => (d as { filename?: string }).filename).sort()
+    expect(filenames).toEqual(['check.svg', 'close.svg', 'cookie.svg', 'github.svg', 'logo.svg', 'menu.svg', 'theme.svg'])
+  })
 })

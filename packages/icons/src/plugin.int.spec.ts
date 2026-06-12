@@ -21,4 +21,8 @@ describe('iconsPlugin (integration)', () => {
   it('registers the iconSet collection (includeIconSet defaults true)', () => {
     expect(payload.collections.iconSet).toBeDefined()
   })
+
+  it('does NOT register the iconRequest collection unless trackRequests is set', () => {
+    expect(payload.collections.iconRequest).toBeUndefined()
+  })
 })

@@ -42,6 +42,14 @@
         "types": "./dist/components/admin/iconSelect.d.ts",
         "default": "./dist/components/admin/iconSelect.js"
       },
+      "./admin/iconUsagePanel": {
+        "types": "./dist/components/admin/iconUsagePanel.d.ts",
+        "default": "./dist/components/admin/iconUsagePanel.js"
+      },
+      "./scan": {
+        "types": "./dist/scan/index.d.ts",
+        "default": "./dist/scan/index.js"
+      },
       "./blocks/iconChild": {
         "types": "./dist/blocks/iconChild/block.d.ts",
         "default": "./dist/blocks/iconChild/block.js"
@@ -91,6 +99,14 @@
       "types": "./src/components/admin/iconSelect.tsx",
       "default": "./src/components/admin/iconSelect.tsx"
     },
+    "./admin/iconUsagePanel": {
+      "types": "./src/components/admin/iconUsagePanel.tsx",
+      "default": "./src/components/admin/iconUsagePanel.tsx"
+    },
+    "./scan": {
+      "types": "./src/scan/index.ts",
+      "default": "./src/scan/index.ts"
+    },
     "./blocks/iconChild": {
       "types": "./src/blocks/iconChild/block.ts",
       "default": "./src/blocks/iconChild/block.ts"
@@ -107,6 +123,9 @@
       "types": "./src/blocks/svgChild/component.tsx",
       "default": "./src/blocks/svgChild/component.tsx"
     }
+  },
+  "bin": {
+    "atomic-icons-scan": "./dist/scan/cli.js"
   },
   "files": [
     "dist"

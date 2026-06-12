@@ -4,6 +4,7 @@ import type React from 'react'
 import { draftMode } from 'next/headers'
 
 import { getCachedIconByName, getCachedIconSet } from '../../cache'
+import { trackIconMiss } from '../../usage/trackIconMiss'
 import { extractSvgContent, extractSvgProps } from '../../utilities/extractSVG'
 
 /**
@@ -50,6 +51,10 @@ export const Icon: React.FC<IconProps> = async ({ name, fallback, ...svgProps })
   const { isEnabled: draft } = await draftMode()
   const iconSet = await getCachedIconSet(draft)
   const svg = await getCachedIconByName(name, draft, iconSet)
+  // Name didn't resolve against the active set — record it (throttled,
+  // fire-and-forget) so the admin "Requested icons" panel can surface real
+  // runtime misses, including dynamic names a static scan can't see.
+  if (!svg) trackIconMiss(name)
   const source = svg || fallback || FALLBACK_WARNING_SVG
 
   // Default to decorative (aria-hidden); callers announcing the icon override
