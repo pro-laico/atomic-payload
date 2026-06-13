@@ -13,7 +13,7 @@ description: "The full Payload + Next.js + Tailwind starter that wires up every 
 
 ## What's pre-wired
 
-You don't need to install or configure any Atomic Payload plugin yourself. They're all registered in `src/plugins/index.ts` and composed through `pluginComposer` from `@pro-laico/core`, which runs a finalizer last to attach the shared atomic hook and cache revalidation to every collection and global.
+You don't need to install or configure any Atomic Payload plugin yourself. They're all registered in `src/plugins/index.ts` as a flat plugin array. Each plugin bakes its own cache-revalidation hooks, and the shared atomic hook is handed to the plugins that own atomic content, so the wiring is explicit with no magic step to reason about.
 
 | Plugin | What it gives you |
 | --- | --- |
@@ -28,9 +28,9 @@ You don't need to install or configure any Atomic Payload plugin yourself. They'
 | [seed](/docs/plugins/seed) | Tooling rather than a content feature: the Seed database dashboard banner and the `POST /api/seed` endpoint. |
 | [richtext](/docs/plugins/richtext) | Tooling rather than a content feature: the preconfigured Lexical editor that `src/payload.config.ts` sets as the `editor`. |
 | [zap](/docs/plugins/zap) | Tooling rather than a content feature: the shared schema layer that flows block shapes into your generated types. |
-| [core](/docs/plugins/core) | Tooling rather than a content feature: `pluginComposer` itself plus the `jsonSchemaPlugin` used during type generation. |
+| [core](/docs/plugins/core) | Tooling rather than a content feature: the cache + revalidation helpers, `revalidationPlugin`, and the `jsonSchemaPlugin` used during type generation. |
 
-Alongside these, the template registers Payload's form builder and nested docs plugins, Vercel Blob storage for uploads, and a blur placeholder plugin for images, each configured in its own file under `src/plugins/`. The form builder needs no extra wiring: the composer's finalizer runs after every plugin, so the `forms` and `form-submissions` collections it registers pick up the same hooks and cache revalidation automatically, with no slug lists to keep in sync.
+Alongside these, the template registers Payload's form builder and nested docs plugins, Vercel Blob storage for uploads, and a blur placeholder plugin for images, each configured in its own file under `src/plugins/`. The form builder's `forms` and `form-submissions` collections are the one thing that needs explicit cache wiring (they're third-party, so they don't bake the hooks themselves): `revalidationPlugin` at the end of `src/plugins/index.ts` handles them.
 
 ## Setup
 

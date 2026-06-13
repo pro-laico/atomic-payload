@@ -4,8 +4,7 @@ import { seedPlugin } from '@pro-laico/seed'
 import { sitePlugin } from '@pro-laico/site'
 import { fontsPlugin } from '@pro-laico/fonts'
 import { imagesPlugin } from '@pro-laico/images'
-import { pluginComposer } from '@pro-laico/core'
-import { atomicHook } from '@pro-laico/atomic/hook'
+import { revalidationPlugin } from '@pro-laico/core'
 import { trackingPlugin } from '@pro-laico/tracking'
 import { muxVideoPlugin } from '@pro-laico/mux-video'
 import { formsPlugin } from '@pro-laico/atomic/forms'
@@ -31,34 +30,39 @@ import { vercelBlobStoragePluginConfig } from './vercelBlobStorage'
 // - `muxVideoPlugin` registers the MuxVideo collection; `trackingPlugin` the
 //   `Tracking` global; `seedPlugin` the SEED DATABASE banner + `POST /api/seed`.
 // - `formsPlugin` / `actionsPlugin` prepend the default form / action blocks.
-// - `pluginComposer` returns every plugin below followed by a finalizer that runs
-//   LAST: it attaches the shared `atomicHook` to the atomic-content collections
-//   (designSet, shortcutSet, pages, header, footer, iconSet) and the revalidation
-//   dispatchers to every collection and global. Running last, it also wires the
-//   `forms` / `form-submissions` collections that `formBuilderPluginConfig`
-//   registers, so there are no slug arrays to keep in sync.
+//
+// Cross-cutting wiring is explicit, no magic finalizer:
+// - The shared `atomicHook` (CSS/forms/actions snapshot + single-active) is baked
+//   into each atomic-content collection by its own plugin: `sitePlugin` bakes it
+//   on pages/header/footer, `stylesPlugin({ atomicHook })` on designSet/shortcutSet
+//   (see `./styles`), and `iconsPlugin`'s `iconSetOptions.hooks` on iconSet (see
+//   `./icons`).
+// - The `@pro-laico/*` collections and globals bake their own cache-revalidation
+//   hooks, so the only revalidation left to wire is for the third-party form
+//   builder's `forms` / `form-submissions` collections, via `revalidationPlugin`
+//   at the end of the array (after `formBuilderPluginConfig` has registered them).
 
-export const plugins: Plugin[] = pluginComposer({
-  atomicHook,
-  plugins: [
-    sitePlugin(),
-    jsonSchemaPluginConfig,
-    formsPlugin(),
-    actionsPlugin(),
-    // childBlocksPluginConfig weaves the @pro-laico/styles ClassNameField into the default
-    // child blocks via generic prepend/append fields (see ./childBlocks). The block packages
-    // (icons/images/mux-video/richtext) no longer depend on @pro-laico/styles themselves.
-    childBlocksPluginConfig,
-    trackingPlugin(),
-    seedPlugin(),
-    fontsPlugin(),
-    imagesPlugin(),
-    muxVideoPlugin(),
-    iconsPluginConfig,
-    stylesPluginConfig,
-    nestedDocsPluginConfig,
-    formBuilderPluginConfig,
-    blurDataUrlsPluginConfig,
-    vercelBlobStoragePluginConfig,
-  ],
-})
+export const plugins: Plugin[] = [
+  sitePlugin(),
+  jsonSchemaPluginConfig,
+  formsPlugin(),
+  actionsPlugin(),
+  // childBlocksPluginConfig weaves the @pro-laico/styles ClassNameField into the default
+  // child blocks via generic prepend/append fields (see ./childBlocks). The block packages
+  // (icons/images/mux-video/richtext) no longer depend on @pro-laico/styles themselves.
+  childBlocksPluginConfig,
+  trackingPlugin(),
+  seedPlugin(),
+  fontsPlugin(),
+  imagesPlugin(),
+  muxVideoPlugin(),
+  iconsPluginConfig,
+  stylesPluginConfig,
+  nestedDocsPluginConfig,
+  formBuilderPluginConfig,
+  blurDataUrlsPluginConfig,
+  vercelBlobStoragePluginConfig,
+  // Revalidate the third-party form-builder collections (the @pro-laico/* ones
+  // bake their own). Keep this last so the target collections already exist.
+  revalidationPlugin({ collectionSlugs: ['forms', 'form-submissions'] }),
+]

@@ -1,10 +1,10 @@
 import { authd } from '@/access/authenticated'
 import { formBuilderPlugin } from '@payloadcms/plugin-form-builder'
 
-// Revalidation on `forms` / `form-submissions` is wired by `pluginComposer`'s
-// finalizer (see ./index), which runs last and attaches the revalidation
-// dispatchers to every collection, so no per-collection
-// `beforeChange: [revalidateCache]` is needed here.
+// Revalidation on `forms` / `form-submissions` is wired by `revalidationPlugin`
+// at the end of ./index. These are third-party collections, so they don't bake
+// the `@pro-laico/core` revalidation hooks themselves the way the `@pro-laico/*`
+// collections do.
 function insertFieldAtPosition<T>(fields: T[], field: T, position: number): T[] {
   return [...fields.slice(0, position), field, ...fields.slice(position)]
 }
