@@ -47,8 +47,6 @@ yarn add @pro-laico/atomic
 
 ## Setup
 
-The package is organized into four areas you wire up in your Payload config: actions, the save-time hook, forms, and child blocks. Each registers independently, so you can add only the ones you need.
-
 <Tabs items={['Standalone', 'With the atomic-payload template']}>
 
 <Tab value="Standalone">
@@ -68,6 +66,7 @@ Add the actions, forms, and child-blocks plugins to your config. Each prepends i
 
 ```ts
 import { buildConfig } from 'payload'
+import { ClassNameField } from '@pro-laico/styles'
 import { formsPlugin } from '@pro-laico/atomic/forms'
 import { actionsPlugin } from '@pro-laico/atomic/actions'
 import { childBlocksPlugin } from '@pro-laico/atomic/children'
@@ -76,37 +75,18 @@ export default buildConfig({
   plugins: [
     formsPlugin(),
     actionsPlugin(),
-    childBlocksPlugin(),
+    childBlocksPlugin({
+      // both optional: per-block fields, and the AtomicChild class field
+      blockFields: { SVGChild: { prependFields: [ClassNameField({ label: 'SVG Atomic Classes' })] } },
+      classNameField: ClassNameField,
+    }),
   ],
 })
 ```
 
-- `childBlocksPlugin()` registers the nestable content blocks editors build pages from (Atomic, SimpleText, RichText, Image, Video, Icon, SVG).
+- `childBlocksPlugin()` registers the nestable content blocks editors build pages from (Atomic, SimpleText, RichText, Image, Video, Icon, SVG). They ship with no styling fields of their own; `blockFields` (keyed by slug) and `classNameField` (the `AtomicChild` special case) weave yours in, see [Options](#options).
 - `actionsPlugin()` registers the built-in action blocks (theme toggle, cookie consent, form submit, dynamic store, portal open).
 - `formsPlugin()` registers the default submit-form processing blocks (rate limiting, sanitation, validation).
-</Step>
-
-<Step>
-### Add fields to the child blocks (optional)
-
-The child blocks ship with no styling fields of their own, so they don't depend on `@pro-laico/styles`. Use `blockFields` (keyed by block slug) to prepend or append your own fields per block, for example the `@pro-laico/styles` `ClassNameField` so editors can type utility classes:
-
-```ts
-import { ClassNameField } from '@pro-laico/styles'
-import { childBlocksPlugin } from '@pro-laico/atomic/children'
-
-childBlocksPlugin({
-  blockFields: {
-    SVGChild: { prependFields: [ClassNameField({ label: 'SVG Atomic Classes' })] },
-    ImageChild: { prependFields: [ClassNameField({ label: 'Image Atomic Classes' })] },
-    // …any other block, any fields you like
-  },
-})
-```
-
-<Callout type="info">
-  `AtomicChild` is a special case. It stays on a dedicated `classNameField` option rather than `blockFields`. Pass `classNameField: ClassNameField` to wire it up.
-</Callout>
 </Step>
 
 <Step>
@@ -201,7 +181,7 @@ The [atomic-payload template](/docs/templates/atomic-payload) already wires all 
 <Step>
 ### It's already registered
 
-The template's plugin list adds `formsPlugin`, `actionsPlugin`, and `childBlocksPlugin`, and weaves the `@pro-laico/styles` `ClassNameField` into the child blocks for you. The save-time hook is the ready-made `atomicHook`, handed to `@pro-laico/styles` so it runs on the content collections.
+The template registers the three block plugins, weaves the `@pro-laico/styles` `ClassNameField` into the child blocks, and hands the ready-made `atomicHook` to `@pro-laico/styles` so it runs on the content collections:
 
 ```ts
 import { atomicHook } from '@pro-laico/atomic/hook'
@@ -214,13 +194,7 @@ stylesPlugin({ atomicHook /* …other options */ })
 <Step>
 ### Build pages in the admin
 
-Open a page in the admin and assemble it from the child blocks (text, images, icons, rich text, video) and action blocks (theme toggle, cookie consent, form submit, dynamic store, portals). Saving runs the hook, which generates the styles and stores the actions and forms the frontend needs.
-</Step>
-
-<Step>
-### The frontend is already wired
-
-The template's `[...slug]/page.tsx` renders pages with `RenderChildren`, its `(frontend)/layout.tsx` wraps the app in `AtomicStoreProvider`, and forms submit through the `submitForm` server action. Set [`NEXT_PUBLIC_SERVER_URL`](#environment-variables) so submissions resolve correctly in production.
+Assemble pages from the registered blocks; saving runs the hook, which generates the styles and stores the actions and forms the frontend needs. The template's `[...slug]/page.tsx` renders pages with `RenderChildren`, its `(frontend)/layout.tsx` wraps the app in `AtomicStoreProvider`, and forms submit through the `submitForm` server action. Set [`NEXT_PUBLIC_SERVER_URL`](#environment-variables) so submissions resolve correctly in production.
 </Step>
 
 </Steps>
@@ -228,16 +202,6 @@ The template's `[...slug]/page.tsx` renders pages with `RenderChildren`, its `(f
 </Tab>
 
 </Tabs>
-
-## Caching & revalidation
-
-Atomic ships server-side cache getters from `@pro-laico/atomic/cache`, wrapped so a page doesn't re-query Payload on every render:
-
-- `getCachedAtomicActions(draft)`: the stored actions snapshot you seed `AtomicStoreProvider` with.
-- `getCachedAtomicForms(draft)` / `getCachedBackendForms()` / `getCachedAllForms(draft, atomicForms, backendForms)`: the stored form definitions the `submitForm` action reads before processing a submission.
-- `getCachedFormSubmissions(formTitle)`: a form's submissions.
-
-The save-time `atomicHook` (the same one wired in Setup) revalidates the matching tags as it stores a page's data, including `atomic-actions`, `atomic-forms`, `atomic-classes`, `pages`, and the per-page `page` tag, so the next read serves fresh data and live preview updates. See [Caching & revalidation](/docs/concepts/caching) for how the tags and `withCache` work.
 
 ## Options
 
@@ -352,6 +316,16 @@ Atomic reads these when resolving the URL form submissions POST to. They're opti
 | --- | --- |
 | `NEXT_PUBLIC_SERVER_URL` | The public URL of your site, used to build the form submission endpoint. |
 | `VERCEL_PROJECT_PRODUCTION_URL` | Fallback on Vercel when `NEXT_PUBLIC_SERVER_URL` isn't set; atomic prefixes it with `https://`. |
+
+## Caching & revalidation
+
+Atomic ships server-side cache getters from `@pro-laico/atomic/cache`, wrapped so a page doesn't re-query Payload on every render:
+
+- `getCachedAtomicActions(draft)`: the stored actions snapshot you seed `AtomicStoreProvider` with.
+- `getCachedAtomicForms(draft)` / `getCachedBackendForms()` / `getCachedAllForms(draft, atomicForms, backendForms)`: the stored form definitions the `submitForm` action reads before processing a submission.
+- `getCachedFormSubmissions(formTitle)`: a form's submissions.
+
+The save-time `atomicHook` (the same one wired in Setup) revalidates the matching tags as it stores a page's data, including `atomic-actions`, `atomic-forms`, `atomic-classes`, `pages`, and the per-page `page` tag, so the next read serves fresh data and live preview updates. See [Caching & revalidation](/docs/concepts/caching) for how the tags and `withCache` work.
 
 ## Exports
 

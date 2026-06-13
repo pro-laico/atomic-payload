@@ -11,6 +11,27 @@ description: "The full Payload + Next.js + Tailwind starter that wires up every 
   Developing the monorepo itself? See `MONOREPO.md` in the repo root for structure, local dev, and per-plugin instructions.
 </Callout>
 
+## What's pre-wired
+
+You don't need to install or configure any Atomic Payload plugin yourself. They're all registered in `src/plugins/index.ts` and composed through `pluginComposer` from `@pro-laico/core`, which runs a finalizer last to attach the shared atomic hook and cache revalidation to every collection and global.
+
+| Plugin | What it gives you |
+| --- | --- |
+| [site](/docs/plugins/site) | The Pages, Header, and Footer collections plus the SiteMetaData and Settings globals. |
+| [atomic](/docs/plugins/atomic) | The page-building layer: the child blocks that render content, the default form blocks, and the action blocks. |
+| [styles](/docs/plugins/styles) | The designSet and shortcutSet collections plus the CSS storage globals behind Tailwind-driven styling. |
+| [fonts](/docs/plugins/fonts) | The Font collection for uploading fonts the site then self-hosts. |
+| [icons](/docs/plugins/icons) | Icon uploads and the IconSet collection, with the Requested icons panel and runtime request tracking turned on. |
+| [images](/docs/plugins/images) | The Images and Favicons collections, with blur placeholders generated on upload. |
+| [mux-video](/docs/plugins/mux-video) | The MuxVideo collection for uploading and streaming video through Mux. |
+| [tracking](/docs/plugins/tracking) | The Tracking global for toggling PostHog, Google Tag Manager, or Vercel Analytics from the admin. |
+| [seed](/docs/plugins/seed) | Tooling rather than a content feature: the Seed database dashboard banner and the `POST /api/seed` endpoint. |
+| [richtext](/docs/plugins/richtext) | Tooling rather than a content feature: the preconfigured Lexical editor that `src/payload.config.ts` sets as the `editor`. |
+| [zap](/docs/plugins/zap) | Tooling rather than a content feature: the shared schema layer that flows block shapes into your generated types. |
+| [core](/docs/plugins/core) | Tooling rather than a content feature: `pluginComposer` itself plus the `jsonSchemaPlugin` used during type generation. |
+
+Alongside these, the template registers Payload's form builder and nested docs plugins, Vercel Blob storage for uploads, and a blur placeholder plugin for images, each configured in its own file under `src/plugins/`. The form builder needs no extra wiring: the composer's finalizer runs after every plugin, so the `forms` and `form-submissions` collections it registers pick up the same hooks and cache revalidation automatically, with no slug lists to keep in sync.
+
 ## Setup
 
 <Steps>
@@ -63,7 +84,7 @@ Open `http://localhost:3000/admin` and create the first admin user.
 </Steps>
 
 <Callout type="info">
-  Once running, it's recommended to seed the database from the **Seed database** banner on the main admin dashboard. Seeding wipes and replaces existing data, so once you've seeded, pass `enabled: false` to `seedPlugin()` in `src/plugins/index.ts` to drop the seed endpoint and its dashboard banner.
+  Once running, it's recommended to seed the database from the **Seed database** banner on the main admin dashboard. Seeding wipes and replaces existing data, so once you've seeded, pass `enabled: false` to [`seedPlugin()`](/docs/plugins/seed) in `src/plugins/index.ts` to drop the seed endpoint and its dashboard banner. The [Seeding guide](/docs/features/seeding) walks through the full flow.
 </Callout>
 
 ## Optional integrations
@@ -131,6 +152,8 @@ Send emails programmatically on form submissions using Resend.
 </Accordions>
 
 ## Deploy
+
+Every build runs the template's `prebuild` script first: `pnpm generate:fonts && pnpm generate:icons`. The first downloads your uploaded font files from the URL in `FONT_DOWNLOAD_URL` so the site can self-host them; the second scans `src` and writes the icon-usage manifest that the IconSet admin panel reads (see [Requested icons](/docs/features/icons#requested-icons)).
 
 <Steps>
 

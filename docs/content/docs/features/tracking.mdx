@@ -3,30 +3,68 @@ title: "Tracking"
 description: "Turn analytics providers on and off from the admin, with no env-var juggling across environments."
 ---
 
+Toggle analytics on and off from the Payload admin: flip a switch for PostHog, Google Tag Manager, or Vercel Analytics, paste in the keys, and the right scripts load on the next page view. No environment variables, no redeploy.
+
 ## Overview
 
-Tracking gives you analytics and tag-manager integration that lives inside Payload instead of your environment configuration. A single **`Tracking`** global holds the settings for every supported provider (**PostHog**, **Google Tag Manager**, and **Vercel Analytics**), each behind its own toggle.
+Tracking moves your analytics setup out of environment configuration and into Payload. The plugin registers a single **Tracking** global that holds the settings for every supported provider (**PostHog**, **Google Tag Manager**, and **Vercel Analytics**), each behind its own toggle.
 
-Flipping a provider on or off, or changing its keys, is an edit in the admin rather than an env-var change you have to make in every environment. The optional provider SDKs are only loaded when you actually turn a provider on, so sites that use none pay no cost.
+That makes analytics an editorial decision instead of a deployment one. Turning a provider on, swapping a key, or trying a different tool is an edit in the admin rather than an env-var change you repeat across every environment. And because a provider only loads when its toggle is on, a site that uses none of them ships none of their scripts.
 
 ## How it works
 
-Two pieces work together:
+Three pieces work together:
 
-- **The `Tracking` global**: one document in the admin with a settings group per provider (PostHog, Google Tag Manager, Vercel Analytics) and a per-provider enable toggle in the sidebar. This is the single source of truth for what's on and how it's configured. The PostHog group carries the public key, host, and autocapture settings (an enable toggle plus URL allow/ignore lists).
-- **The composite `TrackingProvider`**: a React provider you mount once at your app root. It reads the `Tracking` global and picks which provider components to render based on the global's flags. Internally it composes the per-provider providers (`PostHogProvider`, `GoogleTagManagerProvider`, `VercelProvider`), each of which conditionally loads its own script only when its toggle is enabled.
+- **The `Tracking` global** is the single source of truth. Each provider gets an on/off toggle in the sidebar (everything starts off), and flipping a toggle on reveals that provider's settings group: PostHog asks for a public key and host (defaulting to `https://us.i.posthog.com`) plus optional autocapture URL allow / ignore lists, Google Tag Manager asks for a container ID, and Vercel Analytics is just the toggle. Each provider's keys are only required while its toggle is on, so you can always save with unused providers switched off.
+- **The `TrackingProvider`** is a client component you mount once at your app root. You fetch the global on the server and pass it in as a prop; the provider reads the toggles and renders only the per-provider components that are switched on (`PostHogProvider`, `GoogleTagManagerProvider`, `VercelProvider`). A provider that's off is never rendered, so its script never loads and nothing gets sent. The three SDKs (`posthog-js`, `@next/third-parties`, `@vercel/analytics`) are optional peer dependencies, so only the ones you actually install end up in your app.
+- **Caching ties them together.** Your layout reads the global through `getCachedTracking`, which caches it under the `tracking` tag. Saving the global in the admin revalidates that tag, so a toggle you flip takes effect on the next page view, with no rebuild.
 
-Because the providers short-circuit when the global says a provider is off, nothing loads unless it's explicitly enabled in the admin.
+<Callout type="info">
+  PostHog loads once, on the first page view outside `/admin`, and relies on autocapture: pageviews and interactions are recorded automatically, narrowed by the optional URL allow / ignore lists.
+</Callout>
 
 ## Using it
 
-**Enable and configure providers in the admin.** Open the **Tracking** global and turn on the toggle for the provider you want (PostHog, Google Tag Manager, or Vercel Analytics). Fill in the keys or IDs it needs. Repeat for each provider you want active. Turning a toggle off stops that provider's script from loading without removing its settings.
+The frontend wiring is one fetch and one wrapper in your root layout. Fetch the **Tracking** global server-side with the cached getter and hand it to `TrackingProvider`. This is exactly how the [atomic-payload template](/docs/templates/atomic-payload) wires it:
 
-**Mount the provider at your app root.** The `TrackingProvider` needs the `Tracking` global threaded in as a prop: fetch it server-side in your root layout and pass it down, otherwise every provider short-circuits and nothing loads. For the exact setup code (fetching the global and wrapping your layout), see the plugin page's Setup section.
+```tsx
+// app/(frontend)/layout.tsx (a Server Component)
+import { draftMode } from 'next/headers'
+
+import { getCachedTracking } from '@pro-laico/tracking/cache'
+import { TrackingProvider } from '@pro-laico/tracking/provider'
+
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const { isEnabled: draft } = await draftMode()
+  const tracking = await getCachedTracking(draft)
+
+  return (
+    <html lang="en">
+      <body>
+        <TrackingProvider tracking={tracking}>{children}</TrackingProvider>
+      </body>
+    </html>
+  )
+}
+```
+
+If `tracking` is missing (the global has never been saved, or you forgot the prop), the provider just renders your app and loads nothing.
+
+From then on, analytics is managed entirely in the admin: open the **Tracking** global, turn a provider on, fill in its keys, and save. Turning a toggle off stops that provider's script from loading without deleting its settings, so you can switch it back on later.
 
 ## Configuration
 
-The `Tracking` global is registered by the tracking plugin, and you can control which pieces it registers. See the [plugin options](/docs/plugins/tracking#options) for the full list.
+Enabling a provider end to end, with PostHog as the example. First install its SDK; the SDKs are optional peers, so add only the ones you turn on (`posthog-js` for PostHog, `@next/third-parties` for Google Tag Manager, `@vercel/analytics` for Vercel Analytics):
+
+```bash
+pnpm add posthog-js
+```
+
+Then, in the admin, open the **Tracking** global, flip on **PostHog**, paste your project's public key, confirm the host (it defaults to `https://us.i.posthog.com`), and save. The save revalidates the cached global, and PostHog loads on the next page view.
+
+The same flow applies to the others: Google Tag Manager asks for its container ID (`GTM-XXXXXXX`), and Vercel Analytics needs only the toggle.
+
+There are no environment variables to set: the plugin reads none, and every key (the PostHog key and host, the GTM container ID) is stored in the global, so the same build works across environments. For the plugin's own options (`enabled`, `includeTrackingGlobal`) and the full export list, see the [plugin options](/docs/plugins/tracking#options).
 
 ## Provided by
 
@@ -37,5 +75,6 @@ The `Tracking` global is registered by the tracking plugin, and you can control 
 ## Related
 
 <Cards>
+  <Card title="Caching & revalidation" href="/docs/concepts/caching" />
   <Card title="Add to an existing project" href="/docs/getting-started/existing-project" />
 </Cards>

@@ -48,7 +48,7 @@ yarn add @pro-laico/icons
 Adding icons to your own Payload + Next.js project.
 
 <Callout type="info">
-  `@pro-laico/core` comes bundled with this plugin — it's a dependency, not a separate install. Its cached reads reach Payload through a config you register once in your Next.js instrumentation hook (`registerPayloadConfig`); see [@pro-laico/core → Setup](/docs/plugins/core#setup) to wire it up.
+  `@pro-laico/core` comes bundled with this plugin: it's a dependency, not a separate install. Its cached reads reach Payload through a config you register once in your Next.js instrumentation hook (`registerPayloadConfig`); see [@pro-laico/core → Setup](/docs/plugins/core#setup) to wire it up.
 </Callout>
 
 <Steps>
@@ -192,59 +192,9 @@ Need a className field (or other fields) on the block? Build a customized one wi
 
 ## Requested-icons usage panel
 
-Icon names live in the CMS, so nothing connects the names your code asks for to the names a set actually defines. A typo in `<Icon name="chevvron" />` just falls back at render time, and nobody knows which names the code really needs. The usage panel closes that loop: a build-time scan collects the names your source requests, an opt-in admin panel diffs them against the set you're editing, and optional runtime tracking adds what production actually requested. The three setup steps build on each other, so you can stop after step one or go all the way.
+Icon names live in the CMS, so nothing ties the names your code requests to the names a set defines. Three pieces close that gap: the `atomic-icons-scan` command (or `@pro-laico/icons/scan` programmatically) writes every literal `<Icon name="...">` in your source to a usage manifest, the opt-in "Requested icons" panel on the IconSet edit view diffs that manifest against the set you're editing, and optional runtime tracking records the names production fails to resolve (including dynamic `name={expr}` lookups the static scan can't see) in the hidden `iconRequest` collection.
 
-<Steps>
-
-<Step>
-### Scan your source for icon names
-
-The `atomic-icons-scan` command (published as the package's command) walks your source tree, finds every literal `<Icon name="...">` usage, and writes `icon-usage-manifest.json`. Run it as a prebuild script or CI step so the manifest stays current:
-
-```bash
-# scan ./src and ./app, write icon-usage-manifest.json
-npx atomic-icons-scan
-
-# explicit roots, output path, component names, and extensions
-npx atomic-icons-scan src app --out icon-usage-manifest.json --component Icon --ext tsx,jsx
-```
-
-Only string literals are collected: `name="x"`, `name='x'`, `name={"x"}`, and a non-interpolated `` name={`x`} ``. A dynamic `name={expr}` (a variable or interpolated value) is intentionally skipped, since a static scan cannot know its value. The names are matched exactly against each icon's kebab-cased `name`, the same way `<Icon>` resolves at runtime.
-
-You can also run the scan programmatically, for example from your own build script:
-
-```ts
-import { scanIconUsages, writeIconUsageManifest, resolveManifestPath } from '@pro-laico/icons/scan'
-
-const { manifest } = scanIconUsages({ roots: ['src', 'app'] })
-writeIconUsageManifest(manifest, resolveManifestPath())
-```
-</Step>
-
-<Step>
-### Show the panel in the admin
-
-Set `iconSetOptions.usagePanel: true` to add the "Requested icons" panel to the IconSet edit view. It reads the manifest server-side and diffs it live against the icons in the set you're editing, flagging the missing names with their `file:line`:
-
-```ts
-import { iconsPlugin } from '@pro-laico/icons'
-
-iconsPlugin({
-  iconSetOptions: {
-    usagePanel: true,
-    // optional: defaults to ICON_USAGE_MANIFEST, then icon-usage-manifest.json at cwd
-    usageManifestPath: 'icon-usage-manifest.json',
-  },
-})
-```
-
-The manifest path resolves in order: the `usageManifestPath` option, then the `ICON_USAGE_MANIFEST` env var, then `icon-usage-manifest.json` in the server's working directory. When no manifest exists yet, the panel renders a hint telling editors to run the scan.
-</Step>
-
-<Step>
-### Track runtime misses (live)
-
-The static scan only sees string literals. To also catch what production actually requests, including dynamic `<Icon name={slug} />` and genuine misses, set `trackRequests: true`:
+Both admin pieces are plugin toggles:
 
 ```ts
 import { iconsPlugin } from '@pro-laico/icons'
@@ -255,16 +205,7 @@ iconsPlugin({
 })
 ```
 
-This registers the `iconRequest` collection and makes `<Icon>` record every name that fails to resolve against the active set. The recorder is throttled (at most once per name per minute per process), deferred via Next's `after()` so it never blocks the response, and best-effort (any failure is swallowed). These live misses, including the dynamic `name={slug}` ones the static scan can't see, show up in the panel's "Missing from this set" list with a live count and last-seen date. The `iconRequest` collection is hidden from the admin nav, since it's surfaced through the panel instead, which also has a "Clear runtime requests" button to wipe it.
-
-<Callout type="info">
-  The runtime recorder is on whenever `trackRequests` is true. To turn it off without changing config (for example in a specific environment), set the `ICON_USAGE_TRACKING=false` env var.
-</Callout>
-
-With all three in place, the panel becomes a three-way compare: names requested in code (the manifest) versus requested in production (`iconRequest`) versus defined in the set you're editing, so missing, dynamic-only, and present names are all visible at a glance.
-</Step>
-
-</Steps>
+For the full walkthrough (scanning, the panel, runtime tracking), see [Requested icons](/docs/features/icons#requested-icons). The scanner and manifest helpers are documented under [Exports](#exports), and the variables they read are under [Environment variables](#environment-variables).
 
 ## Options
 
@@ -276,7 +217,7 @@ With all three in place, the panel becomes a three-way compare: names requested 
     includeIconSet: { type: 'boolean', default: 'true', description: 'When false, only the Icon upload collection is registered and the IconSet grouping collection is skipped.' },
     iconOptions: { type: 'IconCollectionOptions', description: 'Tweaks for the Icon collection: appended fields, additive hooks, and a final shallow-merge escape hatch. See its keys below.' },
     iconSetOptions: { type: 'IconSetCollectionOptions', description: 'Tweaks for the IconSet collection: live preview, additive hooks, set-level fields, per-icon-row fields, the requested-icons panel, and admin label overrides. See its keys below.' },
-    trackRequests: { type: 'boolean', default: 'false', description: 'When true, registers the diagnostic `iconRequest` collection AND makes `<Icon>` record every name that fails to resolve at runtime (throttled to once per name per minute per process, deferred via Next’s `after()` so it never blocks the response, and fire-and-forget). Force-disable the recorder with the `ICON_USAGE_TRACKING=false` env var. See the Requested-icons usage panel section.' },
+    trackRequests: { type: 'boolean', default: 'false', description: 'When true, registers the diagnostic `iconRequest` collection AND makes `<Icon>` record every name that fails to resolve at runtime (throttled to once per name per minute per process, deferred via Next’s `after()` so it never blocks the response, and fire-and-forget). See the Requested-icons usage panel section.' },
     iconRequestOptions: { type: 'IconRequestCollectionOptions', description: 'Additive extension points (admin group, extra fields, hooks) for the `iconRequest` collection. Only meaningful when `trackRequests` is true.' },
   }}
 />
@@ -310,7 +251,7 @@ Extension points for the **IconSet** collection. Each field-injection option lan
     fields: { type: 'Field[]', default: '[]', description: 'Full-width, set-level fields appended below the title/active row. Use for descriptions, relationships, and arrays that need more horizontal space.' },
     iconRowFields: { type: 'Field[]', default: '[]', description: 'Per-icon fields appended to each row in the set, after the existing name + icon fields (e.g. aliases, category).' },
     hooks: { type: "CollectionConfig['hooks']", description: 'Extra hooks merged in after the built-in revalidation hooks. This is also where you opt into the atomicHook snapshot behavior, via hooks.beforeChange.' },
-    usagePanel: { type: 'boolean', default: 'false', description: 'Adds the "Requested icons" panel to the IconSet edit view: a live diff between the icon names your repo requests (collected by the build-time scan into a usage manifest) and the names defined in this set, with the missing ones flagged by their file:line. See the Requested-icons usage panel section.' },
+    usagePanel: { type: 'boolean', default: 'false', description: 'Adds the "Requested icons" panel to the IconSet edit view, diffing the scanned usage manifest (plus runtime misses when tracking is on) against the set being edited. See the Requested-icons usage panel section.' },
     usageManifestPath: { type: 'string', description: 'Path to the usage manifest the panel reads. Falls back to the `ICON_USAGE_MANIFEST` env var, then `icon-usage-manifest.json` resolved against the server’s working directory. Only meaningful when usagePanel is true.' },
     usageScanCommand: { type: 'string', default: "'npx atomic-icons-scan'", description: 'Command shown in the panel’s empty state, telling editors how to generate the manifest. Only meaningful when usagePanel is true.' },
     useAsTitle: { type: 'string', default: "'title'", description: 'Field shown as the document title in the admin.' },
@@ -347,6 +288,17 @@ iconsPlugin({
   },
 })
 ```
+
+## Environment variables
+
+The usage panel and the runtime recorder read two variables; neither is required.
+
+| Variable | Purpose |
+| --- | --- |
+| `ICON_USAGE_MANIFEST` | Overrides the path to the usage manifest the panel and the scan helpers read and write. An explicit `usageManifestPath` option (or path argument) still wins; with neither set, `icon-usage-manifest.json` in the server's working directory is used. |
+| `ICON_USAGE_TRACKING` | Set to `false` to turn the runtime miss recorder off without a config change, even while `trackRequests` is `true`. |
+
+Live preview needs nothing extra here: the default `iconSetOptions.livePreviewUrl` is `@pro-laico/core`'s `generateLivePreviewPath`, which already reads `PREVIEW_SECRET` and `NEXT_PUBLIC_SERVER_URL`.
 
 ## Caching & revalidation
 
@@ -639,7 +591,19 @@ const options = await getCachedIconOptions(true, iconSet)`,
   admin: { components: { Field: { path: '@pro-laico/icons/admin/iconSelect' } } },
 }`,
     },
-    IconLabelPath: { type: 'constant', location: '@pro-laico/icons', description: 'The admin import-map path for the IconSet row label component. Re-export it from your `ui` barrel so the generated import map can resolve it.' },
+    IconRowLabel: {
+      type: 'component',
+      location: '@pro-laico/icons/admin/iconRowLabel',
+      description: 'Client component that labels each icon row in the IconSet editor: the row number plus a pill showing the row’s title-cased `name` (or "Add Name" while empty). The plugin wires it as the icons array’s `RowLabel` for you; `IconLabelPath` is its import-map path. Default export.',
+      returns: { type: 'JSX.Element', description: 'The row label for one icons-array row, read from the row data via `useRowLabel`.' },
+      example: `// Already wired by the plugin; to reuse it on your own array field:
+{
+  type: 'array',
+  name: 'icons',
+  admin: { components: { RowLabel: '@pro-laico/icons/admin/iconRowLabel' } },
+}`,
+    },
+    IconLabelPath: { type: 'constant', location: '@pro-laico/icons', description: 'The admin import-map path for `IconRowLabel` (the string `@pro-laico/icons/admin/iconRowLabel`). Re-export it from your `ui` barrel so the generated import map can resolve it.' },
   }}
 />
 
@@ -722,7 +686,7 @@ const usages = extractIconUsages(fileSource)`,
     IconUsagePanel: {
       type: 'component',
       location: '@pro-laico/icons/admin/iconUsagePanel',
-      description: 'The server `UIField` that renders the "Requested icons" panel. Reads the build-time manifest (and the runtime `iconRequest` misses when tracking is on) and diffs them against the set you’re editing. Wired for you by `usagePanel: true`; you only import its path constant. Default and named export.',
+      description: 'The server `UIField` that renders the "Requested icons" panel. Wired for you by `usagePanel: true`; you only import its path constant (`IconUsagePanelPath`). Default and named export.',
       params: {
         '...props': { type: 'UIFieldServerComponent props (manifestPath?, scanCommand?)', description: 'The `serverProps` Payload passes through, set by `createIconSetCollection` from `usageManifestPath` / `usageScanCommand`.' },
       },

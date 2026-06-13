@@ -84,17 +84,18 @@ const getCachedArticles = createGetCachedPages('articles')
 
 ### Revalidation hooks & factories
 
-Cached reads only stay correct because Payload hooks bust the matching tags when documents change. `core` ships two factories:
+Cached reads only stay correct because Payload hooks bust the matching tags when documents change. `core` ships factories for each hook phase:
 
-- **`createRevalidateCache(handlers)`** builds a `beforeChange` hook that dispatches to a per-slug handler when a document is written, revalidating the tags that depend on it.
+- **`createRevalidateCacheAfterChange(handlers)`** (recommended) builds an `afterChange` hook that dispatches to a per-slug handler after a document write commits, revalidating the tags that depend on it.
 - **`createRevalidateCacheOnDelete(handlers)`** is the `afterDelete` counterpart, for revalidating when a document is removed.
+- **`createRevalidateCache(handlers)`** is the `beforeChange` variant. Prefer the `afterChange` one for plain collections; see the warning below for why.
 
 Each takes a `slug → handler` map, so you wire revalidation for exactly the collections you have:
 
 ```ts
-import { createRevalidateCache, createRevalidateCacheOnDelete, revalidateTag } from '@pro-laico/core'
+import { createRevalidateCacheAfterChange, createRevalidateCacheOnDelete, revalidateTag } from '@pro-laico/core'
 
-const revalidateCache = createRevalidateCache({
+const revalidateCacheAfterChange = createRevalidateCacheAfterChange({
   pages: async ({ data }) => {
     await revalidateTag('pages', false)
     await revalidateTag('page', data?.href, false)
@@ -109,7 +110,7 @@ const revalidateCacheOnDelete = createRevalidateCacheOnDelete({
 })
 ```
 
-The slug-bound default hooks (exported from `@pro-laico/core` as `revalidateCacheCollection` and `revalidateCacheOnDelete`) stay bound to the conventional slug set, so existing imports keep working unchanged.
+The slug-bound default hooks (exported from `@pro-laico/core` as `revalidateCacheCollectionAfterChange`, `revalidateCacheCollection`, and `revalidateCacheOnDelete`) stay bound to the conventional slug set, so existing imports keep working unchanged.
 
 The simplest, app-level path is `pluginComposer` from `@pro-laico/core`. You pass it every plugin, and the finalizer it appends attaches the revalidation hooks to every collection and global for you (plus the shared `atomicHook` to the atomic-content collections). Because that finalizer runs last, it covers collections registered by third-party plugins too, so there are no slug lists to maintain:
 

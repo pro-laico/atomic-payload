@@ -5,9 +5,9 @@ description: "Optimized image uploads with blur placeholders, plus Mux video upl
 
 ## Overview
 
-Media in Atomic Payload covers two things: **optimized image uploads** and **Mux video**.
+Media in Atomic Payload is split by how files are served. Images are **static uploads** handled by `@pro-laico/images`: files live in Payload upload collections and render as optimized images. Video is **Mux-backed streaming** handled by `@pro-laico/mux-video`: uploads stream through Mux's API and play back from Mux on the front end. Reach for the images plugin for anything you would render as a picture (photos, graphics, favicons), and for the Mux plugin for anything that plays, instead of uploading video files as static media.
 
-Images arrive as a general-purpose upload collection that defaults to WebP with a sensible set of `imageSizes`, plus optional blur-data-URL placeholders for LQIP-style loading. A separate favicons collection keeps favicons out of your main image library. Video is handled by Mux: uploads stream through Mux's API and play back from Mux on the front end. Both plugins also ship **child blocks**, so editors can drop an image or a video straight into Atomic content.
+Images arrive as a general-purpose upload collection that defaults to WebP with a sensible set of `imageSizes`, plus optional blur-data-URL placeholders for LQIP-style loading. A separate favicons collection keeps favicons out of your main image library. Both plugins also ship **child blocks**, so editors can drop an image or a video straight into Atomic content.
 
 ## How it works
 
@@ -23,6 +23,8 @@ Blur placeholders are opt-in. `@oversightstudio/blur-data-urls` is an optional p
 
 The plugin also ships the **`ImageChild`** block, which lets editors drop an image into Atomic blocks. It's exposed from the `@pro-laico/images/blocks/imageChild` subpath as the `createImageBlock` factory and the prebuilt `Image` block (not from the package root), and renders via `@pro-laico/atomic/children`.
 
+Use `ImageChild` when an editor places an image inside page content: the block points at an upload in `Images` and adds per-placement display options like an alt override, lazy or eager loading, and a stored size version. When you need an image in your own schema, reference the collection directly instead, with an `upload` field whose `relationTo` is `images` on your collection or global, the same pattern the bundled `FaviconField` uses for favicons.
+
 ### Video
 
 `@pro-laico/mux-video` is a thin wrapper around `@oversightstudio/mux-video` that:
@@ -31,7 +33,7 @@ The plugin also ships the **`ImageChild`** block, which lets editors drop an ima
 2. Composes the upstream plugin with Atomic Payload defaults: admin thumbnail mode, a CORS origin derived from `NEXT_PUBLIC_SERVER_URL`, and env-driven Mux credentials.
 3. Ships a **`VideoChild`** block so editors can drop a Mux video into Atomic content. Its renderer mounts the `@mux/mux-video-react` player and pulls playback from Mux via `@pro-laico/atomic/children`.
 
-Mux requires a collection it can extend, so this package ships one in the shape every Atomic Payload site needs and normalizes the surrounding config.
+Mux requires a collection it can extend, so this package ships one with the `mux-video` slug and fills in the upstream plugin's setup around it: it reads your Mux API tokens and webhook signing secret from `MUX_TOKEN_ID`, `MUX_TOKEN_SECRET`, and `MUX_WEBHOOK_SIGNING_SECRET` (and warns at startup if the tokens are missing), derives the upload CORS origin from `NEXT_PUBLIC_SERVER_URL`, and turns on image thumbnails in the admin list view by default.
 
 ## Using it
 

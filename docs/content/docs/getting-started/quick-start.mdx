@@ -3,7 +3,7 @@ title: "Quick start"
 description: "Scaffold a new Atomic Payload project with the CLI."
 ---
 
-Scaffold a brand-new Atomic Payload project and land on a running dev server.
+Scaffold a brand-new Atomic Payload project and land on a running dev server. The full template gives you a working Payload admin and Next.js frontend with every Atomic Payload plugin wired up: you create pages in the admin and they render immediately. The minimal examples give you one plugin in isolation, ready to poke at.
 
 ## Prerequisites
 
@@ -95,8 +95,13 @@ Open `.env` and fill in the four required values: a MongoDB connection string, a
 ```bash
 pnpm generate:types        # src/payload-types.ts + augment
 pnpm generate:importmap    # src/app/(payload)/admin/importMap.js
+pnpm generate:icons        # icon-usage manifest for the IconSet admin panel
 pnpm dev
 ```
+
+<Callout type="info">
+  `generate:icons` scans your source for `<Icon name="…" />` usages and writes `icon-usage-manifest.json`, which powers the "Requested icons" panel in the IconSet admin view. It also runs automatically before every `pnpm build` (the `prebuild` script), so you only run it by hand when you want the panel fresh in dev.
+</Callout>
 
 </Tab>
 

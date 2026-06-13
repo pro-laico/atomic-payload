@@ -48,7 +48,7 @@ You usually get `@pro-laico/core` transitively, and the [atomic-payload template
 <Step>
 ### Compose your plugins with `pluginComposer`
 
-`pluginComposer` is the recommended way to assemble an Atomic Payload app's plugins. You pass it every plugin (including third-party ones), plus the shared `atomicHook`, and it returns a `Plugin[]` you drop straight into `buildConfig`: the plugins you gave it, followed by a finalizer it appends. Because the finalizer runs last, it sees the fully-assembled config and wires the cross-cutting concerns for you: it attaches the shared `atomicHook` to the atomic-content collections, and attaches the revalidation hooks to every collection and global. There are no slug lists to keep in sync.
+Pass `pluginComposer` every plugin (including third-party ones) plus the shared `atomicHook`, and it returns a `Plugin[]` for `buildConfig`. A finalizer it appends runs last over the fully-assembled config, attaching the `atomicHook` to the atomic-content collections and the revalidation hooks to every collection and global (third-party ones included), with no slug lists to keep in sync. This is how the [atomic-payload template](/docs/templates/atomic-payload) wires its plugins.
 
 ```ts
 import { buildConfig } from 'payload'
@@ -70,14 +70,12 @@ export default buildConfig({
   plugins,
 })
 ```
-
-This is how the [atomic-payload template](/docs/templates/atomic-payload) wires its plugins. The finalizer running last means it also reaches collections registered by third-party plugins (such as `@payloadcms/plugin-form-builder`'s `forms` and `form-submissions`), so they get revalidation without you naming them.
 </Step>
 
 <Step>
 ### Or wire `revalidationPlugin` directly
 
-When you want explicit control instead of the broad composer wiring, reach for `revalidationPlugin`: it attaches cache-revalidation hooks to only the collection and global slugs you name. `pluginComposer` uses these same hooks under the hood, so this is the lower-level building block. Add it to `buildConfig` like any other plugin:
+For explicit control instead of the broad composer wiring, `revalidationPlugin` attaches the cache-revalidation hooks to only the collection and global slugs you name. `pluginComposer` uses these same hooks under the hood:
 
 ```ts
 import { buildConfig } from 'payload'
@@ -126,16 +124,6 @@ src/payload-types.augment.d.ts
 </Steps>
 
 The rest of the package (fields, hooks, cache helpers, URL and metadata utilities, and the admin / frontend components) is imported directly where you need it. See the [Exports](#exports) table for the full surface and the import path for each item.
-
-## Caching & revalidation
-
-`@pro-laico/core` ships the caching machinery the rest of Atomic Payload reads through, but no data getters of its own. The pieces it owns:
-
-- `withCache` and `mt` (from `@pro-laico/core/cache`): the primitive every package getter wraps its fetch with, plus the merge-tags helper that builds the dependency-tag strings. Server-only.
-- The revalidation hooks and factories (`revalidateCacheCollection`, `revalidateCacheCollectionAfterChange`, `revalidateCacheOnDelete`, `revalidateCacheGlobalAfterChange`, and the `createRevalidateCache*` factories): `revalidationPlugin` attaches them to the slugs you name so saving or deleting a document revalidates the matching tags.
-- `revalidateTag`: the safe `next/cache` wrapper used in server actions and the admin deploy control.
-
-See [Caching & revalidation](/docs/concepts/caching) for how the tags are derived and how a read-side tag matches the revalidate side.
 
 ## Options
 
@@ -218,11 +206,11 @@ revalidationPlugin({
   }}
 />
 
-The `blocks` option is an object of named block-reference lists (each a `(string | undefined)[]` of block slugs). Pass the `.options` array each plugin exports:
-
 <Accordions>
 
-<Accordion title="blocks keys">
+<Accordion title="Advanced: block lists">
+
+The `blocks` option is an object of named block-reference lists (each a `(string | undefined)[]` of block slugs). Pass the `.options` array each plugin exports:
 
 <TypeTable
   type={{
@@ -264,14 +252,25 @@ jsonSchemaPlugin({
 
 ## Environment variables
 
-`@pro-laico/core`'s URL and preview helpers read these when present. They're optional (each has a sensible fallback), but setting them keeps generated links and preview routes pointing at the right place.
+`@pro-laico/core` reads these at runtime. Most have sensible fallbacks; set the ones the features you use depend on.
 
-| Variable | Purpose |
-| --- | --- |
-| `NEXT_PUBLIC_SERVER_URL` | The site's base URL, used by `getServerSideURL` for absolute links and metadata. Falls back to `http://localhost:3000`. |
-| `VERCEL_PROJECT_PRODUCTION_URL` | Used as the base URL on Vercel when `NEXT_PUBLIC_SERVER_URL` isn't set. |
-| `PREVIEW_SECRET` | Validates draft-preview requests handled by the preview route handlers and `generateLivePreviewPath`. |
-| `VERCEL_DEPLOY_WEBHOOK_URL` | The deploy hook the admin "trigger deploy" control posts to, when you use the site triggers component. |
+| Variable | Required? | Purpose |
+| --- | --- | --- |
+| `NEXT_PUBLIC_SERVER_URL` | No | The site's base URL, used by `getServerSideURL` for absolute links and metadata. Falls back to the Vercel production URL, then `http://localhost:3000`. |
+| `VERCEL_PROJECT_PRODUCTION_URL` | No | Set by Vercel. Used as the base URL when `NEXT_PUBLIC_SERVER_URL` isn't set. |
+| `PREVIEW_SECRET` | For previews | Validates draft-preview requests: `generateLivePreviewPath` appends it to the preview URL and the preview route handler rejects mismatches. |
+| `VERCEL_DEPLOY_WEBHOOK_URL` | For the deploy control | The deploy hook the admin "trigger deploy" control (the site triggers component) posts to. |
+| `LOGS` | No | Set to `true` to print the package's cache, revalidation, and preview debug logs. |
+
+## Caching & revalidation
+
+`@pro-laico/core` ships the caching machinery the rest of Atomic Payload reads through, but no data getters of its own. The pieces it owns:
+
+- `withCache` and `mt` (from `@pro-laico/core/cache`): the primitive every package getter wraps its fetch with, plus the merge-tags helper that builds the dependency-tag strings. Server-only.
+- The revalidation hooks and factories (`revalidateCacheCollection`, `revalidateCacheCollectionAfterChange`, `revalidateCacheOnDelete`, `revalidateCacheGlobalAfterChange`, and the `createRevalidateCache*` factories): `revalidationPlugin` attaches them to the slugs you name so saving or deleting a document revalidates the matching tags.
+- `revalidateTag`: the safe `next/cache` wrapper used in server actions and the admin deploy control.
+
+See [Caching & revalidation](/docs/concepts/caching) for how the tags are derived and how a read-side tag matches the revalidate side.
 
 ## Exports
 
@@ -839,7 +838,11 @@ export default async function RootLayout({ children }) {
   )
 }`,
     },
-    'slug field component': { type: 'component', location: '@pro-laico/core/ui/fields/slug', description: 'The admin UI component for the slug field (referenced via SlugPath).' },
+    SlugComponent: {
+      type: 'component',
+      location: '@pro-laico/core/ui/fields/slug',
+      description: "The slug field admin UI (the default export, a client component). It renders the slug text input with a Lock / Unlock button that toggles the paired slugLock checkbox; while locked, the input is read-only and the slug stays auto-formatted from the watched field (the `fieldToUse` you gave `slugField`). `slugField` wires it in for you by pointing the field's admin component path at this subpath (the `SlugPath` constant) with the matching `clientProps`, so you rarely import it yourself.",
+    },
     'siteTriggers component': { type: 'component', location: '@pro-laico/core/ui/root/siteTriggers', description: 'The admin component for the deploy / site triggers (referenced via SiteTriggersPath).' },
     'APF admin components': { type: 'component', location: '@pro-laico/core/admin/controls', description: 'The APF controls, field, and label admin components (also at /admin/field and /admin/label, referenced via the APF path constants).' },
     'path constants': { type: 'constant', location: '@pro-laico/core', description: "String paths Payload's importMap resolves to admin components: APFControlsPath, APFieldPath, APFieldLabelPath, SiteTriggersPath, and SlugPath." },

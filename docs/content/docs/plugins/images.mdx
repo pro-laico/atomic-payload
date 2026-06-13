@@ -168,12 +168,6 @@ The block lets the editor choose the image, a stored size, alt text, and `next/i
   The Image block is **not** re-exported from the package root. Import `createImageBlock` or `Image` from the `@pro-laico/images/blocks/imageChild` subpath.
 </Callout>
 
-## Caching & revalidation
-
-The package ships one cached read, `getCachedImage`, from the `@pro-laico/images/cache` subpath. Give it an image document id (and an optional size name) and it returns that upload's URL, reading Payload once instead of on every render. The [image block](#the-image-block) calls it so the block looks up the chosen image by id, which keeps the rest of the page cached even when the image changes.
-
-The Images collection revalidates the matching tag for you: saving an image refreshes its cached URL, and deleting one clears it, so the next page render serves the new URL. See [Caching & revalidation](/docs/concepts/caching) for how the tags work.
-
 ## Options
 
 `imagesPlugin(options?)` accepts:
@@ -196,6 +190,16 @@ imagesPlugin({
   // imagesOptions and faviconsOptions are unset by default (no overrides merged)
 })
 ```
+
+## Environment variables
+
+`@pro-laico/images` reads no environment variables.
+
+## Caching & revalidation
+
+The package ships one cached read, `getCachedImage`, from the `@pro-laico/images/cache` subpath. Give it an image document id (and an optional size name) and it returns that upload's URL, reading Payload once instead of on every render. The [image block](#the-image-block) calls it so the block looks up the chosen image by id, which keeps the rest of the page cached even when the image changes.
+
+The Images collection revalidates the matching tag for you: saving an image refreshes its cached URL, and deleting one clears it, so the next page render serves the new URL. See [Caching & revalidation](/docs/concepts/caching) for how the tags work.
 
 ## Exports
 

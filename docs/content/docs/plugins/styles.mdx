@@ -41,18 +41,7 @@ yarn add @pro-laico/styles
 
 ## How the CSS reaches your app
 
-The plugin registers two collections you edit in the admin, plus two hidden **CSS storage globals** (`draftStorage` and `publishedStorage`). Those collections are **`designSet`** (your theme: colors, spacing, animations, prose, and other tokens) and **`shortcutSet`** (reusable class groupings, like a Tailwind component class).
-
-When you save a design set, shortcut set, or any document that carries authored classes, a `beforeChange` hook regenerates the stylesheet with UnoCSS and writes it into those storage globals. Your frontend reads the stored CSS and injects it into the page `<head>`, and reads the active design set for its `<html>` / `<body>` class names. Switching which design set is active swaps your whole look (no rebuild).
-
-You wire the CSS hook one of two ways, and the Setup tabs below show both:
-
-- **Standalone**: pass a `getCached` getter (from `createCssGetCached`) and the plugin attaches its own `cssHook`, so this package processes CSS entirely on its own.
-- **With the template**: pass the project's `atomicHook` (from `@pro-laico/atomic`), which handles CSS along with the rest of the runtime.
-
-<Callout type="warn">
-  The CSS hook collects **every field whose name ends in `ClassName`** (recursively, including fields nested in blocks) and feeds those values to UnoCSS. That's how `ClassNameField` works (it names its field `…ClassName`), but it also means a field of your own ending in `ClassName` (e.g. `heroClassName`) gets swept up and treated as atomic classes whether you meant it to or not. Use `ClassNameField` when you *want* a field processed, and avoid the `ClassName` suffix on any other field.
-</Callout>
+The plugin registers the **`designSet`** (theme tokens) and **`shortcutSet`** (reusable class groupings) collections, plus two hidden CSS storage globals. Saving a set, or any document carrying authored classes, runs a `beforeChange` hook that regenerates the stylesheet with UnoCSS into those globals; your frontend reads the stored CSS into `<head>` and the active design set's `<html>` / `<body>` class names, so switching the active set swaps the whole look with no rebuild. The [Setup](#setup) tabs below show the two ways to wire the hook: standalone via `getCached`, or through the template's `atomicHook`.
 
 ## Setup
 
@@ -61,7 +50,7 @@ You wire the CSS hook one of two ways, and the Setup tabs below show both:
 <Tab value="Standalone">
 
 <Callout type="info">
-  `@pro-laico/core` comes bundled with this plugin — it's a dependency, not a separate install. Its cached reads reach Payload through a config you register once in your Next.js instrumentation hook (`registerPayloadConfig`); see [@pro-laico/core → Setup](/docs/plugins/core#setup) to wire it up.
+  `@pro-laico/core` comes bundled with this plugin; it's a dependency, not a separate install. Its cached reads reach Payload through a config you register once in your Next.js instrumentation hook (`registerPayloadConfig`); see [@pro-laico/core → Setup](/docs/plugins/core#setup) to wire it up.
 </Callout>
 
 Adding styles to your own Payload + Next.js project, with no `@pro-laico/atomic`.
@@ -71,7 +60,7 @@ Adding styles to your own Payload + Next.js project, with no `@pro-laico/atomic`
 <Step>
 ### Add the plugin to your Payload config
 
-`generateLivePreviewPath` (shared by both collections for live preview) is optional. Leave it out and the plugin uses `@pro-laico/core`'s `generateLivePreviewPath`, which builds the URL from `PREVIEW_SECRET` + `NEXT_PUBLIC_SERVER_URL`. Pass your own to override it. Pass a `getCached` getter (built with `createCssGetCached`) to attach the standalone CSS hook so this package generates the stylesheet itself:
+Pass a `getCached` getter (built with `createCssGetCached`) so the plugin attaches its standalone CSS hook and generates the stylesheet itself. `generateLivePreviewPath` is optional: omit it to use `@pro-laico/core`'s default, or pass your own.
 
 ```ts
 import { buildConfig } from 'payload'
@@ -144,6 +133,10 @@ export const Hero: Block = {
 ```
 
 Attach the same standalone hook to that collection's `beforeChange` so saving a page regenerates the stylesheet with its classes. `createCssHook(getCached)` builds it.
+
+<Callout type="warn">
+  The CSS hook collects **every field whose name ends in `ClassName`** (recursively, including fields nested in blocks). That's how `ClassNameField` works, but it also means a field of your own ending in `ClassName` (e.g. `heroClassName`) gets swept up and treated as atomic classes whether you meant it to or not. Avoid the suffix on fields you don't want processed.
+</Callout>
 </Step>
 
 <Step>
@@ -238,16 +231,6 @@ Mark one design set active and save. The `atomicHook` regenerates the stylesheet
 
 </Tabs>
 
-## Caching & revalidation
-
-The reads this package ships (`@pro-laico/styles/cache`) are server-side, wrapped in `unstable_cache` so a page doesn't re-query Payload on every render:
-
-- `getCachedDesignSet(draft)` / `getCachedShortcutSet(draft)`: the active sets.
-- `getCachedSiteCSS(draft)`: the generated stylesheet you inject into `<head>`.
-- `getCachedAtomicClasses(draft)`: every stored `*ClassName` value across your pages.
-
-When you save a design set, shortcut set, or page, the `cssHook` regenerates the stylesheet and revalidates the matching tags (`designSet` / `shortcutSet`, `atomic-classes`, `site-css`), and the plugin revalidates on delete, so the next read serves fresh CSS and live preview updates. See [Caching & revalidation](/docs/concepts/caching) for how the tags and `withCache` work.
-
 ## Options
 
 `stylesPlugin(options)` accepts:
@@ -339,6 +322,20 @@ stylesPlugin({
   registerTypescriptSchema: true,
 })
 ```
+
+## Environment variables
+
+`@pro-laico/styles` reads no environment variables of its own. Live preview inherits `PREVIEW_SECRET` and `NEXT_PUBLIC_SERVER_URL` through the default `generateLivePreviewPath` from [@pro-laico/core](/docs/plugins/core).
+
+## Caching & revalidation
+
+The reads this package ships (`@pro-laico/styles/cache`) are server-side, wrapped in `unstable_cache` so a page doesn't re-query Payload on every render:
+
+- `getCachedDesignSet(draft)` / `getCachedShortcutSet(draft)`: the active sets.
+- `getCachedSiteCSS(draft)`: the generated stylesheet you inject into `<head>`.
+- `getCachedAtomicClasses(draft)`: every stored `*ClassName` value across your pages.
+
+When you save a design set, shortcut set, or page, the `cssHook` regenerates the stylesheet and revalidates the matching tags (`designSet` / `shortcutSet`, `atomic-classes`, `site-css`), and the plugin revalidates on delete, so the next read serves fresh CSS and live preview updates. See [Caching & revalidation](/docs/concepts/caching) for how the tags and `withCache` work.
 
 ## Exports
 

@@ -51,7 +51,7 @@ pnpm dev
 ```
 
 <Callout type="info">
-  `pnpm generate:icons` scans `src` for the app's icon component (`IconChildTile`) and writes the names it requests into `icon-usage-manifest.json`, which the "Requested icons" panel reads. It runs automatically before `pnpm build` (via the `prebuild` script), so you only need to run it by hand to populate the panel in dev. The manifest is generated and gitignored, so it is not committed.
+  `pnpm generate:icons` scans `src` for the app's icon component and writes the names it requests into `icon-usage-manifest.json`, which the "Requested icons" panel reads. The scan looks for `<Icon>` tags by default; this demo renders icons through its own `IconChildTile` component, so its script passes `--component IconChildTile` (see `package.json`). It runs automatically before `pnpm build` (via the `prebuild` script), so you only need to run it by hand to populate the panel in dev. The manifest is generated and gitignored, so it is not committed.
 </Callout>
 
 <Callout type="info">
