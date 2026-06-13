@@ -3,7 +3,7 @@ title: "Forms"
 description: "Build fully custom forms with per-field Sanitation, Validation, and Rate Limiting."
 ---
 
-Build fully customizable forms directly in the Payload admin, with **Sanitation, Validation, and Rate Limiting (SVR)** that runs server-side before a submission is accepted.
+Build fully customizable forms directly in the Payload admin, protected by **Sanitation, Validation, and Rate Limiting (SVR for short)**: a server-side pipeline that cleans, checks, and throttles every submission before it is accepted.
 
 ## Overview
 
@@ -19,7 +19,11 @@ SVR is split into three concerns, each expressed as a block you attach to a form
 - **Validation**: verifies values meet your rules and rejects bad submissions.
 - **Rate Limiting**: throttles how often a form can be submitted.
 
-Like Actions, **SVR uses a block structure, so you can extend it by adding a new SVR block.** The block list in the dashboard stays the source of truth for how a form behaves, so there is no separate config to keep in sync.
+Like Actions, **SVR uses a block structure**: every rule is two halves with the same name, a block that holds the editor-facing options and a server function the pipeline runs when it reaches that block. The built-in Trim Text sanitation block, for example, pairs a block with `trimType` and `trimCharacters` fields with a server function that strips those characters from the input. The block list in the dashboard stays the source of truth for how a form behaves, so there is no separate config to keep in sync.
+
+<Callout type="info">
+Custom SVR blocks are not fully supported yet. `formsPlugin` accepts a `formBlocks` option that registers extra blocks on your Payload config, but the admin pickers and the server-side function map that executes submissions only know the built-in SVR blocks, so a custom block will not appear in the dashboard or run in the pipeline. Treat the built-ins as the supported set.
+</Callout>
 
 Submissions run through a validated, server-side pipeline. The submit-form action and its input blocks feed the `submitForm` server function, which loads the form's stored blocks and runs the rate-limiting, sanitation, and validation pipeline before it writes the submission. Only once every SVR check passes does the submission reach Payload.
 
@@ -29,7 +33,7 @@ In the Payload admin:
 
 1. Add a submit-form action block where you want the form, and add an input child block for each field the form collects.
 2. Attach SVR blocks to the form and to individual inputs: a Sanitation block to clean a value, a Validation block to enforce rules, a Rate Limiting block to throttle submissions.
-3. To go beyond the built-ins, add a new SVR block; the pipeline picks it up automatically because the dashboard's block list drives behavior.
+3. Mix and match the built-ins per form and per input; each block's fields control how that rule behaves, like which characters to trim or how often the form can be submitted.
 
 All of this works alongside the rest of Atomic Payload's block functionality, so form fields can be styled and made interactive the same way as any other block.
 

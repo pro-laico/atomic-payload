@@ -56,7 +56,7 @@ This package isn't a `buildConfig` plugin you add to the `plugins` array. Instea
 <Step>
 ### Set the default editor
 
-`defaultLexical` is an opinionated Lexical preset (bold/italic/headings/lists/links and a fixed + inline toolbar) tuned for Atomic Payload. Set it as the `editor` in your Payload config so every rich-text field in the admin uses it:
+`defaultLexical` is an opinionated Lexical preset (bold/italic/headings/lists/links, fixed and inline toolbars). Set it as the `editor` in your Payload config, exactly as the template does:
 
 ```ts
 import { buildConfig } from 'payload'
@@ -68,7 +68,7 @@ export default buildConfig({
 })
 ```
 
-The template sets it exactly this way (`editor: defaultLexical` in its `payload.config.ts`). Want internal links to point at collections other than `pages`? Build the preset with the `createDefaultLexical` factory and pass `enabledCollections`:
+To let internal links target collections other than `pages`, build the preset with the `createDefaultLexical` factory instead:
 
 ```ts
 import { createDefaultLexical } from '@pro-laico/richtext/default-lexical'
@@ -80,7 +80,7 @@ const editor = createDefaultLexical({ enabledCollections: ['pages', 'posts'] })
 <Step>
 ### Add the rich-text block
 
-`RichText` is a ready-made Payload block (slug `RichTextChild`) you can drop into any `blocks` field. It carries a **Content** tab with a required rich-text area:
+`RichText` is a ready-made block (slug `RichTextChild`) carrying a **Content** tab with a required rich-text area. Drop it into any `blocks` field:
 
 ```ts
 import { RichText } from '@pro-laico/richtext'
@@ -92,7 +92,7 @@ const PageBlocks = {
 }
 ```
 
-To add your own fields to the Content tab (for example a CSS class field) use the `createRichTextBlock` factory instead of the pre-built `RichText` value. Pass `prependFields` / `appendFields` (the `RichTextBlockOptions` type) and they're spread at the start / end of the tab:
+To add your own fields to the Content tab, build the block with the `createRichTextBlock` factory and pass `prependFields` / `appendFields` instead:
 
 ```ts
 import type { Block } from 'payload'
@@ -107,16 +107,14 @@ const RichTextWithClassName: Block = createRichTextBlock({
 ```
 
 <Callout type="info">
-  Using the [`@pro-laico/atomic`](/docs/plugins/atomic) child-blocks plugin? It already includes `RichTextChild` as one of its default blocks and lets you weave fields in through its `blockFields` option, so you don't register the block separately. That's how the template adds the `prose` class field above.
+  The [`@pro-laico/atomic`](/docs/plugins/atomic) child-blocks plugin already includes `RichTextChild` and weaves fields in through its `blockFields` option (how the template adds the `prose` class field above), so you don't register the block separately.
 </Callout>
 </Step>
 
 <Step>
 ### Render it on the frontend
 
-The package ships `RichTextChild`, a React component that renders the block's serialized Lexical content as JSX (it uses `@payloadcms/richtext-lexical/react` under the hood and resolves internal links to their `href`). It's a child-block renderer: the render pipeline hands it the `block` (whose `.richText` holds the serialized state) plus a `pt` pass-through, so you don't pass content into it by hand.
-
-If you're using [`@pro-laico/atomic`](/docs/plugins/atomic), this is already wired up. `RichTextChild` is registered as the renderer for the `RichTextChild` block, so rendering a page's `children` through atomic's `RenderChildren` draws your rich text automatically:
+`RichTextChild` is the block's React renderer: the render pipeline hands it the block and a `pt` pass-through, so you never pass content in by hand. With [`@pro-laico/atomic`](/docs/plugins/atomic) it's already registered for the block, so rendering a page's `children` through `RenderChildren` draws your rich text automatically:
 
 ```tsx
 import { RenderChildren } from '@pro-laico/atomic/children/render'
@@ -130,7 +128,7 @@ export default function Page({ page }: { page: { children: any } }) {
 }
 ```
 
-The component sets no styling of its own, so reach for Tailwind's typography (`prose`) classes, via a class field on the block or your own wrapper, to style the output.
+The component sets no styling of its own; style the output with Tailwind's typography (`prose`) classes via a class field on the block or your own wrapper.
 </Step>
 
 </Steps>
@@ -169,6 +167,10 @@ createDefaultLexical({
   enabledCollections: ['pages'],
 })
 ```
+
+## Environment variables
+
+`@pro-laico/richtext` reads no environment variables.
 
 ## Exports
 

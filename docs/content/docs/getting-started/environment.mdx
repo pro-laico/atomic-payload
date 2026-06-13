@@ -73,8 +73,9 @@ These are off by default, so wire them up only if you need them. Full setup step
   - **Mux** (`MUX_TOKEN_ID`, `MUX_TOKEN_SECRET`, `MUX_WEBHOOK_SIGNING_SECRET`): upload and serve video through the admin dashboard.
   - **Resend** (`RESEND_API_KEY`): send transactional email on form submissions.
   - **Vercel deploy webhook** (`VERCEL_DEPLOY_WEBHOOK_URL`): trigger a redeploy from the admin UI.
+  - **Icon usage tracking** (`ICON_USAGE_MANIFEST`, `ICON_USAGE_TRACKING`): override where the icon-usage manifest is read from, or set `ICON_USAGE_TRACKING=false` to stop recording runtime icon misses. Both optional; the defaults work out of the box.
 
-  See **Template Setup** in the template README for the step-by-step account and token configuration for each.
+  See the [Atomic Payload template guide](/docs/templates/atomic-payload) for the step-by-step account and token configuration for each.
 </Callout>
 
 ## Next

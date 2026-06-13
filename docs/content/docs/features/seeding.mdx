@@ -1,0 +1,73 @@
+---
+title: "Seeding"
+description: "Fill a fresh project with working demo content in one click from the admin dashboard."
+---
+
+Start a new project with content already in place. One click on the admin dashboard fills the database with sample pages, a starter design, icons, navigation, and site metadata, so you explore a working site instead of an empty one.
+
+## Overview
+
+A fresh database renders a blank site, which makes it hard to see what Atomic Payload can do. Seeding fixes that. The bundled seed creates a sample form, seven SVG icons (logo, menu, check, close, theme, cookie, and github), four pages (home, a prose showcase, a testing page, and a not-found page), a starter icon set, shortcut set, and design set, the site header and footer, and the `siteMetaData` global. After it runs, the admin has documents to edit and the frontend has a styled, navigable site to show.
+
+## How it works
+
+The `seedPlugin` wires two pieces into the app:
+
+- **A guarded endpoint.** `POST /api/seed` runs the seed function. It returns `403` unless the request comes from a logged-in user, and an optional `authorize` predicate can restrict it further.
+- **A dashboard banner.** By default the admin dashboard shows a welcome banner with a **SEED DATABASE** button that POSTs to that endpoint and reports progress with a toast.
+
+The seed itself runs server-side through Payload's Local API. It updates the `siteMetaData` global, clears the collections it manages, then recreates everything from bundled data. The header is created last, after the design set is in place, so the site stylesheet is generated from the seeded design.
+
+<Callout type="warn">
+  Re-running the seed **replaces** content, it does not add to it. Every run first wipes the managed collections (pages, header, footer, forms, icon, iconSet, designSet, shortcutSet) and then recreates them. Upload collections are cleared through Payload's delete operation, so stored files (like the uploaded SVG icons) are removed along with their documents. Each run lands on the same clean state; never run it over content you want to keep.
+</Callout>
+
+## Using it
+
+In the [atomic-payload template](/docs/templates/atomic-payload) everything is already wired up:
+
+1. Start the app, visit `/admin`, and create your first admin user.
+2. On the dashboard, the welcome banner lists setup steps. Click **SEED DATABASE**. (The seed is also reachable directly: send an authenticated `POST` to `/api/seed`.)
+3. A toast tracks progress, and the success message links straight to your site.
+4. Browse the result: the home, prose showcase, and testing pages render with the seeded header, footer, design set, and icons, and every document is editable in the admin.
+
+## Configuration
+
+The template registers the plugin with all defaults (`seedPlugin()` in `src/plugins/index.ts`). The most common adjustments:
+
+```ts
+// src/plugins/index.ts
+seedPlugin({
+  // Recommended for production: turn the plugin off once you've seeded.
+  // false unregisters everything, both the endpoint and the banner.
+  enabled: process.env.INCLUDE_SEED === 'true',
+  // Restrict who may run the destructive seed.
+  authorize: (user) => user.email === 'you@example.com',
+  // Keep the endpoint but hide the dashboard banner.
+  includeBeforeDashboard: false,
+})
+```
+
+<TypeTable
+  type={{
+    enabled: { type: 'boolean', default: 'true', description: 'Set false to make the plugin a no-op: no endpoint, no banner.' },
+    seed: { type: 'SeedFn', default: 'bundled seed', description: 'The function the endpoint runs. Pass your own to seed different content.' },
+    endpointPath: { type: 'string', default: "'/seed'", description: 'Path mounted under /api, so the default resolves to /api/seed.' },
+    authorize: { type: 'SeedAuthorize', default: 'any authenticated user', description: 'Predicate run after the auth check to restrict who may seed.' },
+    includeBeforeDashboard: { type: 'boolean', default: 'true', description: 'Whether to show the SEED DATABASE banner on the dashboard.' },
+  }}
+/>
+
+For the full reference, including reusing the bundled seed against custom collection slugs, see the [seed plugin](/docs/plugins/seed).
+
+## Provided by
+
+<Cards>
+  <Card title="@pro-laico/seed" href="/docs/plugins/seed" />
+</Cards>
+
+## Related
+
+<Cards>
+  <Card title="atomic-payload template" href="/docs/templates/atomic-payload" />
+</Cards>

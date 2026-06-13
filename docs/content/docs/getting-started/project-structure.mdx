@@ -1,0 +1,75 @@
+---
+title: "Project structure"
+description: "A quick tour of a freshly scaffolded project: what each folder does, where your code goes, and which files are generated for you."
+---
+
+Just scaffolded a project and staring at the tree? This page walks through what each piece is for, which files you edit, and which ones are generated. The one rule of thumb: the two route groups split the app in half. `src/app/(frontend)/` is your site, and `src/app/(payload)/` is Payload's admin and API, which you rarely touch.
+
+## The tree at a glance
+
+```plaintext
+my-project/
+├─ src/
+│  ├─ app/
+│  │  ├─ (frontend)/               # your site
+│  │  │  ├─ layout.tsx             # site shell: fonts, theme, header, footer
+│  │  │  ├─ [[...slug]]/page.tsx   # catch-all that renders pages built in the admin
+│  │  │  ├─ not-found.tsx          # your 404 page
+│  │  │  ├─ sitemap.ts             # the sitemap route
+│  │  │  └─ next/                  # routes that enter and exit draft preview
+│  │  ├─ (payload)/                # Payload's admin UI and REST API (managed)
+│  │  │  ├─ admin/                 # the dashboard routes, plus importMap.js
+│  │  │  └─ api/                   # Payload's REST endpoints
+│  │  └─ definition.ts             # generated font definitions (do not edit)
+│  ├─ collections/                 # your collections (Users); plugins add the rest
+│  ├─ plugins/                     # one config file per plugin: customize here
+│  ├─ access/                      # reusable access-control helpers
+│  ├─ ui/                          # the admin logo and icon components
+│  ├─ instrumentation.ts           # registers the config for cached reads
+│  ├─ payload.config.ts            # the heart: buildConfig wires it all together
+│  └─ payload-types.ts             # generated types (+ payload-types.augment.d.ts)
+├─ public/                         # static assets; downloaded fonts land in public/fonts
+├─ .env                            # your secrets, copied from .env.example by the CLI
+└─ next.config.ts
+```
+
+A few of these deserve a closer look:
+
+- **`src/payload.config.ts`** is the single source of truth. Its `buildConfig` call registers your collections, the plugin list, the database adapter, and the admin UI settings. When you wonder "where is X wired up", start here.
+- **`src/plugins/`** is where you customize Atomic Payload. Each file holds one plugin's configuration (for example `icons.ts` or `formBuilder.ts`), and `index.ts` composes them into the list that `payload.config.ts` consumes.
+- **`src/app/(frontend)/`** is yours to change freely. The catch-all `[[...slug]]/page.tsx` fetches whatever page matches the URL and renders its blocks, so content editors create routes from the admin without you adding files.
+- **`src/app/(payload)/`** belongs to Payload: `admin/` serves the dashboard and `api/` serves the REST endpoints. Beyond regenerating `importMap.js` (covered below), there is nothing in here for you to maintain.
+- **`src/instrumentation.ts`** runs once at server start and registers your Payload config so the plugins can read data through shared cache helpers. See [Caching](/docs/concepts/caching) for how those reads work.
+
+<Callout type="info">
+  Wondering why `src/collections/` only contains `Users`? Most collections (Pages, Header, Footer, Images, Icons, Fonts, and more) are registered by the plugins in `src/plugins/`, so they show up in the admin without a file in your project.
+</Callout>
+
+## Generated files (don't edit)
+
+A handful of files are written by scripts. Edit the source they're derived from, then regenerate:
+
+| File | Regenerate with |
+| --- | --- |
+| `src/payload-types.ts` and `src/payload-types.augment.d.ts` | `pnpm generate:types` |
+| `src/app/(payload)/admin/importMap.js` | `pnpm generate:importmap` |
+| `src/app/definition.ts` and `public/fonts/` | `pnpm generate:fonts` |
+| `icon-usage-manifest.json` (project root) | `pnpm generate:icons` |
+
+Run `generate:types` after changing a collection or plugin config so your TypeScript types match the schema ([Type augmentation](/docs/concepts/type-augmentation) explains the augment file). Run `generate:importmap` after adding custom admin components. The font and icon outputs are gitignored, and the template's `prebuild` script reruns `generate:fonts` and `generate:icons` before every `pnpm build`, so those two mostly take care of themselves.
+
+## Where do I make changes?
+
+- **Add a collection**: create a file in `src/collections/`, then add it to the array in `src/collections/index.ts` and run `pnpm generate:types`.
+- **Tweak a plugin**: edit its file in `src/plugins/` (for example `src/plugins/icons.ts`).
+- **Change the site shell** (theme, header and footer placement, font wiring): `src/app/(frontend)/layout.tsx`.
+- **Change the 404 page**: `src/app/(frontend)/not-found.tsx`.
+- **Swap the admin logo or icon**: `src/ui/assets/Logo.tsx` and `src/ui/assets/Icon.tsx`, wired up under `admin.components.graphics` in `payload.config.ts`.
+- **Reuse access rules**: the helpers in `src/access/` (`anyone`, `authenticated`, `authenticatedOrPublished`) plug into any collection's `access` config.
+
+## Next
+
+<Cards>
+  <Card title="Environment & prerequisites" href="/docs/getting-started/environment" description="Set the env vars and accounts the project needs to boot." />
+  <Card title="Core concepts" href="/docs/concepts/architecture" description="How the plugins fit together under the hood." />
+</Cards>

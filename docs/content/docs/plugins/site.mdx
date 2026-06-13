@@ -45,6 +45,13 @@ yarn add @pro-laico/site
 
 ## Setup
 
+`sitePlugin()` registers three collections and two globals, all grouped under a **Website** section in the admin:
+
+- **Pages**: your routable pages, with a title, slug, derived `href`, a published-at date, parent/child nesting, page content, an **SEO** tab, and per-page settings.
+- **Header** and **Footer**: single-purpose collections for the site chrome you render around every page, each with its own content and an `active` toggle.
+- **Settings**: a site-wide global for the persistent store version (draft and published).
+- **Site MetaData**: site-wide SEO fallbacks (site name, default description, default Open Graph image, and light/dark favicons).
+
 <Tabs items={['Standalone', 'With the atomic-payload template']}>
 
 <Tab value="Standalone">
@@ -52,13 +59,15 @@ yarn add @pro-laico/site
 Adding the site shape to your own Payload + Next.js project.
 
 <Callout type="info">
-  `@pro-laico/core` comes bundled with this plugin — it's a dependency, not a separate install. Its cached reads reach Payload through a config you register once in your Next.js instrumentation hook (`registerPayloadConfig`); see [@pro-laico/core → Setup](/docs/plugins/core#setup) to wire it up.
+  `@pro-laico/core` comes bundled with this plugin; it's a dependency, not a separate install. Its cached reads reach Payload through a config you register once in your Next.js instrumentation hook (`registerPayloadConfig`); see [@pro-laico/core → Setup](/docs/plugins/core#setup) to wire it up.
 </Callout>
 
 <Steps>
 
 <Step>
 ### Add the plugin to your Payload config
+
+One call registers the collections and globals listed above:
 
 ```ts
 import { buildConfig } from 'payload'
@@ -68,15 +77,6 @@ export default buildConfig({
   plugins: [sitePlugin()],
 })
 ```
-
-This registers everything in one go:
-
-- **Pages**: your routable pages, with a title, slug, derived `href`, a published-at date, parent/child nesting, page content, an **SEO** tab, and per-page settings.
-- **Header** and **Footer**: single-purpose collections for the site chrome you render around every page, each with its own content and an `active` toggle.
-- **Settings**: a site-wide global for the persistent store version (draft and published).
-- **Site MetaData**: site-wide SEO fallbacks (site name, default description, default Open Graph image, and light/dark favicons).
-
-All four collections and both globals show up under a **Website** admin group.
 </Step>
 
 <Step>
@@ -103,13 +103,13 @@ export default buildConfig({
 })
 ```
 
-`@pro-laico/site` stays deliberately unopinionated about this and other cross-package choices (which collections run the atomic hook, the live-preview URL, JSON-schema type generation) so it doesn't force a wiring on you. Those depend on what other plugins you've enabled.
+`@pro-laico/site` stays deliberately unopinionated about this and other cross-package choices (which collections run the atomic hook, JSON-schema type generation) so it doesn't force a wiring on you. Those depend on what other plugins you've enabled.
 </Step>
 
 <Step>
 ### Add content in the admin
 
-Open the **Pages**, **Header**, and **Footer** collections to build out your site, fill in **Site MetaData** for your SEO fallbacks, and leave **Settings** at its defaults unless you need to reset the persistent store.
+Open the collections and globals listed above to build out your site; leave **Settings** at its defaults unless you need to reset the persistent store.
 </Step>
 
 <Step>
@@ -131,7 +131,7 @@ The [atomic-payload template](/docs/templates/atomic-payload) already includes `
 <Step>
 ### Build your site in the admin
 
-Add pages under the **Pages** collection (nest them with the parent field to build your URL tree), edit the **Header** and **Footer**, and set your SEO fallbacks in **Site MetaData**, all under the **Website** admin group.
+Edit the collections and globals listed above, under the **Website** admin group; nest pages with the parent field to build your URL tree.
 </Step>
 
 <Step>
@@ -148,34 +148,7 @@ The template's frontend layout already pulls the active header and footer and th
 
 ## Using it in your app
 
-The package ships ready-made **Header** and **Footer** renderers at `@pro-laico/site/components/frontend`. They're server components: hand each one the matching document and it renders that document's blocks. Place them around your page content in the root layout:
-
-```tsx
-// app/(frontend)/layout.tsx
-import { Footer, Header } from '@pro-laico/site/components/frontend'
-
-export default async function RootLayout({
-  children,
-  header,
-  footer,
-}: {
-  children: React.ReactNode
-  header: HeaderDoc
-  footer: FooterDoc
-}) {
-  return (
-    <html lang="en">
-      <body>
-        <Header header={header} />
-        {children}
-        <Footer footer={footer} />
-      </body>
-    </html>
-  )
-}
-```
-
-The template fetches the active `header` and `footer` documents through the [cache getters](#caching--revalidation) below and passes them in. Each component renders that document's `children` blocks and applies its class name; if no document is found it falls back to an empty header / footer:
+The package ships ready-made **Header** and **Footer** renderers at `@pro-laico/site/components/frontend`. They're server components: hand each one the matching document (fetched through the [cache getters](#caching--revalidation) below) and it renders that document's `children` blocks and applies its class name, falling back to an empty header / footer when no document is found. Place them around your page content in the root layout, the way the template does:
 
 ```tsx
 // app/(frontend)/layout.tsx
@@ -226,21 +199,9 @@ export default async function Page({ params }: { params: Promise<{ slug?: string
 }
 ```
 
-## Caching & revalidation
-
-`@pro-laico/site` ships server-side getters at `@pro-laico/site/cache` so a page reads its chrome and content once instead of re-querying Payload on every render:
-
-- `getCachedHeader(draft)` / `getCachedFooter(draft)`: the active header / footer documents.
-- `getCachedPages(draft)`: every page `href` (used for `generateStaticParams` and to validate a requested path).
-- `getCachedPageByHref(href, draft, pages)`: a single page resolved by its `href`.
-- `getCachedSitemap(draft)`: the sitemap entries for every indexable page.
-- `getCachedSiteMetadata(draft)`: the site-wide SEO fallbacks from the `siteMetaData` global.
-
-Saving a page, header, footer, or your site metadata in the admin revalidates the matching tag (`page` / `pages`, `header`, `footer`, `sitemap`, `site-metadata`), and the collections also revalidate on delete, so the next read serves fresh content. See [Caching & revalidation](/docs/concepts/caching) for how the tags and `withCache` work.
-
 ## Options
 
-`sitePlugin(options?)` accepts a single option. It stays unopinionated about cross-package wiring (the atomic hook, nested-docs, live preview, type generation), so there's nothing else to configure here:
+`sitePlugin(options?)` accepts a single option. It stays unopinionated about cross-package wiring (the atomic hook, nested-docs, type generation), so there's nothing else to configure here:
 
 <TypeTable
   type={{
@@ -255,6 +216,27 @@ sitePlugin({
   enabled: true,
 })
 ```
+
+## Environment variables
+
+`@pro-laico/site` reads no environment variables directly; two reach it through [@pro-laico/core](/docs/plugins/core)'s helpers:
+
+| Variable | Purpose |
+| --- | --- |
+| `NEXT_PUBLIC_SERVER_URL` | Your site's public origin. Core's URL helpers read it (with a `VERCEL_PROJECT_PRODUCTION_URL` fallback) to build the live-preview URL and the absolute URLs in sitemap entries. |
+| `PREVIEW_SECRET` | Embedded in the live-preview URL that core's `generateLivePreviewPath` builds for the Pages, Header, and Footer collections, and checked by core's preview route handler. |
+
+## Caching & revalidation
+
+`@pro-laico/site` ships server-side getters at `@pro-laico/site/cache` so a page reads its chrome and content once instead of re-querying Payload on every render:
+
+- `getCachedHeader(draft)` / `getCachedFooter(draft)`: the active header / footer documents.
+- `getCachedPages(draft)`: every page `href` (used for `generateStaticParams` and to validate a requested path).
+- `getCachedPageByHref(href, draft, pages)`: a single page resolved by its `href`.
+- `getCachedSitemap(draft)`: the sitemap entries for every indexable page.
+- `getCachedSiteMetadata(draft)`: the site-wide SEO fallbacks from the `siteMetaData` global.
+
+Saving a page, header, footer, or your site metadata in the admin revalidates the matching tag (`page` / `pages`, `header`, `footer`, `sitemap`, `site-metadata`), and the collections also revalidate on delete, so the next read serves fresh content. See [Caching & revalidation](/docs/concepts/caching) for how the tags and `withCache` work.
 
 ## Exports
 

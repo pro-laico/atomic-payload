@@ -23,6 +23,8 @@ Actions are stored as data on a block and executed on the client when their trig
 
 Actions use a **block structure**, so the set of available actions is extendable: you add new functionality by adding a new action block. The built-ins (theme toggle, form submit, cookie consent, dynamicStore, portal) are simply the actions registered out of the box.
 
+Why blocks? Each action is a plain Payload block: a slug plus the option fields an editor fills in (the theme toggle, for example, is a small block with a single select field). The plugin registers the built-ins once on your config, and atomic blocks reference that shared list wherever actions are allowed. The payoff is that editors compose behavior in the admin the same way they compose content, and the admin stays the source of truth for what runs, with no per-component JavaScript to write or keep in sync.
+
 Action blocks attach to atomic blocks: they're stored as data on the block they belong to, normalized at save time, and then executed on the client when their trigger fires. The child blocks system wires children to the action system, so any atomic block in the tree can carry actions.
 
 ## Using it
@@ -37,7 +39,7 @@ Because actions are block data, they travel with the block, including through Pa
 
 ## Configuration
 
-Actions are provided by the `actions` namespace of `@pro-laico/atomic` and registered with the `actionsPlugin` factory:
+Actions are provided by the `actions` namespace of `@pro-laico/atomic` and registered with the `actionsPlugin` factory. There is little to configure: calling it with no options registers every built-in action block on your config, so the admin flow above works out of the box. The options it does take turn the plugin off (`enabled`) or contribute extra action blocks (`actionBlocks`):
 
 ```ts
 import { buildConfig } from 'payload'
