@@ -6,6 +6,36 @@ the whole workspace.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.3.4] - 2026-06-12
+
+### Removed
+
+- **BREAKING: `pluginComposer` is removed from `@pro-laico/core`** (along with
+  `DEFAULT_ATOMIC_HOOK_SLUGS` and the `PluginComposerOptions` /
+  `AtomicWiringOptions` / `PluginComposerRevalidateOptions` types). Its trailing
+  finalizer sprayed revalidation hooks onto every collection and global, which
+  was redundant (each `@pro-laico/*` collection and global bakes its own) and
+  attached the deprecated pre-commit `beforeChange` variants, double-revalidating
+  and risking a stale-read race.
+
+  **Migrate** by composing plugins as a plain `Plugin[]` and wiring the two
+  cross-cutting concerns explicitly: bake the shared `atomicHook` through each
+  owning plugin's option (`stylesPlugin({ atomicHook })` for the design/shortcut
+  sets, `iconSetOptions.hooks` for the icon set; `sitePlugin` already bakes it on
+  pages/header/footer), and use `revalidationPlugin({ collectionSlugs: [...] })`
+  for any third-party collections (e.g. the form builder's `forms` /
+  `form-submissions`). See the updated `atomic-payload` template's
+  `src/plugins/index.ts`.
+
+### Changed
+
+- `revalidationPlugin` now attaches the post-commit `afterChange` revalidation
+  hooks instead of `beforeChange`, so a concurrent read can no longer re-cache a
+  document before its write commits.
+- Documentation facelift across the site: accuracy fixes, leaner plugin
+  reference pages, rewritten/expanded feature guides, and new
+  `getting-started/project-structure` and `features/seeding` pages.
+
 ## [0.3.3] - 2026-06-12
 
 ### Added

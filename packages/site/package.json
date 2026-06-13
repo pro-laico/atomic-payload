@@ -1,6 +1,6 @@
 {
   "name": "@pro-laico/site",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "description": "Opinionated site shape for Atomic Payload — Pages, Header, Footer collections + SiteMetaData and Settings globals, paired with a single `sitePlugin()` that registers them all.",
   "license": "MIT",
   "repository": {
