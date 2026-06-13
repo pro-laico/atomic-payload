@@ -6,6 +6,35 @@ the whole workspace.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.3.3] - 2026-06-12
+
+### Added
+
+- **`@pro-laico/icons`: requested-icons usage manifest, admin panel, and runtime
+  miss tracking.** A build-time `atomic-icons-scan` (also `@pro-laico/icons/scan`)
+  collects literal `<Icon name="…">` usages into `icon-usage-manifest.json`; an
+  opt-in IconSet "Requested icons" panel (`iconSetOptions.usagePanel`) diffs it
+  against the set and flags missing names with their `file:line`. `trackRequests:
+  true` adds an `iconRequest` collection that records runtime misses (throttled,
+  best-effort, including dynamic `name={…}`), shown in the panel with live counts
+  and a clear action; disable with `ICON_USAGE_TRACKING=false`. New exports:
+  `./scan`, `./admin/iconUsagePanel`, `IconUsagePanelPath`, and the
+  `atomic-icons-scan` bin.
+
+### Changed
+
+- `@pro-laico/seed` clears upload collections through `payload.delete` (removing
+  each stored file, not just its row) with `disableTransaction`, so re-seeding no
+  longer orphans blobs or collides on existing files.
+- The template and `icons-only` example enable the usage panel + tracking and add
+  a `generate:icons` prebuild; the template's 404 page now renders icons.
+
+### Fixed
+
+- `.gitattributes` forces `eol=lf` so Biome/`check:ci` and `pnpm test` pass on
+  Windows checkouts; the seed test suites are isolated into their own vitest fork
+  to fix an intermittent race.
+
 ## [0.3.2] - 2026-06-09
 
 Every dependency across all packages, examples, templates, tools, and docs was

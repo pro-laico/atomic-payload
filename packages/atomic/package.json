@@ -1,6 +1,6 @@
 {
   "name": "@pro-laico/atomic",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "Atomic Payload runtime: action blocks, beforeChange hook + CSS/UnoCSS processor, form processing pipeline, and child blocks plugin. Replaces the older ap-actions + ap-atomic-hook + ap-forms + children packages.",
   "license": "MIT",
   "repository": {
