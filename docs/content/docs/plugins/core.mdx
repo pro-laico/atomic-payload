@@ -46,57 +46,31 @@ You usually get `@pro-laico/core` transitively, and the [atomic-payload template
 <Steps>
 
 <Step>
-### Compose your plugins with `pluginComposer`
+### Revalidate caches with `revalidationPlugin`
 
-Pass `pluginComposer` every plugin (including third-party ones) plus the shared `atomicHook`, and it returns a `Plugin[]` for `buildConfig`. A finalizer it appends runs last over the fully-assembled config, attaching the `atomicHook` to the atomic-content collections and the revalidation hooks to every collection and global (third-party ones included), with no slug lists to keep in sync. This is how the [atomic-payload template](/docs/templates/atomic-payload) wires its plugins.
-
-```ts
-import { buildConfig } from 'payload'
-import { pluginComposer } from '@pro-laico/core'
-import { atomicHook } from '@pro-laico/atomic/hook'
-import { sitePlugin } from '@pro-laico/site'
-import { formsPlugin } from '@pro-laico/atomic/forms'
-
-export const plugins = pluginComposer({
-  atomicHook,
-  plugins: [
-    sitePlugin(),
-    formsPlugin(),
-    // ...every other plugin, including third-party ones
-  ],
-})
-
-export default buildConfig({
-  plugins,
-})
-```
-</Step>
-
-<Step>
-### Or wire `revalidationPlugin` directly
-
-For explicit control instead of the broad composer wiring, `revalidationPlugin` attaches the cache-revalidation hooks to only the collection and global slugs you name. `pluginComposer` uses these same hooks under the hood:
+Every `@pro-laico/*` collection and global bakes its own cache-revalidation hooks, so they need no wiring. `revalidationPlugin` covers the gap: it attaches the core revalidation hooks (post-commit `afterChange`, plus `afterDelete`) to the collection and global slugs you name, for collections a third-party plugin registers (for example the form builder's `forms` / `form-submissions`). Add it after the plugin that registers those slugs:
 
 ```ts
 import { buildConfig } from 'payload'
 import { revalidationPlugin } from '@pro-laico/core'
+import { formBuilderPlugin } from '@payloadcms/plugin-form-builder'
 
 export default buildConfig({
   plugins: [
-    revalidationPlugin({
-      collectionSlugs: ['pages'],
-      deleteCollectionSlugs: ['pages'],
-      globalSlugs: ['settings'],
-    }),
+    formBuilderPlugin({ /* ... */ }),
+    // After the plugin that registers them, so the slugs already exist:
+    revalidationPlugin({ collectionSlugs: ['forms', 'form-submissions'] }),
   ],
 })
 ```
+
+The dispatchers self-select by slug and no-op when no handler matches, so an unknown slug is harmless. The [atomic-payload template](/docs/templates/atomic-payload) wires its plugins as a flat `Plugin[]` and uses this for the form builder's collections.
 </Step>
 
 <Step>
 ### Generate accurate block types with `jsonSchemaPlugin`
 
-`jsonSchemaPlugin` extends `payload generate:types` so block fields get accurate generated types. Add it to your `plugins` array (or pass it through `pluginComposer` with the rest), giving it the block lists each `@pro-laico` plugin contributes so the generated types stay precise. The template registers it this way.
+`jsonSchemaPlugin` extends `payload generate:types` so block fields get accurate generated types. Add it to your `plugins` array, giving it the block lists each `@pro-laico` plugin contributes so the generated types stay precise. The template registers it this way.
 </Step>
 
 <Step>
@@ -127,59 +101,14 @@ The rest of the package (fields, hooks, cache helpers, URL and metadata utilitie
 
 ## Options
 
-### `pluginComposer(options)`
-
-<TypeTable
-  type={{
-    plugins: { type: 'Plugin[]', description: 'Required. Every plugin to compose, in order. The composer returns them followed by the finalizer, so the cross-cutting wiring always runs last.' },
-    atomicHook: { type: 'CollectionBeforeChangeHook', description: 'The shared atomicHook (from @pro-laico/atomic/hook). When set, the finalizer attaches it to the atomic-content collections. Own it here rather than threading it into individual plugins.' },
-    atomicHookSlugs: { type: 'string[]', default: 'DEFAULT_ATOMIC_HOOK_SLUGS', description: 'The collection slugs the atomicHook is attached to. Replaces the default set when given.' },
-    additionalAtomicHookSlugs: { type: 'string[]', description: 'Extra slugs to add to the default set instead of replacing it. Ignored when atomicHookSlugs is set.' },
-    revalidate: { type: 'false | PluginComposerRevalidateOptions', default: 'attach to all', description: 'Revalidation wiring. By default the finalizer attaches the core revalidation hooks to every collection and global (they self-select by slug). Pass false to skip it, or an object to override per phase. See its keys below.' },
-    enabled: { type: 'boolean', default: 'true', description: 'Set false to return the plugins unchanged with no finalizer, so none of the cross-cutting wiring is applied.' },
-  }}
-/>
-
-<Accordions>
-
-<Accordion title="revalidate keys">
-
-<TypeTable
-  type={{
-    collectionBeforeChange: { type: 'CollectionBeforeChangeHook | false', default: 'core revalidateCache', description: 'The collection beforeChange hook. Pass false to skip that phase.' },
-    collectionAfterDelete: { type: 'CollectionAfterDeleteHook | false', default: 'core revalidateCacheOnDelete', description: 'The collection afterDelete hook. Pass false to skip that phase.' },
-    globalBeforeChange: { type: 'GlobalBeforeChangeHook | false', default: 'core global revalidateCache', description: 'The global beforeChange hook. Pass false to skip that phase.' },
-    collectionSlugs: { type: 'string[]', description: 'Restrict the beforeChange attach to these collection slugs. Omit to attach to all.' },
-    deleteCollectionSlugs: { type: 'string[]', description: 'Restrict the afterDelete attach to these collection slugs. Omit to attach to all.' },
-    globalSlugs: { type: 'string[]', description: 'Restrict the global attach to these global slugs. Omit to attach to all.' },
-  }}
-/>
-
-</Accordion>
-
-</Accordions>
-
-All options at their defaults, as a working starting point:
-
-```ts
-pluginComposer({
-  plugins: [], // required (every plugin to compose)
-  atomicHook, // attaches to the atomic-content collections when set
-  atomicHookSlugs: ['designSet', 'shortcutSet', 'pages', 'header', 'footer', 'iconSet'], // DEFAULT_ATOMIC_HOOK_SLUGS
-  // additionalAtomicHookSlugs is unset by default
-  // revalidate defaults to attaching the core hooks to every collection and global
-  enabled: true,
-})
-```
-
 ### `revalidationPlugin(options?)`
 
 <TypeTable
   type={{
     enabled: { type: 'boolean', default: 'true', description: 'Set false to turn the plugin off (it becomes a no-op).' },
-    collectionSlugs: { type: 'string[]', default: '[]', description: 'Collections that should revalidate cached content when a document changes (a beforeChange hook).' },
+    collectionSlugs: { type: 'string[]', default: '[]', description: 'Collections that should revalidate cached content when a document changes (an afterChange hook).' },
     deleteCollectionSlugs: { type: 'string[]', default: '[]', description: 'Collections that should revalidate cached content when a document is deleted (an afterDelete hook).' },
-    globalSlugs: { type: 'string[]', default: '[]', description: 'Globals that should revalidate cached content when they change (a beforeChange hook).' },
+    globalSlugs: { type: 'string[]', default: '[]', description: 'Globals that should revalidate cached content when they change (an afterChange hook).' },
   }}
 />
 
@@ -280,55 +209,22 @@ See [Caching & revalidation](/docs/concepts/caching) for how the tags are derive
 
 <ExportTable
   exports={{
-    pluginComposer: {
-      type: 'function',
-      location: '@pro-laico/core',
-      description: 'Composes an app\'s plugins. Pass every plugin plus the shared atomicHook; it returns the plugins followed by a finalizer that runs last and wires the cross-cutting concerns (the atomicHook on the atomic-content collections, plus revalidation on every collection and global) over the fully-assembled config.',
-      params: {
-        opts: { type: 'PluginComposerOptions', description: 'See the Options table above. `plugins` is required; `atomicHook`, `revalidate`, `atomicHookSlugs`, and `enabled` tune the cross-cutting wiring.' },
-      },
-      returns: { type: 'Plugin[]', description: 'The passed plugins followed by the appended finalizer. Assign it to `plugins` and spread into `buildConfig({ plugins })`.' },
-      example: `import { buildConfig } from 'payload'
-import { pluginComposer } from '@pro-laico/core'
-import { atomicHook } from '@pro-laico/atomic/hook'
-import { sitePlugin } from '@pro-laico/site'
-import { formsPlugin } from '@pro-laico/atomic/forms'
-
-export const plugins = pluginComposer({
-  atomicHook,
-  plugins: [sitePlugin(), formsPlugin()],
-})
-
-export default buildConfig({ plugins })`,
-    },
-    DEFAULT_ATOMIC_HOOK_SLUGS: {
-      type: 'constant',
-      location: '@pro-laico/core',
-      description: 'The collection slugs pluginComposer attaches the atomicHook to by default: designSet, shortcutSet, pages, header, footer, iconSet. Override with the atomicHookSlugs option, or extend with additionalAtomicHookSlugs.',
-    },
-    'composer types': {
-      type: 'type',
-      location: '@pro-laico/core',
-      description: 'The pluginComposer option types: PluginComposerOptions, AtomicWiringOptions (the cross-cutting wiring fields), and PluginComposerRevalidateOptions (the per-phase revalidate override).',
-    },
     revalidationPlugin: {
       type: 'plugin',
       location: '@pro-laico/core',
-      description: 'Attaches the cache-revalidation hooks to the collection and global slugs you list. Default and named export.',
+      description: 'Attaches the cache-revalidation hooks (afterChange + afterDelete) to the collection and global slugs you list. The @pro-laico/* collections and globals bake these hooks themselves, so use this for third-party collections (e.g. the form builder\'s forms / form-submissions). Default and named export.',
       params: {
         'options?': { type: 'RevalidationPluginOptions', description: 'See the Options table above (`collectionSlugs`, `deleteCollectionSlugs`, `globalSlugs`, `enabled`). Defaults to an empty config, which is a no-op.' },
       },
-      returns: { type: 'Plugin', description: 'A Payload config plugin you add to `buildConfig({ plugins: [...] })`.' },
+      returns: { type: 'Plugin', description: 'A Payload config plugin you add to `buildConfig({ plugins: [...] })`, after the plugin that registers the target slugs.' },
       example: `import { buildConfig } from 'payload'
 import { revalidationPlugin } from '@pro-laico/core'
+import { formBuilderPlugin } from '@payloadcms/plugin-form-builder'
 
 export default buildConfig({
   plugins: [
-    revalidationPlugin({
-      collectionSlugs: ['pages'],
-      deleteCollectionSlugs: ['pages'],
-      globalSlugs: ['settings'],
-    }),
+    formBuilderPlugin({ /* ... */ }),
+    revalidationPlugin({ collectionSlugs: ['forms', 'form-submissions'] }),
   ],
 })`,
     },
