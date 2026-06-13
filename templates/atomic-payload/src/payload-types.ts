@@ -653,6 +653,7 @@ export interface Config {
     'mux-video': MuxVideo;
     icon: Icon;
     iconSet: IconSet;
+    iconRequest: IconRequest;
     designSet: DesignSet;
     shortcutSet: ShortcutSet;
     forms: Form;
@@ -675,6 +676,7 @@ export interface Config {
     'mux-video': MuxVideoSelect<false> | MuxVideoSelect<true>;
     icon: IconSelect<false> | IconSelect<true>;
     iconSet: IconSetSelect<false> | IconSetSelect<true>;
+    iconRequest: IconRequestSelect<false> | IconRequestSelect<true>;
     designSet: DesignSetSelect<false> | DesignSetSelect<true>;
     shortcutSet: ShortcutSetSelect<false> | ShortcutSetSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
@@ -2009,6 +2011,21 @@ export interface IconSet {
   _status?: ('draft' | 'published') | null;
 }
 /**
+ * Icon names requested at runtime that did not resolve to an icon in the active set. Populated when iconsPlugin({ trackRequests: true }) is set; compare against the IconSet usage panel.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "iconRequest".
+ */
+export interface IconRequest {
+  id: string;
+  name: string;
+  count?: number | null;
+  firstRequestedAt?: string | null;
+  lastRequestedAt?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "designSet".
  */
@@ -2510,6 +2527,10 @@ export interface PayloadLockedDocument {
         value: string | IconSet;
       } | null)
     | ({
+        relationTo: 'iconRequest';
+        value: string | IconRequest;
+      } | null)
+    | ({
         relationTo: 'designSet';
         value: string | DesignSet;
       } | null)
@@ -2878,6 +2899,18 @@ export interface IconSetSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "iconRequest_select".
+ */
+export interface IconRequestSelect<T extends boolean = true> {
+  name?: T;
+  count?: T;
+  firstRequestedAt?: T;
+  lastRequestedAt?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

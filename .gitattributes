@@ -1,2 +1,21 @@
-# Auto detect text files and perform LF normalization
-* text=auto
+# Normalize all text files to LF in the repo AND in the working tree on every
+# platform. `eol=lf` overrides a contributor's `core.autocrlf=true` (the Windows
+# default), which would otherwise check files out as CRLF. That matters because
+# Biome is configured with `lineEnding: "lf"` (see biome.json), so a CRLF working
+# tree makes `check:ci` (and `pnpm test`, which runs it first) fail on every file.
+* text=auto eol=lf
+
+# Binary assets: never treat as text or normalize line endings.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.webp binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.otf binary
+*.eot binary
+*.db binary
+*.pdf binary

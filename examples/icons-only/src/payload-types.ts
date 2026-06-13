@@ -70,6 +70,7 @@ export interface Config {
     users: User;
     icon: Icon;
     iconSet: IconSet;
+    iconRequest: IconRequest;
     'payload-kv': PayloadKv;
     'payload-jobs': PayloadJob;
     'payload-locked-documents': PayloadLockedDocument;
@@ -81,6 +82,7 @@ export interface Config {
     users: UsersSelect<false> | UsersSelect<true>;
     icon: IconSelect<false> | IconSelect<true>;
     iconSet: IconSetSelect<false> | IconSetSelect<true>;
+    iconRequest: IconRequestSelect<false> | IconRequestSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-jobs': PayloadJobsSelect<false> | PayloadJobsSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
@@ -197,6 +199,21 @@ export interface IconSet {
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
+}
+/**
+ * Icon names requested at runtime that did not resolve to an icon in the active set. Populated when iconsPlugin({ trackRequests: true }) is set; compare against the IconSet usage panel.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "iconRequest".
+ */
+export interface IconRequest {
+  id: number;
+  name: string;
+  count?: number | null;
+  firstRequestedAt?: string | null;
+  lastRequestedAt?: string | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -325,6 +342,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'iconSet';
         value: number | IconSet;
+      } | null)
+    | ({
+        relationTo: 'iconRequest';
+        value: number | IconRequest;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -427,6 +448,18 @@ export interface IconSetSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "iconRequest_select".
+ */
+export interface IconRequestSelect<T extends boolean = true> {
+  name?: T;
+  count?: T;
+  firstRequestedAt?: T;
+  lastRequestedAt?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

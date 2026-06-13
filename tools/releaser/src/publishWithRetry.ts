@@ -26,7 +26,9 @@ export function publishWithRetry(args: string[], cwd: string, attempts = 3): boo
     } catch {
       if (attempt === attempts) return false
       const backoffMs = 5_000 * attempt
-      console.warn(`  publish attempt ${attempt}/${attempts} failed — retrying in ${backoffMs / 1000}s (often a transient sigstore/Rekor tlog error)…`)
+      console.warn(
+        `  publish attempt ${attempt}/${attempts} failed — retrying in ${backoffMs / 1000}s (often a transient sigstore/Rekor tlog error)…`,
+      )
       sleep(backoffMs)
     }
   }
