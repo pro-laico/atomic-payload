@@ -77,6 +77,14 @@ export default defineConfig({
           hookTimeout: 180_000,
           testTimeout: 120_000,
           fileParallelism: false,
+          // This suite (and the example-seed ones below) `process.chdir()` into a
+          // real app root and mutate `process.env` so the booted config resolves
+          // its own files. Those are process-GLOBAL, so when projects run
+          // concurrently in a shared worker they clobber each other's cwd/env
+          // (an intermittent "seed found nothing" failure). A dedicated fork per
+          // project gives each its own OS process, where cwd/env can't leak.
+          pool: 'forks',
+          poolOptions: { forks: { singleFork: true } },
         },
       },
       // One project per example app: each boots that example's REAL Payload config
@@ -93,6 +101,12 @@ export default defineConfig({
           hookTimeout: 60_000,
           testTimeout: 30_000,
           fileParallelism: false,
+          // Each example-seed suite `process.chdir()`s into its example root and
+          // mutates `process.env`; a dedicated fork keeps that process-global
+          // state from leaking into a concurrently-running sibling project (see
+          // the template-seed note above).
+          pool: 'forks' as const,
+          poolOptions: { forks: { singleFork: true } },
         },
       })),
     ],
