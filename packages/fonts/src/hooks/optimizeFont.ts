@@ -77,8 +77,8 @@ const resolveFontMime = (mime: string | undefined, ext: string): string =>
 
 /**
  * Best-effort read of weight / style / family from a font's metadata via the
- * optional `fontkit` peer dep. Returns `null` when fontkit is absent or the
- * font can't be parsed, so callers fall back to manual fields.
+ * bundled `fontkit` dependency. Returns `null` when the font can't be parsed,
+ * so callers fall back to manual fields.
  */
 async function detectMetadata(buffer: Buffer): Promise<{ familyName?: string; weight?: string; style?: 'normal' | 'italic' } | null> {
   try {
@@ -116,8 +116,9 @@ export interface OptimizeFontHookOptions {
  * adapters. (Note: when an adapter uses client-side direct uploads the bytes
  * never reach the server, so `req.file` is absent and this hook no-ops.)
  *
- * Everything is best-effort: a missing `subset-font`/`fontkit` peer dep or any
- * processing error logs a warning and leaves the original upload untouched.
+ * Everything is best-effort: any processing error (an unparseable or unsupported
+ * font, a WASM load failure) logs a warning and leaves the original upload
+ * untouched. `subset-font` + `fontkit` ship as dependencies, so they're present.
  */
 export const optimizeFontHook = (opts: OptimizeFontHookOptions = {}): CollectionBeforeOperationHook => {
   const charsetText = resolveCharsetText(opts.charset)
@@ -148,7 +149,7 @@ export const optimizeFontHook = (opts: OptimizeFontHookOptions = {}): Collection
         if (!data.style && meta.style) data.style = meta.style
       }
 
-      // 2) Convert + subset to WOFF2 (throws if subset-font isn't installed → caught below).
+      // 2) Convert + subset to WOFF2 (throws on a font it can't process → caught below).
       const subsetFont = (await import('subset-font')).default as unknown as SubsetFontFn
       const optimizedBuffer = await subsetFont(originalBuffer, charsetText, { targetFormat: 'woff2' })
 

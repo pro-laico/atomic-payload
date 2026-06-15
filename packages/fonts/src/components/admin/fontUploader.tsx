@@ -33,7 +33,7 @@ const WEIGHT_LABELS: Record<string, string> = {
   '900': 'Black',
 }
 
-/** Minimal shapes for the optional `fontkit` browser build (dynamically imported). */
+/** Minimal shapes for the bundled `fontkit` browser build (dynamically imported). */
 type FontkitModule = { create?: (data: Uint8Array) => unknown; default?: { create?: (data: Uint8Array) => unknown } }
 type ParsedFontkit = {
   familyName?: string | null
@@ -106,7 +106,7 @@ const baseFamily = (name: string): string => {
   return tokens.join(' ') || name.trim()
 }
 
-/** Best-effort client-side metadata read via the optional `fontkit` peer dep. */
+/** Best-effort client-side metadata read via the bundled `fontkit` dependency. */
 async function parseFont(file: File): Promise<{ familyName: string; weight: string; style: Style }> {
   const fallback = { familyName: baseFamily(file.name.replace(FONT_NAME_RE, '')), weight: '400', style: 'normal' as const }
   try {

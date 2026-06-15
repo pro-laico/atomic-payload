@@ -20,9 +20,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   explicit string), keeps the untouched original in a sibling `fontOriginal`
   collection, auto-detects weight/style/family via `fontkit`, and reports the size
   reduction (`optimized`/`originalFilesize`/`optimizedFilesize`/`savedPercent`).
-  Uses the optional peer deps `subset-font` (WASM harfbuzz — serverless-safe) +
-  `fontkit`; absent → the file is stored unmodified. **Off by default**; the
-  `atomic-payload` template enables it.
+  Bundles `subset-font` (WASM harfbuzz — serverless-safe) + `fontkit` as
+  dependencies (no consumer install); if optimization fails the file is stored
+  unmodified. **Off by default**; the `atomic-payload` template enables it.
 
   A premium **drag-1-or-many uploader** (`uploader` option, default on) replaces the
   native upload UI on the typeface document: drop files, see a client-side `fontkit`

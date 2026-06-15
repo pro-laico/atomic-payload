@@ -54,8 +54,9 @@ export const plugins: Plugin[] = [
   trackingPlugin(),
   seedPlugin(),
   // Optimize fonts on upload (convert + subset to WOFF2, keep the original, report
-  // the size saved). Requires the `subset-font` + `fontkit` optional peer deps and
-  // server-side uploads for the `font` collection (see ./vercelBlobStorage).
+  // the size saved). `subset-font` + `fontkit` ship with @pro-laico/fonts (no extra
+  // install); needs server-side uploads for the font files (see ./vercelBlobStorage)
+  // and those packages in next.config's serverExternalPackages (see ../next.config).
   fontsPlugin({ optimize: true }),
   imagesPlugin(),
   muxVideoPlugin(),

@@ -68,25 +68,19 @@
     "copyfiles": "copyfiles -u 1 \"src/**/*.{scss,css,svg,json,ttf,woff,woff2,eot}\" dist/"
   },
   "dependencies": {
-    "@pro-laico/core": "workspace:*"
+    "@pro-laico/core": "workspace:*",
+    "fontkit": "^2.0.0",
+    "subset-font": "^2.0.0"
   },
   "peerDependencies": {
     "@payloadcms/ui": ">=3.0.0",
     "dotenv": ">=16.0.0",
-    "fontkit": ">=2.0.0",
     "next": ">=15.0.0",
     "payload": ">=3.0.0",
-    "react": ">=19.0.0",
-    "subset-font": ">=2.0.0"
+    "react": ">=19.0.0"
   },
   "peerDependenciesMeta": {
     "dotenv": {
-      "optional": true
-    },
-    "fontkit": {
-      "optional": true
-    },
-    "subset-font": {
       "optional": true
     }
   },
@@ -97,11 +91,9 @@
     "@types/react": "^19.2.17",
     "@types/subset-font": "^2.0.0",
     "dotenv": "^17.4.2",
-    "fontkit": "^2.0.0",
     "next": "^16.2.7",
     "payload": "^3.85.0",
     "react": "^19.2.7",
-    "subset-font": "^2.0.0",
     "typescript": "^6.0.3"
   },
   "engines": {

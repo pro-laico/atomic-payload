@@ -44,8 +44,8 @@ export interface FontsPluginOptions {
   /**
    * Convert each uploaded weight file to a subsetted WOFF2 on save (on the
    * `fontFile` collection), keeping the original and reporting the size
-   * reduction. **Off by default.** Requires the optional `subset-font` (and, for
-   * weight/style detection, `fontkit`) peer deps. When enabled with
+   * reduction. **Off by default.** Uses the bundled `subset-font` + `fontkit`
+   * dependencies (no extra install). When enabled with
    * `keepOriginal`, the `fontOriginal` collection is registered and MUST be added
    * to your storage adapter's collections map, and font uploads must be
    * server-side (client-side direct uploads bypass the optimize hook).
