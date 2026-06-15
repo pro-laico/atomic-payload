@@ -19,17 +19,16 @@ export default buildConfig({
   collections: [Users],
   graphQL: { disable: true },
   secret: process.env.PAYLOAD_SECRET || '',
-  // The Font upload collection + the standalone `fontSet` global (the active
-  // sans/serif/mono/display selection — the analog of an iconSet). `fontOptions`
-  // keeps the package's default (auth-gated) access and pins a known `staticDir`
-  // so the frontend can read the uploaded bytes back. No cache hooks are needed —
-  // the home route is `force-dynamic` and reads the global fresh each render.
+  // The `font` typeface collection + the `fontFile` weight-file uploads + the
+  // standalone `fontSet` global (the active sans/serif/mono/display selection —
+  // the analog of an iconSet). The actual bytes live on `fontFile`, so
+  // `fontFileOptions` pins a known `staticDir` the frontend reads back from. No
+  // cache hooks are needed — the home route is `force-dynamic` and reads the
+  // global fresh each render.
   plugins: [
     fontsPlugin({
       includeFontSet: true,
-      fontOptions: {
-        upload: { mimeTypes: ['font/ttf', 'font/woff', 'font/woff2', 'font/otf'], staticDir: FONT_STATIC_DIR },
-      },
+      fontFileOptions: { upload: { staticDir: FONT_STATIC_DIR } },
     }),
   ],
   typescript: { outputFile: path.resolve(dirname, 'payload-types.ts') },

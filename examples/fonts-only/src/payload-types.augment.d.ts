@@ -6,6 +6,7 @@ import type * as G from './payload-types'
 declare module '@pro-laico/core' {
   interface PayloadAugment {
     Font: G.Font
+    FontFile: G.FontFile
     FontSet: G.FontSet
   }
 }

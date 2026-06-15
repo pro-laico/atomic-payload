@@ -8,22 +8,23 @@ import type { CollectionSlug, Field } from 'payload'
  */
 export const fontUploadFields = ({ fontSlug = 'font' }: { fontSlug?: string } = {}): Field[] => {
   const relationTo = fontSlug as CollectionSlug
-  // Pre-filter each slot to fonts whose `family` matches, so a `sans` slot can't
-  // be pointed at a `mono` font. Assumes the related collection carries the
-  // `family` radio from this package's `Font` collection.
+  // Each slot selects ONE typeface (`font`) whose `family` role matches. A
+  // typeface carries its own weight files, which the download generator collapses
+  // into a single `next/font/local` declaration (one `src` per file). The slot is
+  // a single relationship — the multiplicity lives inside the typeface, not here.
   return [
     {
       type: 'row',
       fields: [
-        { name: 'sans', type: 'upload', relationTo, filterOptions: { family: { equals: 'sans' } } },
-        { name: 'serif', type: 'upload', relationTo, filterOptions: { family: { equals: 'serif' } } },
+        { name: 'sans', type: 'relationship', relationTo, filterOptions: { family: { equals: 'sans' } } },
+        { name: 'serif', type: 'relationship', relationTo, filterOptions: { family: { equals: 'serif' } } },
       ],
     },
     {
       type: 'row',
       fields: [
-        { name: 'mono', type: 'upload', relationTo, filterOptions: { family: { equals: 'mono' } } },
-        { name: 'display', type: 'upload', relationTo, filterOptions: { family: { equals: 'display' } } },
+        { name: 'mono', type: 'relationship', relationTo, filterOptions: { family: { equals: 'mono' } } },
+        { name: 'display', type: 'relationship', relationTo, filterOptions: { family: { equals: 'display' } } },
       ],
     },
   ]

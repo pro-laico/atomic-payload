@@ -14,8 +14,20 @@ describe('fontsPlugin (integration)', () => {
     await teardown(payload)
   })
 
-  it('registers the font collection', () => {
+  it('registers the font (typeface) and fontFile collections', () => {
     expect(payload.collections.font).toBeDefined()
+    expect(payload.collections.fontFile).toBeDefined()
+  })
+
+  it('does NOT register the fontOriginal collection when optimization is off (default)', () => {
+    expect(payload.collections.fontOriginal).toBeUndefined()
+  })
+
+  it('puts typeface fields on `font` and weight metadata on `fontFile`', () => {
+    const fontNames = payload.collections.font.config.fields.map((f) => ('name' in f ? f.name : undefined))
+    expect(fontNames).toEqual(expect.arrayContaining(['title', 'family', 'files']))
+    const fileNames = payload.collections.fontFile.config.fields.map((f) => ('name' in f ? f.name : undefined))
+    expect(fileNames).toEqual(expect.arrayContaining(['weight', 'style']))
   })
 
   it('registers the fontSet global when includeFontSet is set', () => {

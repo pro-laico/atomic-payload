@@ -12,27 +12,37 @@ export interface ExportFontsEndpointOptions {
   path?: string
   /** Slug of the standalone font-selection global. Default `fontSet`. */
   fontSetGlobalSlug?: string
-  /** Slug of the Font upload collection. Default `font`. */
+  /** Slug of the `Font` typeface collection. Default `font`. */
   fontCollectionSlug?: string
+  /** Slug of the optimized weight-file upload collection. Default `fontFile`. */
+  fontFileCollectionSlug?: string
   /** Slug of the `@pro-laico/styles` design-set collection. Default `designSet`. */
   designSetSlug?: string
   /** Name of the `font` group field on the design set. Default `font`. */
   designSetFontField?: string
 }
 
-type FontDoc = { filename?: string | null; url?: string | null; mimeType?: string | null }
-type FontSelection = Partial<Record<Role, FontDoc | string | null>>
+/** The readable shape of a `fontFile` (a typeface's weight file). */
+type FontFileDoc = { filename?: string | null; url?: string | null; mimeType?: string | null; weight?: string | null; style?: string | null }
+/** The selected typeface for a role: a populated `font` doc (with `files`) or its id. */
+type TypefaceRef = { id?: string | number; files?: unknown[] } | string | number | null
+type FontSelection = Partial<Record<Role, TypefaceRef | TypefaceRef[]>>
 
-/** A single exported font: its filename, extension, mime type, and base64-encoded bytes. */
-export type ExportedFont = { filename: string; extension: string; mimeType: string | null; data: string }
-/** JSON returned by the fonts export endpoint. */
-export type ExportFontsResponse = { fonts: Partial<Record<Role, ExportedFont>> }
+/** A single exported weight file: filename, extension, mime, base64 bytes, and (optional) weight/style. */
+export type ExportedFont = {
+  filename: string
+  extension: string
+  mimeType: string | null
+  data: string
+  weight?: string | null
+  style?: string | null
+}
+/** JSON returned by the fonts export endpoint — an array of weight files per role. */
+export type ExportFontsResponse = { fonts: Partial<Record<Role, ExportedFont[]>> }
 
 /**
  * Constant-time secret compare. Both sides are sha256-hashed to a fixed 32 bytes
- * first, so the comparison is constant-time regardless of length — a raw length
- * check would leak the secret's length through timing, and `timingSafeEqual`
- * throws on unequal-length buffers.
+ * first, so the comparison is constant-time regardless of length.
  */
 function secretsMatch(provided: string, secret: string): boolean {
   const a = createHash('sha256').update(provided).digest()
@@ -49,13 +59,11 @@ function resolveStaticDir(payload: Payload, slug: string): string {
 
 // Local storage keeps the file on disk under the collection's staticDir; cloud
 // storage (Vercel Blob, S3, …) does not, so fall back to fetching the absolute
-// URL Payload reports. Trying disk first avoids depending on whether `url` is
-// relative or absolute, which varies with `serverURL`.
-async function readFontBytes(doc: FontDoc, staticDir: string): Promise<Buffer | null> {
+// URL Payload reports.
+async function readFontBytes(doc: FontFileDoc, staticDir: string): Promise<Buffer | null> {
   if (doc.filename) {
     // Resolve under staticDir and confirm the result stays inside it — guards
-    // against a `filename` carrying path-traversal segments (`../`) or an
-    // absolute path that would escape the upload directory.
+    // against path-traversal segments or an absolute path escaping the dir.
     const base = path.resolve(staticDir)
     const filePath = path.resolve(base, doc.filename)
     if ((filePath === base || filePath.startsWith(base + path.sep)) && fs.existsSync(filePath)) {
@@ -64,7 +72,6 @@ async function readFontBytes(doc: FontDoc, staticDir: string): Promise<Buffer | 
   }
   if (typeof doc.url === 'string' && /^https?:\/\//i.test(doc.url)) {
     try {
-      // Time-box the upstream fetch so a hanging storage URL can't stall the build.
       const res = await fetch(doc.url, { signal: AbortSignal.timeout(15_000) })
       if (res.ok) return Buffer.from(await res.arrayBuffer())
     } catch {
@@ -75,20 +82,18 @@ async function readFontBytes(doc: FontDoc, staticDir: string): Promise<Buffer | 
 }
 
 /**
- * A `GET /api/fonts/export` endpoint registered by `fontsPlugin`. It resolves
- * the active fonts (the active design set's `font` group, else the standalone
- * `fontSet` global) and returns their bytes (base64) so the `generate:fonts`
- * script can write them to disk for `next/font/local` — no per-file storage
- * auth needed, because the endpoint reads them server-side.
- *
- * Secured by the project's `PAYLOAD_SECRET`: the caller sends it as
- * `Authorization: Bearer <secret>`, compared against `process.env.PAYLOAD_SECRET`.
+ * `GET /api/fonts/export`. Resolves the active fonts (the active design set's
+ * `font` group, else the standalone `fontSet` global) — each role points at ONE
+ * `font` typeface — and returns the bytes of that typeface's weight files
+ * (`fontFile`s) so the `generate:fonts` script can write them for
+ * `next/font/local`. Secured by the project's `PAYLOAD_SECRET` (Bearer).
  */
 export const exportFontsEndpoint = (opts: ExportFontsEndpointOptions = {}): Endpoint => {
   const {
     path: endpointPath = '/fonts/export',
     fontSetGlobalSlug = 'fontSet',
     fontCollectionSlug = 'font',
+    fontFileCollectionSlug = 'fontFile',
     designSetSlug = 'designSet',
     designSetFontField = 'font',
   } = opts
@@ -99,20 +104,15 @@ export const exportFontsEndpoint = (opts: ExportFontsEndpointOptions = {}): Endp
     handler: async (req) => {
       const { payload } = req
 
-      // Compare against the RAW PAYLOAD_SECRET (what the caller sends), not
-      // `payload.secret` — Payload stores that as a sha256 hash of the secret.
+      // Compare against the RAW PAYLOAD_SECRET (what the caller sends).
       const secret = process.env.PAYLOAD_SECRET || ''
       const provided = (req.headers.get('authorization') || '').replace(/^Bearer\s+/i, '').trim()
       if (!secret || !provided || !secretsMatch(provided, secret)) {
         return Response.json({ error: 'Unauthorized' }, { status: 401 })
       }
 
-      // Past the secret gate we read with `overrideAccess: true` deliberately —
-      // the shared secret is the trust boundary, so there's no Payload user to
-      // enforce collection access against.
-      // Prefer the active design set's `font` group, then fall back to the
-      // standalone `fontSet` global. Each lookup tolerates the collection /
-      // global not existing in this project.
+      // Prefer the active design set's `font` group, then the standalone `fontSet`
+      // global. The shared secret is the trust boundary → `overrideAccess: true`.
       let selection: FontSelection | undefined
       try {
         const designSet = await payload.find({
@@ -135,25 +135,52 @@ export const exportFontsEndpoint = (opts: ExportFontsEndpointOptions = {}): Endp
         }
       }
 
-      const fonts: Partial<Record<Role, ExportedFont>> = {}
+      const fonts: Partial<Record<Role, ExportedFont[]>> = {}
       if (selection) {
-        const staticDir = resolveStaticDir(payload, fontCollectionSlug)
+        // Bytes live on the fontFile collection, not the (non-upload) typeface.
+        const staticDir = resolveStaticDir(payload, fontFileCollectionSlug)
         for (const role of ROLES) {
-          const doc = selection[role]
-          if (!doc || typeof doc === 'string' || !doc.filename) continue
-          const bytes = await readFontBytes(doc, staticDir)
-          if (!bytes) continue
-          fonts[role] = {
-            filename: doc.filename,
-            extension: doc.filename.split('.').pop()?.toLowerCase() || 'ttf',
-            mimeType: doc.mimeType ?? null,
-            data: bytes.toString('base64'),
+          const ref = selection[role]
+          // One typeface per role (tolerate a stray array — take the first).
+          const single = Array.isArray(ref) ? ref[0] : ref
+          const typefaceId = single && typeof single === 'object' ? single.id : single
+          if (typefaceId == null) continue
+
+          // Re-fetch the typeface at depth 1 to populate `files` → fontFile docs
+          // (a single designSet/global find won't deep-populate the nested relationship).
+          let typeface: { files?: unknown[] } | null = null
+          try {
+            typeface = (await payload.findByID({
+              collection: fontCollectionSlug as CollectionSlug,
+              id: typefaceId,
+              depth: 1,
+              overrideAccess: true,
+            })) as { files?: unknown[] }
+          } catch {
+            continue
           }
+          const fileDocs = (Array.isArray(typeface?.files) ? typeface.files : []).filter(
+            (d): d is FontFileDoc => Boolean(d) && typeof d === 'object' && Boolean((d as FontFileDoc).filename),
+          )
+
+          const exported: ExportedFont[] = []
+          for (const doc of fileDocs) {
+            const bytes = await readFontBytes(doc, staticDir)
+            if (!bytes) continue
+            exported.push({
+              filename: doc.filename as string,
+              extension: (doc.filename as string).split('.').pop()?.toLowerCase() || 'woff2',
+              mimeType: doc.mimeType ?? null,
+              data: bytes.toString('base64'),
+              weight: doc.weight ?? null,
+              style: doc.style ?? null,
+            })
+          }
+          if (exported.length) fonts[role] = exported
         }
       }
 
-      // no-store: the response carries font bytes behind auth — keep any proxy
-      // or CDN from caching it and serving it without the secret.
+      // no-store: the response carries font bytes behind auth.
       return Response.json({ fonts } satisfies ExportFontsResponse, { headers: { 'Cache-Control': 'no-store' } })
     },
   }

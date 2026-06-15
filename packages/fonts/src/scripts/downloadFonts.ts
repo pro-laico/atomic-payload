@@ -11,11 +11,15 @@ const colors = {
 }
 
 type GenericFontFamily = 'sans' | 'serif' | 'mono' | 'display'
-type FontExtensions = Record<GenericFontFamily, string>
+const ROLES: GenericFontFamily[] = ['sans', 'serif', 'mono', 'display']
 
-/** One font as returned by the plugin's `/api/fonts/export` endpoint. */
-type ExportedFont = { filename: string; extension: string; mimeType: string | null; data: string }
-type ExportFontsResponse = { fonts: Partial<Record<GenericFontFamily, ExportedFont>> }
+/** One font file as returned by the plugin's `/api/fonts/export` endpoint. */
+type ExportedFont = { filename: string; extension: string; mimeType: string | null; data: string; weight?: string | null; style?: string | null }
+// A role carries an array of weight files (current) or a single file (pre-0.4 data); both tolerated.
+type ExportFontsResponse = { fonts: Partial<Record<GenericFontFamily, ExportedFont[] | ExportedFont>> }
+
+/** A written weight file, ready to emit into a generated `localFont` `src` array. */
+type WeightFile = { path: string; weight: string; style: string }
 
 export type RunDownloadFontsOptions = {
   /** Directory for downloaded font files. Default `./public/fonts` or `ATOMIC_FONTS_OUTPUT_DIR`. */
@@ -72,18 +76,23 @@ export async function runDownloadFonts(overrides?: RunDownloadFontsOptions): Pro
   const FONT_DEFINITION_FILE = opts.definitionFile
   const localPrefix = opts.localFontSrcPrefix.replace(/\/$/, '')
 
-  function generateFontDefinitions(extensions: FontExtensions): void {
+  function generateFontDefinitions(roleFiles: Record<GenericFontFamily, WeightFile[]>): void {
     const cssVar = (type: GenericFontFamily) => `${opts.cssVariablePrefix}${type.charAt(0).toUpperCase()}${type.slice(1)}`
-    const configs: Array<{ name: string; type: GenericFontFamily; extension: string; variable: string }> = [
-      { name: 'fontSans', type: 'sans', extension: extensions.sans, variable: cssVar('sans') },
-      { name: 'fontSerif', type: 'serif', extension: extensions.serif, variable: cssVar('serif') },
-      { name: 'fontMono', type: 'mono', extension: extensions.mono, variable: cssVar('mono') },
-      { name: 'fontDisplay', type: 'display', extension: extensions.display, variable: cssVar('display') },
+    const configs: Array<{ name: string; type: GenericFontFamily; variable: string }> = [
+      { name: 'fontSans', type: 'sans', variable: cssVar('sans') },
+      { name: 'fontSerif', type: 'serif', variable: cssVar('serif') },
+      { name: 'fontMono', type: 'mono', variable: cssVar('mono') },
+      { name: 'fontDisplay', type: 'display', variable: cssVar('display') },
     ]
 
-    const available = configs.filter((c) => c.extension)
+    // One `localFont()` per role, each with an array of weighted `src` entries —
+    // so multiple weights collapse into a single CSS variable for that role.
+    const available = configs.filter((c) => roleFiles[c.type].length > 0)
     const declarations = available
-      .map((c) => `const ${c.name} = localFont({ src: '${localPrefix}/${c.type}.${c.extension}', variable: '${c.variable}' })`)
+      .map((c) => {
+        const src = roleFiles[c.type].map((f) => `{ path: '${f.path}', weight: '${f.weight}', style: '${f.style}' }`).join(', ')
+        return `const ${c.name} = localFont({ src: [${src}], variable: '${c.variable}' })`
+      })
       .join('\n')
     const exports = available.map((c) => c.name).join(', ')
 
@@ -152,28 +161,40 @@ export default fonts
   }
 
   const fonts = manifest?.fonts ?? {}
-  const roles = Object.keys(fonts) as GenericFontFamily[]
 
   wipeFontFiles()
 
-  const extensions: FontExtensions = { sans: '', serif: '', mono: '', display: '' }
-  for (const role of roles) {
-    const font = fonts[role]
-    if (!font?.data) continue
-    try {
-      const ext = font.extension || font.filename.split('.').pop()?.toLowerCase() || 'ttf'
-      fs.writeFileSync(path.join(FONT_FILES_DIR, `${role}.${ext}`), Buffer.from(font.data, 'base64'))
-      extensions[role] = ext
-      console.log(`${colors.green('✓')} Downloaded ${role} font`)
-    } catch (err) {
-      console.warn(colors.red(`Failed to write ${role} font`))
-      if (opts.verbose) console.warn(err)
+  const roleFiles: Record<GenericFontFamily, WeightFile[]> = { sans: [], serif: [], mono: [], display: [] }
+  let count = 0
+  for (const role of ROLES) {
+    const value = fonts[role]
+    if (!value) continue
+    // Tolerate the pre-0.4 single-object shape by wrapping it in an array.
+    const files = Array.isArray(value) ? value : [value]
+    for (let i = 0; i < files.length; i++) {
+      const font = files[i]
+      if (!font?.data) continue
+      try {
+        const ext = font.extension || font.filename.split('.').pop()?.toLowerCase() || 'woff2'
+        const weight = font.weight || '400'
+        const style = font.style || 'normal'
+        // Distinct filename per weight/style; append the index if two files share one.
+        const base = `${role}-${weight}${style === 'italic' ? '-italic' : ''}`
+        const fileName = roleFiles[role].some((f) => f.path.endsWith(`/${base}.${ext}`)) ? `${base}-${i}` : base
+        fs.writeFileSync(path.join(FONT_FILES_DIR, `${fileName}.${ext}`), Buffer.from(font.data, 'base64'))
+        roleFiles[role].push({ path: `${localPrefix}/${fileName}.${ext}`, weight, style })
+        count++
+      } catch (err) {
+        console.warn(colors.red(`Failed to write ${role} font (weight ${font.weight ?? '?'})`))
+        if (opts.verbose) console.warn(err)
+      }
     }
+    const written = roleFiles[role].length
+    if (written) console.log(`${colors.green('✓')} Downloaded ${role} font (${written} weight${written === 1 ? '' : 's'})`)
   }
 
-  generateFontDefinitions(extensions)
+  generateFontDefinitions(roleFiles)
 
-  const count = Object.values(extensions).filter(Boolean).length
   if (count === 0) console.log(colors.orange('\nNo active fonts returned — generated an empty definition.\n'))
-  else console.log(colors.green(`\n✓ Font definitions generated (${count} font${count === 1 ? '' : 's'})\n`))
+  else console.log(colors.green(`\n✓ Font definitions generated (${count} font file${count === 1 ? '' : 's'})\n`))
 }

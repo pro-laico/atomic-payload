@@ -17,7 +17,7 @@ import { jsonSchemaPluginConfig } from './jsonSchema'
 import { childBlocksPluginConfig } from './childBlocks'
 import { formBuilderPluginConfig } from './formBuilder'
 import { blurDataUrlsPluginConfig } from './blurDataUrls'
-import { vercelBlobStoragePluginConfig } from './vercelBlobStorage'
+import { vercelBlobStoragePluginConfigs } from './vercelBlobStorage'
 
 // Notes on plugin composition:
 // - `Font` is registered via `fontsPlugin`; `Icon` and `iconSet` via `iconsPlugin`
@@ -53,7 +53,10 @@ export const plugins: Plugin[] = [
   childBlocksPluginConfig,
   trackingPlugin(),
   seedPlugin(),
-  fontsPlugin(),
+  // Optimize fonts on upload (convert + subset to WOFF2, keep the original, report
+  // the size saved). Requires the `subset-font` + `fontkit` optional peer deps and
+  // server-side uploads for the `font` collection (see ./vercelBlobStorage).
+  fontsPlugin({ optimize: true }),
   imagesPlugin(),
   muxVideoPlugin(),
   iconsPluginConfig,
@@ -61,7 +64,9 @@ export const plugins: Plugin[] = [
   nestedDocsPluginConfig,
   formBuilderPluginConfig,
   blurDataUrlsPluginConfig,
-  vercelBlobStoragePluginConfig,
+  // Two instances: client-side uploads for images/icons/favicons, server-side for
+  // fonts (so the optimize-on-upload hook can subset them). See ./vercelBlobStorage.
+  ...vercelBlobStoragePluginConfigs,
   // Revalidate the third-party form-builder collections (the @pro-laico/* ones
   // bake their own). Keep this last so the target collections already exist.
   revalidationPlugin({ collectionSlugs: ['forms', 'form-submissions'] }),
