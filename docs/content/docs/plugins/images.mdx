@@ -1,13 +1,11 @@
 ---
 title: "@pro-laico/images"
-description: "Adds the image and favicon upload collections to your Payload admin: web-ready WebP sizes, a favicon picker field, and an image block for your pages."
+description: "On-demand image transforms with focal-point cropping and built-in blur placeholders, plus a favicons collection, a picker field, and an Atomic image block."
 ---
 
-`@pro-laico/images` gives your Payload admin a place to upload images and favicons. The image collection converts uploads to WebP and generates a standard set of responsive sizes, a separate favicons collection keeps favicons out of your main image library, and the package ships a favicon-picker field and an image block you can use elsewhere. It's a tool the [atomic-payload template](/docs/templates/atomic-payload) and other plugins bring along, but you can add it on its own too.
+`@pro-laico/images` turns a Payload upload collection into an on-demand image pipeline. An upload stores just the original; every rendered size is generated the first time a page asks for it (resized and cropped to a focal point you set in the admin), then cached so it is only ever built once. It also ships a responsive image component, a built-in blur-up placeholder, a separate favicons collection with a reusable picker field, and an image block for [Atomic](/docs/plugins/atomic) content.
 
-<Callout type="info">
-  `@pro-laico/images` is a Tool package, a building block of the Atomic Payload stack, meant to be used alongside `@pro-laico/core` and the other `@pro-laico/*` packages (most easily via the [atomic-payload template](/docs/templates/atomic-payload)), not on its own.
-</Callout>
+The core pieces (the `Images` collection, the transform endpoint, `<ResponsiveImage>`, the focal-point UI, and blur) need only `@pro-laico/core`, so the package works in any Payload + Next.js app. The [atomic-payload template](/docs/templates/atomic-payload) wires it up for you, but you can add it on its own. There's a minimal standalone demo in [examples/images-only](/docs/examples/images-only).
 
 ## Installation
 
@@ -40,7 +38,7 @@ yarn add @pro-laico/images
 </Tabs>
 
 <Callout type="info">
-  `payload`, `next`, and `react` are peers you already have in a Payload + Next.js app. `@oversightstudio/blur-data-urls` is an **optional** peer. Install it only if you want blur-up placeholders for your images (see [Add blur placeholders](#add-blur-placeholders-optional)).
+  `payload`, `next`, and `react` are peers you already have in a Payload + Next.js app. `sharp` is an optional peer used by the transform endpoint and the blur placeholders (Payload already brings it). `@pro-laico/atomic` is an optional peer too, needed only for the image block; everything else runs without it.
 </Callout>
 
 ## Setup
@@ -50,10 +48,10 @@ yarn add @pro-laico/images
 <Tab value="Standalone">
 
 <Callout type="info">
-  `@pro-laico/core` comes bundled with this plugin — it's a dependency, not a separate install. Its cached reads reach Payload through a config you register once in your Next.js instrumentation hook (`registerPayloadConfig`); see [@pro-laico/core → Setup](/docs/plugins/core#setup) to wire it up.
+  `@pro-laico/core` comes bundled with this plugin (it's a dependency, not a separate install). Its cached reads reach Payload through a config you register once in your Next.js instrumentation hook (`registerPayloadConfig`); see [@pro-laico/core → Setup](/docs/plugins/core#setup) to wire it up.
 </Callout>
 
-Adding the image collections to your own Payload project.
+Adding the image pipeline to your own Payload project.
 
 <Steps>
 
@@ -62,45 +60,61 @@ Adding the image collections to your own Payload project.
 
 ```ts
 import { buildConfig } from 'payload'
+import sharp from 'sharp'
 import { imagesPlugin } from '@pro-laico/images'
 
+const serverURL = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000'
+
 export default buildConfig({
-  plugins: [imagesPlugin({ enabled: true })],
+  sharp, // required: the transform endpoint resizes/crops with Sharp
+  serverURL,
+  cors: [serverURL],
+  plugins: [imagesPlugin()],
 })
 ```
 
-This registers the **Images** collection (where you upload images, and every upload is converted to WebP and given a set of responsive sizes) and the **Favicons** collection (a separate place for `.ico` favicons). Both appear under an **Assets** group in the admin sidebar. Pass `includeFavicons: false` if you only want the Images collection.
+This registers the **Images** collection (you upload here; the original is stored untouched), a hidden **generatedImages** collection (the variant cache, one row per generated size), and the **Favicons** collection, all under an **Assets** group in the admin. It also mounts the on-demand transform endpoint at `/api/img/:id` and a purge endpoint at `/api/img/purge/:id`. Pass `includeFavicons: false` to skip the Favicons collection.
 </Step>
 
 <Step>
-### Upload your images
+### Keep Sharp out of the bundle
 
-Open the **Images** collection in the admin and upload your images. Each one gets an `alt` text field (required, used as the title) and a focal point. Accepted types are PNG, JPEG, WebP, and AVIF.
-</Step>
-
-<Step>
-### Add blur placeholders (optional)
-
-The plugin does **not** wire up blur placeholders itself, because pnpm doesn't install the optional peer next to this package, so the plugin can't reach it. Install [`@oversightstudio/blur-data-urls`](https://www.npmjs.com/package/@oversightstudio/blur-data-urls) yourself and register it **after** `imagesPlugin`, passing the exported `Images` collection:
+Sharp ships a native file, so tell Next not to bundle it (Turbopack and webpack both need this):
 
 ```ts
-import { buildConfig } from 'payload'
-import { imagesPlugin, Images } from '@pro-laico/images'
-import { blurDataUrlsPlugin } from '@oversightstudio/blur-data-urls'
+// next.config.ts
+import type { NextConfig } from 'next'
 
-export default buildConfig({
-  plugins: [
-    imagesPlugin({ enabled: true }),
-    blurDataUrlsPlugin({
-      enabled: true,
-      collections: [Images],
-      blurOptions: { blur: 18, width: 32, height: 'auto' },
-    }),
-  ],
-})
+const nextConfig: NextConfig = {
+  serverExternalPackages: ['sharp'],
+}
+
+export default nextConfig
+```
+</Step>
+
+<Step>
+### Set your server URL
+
+On a cloud or relative-URL storage adapter the endpoint reads the original by fetching the server's own file route, so it needs to know your origin. Set `NEXT_PUBLIC_SERVER_URL` to your deployment URL (it falls back to `http://localhost:3000` for local dev). See [Environment variables](#environment-variables).
+</Step>
+
+<Step>
+### Generate the admin import map
+
+The focal-point picker and the **Purge variants** button are admin components, so Payload needs them in its import map:
+
+```bash
+pnpm payload generate:importmap
 ```
 
-That generates a small blurred placeholder for each upload, which the [image block](#the-image-block) can show while the full image loads.
+Re-run it whenever you change which admin components are registered.
+</Step>
+
+<Step>
+### Upload an image and set its focal point
+
+Open the **Images** collection and upload an image (each needs `alt` text). Drag the focal point onto the subject; the ratio tiles preview exactly how each aspect ratio will crop. Accepted types are PNG, JPEG, WebP, and AVIF.
 </Step>
 
 </Steps>
@@ -109,14 +123,14 @@ That generates a small blurred placeholder for each upload, which the [image blo
 
 <Tab value="With the atomic-payload template">
 
-The [atomic-payload template](/docs/templates/atomic-payload) already includes `@pro-laico/images`: the **Images** and **Favicons** collections, the blur-placeholder plugin wired against the Images collection, and the image block registered with the other Atomic blocks. You just upload your assets.
+The [atomic-payload template](/docs/templates/atomic-payload) already includes `@pro-laico/images`: the **Images**, **generatedImages**, and **Favicons** collections, the transform endpoint, the admin focal UI (already in the import map), and the image block registered with the other Atomic blocks. You just upload your assets.
 
 <Steps>
 
 <Step>
 ### Upload images and favicons
 
-Open the **Images** collection and upload your images (each needs `alt` text), and the **Favicons** collection for any `.ico` favicons.
+Open the **Images** collection and upload your images (each needs `alt` text, and a focal point you drag onto the subject), and the **Favicons** collection for any favicons.
 </Step>
 
 <Step>
@@ -133,9 +147,40 @@ In the **Site Metadata** global, choose the light and dark favicons for your sit
 
 ## Using it in your app
 
+### Rendering images with `<ResponsiveImage>`
+
+`<ResponsiveImage>` is the front-end surface. It emits a plain `<img>` whose `srcset` points at the transform endpoint, so the browser downloads the one size that fits where the image renders. It is not `next/image`, and it runs in both server and client trees. Import it from the `@pro-laico/images/components/image` subpath:
+
+```tsx
+import { getPayload } from 'payload'
+import config from '@payload-config'
+import { ResponsiveImage } from '@pro-laico/images/components/image'
+
+// A server component that loads an image and renders it responsively.
+export async function Hero({ id }: { id: string }) {
+  const payload = await getPayload({ config })
+  const image = await payload.findByID({ collection: 'images', id, depth: 0 })
+
+  return <ResponsiveImage image={image} aspectRatio="16:9" sizes="(max-width: 768px) 100vw, 50vw" />
+}
+```
+
+Pass the **populated document** (not just an id) when you can: that fills in the blur placeholder, the intrinsic width/height (so the layout doesn't shift), the `alt` fallback, and the cache-busting version token. The endpoint reads the focal point from the document and crops server-side, so the component never needs it.
+
+The `srcset` granularity is a prop on `<ResponsiveImage>`, set where you render the image (it isn't a plugin option). Pass `pixelStep` (default 50px) to change the step; raise it to emit fewer widths, so the browser has fewer sizes to choose from and the endpoint generates fewer variants. `maxEntries` (default 16) caps how many entries before the step coarsens.
+
+```tsx
+// fewer, wider steps for this image
+<ResponsiveImage image={image} aspectRatio="16:9" sizes="100vw" pixelStep={100} />
+```
+
+<Callout type="info">
+  Want one default everywhere instead of passing `pixelStep` each time? Wrap the component once and use the wrapper: `const Image = (props: ResponsiveImageProps) => <ResponsiveImage pixelStep={100} {...props} />`. Any prop you pass at the call site still wins.
+</Callout>
+
 ### The favicon field
 
-`FaviconField` is a ready-made upload field that points at the Favicons collection, so you can add a favicon picker to any global or collection. It's what [`@pro-laico/site`](/docs/plugins/site) uses for the site's favicons; add it to your own config the same way:
+`FaviconField` is a ready-made upload field that targets the Favicons collection, so you can add a favicon picker to any global or collection. It's what [`@pro-laico/site`](/docs/plugins/site) uses; add it to your own config the same way:
 
 ```ts
 import { FaviconField } from '@pro-laico/images'
@@ -150,7 +195,7 @@ Pass a `name` (and anything else a Payload upload field accepts) to mount more t
 
 ### The image block
 
-The package ships an **Image** block (slug `ImageChild`) that lets editors drop an image into [Atomic](/docs/plugins/atomic) content. It isn't registered by `imagesPlugin`. It's one of the default child blocks the Atomic renderer wires up, so in most setups you get it for free. To register it in your own block list, import it from the `@pro-laico/images/blocks/imageChild` subpath:
+The package ships an **Image** block (slug `ImageChild`) that lets editors drop an image into [Atomic](/docs/plugins/atomic) content. It isn't registered by `imagesPlugin`; it's one of the default child blocks the Atomic renderer wires up, so in most setups you get it for free. To register it in your own block list, import it from the `@pro-laico/images/blocks/imageChild` subpath:
 
 ```ts
 import { createImageBlock, Image } from '@pro-laico/images/blocks/imageChild'
@@ -162,11 +207,21 @@ const blocks = [Image]
 const customImageBlock = createImageBlock({ prependFields: [], appendFields: [] })
 ```
 
-The block lets the editor choose the image, a stored size, alt text, and `next/image` options (priority, blur, loading, and more). On the front end it renders through `@pro-laico/atomic/children`, which resolves the chosen image and outputs an optimized `next/image`.
+The block lets the editor choose the image and per-placement display options (alt, aspect ratio, sizes, quality, fit, priority or lazy loading, and whether to show the blur). On the front end it renders through `@pro-laico/atomic/children` as a `<ResponsiveImage>`.
 
 <Callout type="info">
   The Image block is **not** re-exported from the package root. Import `createImageBlock` or `Image` from the `@pro-laico/images/blocks/imageChild` subpath.
 </Callout>
+
+## Caching & revalidation
+
+There are three caches working together, and the plugin keeps them honest:
+
+- **The variant cache** (`generatedImages`). The first request for a size generates it and stores it; later requests stream the stored copy. When you replace the file or move the focal point, the change/delete hooks purge that image's stale variants so they regenerate. The **Purge variants** button (and `POST /api/img/purge/:id`) clears them on demand.
+- **The browser/CDN cache.** Transform responses are immutable, and every URL carries a `v` token derived from the source's filename and focal point. Replacing the file or moving the focal point yields a new URL, so already-cached responses refetch; a metadata-only edit (like `alt`) leaves them untouched.
+- **The Next.js data cache.** `getCachedImage` (from `@pro-laico/images/cache`) reads an upload's URL once per id instead of querying Payload on every render, and the Images collection revalidates the matching tag on save and delete.
+
+See [Caching & revalidation](/docs/concepts/caching) for how the tags work.
 
 ## Options
 
@@ -174,32 +229,83 @@ The block lets the editor choose the image, a stored size, alt text, and `next/i
 
 <TypeTable
   type={{
-    enabled: { type: 'boolean', default: 'true', description: 'When false, the plugin does nothing.' },
-    includeFavicons: { type: 'boolean', default: 'true', description: 'When true, registers the Favicons collection alongside Images.' },
-    imagesOptions: { type: 'Partial<CollectionConfig>', description: "Tweaks merged onto the Images collection, e.g. add fields or change the upload folder. Upload, access, and admin settings are deep-merged and fields/hooks are appended, so a partial override can't silently drop the built-in image sizes, accepted types, alt field, or access rules." },
+    enabled: { type: 'boolean', default: 'true', description: 'When false, the plugin registers nothing. This is "not installed", not "paused": on SQL adapters, turning it off for an existing project produces a migration that drops the image tables and their data.' },
+    includeFavicons: { type: 'boolean', default: 'true', description: 'Register the Favicons collection alongside Images.' },
+    imagesOptions: { type: 'Partial<CollectionConfig>', description: "Tweaks merged onto the Images collection (add fields, change the upload folder, and so on). `upload`/`access`/`admin` are deep-merged and `fields`/`hooks` are appended, so a partial override can't silently drop the built-in `alt` field, accepted types, focal UI, or access rules. Don't redeclare a base field name like `alt` or `variants`." },
     faviconsOptions: { type: 'Partial<CollectionConfig>', description: 'Tweaks merged onto the Favicons collection (same merge behavior as imagesOptions).' },
+    generatedImagesOptions: { type: 'Partial<CollectionConfig>', description: 'Tweaks merged onto the hidden generatedImages (variant cache) collection.' },
+    pregenerateSizes: { type: 'boolean | ImageSize[]', default: 'false', description: 'Bring back on-upload size generation. Off by default (uploads store only the original and all sizing is on demand). `true` restores the legacy 7-size ladder; pass an array for a custom ladder.' },
+    transform: { type: 'TransformEndpointConfig | false', default: '{}', description: 'Config for the on-demand transform + purge endpoints. Pass `false` to register neither endpoint (you supply your own image URLs). See the nested keys below.' },
+    focalUI: { type: 'boolean', default: 'true', description: 'Render the focal-point picker + ratio-preview field and the Purge variants button in the admin.' },
+    previewRatios: { type: 'string[]', default: "['16:9','9:16','1:1','4:3','3:2','21:9']", description: 'Aspect ratios shown as preview tiles in the focal-point field.' },
+    blur: { type: 'boolean | BlurOptions', default: 'true', description: 'LQIP blur placeholder generated on upload into `blurDataUrl` (read by `<ResponsiveImage>`). `true` uses the defaults; pass an object to tune it; `false` turns it off. See the nested keys below.' },
   }}
 />
 
-`imagesOptions` and `faviconsOptions` are standard Payload `Partial<CollectionConfig>` objects, so any collection key you pass is merged onto the built-in collection. All options at their defaults, as a working starting point:
+<Accordions>
+
+<Accordion title="transform keys">
+
+<TypeTable
+  type={{
+    path: { type: 'string', default: "'/img'", description: 'Base path for the endpoints (mounts at `/api/img/:id` and `/api/img/purge/:id`). Never name a collection after the first segment of this path, or the collection shadows the endpoint.' },
+    sourceSlug: { type: 'string', default: "'images'", description: 'Slug of the source upload collection to transform.' },
+    variantSlug: { type: 'string', default: "'generatedImages'", description: 'Slug of the collection that caches generated variants.' },
+    cdnCacheControl: { type: 'boolean', default: 'true', description: 'Also emit `CDN-Cache-Control` / `Vercel-CDN-Cache-Control` headers for edge caching (public images only).' },
+    maxDimension: { type: 'number', default: '4096', description: 'Hard ceiling on either output dimension.' },
+    defaultQuality: { type: 'number', default: '75', description: 'Encode quality used when a request omits `q`.' },
+    qualityRange: { type: '[number, number]', default: '[40, 95]', description: 'Allowed quality range; requested values are clamped into it.' },
+    defaultFormat: { type: 'Format', default: "'auto'", description: 'Output format used when a request omits `fmt` (`auto` negotiates from the Accept header).' },
+    formats: { type: 'Format[]', default: "['auto','avif','webp','jpeg','png']", description: 'Output formats the endpoint may emit.' },
+  }}
+/>
+
+</Accordion>
+
+<Accordion title="blur keys">
+
+<TypeTable
+  type={{
+    width: { type: 'number', default: '32', description: 'Width (px) of the generated placeholder.' },
+    height: { type: "number | 'auto'", default: "'auto'", description: "Height (px), or `'auto'` to keep the source aspect ratio." },
+    blur: { type: 'number', default: '18', description: 'Sharp blur sigma applied to the placeholder.' },
+  }}
+/>
+
+</Accordion>
+
+</Accordions>
+
+All options at their defaults, as a working starting point:
 
 ```ts
 imagesPlugin({
   enabled: true,
   includeFavicons: true,
-  // imagesOptions and faviconsOptions are unset by default (no overrides merged)
+  // imagesOptions / faviconsOptions / generatedImagesOptions: unset (no overrides merged)
+  pregenerateSizes: false, // store only the original; every size is on demand
+  focalUI: true,
+  previewRatios: ['16:9', '9:16', '1:1', '4:3', '3:2', '21:9'],
+  blur: true, // or { width: 32, height: 'auto', blur: 18 }
+  transform: {
+    path: '/img',
+    sourceSlug: 'images',
+    variantSlug: 'generatedImages',
+    cdnCacheControl: true,
+    maxDimension: 4096,
+    defaultQuality: 75,
+    qualityRange: [40, 95],
+    defaultFormat: 'auto',
+    formats: ['auto', 'avif', 'webp', 'jpeg', 'png'],
+  },
 })
 ```
 
 ## Environment variables
 
-`@pro-laico/images` reads no environment variables.
-
-## Caching & revalidation
-
-The package ships one cached read, `getCachedImage`, from the `@pro-laico/images/cache` subpath. Give it an image document id (and an optional size name) and it returns that upload's URL, reading Payload once instead of on every render. The [image block](#the-image-block) calls it so the block looks up the chosen image by id, which keeps the rest of the page cached even when the image changes.
-
-The Images collection revalidates the matching tag for you: saving an image refreshes its cached URL, and deleting one clears it, so the next page render serves the new URL. See [Caching & revalidation](/docs/concepts/caching) for how the tags work.
+| Variable | Purpose |
+| --- | --- |
+| `NEXT_PUBLIC_SERVER_URL` | The origin the transform endpoint uses to read the original when the storage adapter reports a relative or cloud URL. Set it to your deployment URL; it falls back to `http://localhost:3000`, so generation fails in production if it's unset (surfacing as a `502`). |
 
 ## Exports
 
@@ -210,45 +316,277 @@ The Images collection revalidates the matching tag for you: saving an image refr
     imagesPlugin: {
       type: 'plugin',
       location: '@pro-laico/images',
-      description: 'The plugin itself. Registers the Images collection and, with includeFavicons, the Favicons collection. Default and named export.',
+      description: 'The plugin itself. Registers the Images, generatedImages, and (with includeFavicons) Favicons collections plus the transform + purge endpoints. Default and named export.',
       params: {
-        'options?': { type: 'ImagesPluginOptions', description: 'See the Options table above. Everything is optional; omit it to register both collections with their defaults.' },
+        'options?': { type: 'ImagesPluginOptions', description: 'See the Options table above. Everything is optional.' },
       },
       returns: { type: 'Plugin', description: 'A Payload config plugin you add to `buildConfig({ plugins: [...] })`.' },
       example: `import { buildConfig } from 'payload'
+import sharp from 'sharp'
 import { imagesPlugin } from '@pro-laico/images'
 
 export default buildConfig({
-  plugins: [imagesPlugin({ includeFavicons: true })],
+  sharp,
+  plugins: [imagesPlugin()],
 })`,
     },
     ImagesPluginOptions: { type: 'type', location: '@pro-laico/images', description: "The TypeScript type for the plugin's options." },
   }}
 />
 
-### Collections & fields
+### Collections & factories
 
 <ExportTable
   exports={{
-    Images: { type: 'collection', location: '@pro-laico/images', description: 'The image upload collection (WebP conversion + responsive sizes). Import it to extend the collection or to pass it to the blur-data-URL plugin.' },
-    Favicons: { type: 'collection', location: '@pro-laico/images', description: 'The favicon upload collection (`.ico`), kept separate from the main image library.' },
+    Images: { type: 'collection', location: '@pro-laico/images', description: 'The source image upload collection (stores the original only; on-demand sizing). Import it to extend the collection or wire another plugin against it. Built by `createImagesCollection()`.' },
+    createImagesCollection: {
+      type: 'function',
+      location: '@pro-laico/images',
+      description: 'Factory for the Images collection, so you can build a customized one (e.g. legacy sizes, a different focal UI, or a custom variant slug).',
+      params: {
+        'opts?': { type: 'CreateImagesOptions', description: '`{ pregenerateSizes?, focalUI?, previewRatios?, variantSlug?, purgePath?, blur? }`. All optional.' },
+      },
+      returns: { type: 'CollectionConfig', description: 'A Payload collection config for the source images.' },
+      example: `import { createImagesCollection } from '@pro-laico/images'
+
+// a source collection with the legacy size ladder and no focal UI
+const Images = createImagesCollection({ pregenerateSizes: true, focalUI: false })`,
+    },
+    GeneratedImages: { type: 'collection', location: '@pro-laico/images', description: 'The hidden variant-cache collection (one row per generated size, keyed by a unique cacheKey). You rarely touch it directly. Built by `createGeneratedImagesCollection()`.' },
+    createGeneratedImagesCollection: {
+      type: 'function',
+      location: '@pro-laico/images',
+      description: 'Factory for the variant-cache collection (e.g. to give it a custom slug).',
+      params: {
+        'opts?': { type: '{ slug?: string }', description: 'Override the collection slug (default `generatedImages`).' },
+      },
+      returns: { type: 'CollectionConfig', description: 'A hidden Payload upload collection for cached variants.' },
+      example: `import { createGeneratedImagesCollection } from '@pro-laico/images'
+
+const variants = createGeneratedImagesCollection({ slug: 'imageVariants' })`,
+    },
+    GENERATED_IMAGES_SLUG: { type: 'constant', location: '@pro-laico/images', description: "The default variant-cache slug (`'generatedImages'`)." },
+    Favicons: { type: 'collection', location: '@pro-laico/images', description: 'The favicon upload collection, kept separate from the main image library.' },
+  }}
+/>
+
+### Fields & admin components
+
+<ExportTable
+  exports={{
     FaviconField: {
       type: 'function',
       location: '@pro-laico/images',
-      description: "Builds a reusable favicon-picker upload field that targets the Favicons collection. Drop it into any global or collection. The field always points at the `favicons` collection, so an override can't re-target it.",
+      description: "Builds a reusable favicon-picker upload field that targets the Favicons collection. Drop it into any global or collection; the field always points at the `favicons` collection, so an override can't re-target it.",
       params: {
-        'args?': { type: 'Partial<UploadField> & { apf?: APFunction[] }', description: 'Upload-field overrides (`name`, `label`, `admin`, …) merged onto the field; `name` lets you mount several pickers. `apf` attaches `@pro-laico/core` upload hooks via `onUploadSetAPF`.' },
+        'args?': { type: 'Partial<UploadField> & { apf?: APFunction[] }', description: 'Upload-field overrides (`name`, `label`, `admin`, …) merged onto the field; `name` lets you mount several pickers. `apf` attaches `@pro-laico/core` upload hooks.' },
       },
       returns: { type: 'UploadField', description: 'A Payload upload field pointing at the `favicons` collection.' },
       example: `import type { GlobalConfig } from 'payload'
 import { FaviconField } from '@pro-laico/images'
 
-// a global with light + dark favicon pickers
 export const SiteMetaData: GlobalConfig = {
   slug: 'siteMetaData',
   fields: [FaviconField({ name: 'lightFavicon' }), FaviconField({ name: 'darkFavicon' })],
 }`,
     },
+    FocalPreviewFieldPath: { type: 'constant', location: '@pro-laico/images', description: "Import path string for the focal-point field component (`'@pro-laico/images/admin/focalPreview'`), used in the Payload import map." },
+    PurgeVariantsFieldPath: { type: 'constant', location: '@pro-laico/images', description: "Import path string for the Purge variants button component (`'@pro-laico/images/admin/purgeVariants'`)." },
+    FocalPreview: { type: 'component', location: '@pro-laico/images/admin/focalPreview', description: 'The admin focal-point picker + ratio-preview field. Wired automatically when `focalUI` is on; registered via the import map, so you rarely import it directly.' },
+    PurgeVariants: { type: 'component', location: '@pro-laico/images/admin/purgeVariants', description: 'The admin Purge variants button (POSTs to the purge endpoint for the open image).' },
+  }}
+/>
+
+### The transform endpoints
+
+<ExportTable
+  exports={{
+    createTransformEndpoint: {
+      type: 'function',
+      location: '@pro-laico/images',
+      description: 'Builds the on-demand transform endpoint (`GET <path>/:id?w&h&ar&fit&q&fmt&v`). `imagesPlugin` registers this for you; build it yourself only to mount it on a custom config.',
+      params: {
+        'cfg?': { type: 'TransformEndpointConfig', description: 'Endpoint config (see the `transform` option keys above).' },
+      },
+      returns: { type: 'Endpoint', description: 'A Payload config endpoint.' },
+      example: `import { buildConfig } from 'payload'
+import { createTransformEndpoint } from '@pro-laico/images'
+
+export default buildConfig({
+  endpoints: [createTransformEndpoint({ path: '/img', sourceSlug: 'images' })],
+})`,
+    },
+    createPurgeEndpoint: {
+      type: 'function',
+      location: '@pro-laico/images',
+      description: 'Builds the purge endpoint (`POST <path>/:id`) that deletes a source image\'s cached variants. Requires a logged-in user who can read the source.',
+      params: {
+        'cfg?': { type: 'PurgeEndpointConfig', description: '`{ path?, variantSlug?, sourceSlug? }`. All optional.' },
+      },
+      returns: { type: 'Endpoint', description: 'A Payload config endpoint.' },
+      example: `import { createPurgeEndpoint } from '@pro-laico/images'
+
+const purge = createPurgeEndpoint({ path: '/img/purge' })`,
+    },
+    TransformEndpointConfig: { type: 'type', location: '@pro-laico/images', description: 'The config type for the transform endpoint (path, source/variant slugs, format and quality constraints).' },
+    PurgeEndpointConfig: { type: 'type', location: '@pro-laico/images', description: 'The config type for the purge endpoint.' },
+  }}
+/>
+
+### Frontend components
+
+<ExportTable
+  exports={{
+    ResponsiveImage: {
+      type: 'component',
+      location: '@pro-laico/images/components/image',
+      description: 'A responsive `<img>` (an on-demand `srcset` with the blur-up placeholder), for server or client trees. Not `next/image`.',
+      params: {
+        props: { type: 'ResponsiveImageProps', description: 'At least `image` (a populated doc or a bare id). Optional: `aspectRatio`, `sizes`, `quality`, `fit`, `format`, `pixelStep`, `priority`, `blur`, `path`, and the usual `className` / `style`.' },
+      },
+      returns: { type: 'ReactElement | null', description: 'The image element, or `null` for an empty id.' },
+      exampleLang: 'tsx',
+      example: `import { ResponsiveImage } from '@pro-laico/images/components/image'
+
+// inside a server or client component, with a populated image doc
+<ResponsiveImage image={image} aspectRatio="16:9" sizes="(max-width: 768px) 100vw, 50vw" />`,
+    },
+    buildSrcset: {
+      type: 'function',
+      location: '@pro-laico/images/components/buildSrcset',
+      description: 'Isomorphic builder for a responsive `srcset` + default `src` of transform URLs. `<ResponsiveImage>` uses it; call it directly for hand-rolled markup.',
+      params: {
+        id: { type: 'string', description: 'The image document id.' },
+        'opts?': { type: 'BuildSrcsetOptions', description: 'Aspect ratio, fit, quality, format, `pixelStep`, `sourceWidth`, `version`, base URL / path.' },
+      },
+      returns: { type: '{ srcset: string; src: string }', description: 'The `srcset` string and a default `src`.' },
+      example: `import { buildSrcset, deriveVersion } from '@pro-laico/images/components/buildSrcset'
+
+const { srcset, src } = buildSrcset(String(image.id), {
+  aspectRatio: '16:9',
+  sourceWidth: image.width,
+  version: deriveVersion(image),
+})`,
+    },
+    buildVariantUrl: {
+      type: 'function',
+      location: '@pro-laico/images/components/buildSrcset',
+      description: 'Builds a single transform URL for one width (e.g. for an OG image or a manual `<img>`).',
+      params: {
+        id: { type: 'string', description: 'The image document id.' },
+        width: { type: 'number', description: 'Requested width in px.' },
+        'o?': { type: 'BuildUrlOptions', description: 'Fit, quality, format, aspect ratio, `version`, base URL / path.' },
+      },
+      returns: { type: 'string', description: 'A `/api/img/:id?…` URL.' },
+      example: `import { buildVariantUrl, deriveVersion } from '@pro-laico/images/components/buildSrcset'
+
+const ogUrl = buildVariantUrl(String(image.id), 1200, {
+  aspectRatio: '1.91:1',
+  baseUrl: process.env.NEXT_PUBLIC_SERVER_URL,
+  version: deriveVersion(image),
+})`,
+    },
+    deriveVersion: {
+      type: 'function',
+      location: '@pro-laico/images/components/buildSrcset',
+      description: "Derives the cache-busting `v` token from an image's filename + focal point, so replacing the file or moving the focal point yields a new URL. Returns undefined for a bare id (no identity to version).",
+      params: {
+        'src?': { type: '{ filename?, focalX?, focalY? } | null', description: 'A populated image doc (or those fields of it).' },
+      },
+      returns: { type: 'string | undefined', description: 'A short token, or undefined when no identity is available.' },
+      example: `import { deriveVersion } from '@pro-laico/images/components/buildSrcset'
+
+const v = deriveVersion(image) // pass to buildSrcset / buildVariantUrl`,
+    },
+  }}
+/>
+
+### Hooks
+
+<ExportTable
+  exports={{
+    generateBlurDataUrl: {
+      type: 'function',
+      location: '@pro-laico/images',
+      description: 'Builds the beforeChange hook that fills `blurDataUrl` from the uploaded bytes. `imagesPlugin` wires it when `blur` is on; use it to add blur to a custom collection.',
+      params: {
+        'opts?': { type: 'BlurOptions', description: '`{ width?, height?, blur? }`.' },
+      },
+      returns: { type: 'CollectionBeforeChangeHook', description: 'A Payload beforeChange hook.' },
+      example: `import { generateBlurDataUrl } from '@pro-laico/images'
+
+const hooks = { beforeChange: [generateBlurDataUrl({ width: 32, blur: 18 })] }`,
+    },
+    renderBlurDataUrl: {
+      type: 'function',
+      location: '@pro-laico/images',
+      description: 'Shrinks + blurs an image buffer into a base64 WebP data URL (the primitive behind the blur hook).',
+      params: {
+        src: { type: 'Buffer', description: 'The source image bytes.' },
+        'opts?': { type: 'BlurOptions', description: '`{ width?, height?, blur? }`.' },
+      },
+      returns: { type: 'Promise<string>', description: 'A `data:image/webp;base64,…` URL.' },
+      example: `import { renderBlurDataUrl } from '@pro-laico/images'
+
+const dataUrl = await renderBlurDataUrl(buffer, { width: 32 })`,
+    },
+    backfillBlurDataUrls: {
+      type: 'function',
+      location: '@pro-laico/images',
+      description: 'Populates `blurDataUrl` for images uploaded before blur was enabled. Reads each upload the same way the endpoint does, so it works on any storage adapter. Run once from a script.',
+      params: {
+        payload: { type: 'Payload', description: 'A Payload instance (e.g. from `getPayload`).' },
+        'opts?': { type: 'BackfillBlurOptions', description: '`{ sourceSlug?, baseUrl?, force?, batchSize?, width?, height?, blur? }`.' },
+      },
+      returns: { type: 'Promise<number>', description: 'How many documents were updated.' },
+      example: `import { getPayload } from 'payload'
+import config from '@payload-config'
+import { backfillBlurDataUrls } from '@pro-laico/images'
+
+const payload = await getPayload({ config })
+await backfillBlurDataUrls(payload)`,
+    },
+    purgeStaleVariantsAfterChange: {
+      type: 'function',
+      location: '@pro-laico/images',
+      description: 'Builds the afterChange hook that purges a source\'s cached variants when its file or focal point changed (baked into the Images collection).',
+      params: {
+        'opts?': { type: 'PurgeOptions', description: '`{ variantSlug? }`.' },
+      },
+      returns: { type: 'CollectionAfterChangeHook', description: 'A Payload afterChange hook.' },
+      example: `import { purgeStaleVariantsAfterChange } from '@pro-laico/images'
+
+const hooks = { afterChange: [purgeStaleVariantsAfterChange()] }`,
+    },
+    purgeVariantsBeforeDelete: {
+      type: 'function',
+      location: '@pro-laico/images',
+      description: "Builds the beforeDelete hook that removes a source's cached variants before the source row is deleted (SQL foreign-key safety).",
+      params: {
+        'opts?': { type: 'PurgeOptions', description: '`{ variantSlug? }`.' },
+      },
+      returns: { type: 'CollectionBeforeDeleteHook', description: 'A Payload beforeDelete hook.' },
+      example: `import { purgeVariantsBeforeDelete } from '@pro-laico/images'
+
+const hooks = { beforeDelete: [purgeVariantsBeforeDelete()] }`,
+    },
+    purgeVariantsForSource: {
+      type: 'function',
+      location: '@pro-laico/images',
+      description: 'Deletes every cached variant for a given source id and returns the count. The primitive behind the purge hooks and the purge endpoint.',
+      params: {
+        payload: { type: 'Payload', description: 'A Payload instance.' },
+        variantSlug: { type: 'string', description: 'The variant-cache slug.' },
+        sourceId: { type: 'string | number', description: 'The source image id.' },
+        'req?': { type: 'PayloadRequest', description: "Join the caller's transaction by passing its `req`." },
+      },
+      returns: { type: 'Promise<number>', description: 'How many variants were removed.' },
+      example: `import { purgeVariantsForSource } from '@pro-laico/images'
+
+await purgeVariantsForSource(payload, 'generatedImages', imageId)`,
+    },
+    BlurOptions: { type: 'type', location: '@pro-laico/images', description: 'The `{ width?, height?, blur? }` options for the blur placeholder.' },
+    BackfillBlurOptions: { type: 'type', location: '@pro-laico/images', description: 'The options for `backfillBlurDataUrls`.' },
   }}
 />
 
@@ -259,37 +597,32 @@ export const SiteMetaData: GlobalConfig = {
     createImageBlock: {
       type: 'function',
       location: '@pro-laico/images/blocks/imageChild',
-      description: 'Factory for the Image (`ImageChild`) block. Pass `prependFields` / `appendFields` to weave extra fields (e.g. a `@pro-laico/styles` class-name field) into the start / end of its Image tab.',
+      description: 'Factory for the Image (`ImageChild`) block. Pass `prependFields` / `appendFields` to weave extra fields (e.g. a `@pro-laico/styles` class-name field) into its Image tab.',
       params: {
-        'options?': { type: 'ImageBlockOptions', description: '`{ prependFields?, appendFields? }` arrays of Payload fields spread at the start / end of the Image tab. Omit it to get the block with no extra fields.' },
+        'options?': { type: 'ImageBlockOptions', description: '`{ prependFields?, appendFields? }` arrays of Payload fields. Omit it for the block with no extra fields.' },
       },
-      returns: { type: 'Block', description: 'A Payload block (slug `ImageChild`) you add to a block field or an Atomic child-block list.' },
+      returns: { type: 'Block', description: 'A Payload block (slug `ImageChild`).' },
       example: `import type { Block } from 'payload'
 import { createImageBlock } from '@pro-laico/images/blocks/imageChild'
 import { ClassNameField } from '@pro-laico/styles/fields/className'
 
-// the Image block with an authored class-name field prepended
 const imageBlock: Block = createImageBlock({ prependFields: [ClassNameField({ namePrefix: 'image' })] })`,
     },
     Image: { type: 'block', location: '@pro-laico/images/blocks/imageChild', description: 'The prebuilt Image block, with no extra fields. What `createImageBlock()` returns by default.' },
-    ImageBlockOptions: { type: 'type', location: '@pro-laico/images/blocks/imageChild', description: 'The TypeScript type for `createImageBlock` options (`prependFields` / `appendFields`).' },
+    ImageBlockOptions: { type: 'type', location: '@pro-laico/images/blocks/imageChild', description: 'The options type for `createImageBlock` (`prependFields` / `appendFields`).' },
     ImageChild: {
       type: 'component',
       location: '@pro-laico/images/blocks/imageChild/component',
-      description: 'The server component that renders the Image block as an optimized `next/image`. The Atomic children renderer wires it up for the `ImageChild` slug, so you rarely import it directly.',
+      description: 'The server component that renders the Image block as a `<ResponsiveImage>`. The Atomic children renderer wires it up for the `ImageChild` slug, so you rarely import it directly.',
       params: {
         props: { type: 'RenderChild<ImageChild>', description: 'The block data and pass-through props the Atomic children renderer supplies (`block`, `pt`).' },
       },
-      returns: { type: 'Promise<JSX.Element>', description: 'A `next/image` for the chosen image (resolved through `getCachedImage`), or a placeholder when no image is set.' },
+      returns: { type: 'Promise<JSX.Element>', description: 'A `<ResponsiveImage>` for the chosen image, or a placeholder when none is set.' },
       exampleLang: 'tsx',
       example: `import { ImageChild } from '@pro-laico/images/blocks/imageChild/component'
 
-// register it for the ImageChild slug in your Atomic children map;
-// the renderer passes the block + pass-through props for you
-const childComponents = {
-  ImageChild,
-  // ...other child block components
-}`,
+// register it for the ImageChild slug in your Atomic children map
+const childComponents = { ImageChild }`,
     },
   }}
 />
@@ -301,31 +634,26 @@ const childComponents = {
     getCachedImage: {
       type: 'function',
       location: '@pro-laico/images/cache',
-      description: "Cached read of an image upload's URL by document id. Returns the named `version` size if given, else the original. Wrapped in `withCache` under the `image` tag and revalidated when the image is saved or deleted, so a page reads it once instead of re-querying Payload on every render. Resolves the config the app registered with `registerPayloadConfig`.",
+      description: "Cached read of an image upload's URL by document id. With no version it returns the original; a legacy size name maps to the matching on-demand transform URL. Wrapped under the `image` tag and revalidated on save/delete, so a page reads it once instead of re-querying Payload.",
       params: {
-        tid: { type: 'string | null | undefined', description: 'The Images document id (e.g. `block.image.id`). A falsy id returns an empty string.' },
-        'version?': { type: 'string | null', description: 'A stored size name (`thumbnail`, `square`, `small`, `medium`, `large`, `xlarge`, `og`). Omit it for the original upload URL.' },
+        tid: { type: 'string | null | undefined', description: 'The Images document id. A falsy id returns an empty string.' },
+        'version?': { type: 'string | null', description: 'A legacy size name (`thumbnail`, `square`, `small`, `medium`, `large`, `xlarge`, `og`), mapped to an on-demand URL. Omit it for the original.' },
       },
-      returns: { type: 'Promise<string | undefined>', description: "The image URL, or `undefined` when the document or size can't be resolved." },
+      returns: { type: 'Promise<string | undefined>', description: "The image URL, or `undefined` when it can't be resolved." },
       exampleLang: 'tsx',
-      example: `import Image from 'next/image'
-import { getCachedImage } from '@pro-laico/images/cache'
+      example: `import { getCachedImage } from '@pro-laico/images/cache'
 
-// inside the ImageChild server component, the block stores the image as a relationship
-export async function Picture({ block }) {
-  const src = await getCachedImage(block.image?.id, block.version)
-  if (!src) return <div className="w-full h-full bg-gray-200" />
-  return <Image alt={block.alt ?? ''} src={src} />
-}`,
+const src = await getCachedImage(block.image?.id, block.version)`,
     },
   }}
 />
 
-### Types
+### Schema types
 
 <ExportTable
   exports={{
-    'Image (type)': { type: 'type', location: '@pro-laico/images/schema', description: 'The TypeScript type for an Images document (exported as `Image`), for typed access to your image data.' },
+    'Image (type)': { type: 'type', location: '@pro-laico/images/schema', description: 'The TypeScript type for an Images document, for typed access to your image data.' },
+    'GeneratedImage (type)': { type: 'type', location: '@pro-laico/images/schema', description: 'The TypeScript type for a cached variant document.' },
   }}
 />
 
@@ -333,6 +661,7 @@ export async function Picture({ block }) {
 
 <Cards>
   <Card title="Images & Video" href="/docs/features/media" />
+  <Card title="images-only example" href="/docs/examples/images-only" />
   <Card title="@pro-laico/atomic" href="/docs/plugins/atomic" />
   <Card title="@pro-laico/site" href="/docs/plugins/site" />
 </Cards>

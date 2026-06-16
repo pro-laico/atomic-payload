@@ -1,29 +1,32 @@
 ---
 title: "Images & Video"
-description: "Optimized image uploads with blur placeholders, plus Mux video upload and streaming."
+description: "On-demand image transforms with focal-point cropping and blur placeholders, plus Mux video upload and streaming."
 ---
 
 ## Overview
 
 Media in Atomic Payload is split by how files are served. Images are **static uploads** handled by `@pro-laico/images`: files live in Payload upload collections and render as optimized images. Video is **Mux-backed streaming** handled by `@pro-laico/mux-video`: uploads stream through Mux's API and play back from Mux on the front end. Reach for the images plugin for anything you would render as a picture (photos, graphics, favicons), and for the Mux plugin for anything that plays, instead of uploading video files as static media.
 
-Images arrive as a general-purpose upload collection that defaults to WebP with a sensible set of `imageSizes`, plus optional blur-data-URL placeholders for LQIP-style loading. A separate favicons collection keeps favicons out of your main image library. Both plugins also ship **child blocks**, so editors can drop an image or a video straight into Atomic content.
+Images arrive as a general-purpose upload collection that stores only the original and generates every rendered size on demand, cropped to a focal point, with built-in blur-up placeholders. A separate favicons collection keeps favicons out of your main image library. Both plugins also ship **child blocks**, so editors can drop an image or a video straight into Atomic content.
 
 ## How it works
 
 ### Images
 
-`@pro-laico/images` registers two upload collections and a field helper:
+`@pro-laico/images` registers two upload collections, a variant cache, and a field helper:
 
-- **`Images`**: the general-purpose upload collection. It comes with opinionated `formatOptions` (WebP) and a set of `imageSizes` covering the breakpoints the template renders at, so every site gets the same standard sizes without reinventing them.
+- **`Images`**: the source collection. An upload stores only the original (there's no fixed size ladder). Every rendered size is generated the first time a page requests it, resized and cropped to the focal point you set in the admin, then cached.
+- **`generatedImages`**: a hidden collection that caches those generated sizes, one row per size. Replacing a file or moving its focal point purges the stale ones so they regenerate.
 - **`Favicons`**: a separate collection for favicons specifically. They have different size and format requirements, and mixing them with content images would pollute the main image library.
 - **`FaviconField`**: a reusable favicon-picker field config for selecting a favicon from `Favicons` (used in the `SiteMetaData` global).
 
-Blur placeholders are opt-in. `@oversightstudio/blur-data-urls` is an optional peer, and the plugin does **not** auto-wire it: pnpm doesn't hoist the optional peer next to the package, so a `require()` from here would silently fail. Register `blurDataUrlsPlugin` yourself after `imagesPlugin`, passing the exported `Images` collection, to generate blur placeholders for uploaded images.
+You render images with the bundled **`<ResponsiveImage>`** component: a plain `<img>` whose `srcset` points at the transform endpoint, so the browser downloads only the size that fits where the image renders. It is not `next/image`, and it works in server and client trees.
 
-The plugin also ships the **`ImageChild`** block, which lets editors drop an image into Atomic blocks. It's exposed from the `@pro-laico/images/blocks/imageChild` subpath as the `createImageBlock` factory and the prebuilt `Image` block (not from the package root), and renders via `@pro-laico/atomic/children`.
+Blur placeholders are **built in** and on by default. On upload the plugin shrinks and blurs the original with Sharp and stores the result in the image's `blurDataUrl`, which `<ResponsiveImage>` reads to paint a placeholder while the full image loads. Tune it through the `blur` option, or set `blur: false` to turn it off (no extra plugin or dependency).
 
-Use `ImageChild` when an editor places an image inside page content: the block points at an upload in `Images` and adds per-placement display options like an alt override, lazy or eager loading, and a stored size version. When you need an image in your own schema, reference the collection directly instead, with an `upload` field whose `relationTo` is `images` on your collection or global, the same pattern the bundled `FaviconField` uses for favicons.
+The plugin also ships the **`ImageChild`** block, which lets editors drop an image into Atomic blocks. It's exposed from the `@pro-laico/images/blocks/imageChild` subpath as the `createImageBlock` factory and the prebuilt `Image` block (not from the package root), and renders through `@pro-laico/atomic/children` as a `<ResponsiveImage>`.
+
+Use `ImageChild` when an editor places an image inside page content: the block points at an upload in `Images` and adds per-placement display options like an alt override, an aspect ratio, sizes, quality, fit, and lazy or eager loading. When you need an image in your own schema, reference the collection directly instead, with an `upload` field whose `relationTo` is `images` on your collection or global, the same pattern the bundled `FaviconField` uses for favicons.
 
 ### Video
 
@@ -39,7 +42,7 @@ Mux requires a collection it can extend, so this package ships one with the `mux
 
 In the admin, upload images to the `Images` collection and favicons to the `Favicons` collection. Pick a favicon for the site through the `FaviconField` in the `SiteMetaData` global. Upload video to the `mux-video` collection: uploads are pushed to Mux, and the admin list view shows a thumbnail (image, gif, or none, per the `adminThumbnail` option).
 
-To place media inside Atomic content, editors drop the **`ImageChild`** and **`VideoChild`** blocks into Atomic blocks. Both render on the front end via `@pro-laico/atomic/children`: the image child renders an optimized image (with its blur placeholder if generated), and the video child streams playback from Mux.
+To place media inside Atomic content, editors drop the **`ImageChild`** and **`VideoChild`** blocks into Atomic blocks. Both render on the front end via `@pro-laico/atomic/children`: the image child renders a responsive `<img>` with its blur-up placeholder, and the video child streams playback from Mux.
 
 ## Configuration
 
@@ -69,7 +72,7 @@ const SiteMetaData = {
 }
 ```
 
-`imagesPlugin(options?)` accepts `enabled` (no-op the plugin), `includeFavicons` (register the bundled `Favicons` collection alongside `Images`, default `true`), `imagesOptions` (override the `Images` collection, where top-level keys replace but `upload`/`access`/`admin` are deep-merged and `fields`/`hooks` are merged, so a partial override can't silently drop the base `imageSizes`, `mimeTypes`, `alt` field, or access rules), and `faviconsOptions` (override the `Favicons` collection with the same deep-merge semantics).
+`imagesPlugin(options?)` accepts `enabled` (no-op the plugin), `includeFavicons` (register the bundled `Favicons` collection, default `true`), `transform` (configure or disable the on-demand endpoint), `focalUI` (the focal-point picker, default `true`), `blur` (the placeholder, on by default), and per-collection overrides (`imagesOptions` / `faviconsOptions` / `generatedImagesOptions`). See the [plugin reference](/docs/plugins/images#options) for the full list.
 
 `muxVideoPlugin(options?)` accepts `enabled` (no-op the plugin), `includeCollection` (register the bundled `mux-video` extension collection; disable if you supply your own with the same slug), `collectionOptions` (override the bundled collection, where top-level keys replace but `access`/`admin` are deep-merged, `fields` are appended, and `hooks` are merged per phase), `adminThumbnail` (`'image' | 'gif' | 'none'`, default `'image'`), `uploadSettings`, and `initSettings`.
 

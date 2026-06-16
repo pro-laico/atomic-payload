@@ -2,6 +2,8 @@ import { default as default_1829119640c413d2e92b9395ebcbec08 } from '@pro-laico/
 import { default as default_92c83403e3094d2517a01c4331eb9f55 } from '@pro-laico/core/admin/field'
 import { default as default_adcc44335943ae45d0ba046bb2fab13d } from '@pro-laico/core/ui/fields/slug'
 import { default as default_5770d5be3ef2af64ca07e77507de9256 } from '@pro-laico/core/admin/controls'
+import { default as default_313b314552284ee7e4376f772894d385 } from '@pro-laico/images/admin/focalPreview'
+import { default as default_a7d302e693b82bf38e356cbc9d1a05e9 } from '@pro-laico/images/admin/purgeVariants'
 import { MuxUploaderField as MuxUploaderField_c369a797e256de625eba826a6acb8608 } from '@oversightstudio/mux-video/elements'
 import { MuxVideoImageCell as MuxVideoImageCell_c369a797e256de625eba826a6acb8608 } from '@oversightstudio/mux-video/elements'
 import { default as default_c3c5f78522fc5d7f5bd3cd2e58dc339b } from '@pro-laico/icons/admin/iconUsagePanel'
@@ -48,6 +50,8 @@ export const importMap = {
   "@pro-laico/core/admin/field#default": default_92c83403e3094d2517a01c4331eb9f55,
   "@pro-laico/core/ui/fields/slug#default": default_adcc44335943ae45d0ba046bb2fab13d,
   "@pro-laico/core/admin/controls#default": default_5770d5be3ef2af64ca07e77507de9256,
+  "@pro-laico/images/admin/focalPreview#default": default_313b314552284ee7e4376f772894d385,
+  "@pro-laico/images/admin/purgeVariants#default": default_a7d302e693b82bf38e356cbc9d1a05e9,
   "@oversightstudio/mux-video/elements#MuxUploaderField": MuxUploaderField_c369a797e256de625eba826a6acb8608,
   "@oversightstudio/mux-video/elements#MuxVideoImageCell": MuxVideoImageCell_c369a797e256de625eba826a6acb8608,
   "@pro-laico/icons/admin/iconUsagePanel#default": default_c3c5f78522fc5d7f5bd3cd2e58dc339b,

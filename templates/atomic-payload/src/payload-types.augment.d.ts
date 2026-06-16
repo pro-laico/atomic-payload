@@ -11,6 +11,7 @@ declare module '@pro-laico/core' {
     DesignSet: G.DesignSet
     Font: G.Font
     Footer: G.Footer
+    GeneratedImage: G.GeneratedImage
     Header: G.Header
     Icon: G.Icon
     IconSet: G.IconSet

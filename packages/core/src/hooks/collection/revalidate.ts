@@ -27,7 +27,9 @@ export type CollectionDeleteRevalidationHandlers = Record<string, (ctx: DeleteRe
 export const createRevalidateCache =
   (handlers: CollectionRevalidationHandlers): CollectionBeforeChangeHook =>
   async ({ collection, data, originalDoc, context }) => {
-    if (context.isSeed) return
+    // Skip while seeding, or when a caller opts out via `context.disableRevalidate`
+    // (the standard Payload escape hatch for bulk/programmatic writes).
+    if (context.isSeed || context.disableRevalidate) return
     const handler = handlers[collection.slug]
     if (!handler) return
     await handler({
@@ -49,7 +51,7 @@ export const createRevalidateCache =
 export const createRevalidateCacheAfterChange =
   (handlers: CollectionRevalidationHandlers): CollectionAfterChangeHook =>
   async ({ collection, doc, previousDoc, context }) => {
-    if (context.isSeed) return doc
+    if (context.isSeed || context.disableRevalidate) return doc
     const handler = handlers[collection.slug]
     if (!handler) return doc
     await handler({
@@ -65,8 +67,8 @@ export const createRevalidateCacheAfterChange =
 export const createRevalidateCacheOnDelete =
   (handlers: CollectionDeleteRevalidationHandlers): CollectionAfterDeleteHook =>
   async ({ collection, doc, context }) => {
-    // Symmetry with the beforeChange dispatcher: don't revalidate while seeding.
-    if (context.isSeed) return
+    // Symmetry with the beforeChange dispatcher: skip while seeding or when opted out.
+    if (context.isSeed || context.disableRevalidate) return
     const handler = handlers[collection.slug]
     if (!handler) return
     await handler({ doc })

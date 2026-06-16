@@ -15,6 +15,9 @@ const isMonorepo = existsSync(path.join(monorepoRoot, 'pnpm-workspace.yaml'))
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
+  // Sharp ships a native binary; keep it external so Turbopack doesn't try to
+  // bundle it (the on-demand image transform endpoint imports it server-side).
+  serverExternalPackages: ['sharp'],
   //KNOWN ISSUE: Payload server actions/hooks currently send large payloads, so we need to increase the body size limit.
   experimental: { serverActions: { bodySizeLimit: '5mb' } },
   turbopack: {

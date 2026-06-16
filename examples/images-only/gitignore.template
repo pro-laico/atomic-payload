@@ -1,0 +1,27 @@
+node_modules
+.next
+.vercel
+.DS_Store
+
+# TypeScript
+tsconfig.tsbuildinfo
+next-env.d.ts
+
+# Payload
+src/payload-types.ts
+src/payload-types.augment.d.ts
+
+# Image uploads written by Payload at runtime: the source originals and the
+# on-demand variant cache (seed assets live in src/seed/sample-images)
+images
+generatedImages
+
+# SQLite (default DB adapter — file created at runtime)
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+
+# Env
+.env
+.env*.local

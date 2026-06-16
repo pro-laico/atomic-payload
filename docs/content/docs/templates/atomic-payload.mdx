@@ -30,7 +30,7 @@ You don't need to install or configure any Atomic Payload plugin yourself. They'
 | [zap](/docs/plugins/zap) | Tooling rather than a content feature: the shared schema layer that flows block shapes into your generated types. |
 | [core](/docs/plugins/core) | Tooling rather than a content feature: the cache + revalidation helpers, `revalidationPlugin`, and the `jsonSchemaPlugin` used during type generation. |
 
-Alongside these, the template registers Payload's form builder and nested docs plugins, Vercel Blob storage for uploads, and a blur placeholder plugin for images, each configured in its own file under `src/plugins/`. The form builder's `forms` and `form-submissions` collections are the one thing that needs explicit cache wiring (they're third-party, so they don't bake the hooks themselves): `revalidationPlugin` at the end of `src/plugins/index.ts` handles them.
+Alongside these, the template registers Payload's form builder and nested docs plugins and Vercel Blob storage for uploads, each configured in its own file under `src/plugins/`. The form builder's `forms` and `form-submissions` collections are the one thing that needs explicit cache wiring (they're third-party, so they don't bake the hooks themselves): `revalidationPlugin` at the end of `src/plugins/index.ts` handles them.
 
 ## Setup
 
