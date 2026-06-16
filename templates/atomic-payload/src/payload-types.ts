@@ -648,6 +648,8 @@ export interface Config {
     header: Header;
     footer: Footer;
     font: Font;
+    fontFile: FontFile;
+    fontOriginal: FontOriginal;
     images: Image;
     generatedImages: GeneratedImage;
     favicons: Favicon;
@@ -676,6 +678,8 @@ export interface Config {
     header: HeaderSelect<false> | HeaderSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
     font: FontSelect<false> | FontSelect<true>;
+    fontFile: FontFileSelect<false> | FontFileSelect<true>;
+    fontOriginal: FontOriginalSelect<false> | FontOriginalSelect<true>;
     images: ImagesSelect<false> | ImagesSelect<true>;
     generatedImages: GeneratedImagesSelect<false> | GeneratedImagesSelect<true>;
     favicons: FaviconsSelect<false> | FaviconsSelect<true>;
@@ -1342,7 +1346,7 @@ export interface ImageChild {
    */
   priority?: boolean | null;
   /**
-   * Default false. If true, shows the generated blur placeholder while the image loads.
+   * Default true. Shows the generated blur placeholder while the image loads. Uncheck to disable.
    */
   blur?: boolean | null;
   /**
@@ -1377,12 +1381,12 @@ export interface ImageChild {
 export interface Image {
   id: string;
   alt: string;
+  blurDataUrl?: string | null;
   variants?: {
     docs?: (string | GeneratedImage)[];
     hasNextPage?: boolean;
     totalDocs?: number;
   };
-  blurDataUrl?: string | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -1923,6 +1927,57 @@ export interface Font {
   id: string;
   title: string;
   family: GenericFontFamily;
+  files?: (string | FontFile)[] | null;
+  pendingUploads?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "fontFile".
+ */
+export interface FontFile {
+  id: string;
+  /**
+   * CSS font-weight for this file.
+   */
+  weight?: ('100' | '200' | '300' | '400' | '500' | '600' | '700' | '800' | '900') | null;
+  /**
+   * CSS font-style for this file.
+   */
+  style?: ('normal' | 'italic') | null;
+  familyName?: string | null;
+  optimized?: string | null;
+  originalFilesize?: number | null;
+  optimizedFilesize?: number | null;
+  savedPercent?: number | null;
+  original?: (string | null) | FontOriginal;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "fontOriginal".
+ */
+export interface FontOriginal {
+  id: string;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -2479,6 +2534,14 @@ export interface PayloadLockedDocument {
         value: string | Font;
       } | null)
     | ({
+        relationTo: 'fontFile';
+        value: string | FontFile;
+      } | null)
+    | ({
+        relationTo: 'fontOriginal';
+        value: string | FontOriginal;
+      } | null)
+    | ({
         relationTo: 'images';
         value: string | Image;
       } | null)
@@ -2689,6 +2752,41 @@ export interface FooterSelect<T extends boolean = true> {
 export interface FontSelect<T extends boolean = true> {
   title?: T;
   family?: T;
+  files?: T;
+  pendingUploads?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "fontFile_select".
+ */
+export interface FontFileSelect<T extends boolean = true> {
+  weight?: T;
+  style?: T;
+  familyName?: T;
+  optimized?: T;
+  originalFilesize?: T;
+  optimizedFilesize?: T;
+  savedPercent?: T;
+  original?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  url?: T;
+  thumbnailURL?: T;
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
+  focalX?: T;
+  focalY?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "fontOriginal_select".
+ */
+export interface FontOriginalSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
   url?: T;
@@ -2707,8 +2805,8 @@ export interface FontSelect<T extends boolean = true> {
  */
 export interface ImagesSelect<T extends boolean = true> {
   alt?: T;
-  variants?: T;
   blurDataUrl?: T;
+  variants?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;

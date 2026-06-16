@@ -52,13 +52,19 @@ export const plugins: Plugin[] = [
   childBlocksPluginConfig,
   trackingPlugin(),
   seedPlugin(),
-  fontsPlugin(),
+  // Optimize fonts on upload (convert + subset to WOFF2, keep the original, report
+  // the size saved). `subset-font` + `fontkit` ship with @pro-laico/fonts (no extra
+  // install); needs server-side uploads for the font files (see ./vercelBlobStorage)
+  // and those packages in next.config's serverExternalPackages (see ../next.config).
+  fontsPlugin({ optimize: true }),
   imagesPlugin(),
   muxVideoPlugin(),
   iconsPluginConfig,
   stylesPluginConfig,
   nestedDocsPluginConfig,
   formBuilderPluginConfig,
+  // Two instances: client-side uploads for images/icons/favicons, server-side for
+  // fonts (so the optimize-on-upload hook can subset them). See ./vercelBlobStorage.
   ...vercelBlobStoragePluginConfigs,
   // Revalidate the third-party form-builder collections (the @pro-laico/* ones
   // bake their own). Keep this last so the target collections already exist.

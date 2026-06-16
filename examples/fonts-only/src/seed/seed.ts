@@ -8,11 +8,12 @@ import { sampleFonts } from './sampleFonts'
 export type LoadFontFile = (file: string) => Promise<Buffer>
 
 /**
- * Uploads the bundled sample fonts to the `font` collection, then points the
- * `fontSet` global at them (one per role). Idempotent by `title`. Pure data
- * logic, no HTTP/auth: the `/api/seed` route auth-gates and injects an
- * origin-fetch loader; the integration test injects a disk loader.
- * `overrideAccess: true` makes the trusted server-side bypass explicit.
+ * For each bundled sample font: upload the file to `fontFile` (the optimized
+ * weight-file collection) and create a one-weight `font` typeface referencing
+ * it, then point the `fontSet` global at the typefaces (one per role). Idempotent
+ * by typeface `title`. Pure data logic, no HTTP/auth: the `/api/seed` route
+ * auth-gates and injects an origin-fetch loader; the integration test injects a
+ * disk loader. `overrideAccess: true` makes the trusted server-side bypass explicit.
  */
 export async function seedFonts({
   payload,
@@ -23,7 +24,7 @@ export async function seedFonts({
 }): Promise<{ created: string[]; skipped: string[] }> {
   const created: string[] = []
   const skipped: string[] = []
-  // role (sans/serif/mono/display) → uploaded font id, for the fontSet global.
+  // role (sans/serif/mono/display) → typeface id, for the fontSet global.
   const selection: Record<string, string | number> = {}
 
   for (const { file, title, family } of sampleFonts) {
@@ -35,21 +36,34 @@ export async function seedFonts({
     }
 
     const data = await loadFile(file)
-    const doc = await payload.create({
-      collection: 'font',
+    // The weight file (a single 400/normal weight for the demo).
+    const fileDoc = await payload.create({
+      collection: 'fontFile',
       overrideAccess: true,
-      data: { title, family },
+      data: { weight: '400', style: 'normal' },
       file: { data, name: file, mimetype: 'font/woff2', size: data.byteLength },
     } as Parameters<typeof payload.create>[0])
-    selection[family] = doc.id
+    // The typeface, referencing its one weight file.
+    const typeface = await payload.create({
+      collection: 'font',
+      overrideAccess: true,
+      data: { title, family, files: [fileDoc.id] },
+    } as Parameters<typeof payload.create>[0])
+    selection[family] = typeface.id
     created.push(title)
   }
 
-  // Activate the uploaded fonts by wiring the fontSet global to them.
+  // Activate the typefaces by wiring the fontSet global to them — one typeface
+  // per role (single relationship).
   await payload.updateGlobal({
     slug: 'fontSet',
     overrideAccess: true,
-    data: { sans: selection.sans, serif: selection.serif, mono: selection.mono, display: selection.display },
+    data: {
+      sans: selection.sans ?? null,
+      serif: selection.serif ?? null,
+      mono: selection.mono ?? null,
+      display: selection.display ?? null,
+    },
   } as Parameters<typeof payload.updateGlobal>[0])
 
   return { created, skipped }

@@ -4,9 +4,10 @@ import { NextResponse } from 'next/server'
 import { headers as nextHeaders } from 'next/headers'
 
 /**
- * Clears the `fontSet` global, then deletes every `font` doc. Auth-gated to
+ * Clears the `fontSet` global, deletes every `font` typeface (which cascades to
+ * its weight files), then sweeps any remaining `fontFile` docs. Auth-gated to
  * logged-in admins. Clearing the global first avoids it briefly pointing at
- * deleted uploads; the `force-dynamic` home page falls back to system fonts on
+ * deleted typefaces; the `force-dynamic` home page falls back to system fonts on
  * its next render until you re-seed.
  */
 export async function POST() {
@@ -21,6 +22,7 @@ export async function POST() {
   } as Parameters<typeof payload.updateGlobal>[0])
 
   const fonts = await payload.delete({ collection: 'font', where: { id: { exists: true } } })
+  const fontFiles = await payload.delete({ collection: 'fontFile', where: { id: { exists: true } } })
 
-  return NextResponse.json({ ok: true, deleted: { fonts: fonts.docs.length } })
+  return NextResponse.json({ ok: true, deleted: { fonts: fonts.docs.length, fontFiles: fontFiles.docs.length } })
 }

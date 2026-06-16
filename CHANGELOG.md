@@ -6,6 +6,62 @@ the whole workspace.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [Unreleased]
+
+### Added
+
+- **`@pro-laico/fonts`: typefaces with multiple weight files, optimize-on-upload, and a premium uploader.**
+  A `font` document is now **one typeface** that holds its weight/style files
+  (Regular/Bold/Italic/…) through a `files` relationship to a new `fontFile` upload
+  collection — fed to `next/font/local` as a single `localFont({ src: [...] })`
+  declaration (one CSS family per typeface). Opt-in `fontsPlugin({ optimize })`
+  converts each uploaded weight file to a subsetted **WOFF2** on save (default
+  charset `latin` — ASCII + Latin-1 + common punctuation; also `'latin-ext'` or an
+  explicit string), keeps the untouched original in a sibling `fontOriginal`
+  collection, auto-detects weight/style/family via `fontkit`, and reports the size
+  reduction (`optimized`/`originalFilesize`/`optimizedFilesize`/`savedPercent`).
+  Bundles `subset-font` (WASM harfbuzz — serverless-safe) + `fontkit` as
+  dependencies (no consumer install); if optimization fails the file is stored
+  unmodified. **Off by default**; the `atomic-payload` template enables it.
+
+  A premium **drag-1-or-many uploader** (`uploader` option, default on) replaces the
+  native upload UI on the typeface document: drop files, see a client-side `fontkit`
+  preview (weight/style, sorted boldest → lightest, normals before italics, with
+  duplicate detection), assign a role, then **Save** — no grid of upload fields.
+  Dropped files are **staged**, not uploaded on drop; the optimized `fontFile`s are
+  created (and linked into `files`) by a `beforeChange` hook only when the document
+  saves, so **abandoning a create leaves no orphaned files**. Removing a weight is
+  likewise applied on save (an `afterChange` hook deletes de-referenced files). A
+  `beforeValidate` guard rejects two files at the same weight + style, and the save
+  requires at least one file. New exports: `createFontCollection`,
+  `createFontFileCollection`, `createFontOriginalCollection`, `optimizeFontHook`,
+  `cleanupOriginalHook`, `cleanupFontFilesHook`, `uniqueWeightHook`,
+  `processPendingFontFiles`, `deleteDereferencedFontFiles`, `resolveCharsetText`,
+  `@pro-laico/fonts/admin/fontUploader` (`FontUploaderPath`), `FONT_FILE_SLUG`, and
+  the `FontsOptimizeOption` type. Adds `react` / `@payloadcms/ui` / `next` peer deps
+  for the admin component. (Staged bytes ride the multipart `_payload` field of the
+  save; the plugin raises `upload.limits.fieldSize` so the batch isn't truncated, but
+  the platform request-body limit still applies — ~4.5 MB on Vercel — so very large or
+  numerous fonts must be added across multiple saves.)
+
+  **Consumer setup when `optimize` is on:** register `fontFile` + `fontOriginal` with
+  your storage adapter using **server-side** uploads (client-side direct uploads
+  bypass the optimize hook), and add `['subset-font', 'harfbuzzjs', 'fontkit']` to
+  `serverExternalPackages` in `next.config` so Next/Turbopack doesn't bundle the
+  harfbuzz `.wasm`. See the template's `vercelBlobStorage.ts` + `next.config.ts`.
+
+### Changed
+
+- **BREAKING (`@pro-laico/fonts`):** a `font` document is now a non-upload
+  **typeface** (previously one upload = one weight file). The four role slots
+  (designSet `font` group + `fontSet` global) are now a single `relationship` →
+  `font` — one typeface per role (previously a `hasMany` upload). Weight files live
+  in the new `fontFile` upload collection; the optimize hook + `upload.staticDir`/
+  `mimeTypes` move from `fontOptions` → `fontFileOptions`. The `GET /api/fonts/export`
+  response shape is unchanged (an `ExportedFont[]` per role), now sourced from the
+  typeface's `files`. Migrate by re-pointing each role slot at a typeface id and
+  regenerating types.
+
 ## [0.3.4] - 2026-06-12
 
 ### Removed
