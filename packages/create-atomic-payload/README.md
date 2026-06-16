@@ -11,4 +11,4 @@ The `npx`/`npm create` scaffolder for new Atomic Payload projects — pick a sca
 npx @pro-laico/create-atomic-payload
 ```
 
-Pass `--template <name>` to pick a scaffold (`atomic-payload`, `fonts-only`, `icons-only`, `styles-only`); omit it for the interactive prompt. Run `--help` for all flags.
+Pass `--template <name>` to pick a scaffold (`atomic-payload`, `fonts-only`, `icons-only`, `images-only`, `styles-only`); omit it for the interactive prompt. Run `--help` for all flags.

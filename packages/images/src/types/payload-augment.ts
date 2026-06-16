@@ -4,3 +4,4 @@
 import type { DefaultRecord, Get } from '@pro-laico/core'
 
 export type Image = Get<'Image', DefaultRecord>
+export type GeneratedImage = Get<'GeneratedImage', DefaultRecord>

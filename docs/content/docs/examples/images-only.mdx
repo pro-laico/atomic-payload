@@ -1,0 +1,106 @@
+---
+title: "images-only"
+description: "Minimal example: @pro-laico/images in isolation, with on-demand transforms, focal points, a responsive <img>, and blur placeholders."
+---
+
+A minimal Atomic Payload template that exercises **`@pro-laico/images`** on its own. Upload an image and nothing happens on upload but the original being stored; every size is generated **on demand** by the transform endpoint, cropped to the image's focal point, and rendered through the responsive `<ResponsiveImage>` component with a blur-up placeholder.
+
+## What it shows
+
+The only `@pro-laico` dependency is **`@pro-laico/core`** (`@pro-laico/atomic` isn't installed), so you see the images plugin standalone:
+
+- `imagesPlugin()` registers the **`images`** source collection, the hidden **`generatedImages`** variant cache, and the on-demand transform endpoint at **`/api/img/:id`**. No storage adapter is configured, so uploads use **local disk** (fully self-serving on localhost).
+- The endpoint resizes/crops/recompresses with **Sharp** at request time, honoring each image's **focal point**, and caches the result as a `generatedImages` upload. URLs are same-origin and immutably cached.
+- **`<ResponsiveImage>`** emits a plain `<img>` whose `srcset` is stepped by its `pixelStep` (default 50px, configurable) up to the source's intrinsic width. It's not `next/image`, and it works in server and client trees. The endpoint honors each requested width exactly (no server-side snapping), so every srcset entry keeps the requested aspect ratio.
+- **Blur placeholders** are generated on upload by the plugin itself (Sharp shrink + blur into each doc's `blurDataUrl`); `<ResponsiveImage>` reads it and fades the image in over it on load. No extra plugin or peer.
+- `POST /api/seed` uploads three sample photos (committed under `src/seed/sample-images`, in landscape / portrait / square orientations) with off-center focal points, so the focal-aware crops visibly keep each subject in frame. Auth-gated and idempotent, run from `/` or the admin dashboard.
+
+## Scaffold it
+
+<Tabs groupId="package-manager" items={['npm', 'pnpm', 'yarn']}>
+
+<Tab value="npm">
+
+```bash
+npx @pro-laico/create-atomic-payload my-images --template images-only
+```
+
+</Tab>
+
+<Tab value="pnpm">
+
+```bash
+pnpm dlx @pro-laico/create-atomic-payload my-images --template images-only
+```
+
+</Tab>
+
+<Tab value="yarn">
+
+```bash
+yarn dlx @pro-laico/create-atomic-payload my-images --template images-only
+```
+
+</Tab>
+
+</Tabs>
+
+Then set a long `PAYLOAD_SECRET` in `.env`, generate types and the import map, and start dev:
+
+```bash
+pnpm generate:types        # generates src/payload-types.ts + augment
+pnpm generate:importmap    # populates src/app/(payload)/admin/importMap.js
+pnpm dev
+```
+
+<Callout type="info">
+  Ships with SQLite (`@payloadcms/db-sqlite`) at `./images-only.db` and **local-disk** uploads, with no DB server or storage token. Add a cloud storage adapter (Vercel Blob, S3, …) in `src/payload.config.ts` for production.
+</Callout>
+
+The flow:
+
+1. Visit `/`, an explainer page. Logged out, it points you to the admin.
+2. Open `/admin`, create your first user.
+3. On `/`, click **Seed sample images** (or upload your own at `/admin/collections/images` and set a focal point).
+4. The page renders each image at its natural ratio plus 16:9, 1:1, and 9:16, each cropped to the focal point on demand, with a blur-up.
+
+## How it works
+
+```plaintext
+upload Image (admin)  ──►  Payload stores ONLY the original (local disk / ./images)
+        │                  focal point saved as focalX/focalY %
+        │
+request /api/img/:id?w&h&ar&fit&q&fmt
+        │   ├─ cache hit  → stream the stored generatedImages variant
+        │   └─ cache miss → read original → Sharp (focal-aware crop) → stream,
+        │                    then persist the variant (after the response)
+        │
+<ResponsiveImage image={doc} aspectRatio="16:9" />
+        └─ plain <img srcset=…sizes=…style="aspect-ratio"> + blur-up fade-in
+```
+
+Nothing is generated on upload: the source is the single source of truth, and every rendered size is derived lazily and cached. Editing the focal point or replacing the file rotates the cache key and purges stale variants.
+
+## What to look at
+
+| File | What's there |
+| --- | --- |
+| `src/payload.config.ts` | `buildConfig`: `imagesPlugin()` (built-in blur placeholders), SQLite, Sharp |
+| `src/seed/seed.ts` | `seedImages()` / `resetImages()`: upload the committed sample photos + create with focal points |
+| `src/app/(frontend)/page.tsx` | explainer + each image at natural / 16:9 / 1:1 / 9:16 via `<ResponsiveImage>` |
+| `src/app/(frontend)/responsive/page.tsx` | full-bleed single image with `sizes="100vw"`; open the Network tab and resize to watch `srcset` pick a variant per screen width |
+| `src/app/(payload)/api/seed/route.ts` | `POST /api/seed` → seed sample images (auth-gated) |
+| `src/app/(payload)/api/reset/route.ts` | `POST /api/reset` → delete all images + variants |
+| `src/components/admin/BeforeDashboard.tsx` | admin-dashboard seed/reset controls (`beforeDashboard`) so a new user can seed in one click |
+| `src/instrumentation.ts` | registers the config with `@pro-laico/core` so `getCachedImage` can reach the Local API |
+
+<Callout type="info">
+  No `@pro-laico/atomic` here: the `ImageChild` Atomic block (the only part of `@pro-laico/images` that needs atomic) isn't used. Everything else (the collection, the transform endpoint, `ResponsiveImage`, the focal UI, and blur) works with just `@pro-laico/core`.
+</Callout>
+
+## Related
+
+<Cards>
+  <Card title="Images & Video feature guide" href="/docs/features/media" />
+  <Card title="@pro-laico/images" href="/docs/plugins/images" />
+</Cards>

@@ -26,7 +26,6 @@
     "@mux/mux-video-react": "^0.31.0",
     "@next/bundle-analyzer": "^16.2.7",
     "@next/third-parties": "^16.2.7",
-    "@oversightstudio/blur-data-urls": "^1.0.4",
     "@oversightstudio/mux-video": "^1.4.0",
     "@payloadcms/db-mongodb": "^3.85.0",
     "@payloadcms/email-resend": "^3.85.0",

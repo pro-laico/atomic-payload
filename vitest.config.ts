@@ -90,7 +90,7 @@ export default defineConfig({
       // One project per example app: each boots that example's REAL Payload config
       // (on in-memory SQLite) and runs its extracted seed function. Separate
       // projects because each needs its own `@/` → its own src.
-      ...(['fonts-only', 'icons-only', 'styles-only'] as const).map((example) => ({
+      ...(['fonts-only', 'icons-only', 'images-only', 'styles-only'] as const).map((example) => ({
         extends: true as const,
         resolve: appResolve(`examples/${example}`),
         test: {

@@ -29,6 +29,13 @@ export const scaffolds = [
     description: 'Minimal example — @pro-laico/icons in isolation',
   },
   {
+    name: 'images-only',
+    dir: 'examples/images-only',
+    type: 'example',
+    title: 'Images only',
+    description: 'Minimal example — @pro-laico/images in isolation (on-demand transforms + focal + blur)',
+  },
+  {
     name: 'styles-only',
     dir: 'examples/styles-only',
     type: 'example',

@@ -1,7 +1,7 @@
 {
   "name": "@pro-laico/images",
   "version": "0.3.4",
-  "description": "Atomic Payload images package. Provides Images + Favicons Payload upload collections, a FaviconField helper, an ImageChild block factory, and a plugin factory. @oversightstudio/blur-data-urls is an optional peer the consumer wires manually.",
+  "description": "Atomic Payload images package. Provides Images + Favicons Payload upload collections, on-demand Sharp transforms with built-in LQIP blur placeholders, a FaviconField helper, an ImageChild block factory, and a plugin factory.",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -33,6 +33,26 @@
       "./blocks/imageChild/component": {
         "types": "./dist/blocks/imageChild/component.d.ts",
         "default": "./dist/blocks/imageChild/component.js"
+      },
+      "./components/image": {
+        "types": "./dist/components/image.d.ts",
+        "default": "./dist/components/image.js"
+      },
+      "./components/buildSrcset": {
+        "types": "./dist/components/buildSrcset.d.ts",
+        "default": "./dist/components/buildSrcset.js"
+      },
+      "./endpoints/transform": {
+        "types": "./dist/endpoints/transform.d.ts",
+        "default": "./dist/endpoints/transform.js"
+      },
+      "./admin/focalPreview": {
+        "types": "./dist/components/admin/focalPreview.d.ts",
+        "default": "./dist/components/admin/focalPreview.js"
+      },
+      "./admin/purgeVariants": {
+        "types": "./dist/components/admin/purgeVariants.d.ts",
+        "default": "./dist/components/admin/purgeVariants.js"
       }
     }
   },
@@ -58,6 +78,26 @@
     "./blocks/imageChild/component": {
       "types": "./src/blocks/imageChild/component.tsx",
       "default": "./src/blocks/imageChild/component.tsx"
+    },
+    "./components/image": {
+      "types": "./src/components/image.tsx",
+      "default": "./src/components/image.tsx"
+    },
+    "./components/buildSrcset": {
+      "types": "./src/components/buildSrcset.ts",
+      "default": "./src/components/buildSrcset.ts"
+    },
+    "./endpoints/transform": {
+      "types": "./src/endpoints/transform.ts",
+      "default": "./src/endpoints/transform.ts"
+    },
+    "./admin/focalPreview": {
+      "types": "./src/components/admin/focalPreview.tsx",
+      "default": "./src/components/admin/focalPreview.tsx"
+    },
+    "./admin/purgeVariants": {
+      "types": "./src/components/admin/purgeVariants.tsx",
+      "default": "./src/components/admin/purgeVariants.tsx"
     }
   },
   "files": [
@@ -73,26 +113,33 @@
     "copyfiles": "copyfiles -u 1 \"src/**/*.{scss,css,svg,json,ttf,woff,woff2,eot}\" dist/"
   },
   "dependencies": {
-    "@pro-laico/atomic": "workspace:*",
     "@pro-laico/core": "workspace:*"
   },
   "peerDependencies": {
-    "@oversightstudio/blur-data-urls": ">=1.0.0",
+    "@payloadcms/ui": ">=3.0.0",
+    "@pro-laico/atomic": ">=0.3.0",
     "next": ">=15.0.0",
     "payload": ">=3.0.0",
-    "react": ">=19.0.0"
+    "react": ">=19.0.0",
+    "sharp": ">=0.33.0"
   },
   "peerDependenciesMeta": {
-    "@oversightstudio/blur-data-urls": {
+    "@pro-laico/atomic": {
+      "optional": true
+    },
+    "sharp": {
       "optional": true
     }
   },
   "devDependencies": {
-    "@oversightstudio/blur-data-urls": "^1.0.4",
+    "@payloadcms/ui": "^3.85.0",
+    "@pro-laico/atomic": "workspace:*",
+    "@tools/test-helpers": "workspace:*",
     "@types/react": "^19.2.17",
     "next": "^16.2.7",
     "payload": "^3.85.0",
     "react": "^19.2.7",
+    "sharp": "^0.34.5",
     "typescript": "^6.0.3"
   },
   "engines": {

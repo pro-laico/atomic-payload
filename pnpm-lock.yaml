@@ -236,6 +236,67 @@ importers:
         specifier: ^6.0.3
         version: 6.0.3
 
+  examples/images-only:
+    dependencies:
+      '@payloadcms/db-sqlite':
+        specifier: ^3.85.0
+        version: 3.85.0(@opentelemetry/api@1.9.0)(payload@3.85.0(graphql@16.11.0)(typescript@6.0.3))
+      '@payloadcms/live-preview-react':
+        specifier: ^3.85.0
+        version: 3.85.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+      '@payloadcms/next':
+        specifier: ^3.85.0
+        version: 3.85.0(@types/react@19.2.17)(graphql@16.11.0)(monaco-editor@0.52.2)(next@16.2.7(@opentelemetry/api@1.9.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(sass@1.77.4))(payload@3.85.0(graphql@16.11.0)(typescript@6.0.3))(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(typescript@6.0.3)
+      '@payloadcms/ui':
+        specifier: ^3.85.0
+        version: 3.85.0(@types/react@19.2.17)(monaco-editor@0.52.2)(next@16.2.7(@opentelemetry/api@1.9.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(sass@1.77.4))(payload@3.85.0(graphql@16.11.0)(typescript@6.0.3))(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(typescript@6.0.3)
+      '@pro-laico/core':
+        specifier: workspace:*
+        version: link:../../packages/core
+      '@pro-laico/images':
+        specifier: workspace:*
+        version: link:../../packages/images
+      cross-env:
+        specifier: ^10.1.0
+        version: 10.1.0
+      dotenv:
+        specifier: ^17.4.2
+        version: 17.4.2
+      next:
+        specifier: ^16.2.7
+        version: 16.2.7(@opentelemetry/api@1.9.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(sass@1.77.4)
+      payload:
+        specifier: ^3.85.0
+        version: 3.85.0(graphql@16.11.0)(typescript@6.0.3)
+      react:
+        specifier: ^19.2.7
+        version: 19.2.7
+      react-dom:
+        specifier: ^19.2.7
+        version: 19.2.7(react@19.2.7)
+      sharp:
+        specifier: ^0.34.5
+        version: 0.34.5
+    devDependencies:
+      '@biomejs/biome':
+        specifier: ^2.4.16
+        version: 2.4.16
+      '@types/node':
+        specifier: ^25.9.2
+        version: 25.9.2
+      '@types/react':
+        specifier: ^19.2.17
+        version: 19.2.17
+      '@types/react-dom':
+        specifier: ^19.2.3
+        version: 19.2.3(@types/react@19.2.17)
+      tsx:
+        specifier: ^4.22.4
+        version: 4.22.4
+      typescript:
+        specifier: ^6.0.3
+        version: 6.0.3
+
   examples/styles-only:
     dependencies:
       '@payloadcms/db-sqlite':
@@ -501,16 +562,19 @@ importers:
 
   packages/images:
     dependencies:
-      '@pro-laico/atomic':
-        specifier: workspace:*
-        version: link:../atomic
       '@pro-laico/core':
         specifier: workspace:*
         version: link:../core
     devDependencies:
-      '@oversightstudio/blur-data-urls':
-        specifier: ^1.0.4
-        version: 1.0.4(payload@3.85.0(graphql@16.11.0)(typescript@6.0.3))(sharp@0.34.5)
+      '@payloadcms/ui':
+        specifier: ^3.85.0
+        version: 3.85.0(@types/react@19.2.17)(monaco-editor@0.52.2)(next@16.2.7(@opentelemetry/api@1.9.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(sass@1.77.4))(payload@3.85.0(graphql@16.11.0)(typescript@6.0.3))(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(typescript@6.0.3)
+      '@pro-laico/atomic':
+        specifier: workspace:*
+        version: link:../atomic
+      '@tools/test-helpers':
+        specifier: workspace:*
+        version: link:../../tools/test-helpers
       '@types/react':
         specifier: ^19.2.17
         version: 19.2.17
@@ -523,6 +587,9 @@ importers:
       react:
         specifier: ^19.2.7
         version: 19.2.7
+      sharp:
+        specifier: ^0.34.5
+        version: 0.34.5
       typescript:
         specifier: ^6.0.3
         version: 6.0.3
@@ -761,9 +828,6 @@ importers:
       '@next/third-parties':
         specifier: ^16.2.7
         version: 16.2.7(next@16.2.7(@opentelemetry/api@1.9.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(sass@1.77.4))(react@19.2.7)
-      '@oversightstudio/blur-data-urls':
-        specifier: ^1.0.4
-        version: 1.0.4(payload@3.85.0(graphql@16.11.0)(typescript@6.0.3))(sharp@0.34.5)
       '@oversightstudio/mux-video':
         specifier: ^1.4.0
         version: 1.4.0(@mux/mux-player-react@3.7.0(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(@payloadcms/ui@3.85.0(@types/react@19.2.17)(monaco-editor@0.52.2)(next@16.2.7(@opentelemetry/api@1.9.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(sass@1.77.4))(payload@3.85.0(graphql@16.11.0)(typescript@6.0.3))(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(typescript@6.0.3))(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(payload@3.85.0(graphql@16.11.0)(typescript@6.0.3))(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
@@ -2595,12 +2659,6 @@ packages:
   '@orama/orama@3.1.18':
     resolution: {integrity: sha512-a61ljmRVVyG5MC/698C8/FfFDw5a8LOIvyOLW5fztgUXqUpc1jOfQzOitSCbge657OgXXThmY3Tk8fpiDb4UcA==}
     engines: {node: '>= 20.0.0'}
-
-  '@oversightstudio/blur-data-urls@1.0.4':
-    resolution: {integrity: sha512-9FMZlJVfVOVIBfXkyqWcDSvhvQlb9cvV47fMrCbwatj7+kfbcFmocXypnpN7yHiKVXsUGHEN6P0L+6kj/YNuFg==}
-    peerDependencies:
-      payload: ^3.15.0
-      sharp: ^0.32.6
 
   '@oversightstudio/mux-video@1.4.0':
     resolution: {integrity: sha512-WH5XdjImSvqcbrgymA7ERTRSChpunZXzStM8SPDtd1uL4O8dJEErJNqaY6jTh4rsJDTi6DTYMUFYvaiK7IL5Tw==}
@@ -9434,11 +9492,6 @@ snapshots:
 
   '@orama/orama@3.1.18': {}
 
-  '@oversightstudio/blur-data-urls@1.0.4(payload@3.85.0(graphql@16.11.0)(typescript@6.0.3))(sharp@0.34.5)':
-    dependencies:
-      payload: 3.85.0(graphql@16.11.0)(typescript@6.0.3)
-      sharp: 0.34.5
-
   '@oversightstudio/mux-video@1.4.0(@mux/mux-player-react@3.7.0(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(@payloadcms/ui@3.85.0(@types/react@19.2.17)(monaco-editor@0.52.2)(next@16.2.7(@opentelemetry/api@1.9.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(sass@1.77.4))(payload@3.85.0(graphql@16.11.0)(typescript@6.0.3))(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(typescript@6.0.3))(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(payload@3.85.0(graphql@16.11.0)(typescript@6.0.3))(react-dom@19.2.7(react@19.2.7))(react@19.2.7)':
     dependencies:
       '@mux/mux-node': 11.1.0
@@ -10741,7 +10794,7 @@ snapshots:
 
   '@types/node-fetch@2.6.13':
     dependencies:
-      '@types/node': 18.19.130
+      '@types/node': 25.9.2
       form-data: 4.0.5
 
   '@types/node@18.19.130':
@@ -14886,7 +14939,7 @@ snapshots:
   tsx@4.21.0:
     dependencies:
       esbuild: 0.27.7
-      get-tsconfig: 4.8.1
+      get-tsconfig: 4.14.0
     optionalDependencies:
       fsevents: 2.3.3
 

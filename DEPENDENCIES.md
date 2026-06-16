@@ -11,7 +11,7 @@ Runtime dependencies per workspace, split into **Pro Laico** (internal `@pro-lai
 | `@pro-laico/create-atomic-payload` | — | chalk, execa, ora | — |
 | `@pro-laico/fonts` | core | — | dotenv, payload |
 | `@pro-laico/icons` | atomic, core | — | @payloadcms/ui, next, payload, react, server-only, svg-path-bbox, svgo |
-| `@pro-laico/images` | atomic, core | — | @oversightstudio/blur-data-urls, next, payload, react |
+| `@pro-laico/images` | core | — | @payloadcms/ui, @pro-laico/atomic, next, payload, react, sharp |
 | `@pro-laico/mux-video` | atomic, core | @mux/mux-video-react | @oversightstudio/mux-video, next, payload, react |
 | `@pro-laico/richtext` | atomic, core | — | @payloadcms/richtext-lexical, payload, react |
 | `@pro-laico/seed` | atomic, core, icons, site, styles | — | @payloadcms/ui, next, payload, react |
@@ -32,7 +32,7 @@ Runtime dependencies per workspace, split into **Pro Laico** (internal `@pro-lai
 
 | Workspace | Pro Laico | Other |
 |---|---|---|
-| `atomic-payload` | atomic, core, fonts, icons, images, mux-video, richtext, seed, site, styles, tracking, zap | @base-ui-components/react, @mux/blurup, @mux/mux-video-react, @next/bundle-analyzer, @next/third-parties, @oversightstudio/blur-data-urls, @oversightstudio/mux-video, @payloadcms/db-mongodb, @payloadcms/email-resend, @payloadcms/live-preview-react, @payloadcms/next, @payloadcms/plugin-form-builder, @payloadcms/plugin-nested-docs, @payloadcms/richtext-lexical, @payloadcms/sdk, @payloadcms/storage-vercel-blob, @payloadcms/ui, @vercel/analytics, cross-env, dayjs, dotenv, next, next-themes, payload, posthog-js, react, react-dom, server-only, sharp, svg-path-bbox, svgo, traverse, zod, zustand |
+| `atomic-payload` | atomic, core, fonts, icons, images, mux-video, richtext, seed, site, styles, tracking, zap | @base-ui-components/react, @mux/blurup, @mux/mux-video-react, @next/bundle-analyzer, @next/third-parties, @oversightstudio/mux-video, @payloadcms/db-mongodb, @payloadcms/email-resend, @payloadcms/live-preview-react, @payloadcms/next, @payloadcms/plugin-form-builder, @payloadcms/plugin-nested-docs, @payloadcms/richtext-lexical, @payloadcms/sdk, @payloadcms/storage-vercel-blob, @payloadcms/ui, @vercel/analytics, cross-env, dayjs, dotenv, next, next-themes, payload, posthog-js, react, react-dom, server-only, sharp, svg-path-bbox, svgo, traverse, zod, zustand |
 
 ## Internal dependency matrix
 

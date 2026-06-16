@@ -16,8 +16,7 @@ import { nestedDocsPluginConfig } from './nestedDocs'
 import { jsonSchemaPluginConfig } from './jsonSchema'
 import { childBlocksPluginConfig } from './childBlocks'
 import { formBuilderPluginConfig } from './formBuilder'
-import { blurDataUrlsPluginConfig } from './blurDataUrls'
-import { vercelBlobStoragePluginConfig } from './vercelBlobStorage'
+import { vercelBlobStoragePluginConfigs } from './vercelBlobStorage'
 
 // Notes on plugin composition:
 // - `Font` is registered via `fontsPlugin`; `Icon` and `iconSet` via `iconsPlugin`
@@ -25,8 +24,8 @@ import { vercelBlobStoragePluginConfig } from './vercelBlobStorage'
 //   storage globals via `stylesPlugin` (see `./styles`).
 // - `sitePlugin` registers the Pages, Header, Footer collections plus the
 //   SiteMetaData and Settings globals.
-// - `imagesPlugin` registers Images + Favicons; `blurDataUrlsPluginConfig` runs
-//   after it so blur fields land on the registered Images collection.
+// - `imagesPlugin` registers Images + Favicons, the on-demand transform endpoint,
+//   and built-in LQIP blur placeholders (no separate plugin needed).
 // - `muxVideoPlugin` registers the MuxVideo collection; `trackingPlugin` the
 //   `Tracking` global; `seedPlugin` the SEED DATABASE banner + `POST /api/seed`.
 // - `formsPlugin` / `actionsPlugin` prepend the default form / action blocks.
@@ -60,8 +59,7 @@ export const plugins: Plugin[] = [
   stylesPluginConfig,
   nestedDocsPluginConfig,
   formBuilderPluginConfig,
-  blurDataUrlsPluginConfig,
-  vercelBlobStoragePluginConfig,
+  ...vercelBlobStoragePluginConfigs,
   // Revalidate the third-party form-builder collections (the @pro-laico/* ones
   // bake their own). Keep this last so the target collections already exist.
   revalidationPlugin({ collectionSlugs: ['forms', 'form-submissions'] }),
