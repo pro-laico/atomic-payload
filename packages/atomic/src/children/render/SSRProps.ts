@@ -293,39 +293,31 @@ export async function SSRProps<T extends ChildBlocks[number]>(block: T): Promise
       break
     }
     case 'ImageChild': {
-      const { image, alt, priority, size, quality, loading, fill, decoding, unoptimized, version } = block
+      // The component renders `@pro-laico/images`' `<ResponsiveImage>`, which builds
+      // a responsive srcset against the on-demand transform endpoint and crops to the
+      // image's focal point — so we only compute its display props here (the image id
+      // + natural dims travel via the populated `image` relationship on `block`).
+      const { image, alt, priority, size, quality, loading, decoding, aspectRatio, fit, blur } = block
       if (!image || typeof image === 'string') break
-      const { blurDataUrl, alt: altFromMedia, sizes } = image
-
-      const width = version ? sizes?.[version]?.width : image.width
-      const height = version ? sizes?.[version]?.height : image.height
+      const { alt: altFromMedia } = image
 
       c.p.alt = alt || altFromMedia || ''
-      c.p.src = version ? sizes?.[version]?.url || image.url : image.url
-
       if (decoding) c.p.decoding = decoding
-
-      if (priority) c.p.priority = priority
+      if (priority) c.p.priority = true
       else if (loading) c.p.loading = loading
+      if (quality != null) c.p.quality = quality
+      if (aspectRatio) c.p.aspectRatio = aspectRatio
+      if (fit) c.p.fit = fit
+      // The component auto-reads the generated `blurDataUrl` from the populated
+      // `image` it receives; just forward whether the editor wants it shown.
+      if (typeof blur === 'boolean') c.p.blur = blur
 
-      if (!unoptimized) c.p.quality = quality
-      else c.p.unoptimized = unoptimized
-
-      c.p.sizes = size
-        ? size
-        : Object.entries(breakpoints)
-            .map(([, value]) => `(max-width: ${value}px) ${value * 2}w`)
-            .join(', ')
-
-      if (block.blur) {
-        c.p.placeholder = 'blur'
-        c.p.blurDataURL = blurDataUrl
-      }
-
-      if (!fill) {
-        c.p.height = height
-        c.p.width = width
-      } else c.p.fill = fill
+      // A full-width image: 100vw up to the largest breakpoint, then capped at it.
+      // (Must be CSS lengths — `Nw` is a srcset descriptor, invalid in `sizes`, and
+      // would make the browser ignore the whole attribute. Pixel density is handled by
+      // the srcset width candidates + the browser's DPR, not here.)
+      const maxBreakpoint = Math.max(...Object.values(breakpoints))
+      c.p.sizes = size ? size : `(max-width: ${maxBreakpoint}px) 100vw, ${maxBreakpoint}px`
 
       break
     }

@@ -10,7 +10,10 @@ declare module '@pro-laico/core' {
     CollectionWithStoredAtomicClassesSlug: G.CollectionWithStoredAtomicClassesSlug
     DesignSet: G.DesignSet
     Font: G.Font
+    FontFile: G.FontFile
+    FontOriginal: G.FontOriginal
     Footer: G.Footer
+    GeneratedImage: G.GeneratedImage
     Header: G.Header
     Icon: G.Icon
     IconSet: G.IconSet

@@ -15,6 +15,12 @@ const isMonorepo = existsSync(path.join(monorepoRoot, 'pnpm-workspace.yaml'))
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
+  // Keep native/WASM packages external so Turbopack doesn't bundle them: `sharp`
+  // (the on-demand image transform endpoint imports it server-side), and
+  // `@pro-laico/fonts`' optimize-hook deps `subset-font` (harfbuzz WASM) + `fontkit`,
+  // which must load as normal Node modules to find their `.wasm`/data files at
+  // runtime (bundling breaks the wasm path under Turbopack: "ENOENT … hb-subset.wasm").
+  serverExternalPackages: ['sharp', 'subset-font', 'harfbuzzjs', 'fontkit'],
   //KNOWN ISSUE: Payload server actions/hooks currently send large payloads, so we need to increase the body size limit.
   experimental: { serverActions: { bodySizeLimit: '5mb' } },
   turbopack: {

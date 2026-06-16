@@ -74,6 +74,7 @@ export interface Config {
   collections: {
     users: User;
     font: Font;
+    fontFile: FontFile;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -83,6 +84,7 @@ export interface Config {
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     font: FontSelect<false> | FontSelect<true>;
+    fontFile: FontFileSelect<false> | FontFileSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -159,6 +161,34 @@ export interface Font {
   id: number;
   title: string;
   family: GenericFontFamily;
+  files?: (number | FontFile)[] | null;
+  pendingUploads?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "fontFile".
+ */
+export interface FontFile {
+  id: number;
+  /**
+   * CSS font-weight for this file.
+   */
+  weight?: ('100' | '200' | '300' | '400' | '500' | '600' | '700' | '800' | '900') | null;
+  /**
+   * CSS font-style for this file.
+   */
+  style?: ('normal' | 'italic') | null;
+  familyName?: string | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -202,6 +232,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'font';
         value: number | Font;
+      } | null)
+    | ({
+        relationTo: 'fontFile';
+        value: number | FontFile;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -274,6 +308,19 @@ export interface UsersSelect<T extends boolean = true> {
 export interface FontSelect<T extends boolean = true> {
   title?: T;
   family?: T;
+  files?: T;
+  pendingUploads?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "fontFile_select".
+ */
+export interface FontFileSelect<T extends boolean = true> {
+  weight?: T;
+  style?: T;
+  familyName?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;

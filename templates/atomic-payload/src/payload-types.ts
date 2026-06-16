@@ -648,7 +648,10 @@ export interface Config {
     header: Header;
     footer: Footer;
     font: Font;
+    fontFile: FontFile;
+    fontOriginal: FontOriginal;
     images: Image;
+    generatedImages: GeneratedImage;
     favicons: Favicon;
     'mux-video': MuxVideo;
     icon: Icon;
@@ -664,14 +667,21 @@ export interface Config {
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
   };
-  collectionsJoins: {};
+  collectionsJoins: {
+    images: {
+      variants: 'generatedImages';
+    };
+  };
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     pages: PagesSelect<false> | PagesSelect<true>;
     header: HeaderSelect<false> | HeaderSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
     font: FontSelect<false> | FontSelect<true>;
+    fontFile: FontFileSelect<false> | FontFileSelect<true>;
+    fontOriginal: FontOriginalSelect<false> | FontOriginalSelect<true>;
     images: ImagesSelect<false> | ImagesSelect<true>;
+    generatedImages: GeneratedImagesSelect<false> | GeneratedImagesSelect<true>;
     favicons: FaviconsSelect<false> | FaviconsSelect<true>;
     'mux-video': MuxVideoSelect<false> | MuxVideoSelect<true>;
     icon: IconSelect<false> | IconSelect<true>;
@@ -1320,29 +1330,25 @@ export interface ImageChild {
    */
   image: string | Image;
   /**
-   * Select the stored version of the image you want to use. Leave blank for automatic optimization.
+   * Display crop ratio, e.g. "16:9", "1:1", "4:3". Leave blank to use the image's natural ratio.
    */
-  version?: ('thumbnail' | 'square' | 'small' | 'medium' | 'large' | 'xlarge' | 'og') | null;
+  aspectRatio?: string | null;
   /**
-   * Defaults to the alt set on the image asset; add an instance-specific alt here. Leave blank only for decorative images — non-decorative images need alt text for accessibility.
+   * How the image fills the box. "cover" crops to the focal point (default); others letterbox/scale.
+   */
+  fit?: ('cover' | 'contain' | 'inside' | 'outside' | 'fill') | null;
+  /**
+   * Defaults to the alt set on the image asset; add an instance-specific alt here. Leave blank only for decorative images.
    */
   alt?: string | null;
   /**
-   * Default false. If true, the asset will be pre-loaded and disable lazy loading.
+   * Default false. If true, the image loads eagerly (use for above-the-fold images).
    */
   priority?: boolean | null;
   /**
-   * Default false. If true, will use the automatically generated blur data URL for the image.
+   * Default true. Shows the generated blur placeholder while the image loads. Uncheck to disable.
    */
   blur?: boolean | null;
-  /**
-   * Default false. If true, will not optimize the image for the web. Best for tiny images like logos.
-   */
-  unoptimized?: boolean | null;
-  /**
-   * Default false. If true, the image will be resized to fill the parent container.
-   */
-  fill?: boolean | null;
   /**
    * Default is lazy. Use eager for images visible on load.
    */
@@ -1352,11 +1358,11 @@ export interface ImageChild {
    */
   decoding?: ('auto' | 'sync' | 'async') | null;
   /**
-   * If not set, will default to image width. Example: "100vw" or "100px".
+   * The responsive `sizes` attribute, e.g. "(max-width: 768px) 100vw, 50vw". Defaults to a full-width set.
    */
   size?: string | null;
   /**
-   * 0-100. Default is 75. Use 100 for best quality.
+   * 0-100. Default is 75. Higher = better quality, larger files.
    */
   quality?: number | null;
   /**
@@ -1376,6 +1382,11 @@ export interface Image {
   id: string;
   alt: string;
   blurDataUrl?: string | null;
+  variants?: {
+    docs?: (string | GeneratedImage)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -1387,64 +1398,29 @@ export interface Image {
   height?: number | null;
   focalX?: number | null;
   focalY?: number | null;
-  sizes?: {
-    thumbnail?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
-    square?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
-    small?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
-    medium?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
-    large?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
-    xlarge?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
-    og?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
-  };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "generatedImages".
+ */
+export interface GeneratedImage {
+  id: string;
+  source: string | Image;
+  cacheKey: string;
+  fit?: string | null;
+  format?: string | null;
+  quality?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1951,6 +1927,57 @@ export interface Font {
   id: string;
   title: string;
   family: GenericFontFamily;
+  files?: (string | FontFile)[] | null;
+  pendingUploads?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "fontFile".
+ */
+export interface FontFile {
+  id: string;
+  /**
+   * CSS font-weight for this file.
+   */
+  weight?: ('100' | '200' | '300' | '400' | '500' | '600' | '700' | '800' | '900') | null;
+  /**
+   * CSS font-style for this file.
+   */
+  style?: ('normal' | 'italic') | null;
+  familyName?: string | null;
+  optimized?: string | null;
+  originalFilesize?: number | null;
+  optimizedFilesize?: number | null;
+  savedPercent?: number | null;
+  original?: (string | null) | FontOriginal;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "fontOriginal".
+ */
+export interface FontOriginal {
+  id: string;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -2507,8 +2534,20 @@ export interface PayloadLockedDocument {
         value: string | Font;
       } | null)
     | ({
+        relationTo: 'fontFile';
+        value: string | FontFile;
+      } | null)
+    | ({
+        relationTo: 'fontOriginal';
+        value: string | FontOriginal;
+      } | null)
+    | ({
         relationTo: 'images';
         value: string | Image;
+      } | null)
+    | ({
+        relationTo: 'generatedImages';
+        value: string | GeneratedImage;
       } | null)
     | ({
         relationTo: 'favicons';
@@ -2713,6 +2752,41 @@ export interface FooterSelect<T extends boolean = true> {
 export interface FontSelect<T extends boolean = true> {
   title?: T;
   family?: T;
+  files?: T;
+  pendingUploads?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "fontFile_select".
+ */
+export interface FontFileSelect<T extends boolean = true> {
+  weight?: T;
+  style?: T;
+  familyName?: T;
+  optimized?: T;
+  originalFilesize?: T;
+  optimizedFilesize?: T;
+  savedPercent?: T;
+  original?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  url?: T;
+  thumbnailURL?: T;
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
+  focalX?: T;
+  focalY?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "fontOriginal_select".
+ */
+export interface FontOriginalSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
   url?: T;
@@ -2732,6 +2806,7 @@ export interface FontSelect<T extends boolean = true> {
 export interface ImagesSelect<T extends boolean = true> {
   alt?: T;
   blurDataUrl?: T;
+  variants?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;
@@ -2743,80 +2818,28 @@ export interface ImagesSelect<T extends boolean = true> {
   height?: T;
   focalX?: T;
   focalY?: T;
-  sizes?:
-    | T
-    | {
-        thumbnail?:
-          | T
-          | {
-              url?: T;
-              width?: T;
-              height?: T;
-              mimeType?: T;
-              filesize?: T;
-              filename?: T;
-            };
-        square?:
-          | T
-          | {
-              url?: T;
-              width?: T;
-              height?: T;
-              mimeType?: T;
-              filesize?: T;
-              filename?: T;
-            };
-        small?:
-          | T
-          | {
-              url?: T;
-              width?: T;
-              height?: T;
-              mimeType?: T;
-              filesize?: T;
-              filename?: T;
-            };
-        medium?:
-          | T
-          | {
-              url?: T;
-              width?: T;
-              height?: T;
-              mimeType?: T;
-              filesize?: T;
-              filename?: T;
-            };
-        large?:
-          | T
-          | {
-              url?: T;
-              width?: T;
-              height?: T;
-              mimeType?: T;
-              filesize?: T;
-              filename?: T;
-            };
-        xlarge?:
-          | T
-          | {
-              url?: T;
-              width?: T;
-              height?: T;
-              mimeType?: T;
-              filesize?: T;
-              filename?: T;
-            };
-        og?:
-          | T
-          | {
-              url?: T;
-              width?: T;
-              height?: T;
-              mimeType?: T;
-              filesize?: T;
-              filename?: T;
-            };
-      };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "generatedImages_select".
+ */
+export interface GeneratedImagesSelect<T extends boolean = true> {
+  source?: T;
+  cacheKey?: T;
+  fit?: T;
+  format?: T;
+  quality?: T;
+  focalX?: T;
+  focalY?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  url?: T;
+  thumbnailURL?: T;
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

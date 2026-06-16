@@ -22,6 +22,10 @@
         "types": "./dist/types/payload-augment.d.ts",
         "default": "./dist/types/payload-augment.js"
       },
+      "./admin/fontUploader": {
+        "types": "./dist/components/admin/fontUploader.d.ts",
+        "default": "./dist/components/admin/fontUploader.js"
+      },
       "./scripts/downloadFonts": {
         "types": "./dist/scripts/downloadFonts.d.ts",
         "default": "./dist/scripts/downloadFonts.js"
@@ -42,6 +46,10 @@
       "types": "./src/types/payload-augment.ts",
       "default": "./src/types/payload-augment.ts"
     },
+    "./admin/fontUploader": {
+      "types": "./src/components/admin/fontUploader.tsx",
+      "default": "./src/components/admin/fontUploader.tsx"
+    },
     "./scripts/downloadFonts": {
       "types": "./src/scripts/downloadFonts.ts",
       "default": "./src/scripts/downloadFonts.ts"
@@ -60,11 +68,16 @@
     "copyfiles": "copyfiles -u 1 \"src/**/*.{scss,css,svg,json,ttf,woff,woff2,eot}\" dist/"
   },
   "dependencies": {
-    "@pro-laico/core": "workspace:*"
+    "@pro-laico/core": "workspace:*",
+    "fontkit": "^2.0.0",
+    "subset-font": "^2.0.0"
   },
   "peerDependencies": {
+    "@payloadcms/ui": ">=3.0.0",
     "dotenv": ">=16.0.0",
-    "payload": ">=3.0.0"
+    "next": ">=15.0.0",
+    "payload": ">=3.0.0",
+    "react": ">=19.0.0"
   },
   "peerDependenciesMeta": {
     "dotenv": {
@@ -72,9 +85,15 @@
     }
   },
   "devDependencies": {
+    "@payloadcms/ui": "^3.85.0",
     "@tools/test-helpers": "workspace:*",
+    "@types/fontkit": "^2.0.0",
+    "@types/react": "^19.2.17",
+    "@types/subset-font": "^2.0.0",
     "dotenv": "^17.4.2",
+    "next": "^16.2.7",
     "payload": "^3.85.0",
+    "react": "^19.2.7",
     "typescript": "^6.0.3"
   },
   "engines": {
