@@ -8,6 +8,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-06-16
+
 ### Added
 
 - **`@pro-laico/fonts`: typefaces with multiple weight files, optimize-on-upload, and a premium uploader.**
@@ -50,6 +52,32 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   `serverExternalPackages` in `next.config` so Next/Turbopack doesn't bundle the
   harfbuzz `.wasm`. See the template's `vercelBlobStorage.ts` + `next.config.ts`.
 
+- **`@pro-laico/images`: on-demand image transforms with focal cropping and built-in blur.**
+  Uploads now store **only the original** (no fixed size ladder). Every rendered size is
+  generated the first time a page requests it by a Sharp transform endpoint
+  (`GET /api/img/:id?w&h&ar&fit&q&fmt&v`), cropped to the image's focal point, streamed
+  same-origin with immutable cache headers, and cached as a row in a new hidden
+  `generatedImages` collection. Render with the bundled **`<ResponsiveImage>`** — a plain
+  `<img>` whose `srcset` points at the endpoint (not `next/image`), in server or client
+  trees; the srcset step is set on the component via `pixelStep` (default 50px).
+
+  **Blur placeholders are built in** (Sharp shrink + blur on upload into `blurDataUrl`,
+  read by `<ResponsiveImage>`), replacing the `@oversightstudio/blur-data-urls` peer; tune
+  or disable via the `blur` option, with a `backfillBlurDataUrls` helper for existing
+  images. An admin **focal-point picker** with live ratio previews reproduces the endpoint
+  crop exactly. **Cache invalidation:** each URL carries a `v` token derived from filename
+  + focal so an edit busts immutable browser/CDN caches, and change/delete hooks (plus a
+  **Purge variants** button) drop stale cached variants. Ships a new standalone
+  **`images-only`** example app. New exports include `createTransformEndpoint` /
+  `createPurgeEndpoint`, `GeneratedImages` (+ factory), the purge + blur hooks,
+  `ResponsiveImage`, `buildSrcset` / `buildVariantUrl` / `deriveVersion`, and the
+  `@pro-laico/images/admin/focalPreview` + `purgeVariants` field components.
+
+  **Consumer setup:** pass `sharp` to `buildConfig`, add `'sharp'` to
+  `serverExternalPackages` in `next.config`, set `NEXT_PUBLIC_SERVER_URL` (the endpoint
+  self-fetches the original on cloud/relative-URL adapters), and register `generatedImages`
+  with your storage adapter using **server-side** uploads.
+
 ### Changed
 
 - **BREAKING (`@pro-laico/fonts`):** a `font` document is now a non-upload
@@ -61,6 +89,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   response shape is unchanged (an `ExportedFont[]` per role), now sourced from the
   typeface's `files`. Migrate by re-pointing each role slot at a typeface id and
   regenerating types.
+
+- **BREAKING (`@pro-laico/images`):** the `Images` collection no longer pre-generates
+  WebP `imageSizes` on upload — it stores the original only, and all sizing is on demand.
+  On SQL adapters this drops the old per-size columns; `pregenerateSizes: true` restores
+  the legacy 7-size ladder if you need it. The `@oversightstudio/blur-data-urls` optional
+  peer and the plugin's `pixelStep` option are **removed** (blur is built in; the srcset
+  `pixelStep` now lives on `<ResponsiveImage>`). The `ImageChild` block renders
+  `<ResponsiveImage>` instead of `next/image`, and `getCachedImage`'s legacy size names
+  now resolve to on-demand transform URLs. Migrate by rendering through `<ResponsiveImage>`
+  and dropping any `blurDataUrlsPlugin` wiring.
 
 ## [0.3.4] - 2026-06-12
 

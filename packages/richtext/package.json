@@ -1,6 +1,6 @@
 {
   "name": "@pro-laico/richtext",
-  "version": "0.3.4",
+  "version": "0.4.0",
   "description": "Atomic Payload rich-text package. Provides the RichTextChild block, a default Lexical editor preset, and a JSX renderer for serialized Lexical content.",
   "license": "MIT",
   "repository": {
