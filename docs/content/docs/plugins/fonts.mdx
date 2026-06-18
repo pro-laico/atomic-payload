@@ -100,7 +100,7 @@ This registers the **Font** collection (where you upload font files) and the **`
 
 Because it reads a running Payload instance, it needs a few [environment variables](#environment-variables) and a reachable site. It runs on every build; you can also run it any time with `pnpm generate:fonts` after changing the active fonts. Working locally with nothing deployed yet? See [Notes](#notes) for a one-command wrapper.
 
-If a download fails (for example the site is unreachable or a font file can't be written), the step prints a short message by default and leaves any existing fonts in place. To see the full error while debugging, re-run it with `--verbose` (or `-v`):
+If a download fails (for example the site is unreachable or a font file can't be written), the step prints a short message by default and leaves any existing fonts in place. If no `src/app/definition.ts` exists yet — as on a clean CI checkout, where it's gitignored — it writes an empty stub instead, so `next build` can still resolve the import; your fonts wire up on the next deploy once the endpoint is reachable. To see the full error while debugging, re-run it with `--verbose` (or `-v`):
 
 ```bash
 pnpm generate:fonts --verbose
@@ -119,6 +119,10 @@ The download step regenerates the font files and the definition module on every 
 public/fonts
 src/app/definition.ts
 ```
+
+<Callout type="info">
+  Because `definition.ts` is gitignored, a clean first deploy has no copy to fall back on. That's safe: if the build-time download can't run (no reachable `FONT_DOWNLOAD_URL`), the step writes an empty stub so the build still succeeds — just without custom fonts until the next deploy. Point `FONT_DOWNLOAD_URL` at a live instance to have your fonts on the first build.
+</Callout>
 </Step>
 
 <Step>

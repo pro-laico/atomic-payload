@@ -112,6 +112,19 @@ export default fonts
     )
   }
 
+  /**
+   * On a skip/fail, guarantee the generated module exists so a clean build —
+   * where `definition.ts` is gitignored and therefore absent (e.g. a fresh
+   * Vercel checkout) — doesn't die with "Can't resolve '@/app/definition'". An
+   * existing definition is left untouched (it may hold previously downloaded
+   * fonts); only the absent case writes the empty-but-valid stub.
+   */
+  function ensureDefinitionFile(): void {
+    if (fs.existsSync(FONT_DEFINITION_FILE)) return
+    generateFontDefinitions({ sans: [], serif: [], mono: [], display: [] })
+    console.warn(colors.orange(`No ${FONT_DEFINITION_FILE} found — wrote an empty stub so the build can proceed.`))
+  }
+
   function wipeFontFiles(): void {
     if (!fs.existsSync(FONT_FILES_DIR)) fs.mkdirSync(FONT_FILES_DIR, { recursive: true })
     // Only unlink files — a stray subdirectory would make unlinkSync throw EISDIR.
@@ -140,6 +153,7 @@ export default fonts
     if (!siteUrl) console.warn(colors.red('Missing required environment variable: FONT_DOWNLOAD_URL'))
     if (!secret) console.warn(colors.red('Missing required environment variable: PAYLOAD_SECRET'))
     console.warn(colors.orange('Font download skipped — existing fonts left untouched'))
+    ensureDefinitionFile()
     return
   }
 
@@ -152,11 +166,13 @@ export default fonts
     const res = await fetch(endpoint, { headers: { Authorization: `Bearer ${secret}` } })
     if (!res.ok) {
       warnAndKeep(`Font export endpoint returned HTTP ${res.status} ${res.statusText}`)
+      ensureDefinitionFile()
       return
     }
     manifest = (await res.json()) as ExportFontsResponse
   } catch (err) {
     warnAndKeep(`Could not reach the font export endpoint at ${endpoint}`, err)
+    ensureDefinitionFile()
     return
   }
 

@@ -237,3 +237,139 @@ are generated from the template + examples at pack time).
 - The home route directory was renamed (`[...slug]` → `[[...slug]]`). Existing
   local builds must clear `.next` once, since Next's generated type validator
   still references the old route path.
+
+## [0.3.1] - 2026-06-09
+
+### Fixed
+
+- **Seeding a fresh MongoDB now works.** The `atomic-payload` template sets
+  `transactionOptions: false` — a fresh database's first write implicitly creates
+  its collection, which MongoDB refuses inside a transaction. This also lets the
+  app run against a standalone (non–replica-set) local Mongo.
+- **`@pro-laico/core` is safe outside a Next request.** `revalidateTag` and
+  `withCache` now swallow the "static generation store / incrementalCache missing"
+  invariants and fall back to an uncached fetch, so seeding (and other
+  non-request contexts) no longer crash.
+- **`@pro-laico/seed` icon seeding.** Icons upload sequentially instead of in
+  parallel — parallel uploads shared one request and collided on the unique
+  `filename`. Also fixed the `cookie` seed icon, which duplicated the logo's
+  filename.
+- **`create-atomic-payload` published scaffolds** — fixed the pnpm build
+  allowlist and the fonts CLI bin.
+- `next-env.d.ts` is now gitignored so builds don't churn the tree.
+
+### Added
+
+- A monorepo test harness (Turbo + Vitest + Payload integration): a Mongo-backed
+  full-template seed suite (mongodb-memory-server replica set), per-example seed
+  tests (fonts / icons / styles), and a `create-atomic-payload` scaffold test
+  harness — all wired into `pnpm test`.
+
+## [0.3.0] - 2026-06-08
+
+First public release of the `@pro-laico/*` plugin ecosystem. This transforms
+Atomic Payload from a single Payload + Tailwind starter template into a full,
+plugin-based monorepo: the functionality that used to live inside one template is
+now factored into 12 installable `@pro-laico/*` packages plus the
+`create-atomic-payload` scaffolder — each independently documented, versioned in
+lockstep, and published to npm. Install just the plugin you need into an existing
+Payload app, or scaffold the full stack.
+
+### Added
+
+- **`@pro-laico/core`** — the shared base every other package builds on: kernel
+  types (`PayloadAugment` / `Get<>` type augmentation), APF (Atomic Payload
+  Functions), shared utilities, cache + cache revalidation, the JSON-schema
+  plugin, and admin/frontend UI primitives.
+- **Standalone plugins**, usable on their own in any Payload + Next.js project:
+  - **`@pro-laico/styles`** — designSet + shortcutSet collections, token fields,
+    the CSS preflight pipeline, and the UnoCSS / `processDesignSet` processor.
+  - **`@pro-laico/icons`** — Icon and IconSet collections, an SVG-optimizing
+    `formatSVG` hook, SVG-extraction helpers, and the `AtomicIcon` component.
+  - **`@pro-laico/fonts`** — a Font upload collection and a CLI that downloads
+    fonts from the active design set to disk for `next/font/local`.
+  - **`@pro-laico/tracking`** — Tracking global plus PostHog, Google Tag Manager,
+    and Vercel Analytics providers behind a composite `TrackingProvider`.
+- **Runtime / tool packages** the standalones and template compose with (rarely
+  installed directly): **`@pro-laico/atomic`** (the runtime engine — action
+  blocks, the `beforeChange` CSS/UnoCSS processor, the form pipeline, and the
+  child-blocks system), **`@pro-laico/site`** (Pages / Header / Footer plus
+  SiteMetaData and Settings via one `sitePlugin()`), **`@pro-laico/images`**
+  (Images + Favicons collections, a `FaviconField` helper, an `ImageChild` block
+  factory), **`@pro-laico/mux-video`** (a local `MuxVideo` collection wrapping
+  `@oversightstudio/mux-video`), **`@pro-laico/richtext`** (the `RichTextChild`
+  block, a default Lexical preset, and a JSX renderer), **`@pro-laico/seed`** (a
+  `POST /api/seed` endpoint and a BeforeDashboard seed button), and
+  **`@pro-laico/zap`** (zod with Atomic Payload extensions — the `z.ap`
+  registry-aware schema layer).
+- **`create-atomic-payload`** — `npm create @pro-laico/atomic-payload` scaffolds a
+  new project or a single-plugin example.
+- **New project surfaces:** a Fumadocs **documentation site** (`docs/`);
+  standalone **examples** (`fonts-only`, `icons-only`, `styles-only`); and the
+  **starter template** (`templates/atomic-payload`) rewired to consume the
+  published plugins instead of bundling everything inline.
+- **Tooling & infrastructure:** lockstep release tooling (`tools/releaser` —
+  `pnpm release`, `pnpm publish-packages`), CI publishing with npm provenance on
+  `v*` tags (`.github/workflows/release.yml`), and Biome for lint/format.
+
+## [0.2.0] - 2026-03-12
+
+### Added
+
+- **Monorepo structure**, to better manage packages. The first published package
+  is **`create-atomic-payload`**, for faster project setup
+  (`pnpx @pro-laico/create-atomic-payload .`); the Payload plugins used by the
+  template follow in later releases. (#16)
+
+### Changed
+
+- Updated non-breaking package dependencies, including Payload. (#15)
+
+## [0.1.2] - 2026-01-28
+
+### Added
+
+- An `INCLUDE_SEED` environment toggle to remove/disable seed functionality. (#9)
+
+### Changed
+
+- **Upgraded to Next.js 16.1.6.** An initial implementation — not yet fully
+  aligned with every Next 16 best practice, but functionally identical to the
+  previous v15 setup. (#12)
+- Updated dependencies. (#12)
+
+### Fixed
+
+- `generateMetadata` now uses page SEO titles correctly. (#8)
+- The Atomic Store provider uses `useState` instead of a ref. (#10)
+
+## [0.1.1] - 2026-01-19
+
+### Added
+
+- **UnoCSS Typography (prose) configuration controls in the Payload admin.**
+  Works in tandem with the rich-text block to style its generated child elements
+  across the default / `sm` / `base` / `lg` prose sizes. (#4)
+
+### Removed
+
+- The consent requirement. (#1)
+- The Analytics GTM check. (#3)
+
+## [0.1.0] - 2026-01-05
+
+### Added
+
+- Initial release — Atomic Payload now exists.
+
+[Unreleased]: https://github.com/pro-laico/atomic-payload/compare/v0.4.0...HEAD
+[0.4.0]: https://github.com/pro-laico/atomic-payload/compare/v0.3.4...v0.4.0
+[0.3.4]: https://github.com/pro-laico/atomic-payload/compare/v0.3.3...v0.3.4
+[0.3.3]: https://github.com/pro-laico/atomic-payload/compare/v0.3.2...v0.3.3
+[0.3.2]: https://github.com/pro-laico/atomic-payload/compare/v0.3.1...v0.3.2
+[0.3.1]: https://github.com/pro-laico/atomic-payload/compare/v0.3.0...v0.3.1
+[0.3.0]: https://github.com/pro-laico/atomic-payload/compare/v0.2.0...v0.3.0
+[0.2.0]: https://github.com/pro-laico/atomic-payload/compare/v0.1.2...v0.2.0
+[0.1.2]: https://github.com/pro-laico/atomic-payload/compare/v0.1.1...v0.1.2
+[0.1.1]: https://github.com/pro-laico/atomic-payload/compare/v0.1.0...v0.1.1
+[0.1.0]: https://github.com/pro-laico/atomic-payload/releases/tag/v0.1.0

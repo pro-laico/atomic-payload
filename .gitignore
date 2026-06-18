@@ -53,6 +53,7 @@ packages/create-atomic-payload/scaffolds
 .claude/*
 !.claude/skills/
 .mcp.json
+/CLAUDE.md
 
 # Logs
 *.log
