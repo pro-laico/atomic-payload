@@ -58,17 +58,17 @@
   },
   "dependencies": {
     "@mux/mux-video-react": "^0.31.0",
-    "@pro-laico/atomic": "workspace:*",
+    "@oversightstudio/mux-video": "^1.4.0",
     "@pro-laico/core": "workspace:*"
   },
   "peerDependencies": {
-    "@oversightstudio/mux-video": ">=1.0.0",
+    "@pro-laico/atomic": ">=0.4.0",
     "next": ">=15.0.0",
     "payload": ">=3.0.0",
     "react": ">=19.0.0"
   },
   "devDependencies": {
-    "@oversightstudio/mux-video": "^1.4.0",
+    "@pro-laico/atomic": "workspace:*",
     "@types/react": "^19.2.17",
     "next": "^16.2.7",
     "payload": "^3.85.0",

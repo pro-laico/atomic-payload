@@ -363,12 +363,37 @@ importers:
 
   packages/atomic:
     dependencies:
-      '@base-ui/react':
-        specifier: ^1.5.0
-        version: 1.5.0(@date-fns/tz@1.2.0)(@types/react@19.2.17)(date-fns@4.1.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+      '@mux/blurup':
+        specifier: ^1.0.2
+        version: 1.0.2
       '@pro-laico/core':
         specifier: workspace:*
         version: link:../core
+      dayjs:
+        specifier: ^1.11.21
+        version: 1.11.21
+      next-themes:
+        specifier: ^0.4.6
+        version: 0.4.6(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+      server-only:
+        specifier: ^0.0.1
+        version: 0.0.1
+      traverse:
+        specifier: ^0.6.11
+        version: 0.6.11
+      zustand:
+        specifier: ^5.0.14
+        version: 5.0.14(@types/react@19.2.17)(react@19.2.7)(use-sync-external-store@1.6.0(react@19.2.7))
+    devDependencies:
+      '@base-ui/react':
+        specifier: ^1.5.0
+        version: 1.5.0(@date-fns/tz@1.2.0)(@types/react@19.2.17)(date-fns@4.1.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+      '@payloadcms/richtext-lexical':
+        specifier: ^3.85.0
+        version: 3.85.0(@faceless-ui/modal@3.0.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(@faceless-ui/scroll-info@2.0.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(@payloadcms/next@3.85.0(@types/react@19.2.17)(graphql@16.11.0)(monaco-editor@0.52.2)(next@16.2.7(@opentelemetry/api@1.9.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(sass@1.77.4))(payload@3.85.0(graphql@16.11.0)(typescript@6.0.3))(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(typescript@6.0.3))(@types/react@19.2.17)(monaco-editor@0.52.2)(next@16.2.7(@opentelemetry/api@1.9.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(sass@1.77.4))(payload@3.85.0(graphql@16.11.0)(typescript@6.0.3))(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(typescript@6.0.3)(yjs@13.6.27)
+      '@payloadcms/ui':
+        specifier: ^3.85.0
+        version: 3.85.0(@types/react@19.2.17)(monaco-editor@0.52.2)(next@16.2.7(@opentelemetry/api@1.9.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(sass@1.77.4))(payload@3.85.0(graphql@16.11.0)(typescript@6.0.3))(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(typescript@6.0.3)
       '@pro-laico/icons':
         specifier: workspace:*
         version: link:../icons
@@ -390,25 +415,6 @@ importers:
       '@pro-laico/zap':
         specifier: workspace:*
         version: link:../zap
-      dayjs:
-        specifier: ^1.11.21
-        version: 1.11.21
-      next-themes:
-        specifier: ^0.4.6
-        version: 0.4.6(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
-      traverse:
-        specifier: ^0.6.11
-        version: 0.6.11
-    devDependencies:
-      '@mux/blurup':
-        specifier: ^1.0.2
-        version: 1.0.2
-      '@payloadcms/richtext-lexical':
-        specifier: ^3.85.0
-        version: 3.85.0(@faceless-ui/modal@3.0.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(@faceless-ui/scroll-info@2.0.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(@payloadcms/next@3.85.0(@types/react@19.2.17)(graphql@16.11.0)(monaco-editor@0.52.2)(next@16.2.7(@opentelemetry/api@1.9.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(sass@1.77.4))(payload@3.85.0(graphql@16.11.0)(typescript@6.0.3))(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(typescript@6.0.3))(@types/react@19.2.17)(monaco-editor@0.52.2)(next@16.2.7(@opentelemetry/api@1.9.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(sass@1.77.4))(payload@3.85.0(graphql@16.11.0)(typescript@6.0.3))(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(typescript@6.0.3)(yjs@13.6.27)
-      '@payloadcms/ui':
-        specifier: ^3.85.0
-        version: 3.85.0(@types/react@19.2.17)(monaco-editor@0.52.2)(next@16.2.7(@opentelemetry/api@1.9.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(sass@1.77.4))(payload@3.85.0(graphql@16.11.0)(typescript@6.0.3))(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(typescript@6.0.3)
       '@types/react':
         specifier: ^19.2.17
         version: 19.2.17
@@ -430,18 +436,12 @@ importers:
       react-dom:
         specifier: ^19.2.7
         version: 19.2.7(react@19.2.7)
-      server-only:
-        specifier: ^0.0.1
-        version: 0.0.1
       typescript:
         specifier: ^6.0.3
         version: 6.0.3
       unocss:
         specifier: ^66.7.0
         version: 66.7.0(vite@7.1.3(@types/node@25.9.2)(jiti@2.7.0)(lightningcss@1.32.0)(sass@1.77.4)(tsx@4.22.4))
-      zustand:
-        specifier: ^5.0.14
-        version: 5.0.14(@types/react@19.2.17)(react@19.2.7)(use-sync-external-store@1.6.0(react@19.2.7))
 
   packages/core:
     dependencies:
@@ -451,6 +451,9 @@ importers:
       dayjs:
         specifier: ^1.11.21
         version: 1.11.21
+      server-only:
+        specifier: ^0.0.1
+        version: 0.0.1
       traverse:
         specifier: ^0.6.11
         version: 0.6.11
@@ -482,9 +485,6 @@ importers:
       react:
         specifier: ^19.2.7
         version: 19.2.7
-      server-only:
-        specifier: ^0.0.1
-        version: 0.0.1
       typescript:
         specifier: ^6.0.3
         version: 6.0.3
@@ -506,6 +506,9 @@ importers:
       '@pro-laico/core':
         specifier: workspace:*
         version: link:../core
+      dotenv:
+        specifier: ^17.4.2
+        version: 17.4.2
       fontkit:
         specifier: ^2.0.0
         version: 2.0.4
@@ -528,9 +531,6 @@ importers:
       '@types/subset-font':
         specifier: ^2.0.0
         version: 2.3.0
-      dotenv:
-        specifier: ^17.4.2
-        version: 17.4.2
       next:
         specifier: ^16.2.7
         version: 16.2.7(@opentelemetry/api@1.9.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(sass@1.77.4)
@@ -546,16 +546,25 @@ importers:
 
   packages/icons:
     dependencies:
-      '@pro-laico/atomic':
-        specifier: workspace:*
-        version: link:../atomic
       '@pro-laico/core':
         specifier: workspace:*
         version: link:../core
+      server-only:
+        specifier: ^0.0.1
+        version: 0.0.1
+      svg-path-bbox:
+        specifier: ^2.1.0
+        version: 2.1.0
+      svgo:
+        specifier: ^4.0.1
+        version: 4.0.1
     devDependencies:
       '@payloadcms/ui':
         specifier: ^3.85.0
         version: 3.85.0(@types/react@19.2.17)(monaco-editor@0.52.2)(next@16.2.7(@opentelemetry/api@1.9.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(sass@1.77.4))(payload@3.85.0(graphql@16.11.0)(typescript@6.0.3))(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(typescript@6.0.3)
+      '@pro-laico/atomic':
+        specifier: workspace:*
+        version: link:../atomic
       '@tools/test-helpers':
         specifier: workspace:*
         version: link:../../tools/test-helpers
@@ -571,15 +580,6 @@ importers:
       react:
         specifier: ^19.2.7
         version: 19.2.7
-      server-only:
-        specifier: ^0.0.1
-        version: 0.0.1
-      svg-path-bbox:
-        specifier: ^2.1.0
-        version: 2.1.0
-      svgo:
-        specifier: ^4.0.1
-        version: 4.0.1
       typescript:
         specifier: ^6.0.3
         version: 6.0.3
@@ -623,16 +623,16 @@ importers:
       '@mux/mux-video-react':
         specifier: ^0.31.0
         version: 0.31.0(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
-      '@pro-laico/atomic':
-        specifier: workspace:*
-        version: link:../atomic
+      '@oversightstudio/mux-video':
+        specifier: ^1.4.0
+        version: 1.4.0(@mux/mux-player-react@3.7.0(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(@payloadcms/ui@3.85.0(@types/react@19.2.17)(monaco-editor@0.52.2)(next@16.2.7(@opentelemetry/api@1.9.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(sass@1.77.4))(payload@3.85.0(graphql@16.11.0)(typescript@6.0.3))(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(typescript@6.0.3))(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(payload@3.85.0(graphql@16.11.0)(typescript@6.0.3))(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       '@pro-laico/core':
         specifier: workspace:*
         version: link:../core
     devDependencies:
-      '@oversightstudio/mux-video':
-        specifier: ^1.4.0
-        version: 1.4.0(@mux/mux-player-react@3.7.0(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(@payloadcms/ui@3.85.0(@types/react@19.2.17)(monaco-editor@0.52.2)(next@16.2.7(@opentelemetry/api@1.9.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(sass@1.77.4))(payload@3.85.0(graphql@16.11.0)(typescript@6.0.3))(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(typescript@6.0.3))(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(payload@3.85.0(graphql@16.11.0)(typescript@6.0.3))(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+      '@pro-laico/atomic':
+        specifier: workspace:*
+        version: link:../atomic
       '@types/react':
         specifier: ^19.2.17
         version: 19.2.17
@@ -651,9 +651,6 @@ importers:
 
   packages/richtext:
     dependencies:
-      '@pro-laico/atomic':
-        specifier: workspace:*
-        version: link:../atomic
       '@pro-laico/core':
         specifier: workspace:*
         version: link:../core
@@ -661,6 +658,9 @@ importers:
       '@payloadcms/richtext-lexical':
         specifier: ^3.85.0
         version: 3.85.0(@faceless-ui/modal@3.0.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(@faceless-ui/scroll-info@2.0.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(@payloadcms/next@3.85.0(@types/react@19.2.17)(graphql@16.11.0)(monaco-editor@0.52.2)(next@16.2.7(@opentelemetry/api@1.9.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(sass@1.77.4))(payload@3.85.0(graphql@16.11.0)(typescript@6.0.3))(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(typescript@6.0.3))(@types/react@19.2.17)(monaco-editor@0.52.2)(next@16.2.7(@opentelemetry/api@1.9.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(sass@1.77.4))(payload@3.85.0(graphql@16.11.0)(typescript@6.0.3))(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(typescript@6.0.3)(yjs@13.6.27)
+      '@pro-laico/atomic':
+        specifier: workspace:*
+        version: link:../atomic
       '@types/react':
         specifier: ^19.2.17
         version: 19.2.17
@@ -676,12 +676,16 @@ importers:
 
   packages/seed:
     dependencies:
-      '@pro-laico/atomic':
-        specifier: workspace:*
-        version: link:../atomic
       '@pro-laico/core':
         specifier: workspace:*
         version: link:../core
+    devDependencies:
+      '@payloadcms/ui':
+        specifier: ^3.85.0
+        version: 3.85.0(@types/react@19.2.17)(monaco-editor@0.52.2)(next@16.2.7(@opentelemetry/api@1.9.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(sass@1.77.4))(payload@3.85.0(graphql@16.11.0)(typescript@6.0.3))(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(typescript@6.0.3)
+      '@pro-laico/atomic':
+        specifier: workspace:*
+        version: link:../atomic
       '@pro-laico/icons':
         specifier: workspace:*
         version: link:../icons
@@ -691,10 +695,6 @@ importers:
       '@pro-laico/styles':
         specifier: workspace:*
         version: link:../styles
-    devDependencies:
-      '@payloadcms/ui':
-        specifier: ^3.85.0
-        version: 3.85.0(@types/react@19.2.17)(monaco-editor@0.52.2)(next@16.2.7(@opentelemetry/api@1.9.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(sass@1.77.4))(payload@3.85.0(graphql@16.11.0)(typescript@6.0.3))(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(typescript@6.0.3)
       '@types/react':
         specifier: ^19.2.17
         version: 19.2.17
@@ -713,12 +713,16 @@ importers:
 
   packages/site:
     dependencies:
-      '@pro-laico/atomic':
-        specifier: workspace:*
-        version: link:../atomic
       '@pro-laico/core':
         specifier: workspace:*
         version: link:../core
+    devDependencies:
+      '@payloadcms/plugin-nested-docs':
+        specifier: ^3.85.0
+        version: 3.85.0(payload@3.85.0(graphql@16.11.0)(typescript@6.0.3))
+      '@pro-laico/atomic':
+        specifier: workspace:*
+        version: link:../atomic
       '@pro-laico/images':
         specifier: workspace:*
         version: link:../images
@@ -728,10 +732,6 @@ importers:
       '@pro-laico/zap':
         specifier: workspace:*
         version: link:../zap
-    devDependencies:
-      '@payloadcms/plugin-nested-docs':
-        specifier: ^3.85.0
-        version: 3.85.0(payload@3.85.0(graphql@16.11.0)(typescript@6.0.3))
       '@types/react':
         specifier: ^19.2.17
         version: 19.2.17
@@ -750,13 +750,16 @@ importers:
       '@pro-laico/core':
         specifier: workspace:*
         version: link:../core
-      '@pro-laico/zap':
-        specifier: workspace:*
-        version: link:../zap
+      server-only:
+        specifier: ^0.0.1
+        version: 0.0.1
     devDependencies:
       '@payloadcms/ui':
         specifier: ^3.85.0
         version: 3.85.0(@types/react@19.2.17)(monaco-editor@0.52.2)(next@16.2.7(@opentelemetry/api@1.9.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(sass@1.77.4))(payload@3.85.0(graphql@16.11.0)(typescript@6.0.3))(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(typescript@6.0.3)
+      '@pro-laico/zap':
+        specifier: workspace:*
+        version: link:../zap
       '@tools/test-helpers':
         specifier: workspace:*
         version: link:../../tools/test-helpers
@@ -769,9 +772,6 @@ importers:
       react:
         specifier: ^19.2.7
         version: 19.2.7
-      server-only:
-        specifier: ^0.0.1
-        version: 0.0.1
       typescript:
         specifier: ^6.0.3
         version: 6.0.3
@@ -781,28 +781,28 @@ importers:
 
   packages/tracking:
     dependencies:
-      '@pro-laico/core':
-        specifier: workspace:*
-        version: link:../core
-    devDependencies:
       '@next/third-parties':
         specifier: ^16.2.7
         version: 16.2.7(next@16.2.7(@opentelemetry/api@1.9.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(sass@1.77.4))(react@19.2.7)
-      '@types/react':
-        specifier: ^19.2.17
-        version: 19.2.17
+      '@pro-laico/core':
+        specifier: workspace:*
+        version: link:../core
       '@vercel/analytics':
         specifier: ^2.0.1
         version: 2.0.1(next@16.2.7(@opentelemetry/api@1.9.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(sass@1.77.4))(react@19.2.7)
+      posthog-js:
+        specifier: ^1.382.0
+        version: 1.382.0
+    devDependencies:
+      '@types/react':
+        specifier: ^19.2.17
+        version: 19.2.17
       next:
         specifier: ^16.2.7
         version: 16.2.7(@opentelemetry/api@1.9.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(sass@1.77.4)
       payload:
         specifier: ^3.85.0
         version: 3.85.0(graphql@16.11.0)(typescript@6.0.3)
-      posthog-js:
-        specifier: ^1.382.0
-        version: 1.382.0
       react:
         specifier: ^19.2.7
         version: 19.2.7

@@ -73,19 +73,23 @@
     "prepack": "pnpm build"
   },
   "dependencies": {
-    "@pro-laico/atomic": "workspace:*",
-    "@pro-laico/core": "workspace:*",
-    "@pro-laico/images": "workspace:*",
-    "@pro-laico/styles": "workspace:*",
-    "@pro-laico/zap": "workspace:*"
+    "@pro-laico/core": "workspace:*"
   },
   "peerDependencies": {
     "@payloadcms/plugin-nested-docs": ">=3.0.0",
+    "@pro-laico/atomic": ">=0.4.0",
+    "@pro-laico/images": ">=0.4.0",
+    "@pro-laico/styles": ">=0.4.0",
+    "@pro-laico/zap": ">=0.4.0",
     "payload": ">=3.0.0",
     "react": ">=19.0.0"
   },
   "devDependencies": {
     "@payloadcms/plugin-nested-docs": "^3.85.0",
+    "@pro-laico/atomic": "workspace:*",
+    "@pro-laico/images": "workspace:*",
+    "@pro-laico/styles": "workspace:*",
+    "@pro-laico/zap": "workspace:*",
     "@types/react": "^19.2.17",
     "payload": "^3.85.0",
     "react": "^19.2.7",

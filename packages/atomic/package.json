@@ -273,30 +273,30 @@
     "prepack": "pnpm build"
   },
   "dependencies": {
-    "@base-ui/react": "^1.5.0",
+    "@mux/blurup": "^1.0.2",
     "@pro-laico/core": "workspace:*",
-    "@pro-laico/icons": "workspace:*",
-    "@pro-laico/images": "workspace:*",
-    "@pro-laico/mux-video": "workspace:*",
-    "@pro-laico/richtext": "workspace:*",
-    "@pro-laico/site": "workspace:*",
-    "@pro-laico/styles": "workspace:*",
-    "@pro-laico/zap": "workspace:*",
     "dayjs": "^1.11.21",
     "next-themes": "^0.4.6",
-    "traverse": "^0.6.11"
+    "server-only": "^0.0.1",
+    "traverse": "^0.6.11",
+    "zustand": "^5.0.14"
   },
   "peerDependencies": {
-    "@mux/blurup": ">=1.0.0",
+    "@base-ui/react": ">=1.5.0",
     "@payloadcms/richtext-lexical": ">=3.0.0",
     "@payloadcms/ui": ">=3.0.0",
+    "@pro-laico/icons": ">=0.4.0",
+    "@pro-laico/images": ">=0.4.0",
+    "@pro-laico/mux-video": ">=0.4.0",
+    "@pro-laico/richtext": ">=0.4.0",
+    "@pro-laico/site": ">=0.4.0",
+    "@pro-laico/styles": ">=0.4.0",
+    "@pro-laico/zap": ">=0.4.0",
     "next": ">=15.0.0",
     "payload": ">=3.0.0",
     "react": ">=19.0.0",
     "react-dom": ">=19.0.0",
-    "server-only": ">=0.0.1",
-    "unocss": ">=66.0.0",
-    "zustand": ">=5.0.0"
+    "unocss": ">=66.0.0"
   },
   "peerDependenciesMeta": {
     "@mux/blurup": {
@@ -310,9 +310,16 @@
     }
   },
   "devDependencies": {
-    "@mux/blurup": "^1.0.2",
+    "@base-ui/react": "^1.5.0",
     "@payloadcms/richtext-lexical": "^3.85.0",
     "@payloadcms/ui": "^3.85.0",
+    "@pro-laico/icons": "workspace:*",
+    "@pro-laico/images": "workspace:*",
+    "@pro-laico/mux-video": "workspace:*",
+    "@pro-laico/richtext": "workspace:*",
+    "@pro-laico/site": "workspace:*",
+    "@pro-laico/styles": "workspace:*",
+    "@pro-laico/zap": "workspace:*",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
     "@types/traverse": "^0.6.37",
@@ -320,10 +327,8 @@
     "payload": "^3.85.0",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
-    "server-only": "^0.0.1",
     "typescript": "^6.0.3",
-    "unocss": "^66.7.0",
-    "zustand": "^5.0.14"
+    "unocss": "^66.7.0"
   },
   "engines": {
     "node": ">=20"

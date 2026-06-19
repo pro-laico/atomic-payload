@@ -49,20 +49,24 @@
     "prepack": "pnpm build"
   },
   "dependencies": {
-    "@pro-laico/atomic": "workspace:*",
-    "@pro-laico/core": "workspace:*",
-    "@pro-laico/icons": "workspace:*",
-    "@pro-laico/site": "workspace:*",
-    "@pro-laico/styles": "workspace:*"
+    "@pro-laico/core": "workspace:*"
   },
   "peerDependencies": {
     "@payloadcms/ui": ">=3.0.0",
+    "@pro-laico/atomic": ">=0.4.0",
+    "@pro-laico/icons": ">=0.4.0",
+    "@pro-laico/site": ">=0.4.0",
+    "@pro-laico/styles": ">=0.4.0",
     "next": ">=15.0.0",
     "payload": ">=3.0.0",
     "react": ">=19.0.0"
   },
   "devDependencies": {
     "@payloadcms/ui": "^3.85.0",
+    "@pro-laico/atomic": "workspace:*",
+    "@pro-laico/icons": "workspace:*",
+    "@pro-laico/site": "workspace:*",
+    "@pro-laico/styles": "workspace:*",
     "@types/react": "^19.2.17",
     "next": "^16.2.7",
     "payload": "^3.85.0",

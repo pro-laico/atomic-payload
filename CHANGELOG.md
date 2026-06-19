@@ -8,6 +8,39 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+## [0.4.1] - 2026-06-19
+
+### Changed
+
+- **Standalone packages are now self-contained.** Every `@pro-laico/*` package
+  moves its third-party runtime libraries from `peerDependencies` to
+  `dependencies`, so `pnpm add @pro-laico/<pkg>` just works without hand-installing
+  transitive deps: `server-only`, `zustand`, `@mux/blurup`, `dotenv`, `svgo`,
+  `svg-path-bbox`, `@oversightstudio/mux-video`, `@next/third-parties`,
+  `@vercel/analytics`, and `posthog-js`. `@pro-laico/core` is now always a regular
+  `dependency` (never a peer), so the shared base always installs.
+- **Cross-package `@pro-laico/*` deps are now `peerDependencies`** (paired with a
+  `workspace:*` devDependency for local builds), so a consumer resolves a single
+  shared copy of each plugin instead of duplicated nested copies. The host
+  framework stays peer as before — `payload`, `next`, `react`, `react-dom`,
+  `@payloadcms/*` — alongside `sharp`, `unocss`, and `@base-ui/react`. Each plugin
+  doc page now spells out what's installed for you vs. what you provide.
+
+### Fixed
+
+- **`@pro-laico/fonts`: clean builds no longer fail on a missing `definition.ts`.**
+  The download step now writes an empty stub module when `src/app/definition.ts`
+  is absent (e.g. a fresh CI/Vercel checkout, where it's gitignored) on any
+  skip/fail path, so `next build` can resolve `@/app/definition` and the fonts
+  wire up on the next deploy once `FONT_DOWNLOAD_URL` is reachable.
+
+### Upgrade notes
+
+- Run `pnpm install` after updating. If your package manager doesn't auto-install
+  peer dependencies, add the `@pro-laico/*` plugins each package now lists as peers
+  (plus `@base-ui/react` / `unocss` / `sharp` where applicable) — each plugin's
+  docs page lists exactly what to provide.
+
 ## [0.4.0] - 2026-06-16
 
 ### Added
@@ -362,7 +395,8 @@ Payload app, or scaffold the full stack.
 
 - Initial release — Atomic Payload now exists.
 
-[Unreleased]: https://github.com/pro-laico/atomic-payload/compare/v0.4.0...HEAD
+[Unreleased]: https://github.com/pro-laico/atomic-payload/compare/v0.4.1...HEAD
+[0.4.1]: https://github.com/pro-laico/atomic-payload/compare/v0.4.0...v0.4.1
 [0.4.0]: https://github.com/pro-laico/atomic-payload/compare/v0.3.4...v0.4.0
 [0.3.4]: https://github.com/pro-laico/atomic-payload/compare/v0.3.3...v0.3.4
 [0.3.3]: https://github.com/pro-laico/atomic-payload/compare/v0.3.2...v0.3.3
