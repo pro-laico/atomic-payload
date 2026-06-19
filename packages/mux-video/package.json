@@ -1,6 +1,6 @@
 {
   "name": "@pro-laico/mux-video",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Atomic Payload mux-video plugin. Thin wrapper around @oversightstudio/mux-video that adds a local MuxVideo extension collection with Atomic Payload defaults.",
   "license": "MIT",
   "repository": {

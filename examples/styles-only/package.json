@@ -1,6 +1,6 @@
 {
   "name": "styles-only",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Minimal Atomic Payload template demonstrating @pro-laico/styles in isolation. Authors a designSet + shortcutSet in the admin, runs the standalone UnoCSS cssHook, and renders the generated stylesheet on a demo page.",
   "license": "MIT",
   "type": "module",
