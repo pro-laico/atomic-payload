@@ -34,8 +34,16 @@ export interface ResponsiveImageProps {
   alt?: string
   /** The `sizes` attribute. Default `100vw`. */
   sizes?: string
-  /** Render aspect ratio (`16/9` | `"16:9"`); falls back to the doc's natural ratio. */
+  /** Render aspect ratio (`16/9` | `"16:9"`); falls back to the doc's natural ratio. Ignored when `fill` is set. */
   aspectRatio?: number | string
+  /**
+   * Cover-fill a height-driven parent instead of acting as an aspect-ratio box. The wrapper
+   * becomes `position:absolute; inset:0; size:100%` and the `<img>` renders `width/height:100%`
+   * with `object-fit:<fit>` and NO aspect-ratio — so it fills a parent that sets its own height
+   * (full-bleed hero, carousel slide, map panel). The parent must be positioned. Blur + fade
+   * still apply. Default false.
+   */
+  fill?: boolean
   quality?: number
   fit?: Fit
   format?: Format
@@ -88,6 +96,7 @@ export const ResponsiveImage = (props: ResponsiveImageProps): ReactElement | nul
     alt,
     sizes = '100vw',
     aspectRatio,
+    fill = false,
     quality = 75,
     fit = 'cover',
     format = 'auto',
@@ -116,7 +125,8 @@ export const ResponsiveImage = (props: ResponsiveImageProps): ReactElement | nul
   const naturalW = doc?.width ?? undefined
   const naturalH = doc?.height ?? undefined
   const altText = alt ?? doc?.alt ?? ''
-  const ar = parseAspectRatio(aspectRatio) ?? (naturalW && naturalH ? naturalW / naturalH : undefined)
+  // Fill mode has no fixed ratio — the image is served at its natural ratio and CSS object-fit covers the parent.
+  const ar = fill ? undefined : (parseAspectRatio(aspectRatio) ?? (naturalW && naturalH ? naturalW / naturalH : undefined))
 
   // LQIP placeholder: explicit prop wins, else the populated doc's generated blur.
   const blurSrc = blur ? (blurDataURL ?? doc?.blurDataUrl ?? undefined) : undefined
@@ -148,6 +158,7 @@ export const ResponsiveImage = (props: ResponsiveImageProps): ReactElement | nul
         display: 'block',
         overflow: 'hidden',
         width: '100%',
+        ...(fill ? { position: 'absolute', inset: 0, height: '100%' } : null),
         ...(blurSrc
           ? { backgroundImage: `url(${blurSrc})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }
           : null),
@@ -168,7 +179,7 @@ export const ResponsiveImage = (props: ResponsiveImageProps): ReactElement | nul
         baseStyle={{
           display: 'block',
           width: '100%',
-          height: 'auto',
+          height: fill ? '100%' : 'auto',
           ...(ar ? { aspectRatio: String(ar) } : null),
           objectFit: CSS_OBJECT_FIT[fit],
         }}

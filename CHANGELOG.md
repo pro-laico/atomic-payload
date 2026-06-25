@@ -8,6 +8,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+## [0.4.2] - 2026-06-24
+
+### Added
+
+- **`@pro-laico/images`: a `fill` mode for `<ResponsiveImage>`.** Pass `fill` to
+  cover a height-driven parent instead of acting as an aspect-ratio box: the
+  wrapper becomes `position:absolute; inset:0; size:100%` and the `<img>` renders
+  `object-fit:<fit>` with no aspect-ratio, while still painting the LQIP blur and
+  fade. This replaces bespoke `<img className="absolute inset-0 size-full
+  object-cover">` for full-bleed heroes, carousel slides, and detail panels, which
+  bypassed the component's built-in blur/fade/srcset wiring.
+
 ## [0.4.1] - 2026-06-19
 
 ### Changed
@@ -395,7 +407,8 @@ Payload app, or scaffold the full stack.
 
 - Initial release — Atomic Payload now exists.
 
-[Unreleased]: https://github.com/pro-laico/atomic-payload/compare/v0.4.1...HEAD
+[Unreleased]: https://github.com/pro-laico/atomic-payload/compare/v0.4.2...HEAD
+[0.4.2]: https://github.com/pro-laico/atomic-payload/compare/v0.4.1...v0.4.2
 [0.4.1]: https://github.com/pro-laico/atomic-payload/compare/v0.4.0...v0.4.1
 [0.4.0]: https://github.com/pro-laico/atomic-payload/compare/v0.3.4...v0.4.0
 [0.3.4]: https://github.com/pro-laico/atomic-payload/compare/v0.3.3...v0.3.4

@@ -179,6 +179,19 @@ The `srcset` granularity is a prop on `<ResponsiveImage>`, set where you render 
   Want one default everywhere instead of passing `pixelStep` each time? Wrap the component once and use the wrapper: `const Image = (props: ResponsiveImageProps) => <ResponsiveImage pixelStep={100} {...props} />`. Any prop you pass at the call site still wins.
 </Callout>
 
+#### Full-bleed / cover fill
+
+By default `<ResponsiveImage>` is an **aspect-ratio box**: its `<img>` is `width:100%; height:auto`, so the image drives the box's height. For a full-bleed hero, a carousel slide, or any element that sets its **own** height, pass `fill`. The wrapper becomes `position:absolute; inset:0; size:100%` and the `<img>` renders `object-fit:<fit>` with no aspect-ratio, covering the (positioned) parent — while still painting the LQIP blur and fade. This replaces the bespoke `<img className="absolute inset-0 size-full object-cover">` pattern, which bypasses the blur/fade/srcset wiring.
+
+```tsx
+// the parent owns the height; the image covers it
+<div className="relative h-screen">
+  <ResponsiveImage image={image} fill sizes="100vw" />
+</div>
+```
+
+`fill` ignores `aspectRatio` (the image is served at its natural ratio and CSS `object-fit` covers the box). The parent must establish a positioning context (`relative` / `absolute`) and a height.
+
 ### The favicon field
 
 `FaviconField` is a ready-made upload field that targets the Favicons collection, so you can add a favicon picker to any global or collection. It's what [`@pro-laico/site`](/docs/plugins/site) uses; add it to your own config the same way:
@@ -443,7 +456,7 @@ const purge = createPurgeEndpoint({ path: '/img/purge' })`,
       location: '@pro-laico/images/components/image',
       description: 'A responsive `<img>` (an on-demand `srcset` with the blur-up placeholder), for server or client trees. Not `next/image`.',
       params: {
-        props: { type: 'ResponsiveImageProps', description: 'At least `image` (a populated doc or a bare id). Optional: `aspectRatio`, `sizes`, `quality`, `fit`, `format`, `pixelStep`, `priority`, `blur`, `path`, and the usual `className` / `style`.' },
+        props: { type: 'ResponsiveImageProps', description: 'At least `image` (a populated doc or a bare id). Optional: `aspectRatio`, `fill` (cover a height-driven parent), `sizes`, `quality`, `fit`, `format`, `pixelStep`, `priority`, `blur`, `path`, and the usual `className` / `style`.' },
       },
       returns: { type: 'ReactElement | null', description: 'The image element, or `null` for an empty id.' },
       exampleLang: 'tsx',

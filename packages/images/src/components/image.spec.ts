@@ -61,4 +61,25 @@ describe('ResponsiveImage', () => {
     const el = tree({ image: { id: 'abc', filename: 'a.png', focalX: 80, focalY: 20 }, version: 'pinned1' }) as ReactElement
     expect(fadeProps(el).src).toContain('v=pinned1')
   })
+
+  it('fill mode: absolutely positions the wrapper and fills the parent height', () => {
+    const el = tree({ image: { id: 'abc', width: 800, height: 600 }, fill: true }) as ReactElement
+    expect(spanStyle(el).position).toBe('absolute')
+    expect(spanStyle(el).inset).toBe(0)
+    expect(spanStyle(el).height).toBe('100%')
+  })
+
+  it('fill mode: the <img> covers with no aspect-ratio (even given natural dims or an explicit ratio)', () => {
+    const el = tree({ image: { id: 'abc', width: 800, height: 600 }, aspectRatio: '4:3', fill: true }) as ReactElement
+    const base = fadeProps(el).baseStyle
+    expect(base.height).toBe('100%')
+    expect(base.aspectRatio).toBeUndefined()
+    expect(base.objectFit).toBe('cover')
+  })
+
+  it('fill mode still paints the blur background and fades', () => {
+    const el = tree({ image: { id: 'abc' }, fill: true, blurDataURL: 'data:image/png;base64,AAAA' }) as ReactElement
+    expect(String(spanStyle(el).backgroundImage)).toContain('data:image/png;base64,AAAA')
+    expect(fadeProps(el).fadeMs).toBeGreaterThan(0)
+  })
 })
