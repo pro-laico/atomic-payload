@@ -1,6 +1,6 @@
 {
   "name": "images-only",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "Minimal Atomic Payload template demonstrating @pro-laico/images in isolation — on-demand image transforms, focal points, a responsive <img>, and blur placeholders. Includes seed data and a demo page. Uses only @pro-laico/core (no @pro-laico/atomic).",
   "license": "MIT",
   "type": "module",

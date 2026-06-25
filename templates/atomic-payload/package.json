@@ -1,6 +1,6 @@
 {
   "name": "atomic-payload",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "The Payload CMS Starter Where All You Need To Know Is Tailwind.",
   "license": "MIT",
   "type": "module",
