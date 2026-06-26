@@ -194,8 +194,11 @@ export default fonts
         const ext = font.extension || font.filename.split('.').pop()?.toLowerCase() || 'woff2'
         const weight = font.weight || '400'
         const style = font.style || 'normal'
+        // A variable font's weight is a "min max" range; collapse the space for a
+        // filename-safe slug (sans-100-900). The emitted `weight` below keeps the range.
+        const weightSlug = weight.replace(/\s+/g, '-')
         // Distinct filename per weight/style; append the index if two files share one.
-        const base = `${role}-${weight}${style === 'italic' ? '-italic' : ''}`
+        const base = `${role}-${weightSlug}${style === 'italic' ? '-italic' : ''}`
         const fileName = roleFiles[role].some((f) => f.path.endsWith(`/${base}.${ext}`)) ? `${base}-${i}` : base
         fs.writeFileSync(path.join(FONT_FILES_DIR, `${fileName}.${ext}`), Buffer.from(font.data, 'base64'))
         roleFiles[role].push({ path: `${localPrefix}/${fileName}.${ext}`, weight, style })

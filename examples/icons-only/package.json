@@ -6,10 +6,10 @@
   "type": "module",
   "exports": {},
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -p 42130",
     "prebuild": "pnpm generate:icons",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -p 42130",
     "generate:icons": "pnpm exec tsx node_modules/@pro-laico/icons/src/scan/cli.ts src --component IconChildTile",
     "lint": "biome lint .",
     "format": "biome format --write .",

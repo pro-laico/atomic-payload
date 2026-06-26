@@ -24,7 +24,7 @@ export async function POST() {
   if (!user) return NextResponse.json({ ok: false, error: 'unauthorized' }, { status: 401 })
 
   const protocol = reqHeaders.get('x-forwarded-proto') ?? 'http'
-  const host = reqHeaders.get('host') ?? 'localhost:3000'
+  const host = reqHeaders.get('host') ?? 'localhost:42120'
   const origin = `${protocol}://${host}`
 
   const loadFile = async (file: string): Promise<Buffer> => {

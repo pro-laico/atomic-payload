@@ -5,10 +5,10 @@ import { headers as nextHeaders } from 'next/headers'
 
 /**
  * Clears the `fontSet` global, deletes every `font` typeface (which cascades to
- * its weight files), then sweeps any remaining `fontFile` docs. Auth-gated to
- * logged-in admins. Clearing the global first avoids it briefly pointing at
- * deleted typefaces; the `force-dynamic` home page falls back to system fonts on
- * its next render until you re-seed.
+ * its originals + served files), then sweeps any remaining `fontOriginal` /
+ * `fontOptimized` docs. Auth-gated to logged-in admins. Clearing the global first
+ * avoids it briefly pointing at deleted typefaces; the `force-dynamic` home page
+ * falls back to system fonts on its next render until you re-seed.
  */
 export async function POST() {
   const payload = await getPayload({ config })
@@ -22,7 +22,11 @@ export async function POST() {
   } as Parameters<typeof payload.updateGlobal>[0])
 
   const fonts = await payload.delete({ collection: 'font', where: { id: { exists: true } } })
-  const fontFiles = await payload.delete({ collection: 'fontFile', where: { id: { exists: true } } })
+  const originals = await payload.delete({ collection: 'fontOriginal', where: { id: { exists: true } } })
+  const optimized = await payload.delete({ collection: 'fontOptimized', where: { id: { exists: true } } })
 
-  return NextResponse.json({ ok: true, deleted: { fonts: fonts.docs.length, fontFiles: fontFiles.docs.length } })
+  return NextResponse.json({
+    ok: true,
+    deleted: { fonts: fonts.docs.length, originals: originals.docs.length, optimized: optimized.docs.length },
+  })
 }

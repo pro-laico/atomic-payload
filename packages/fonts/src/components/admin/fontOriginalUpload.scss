@@ -1,0 +1,9 @@
+// Create-only upload: hide the "Choose from existing" toggler and its "or"
+// separator, leaving just "Create New" + drag-and-drop. Each slot therefore
+// uploads a fresh `fontOriginal` that is never shared between typefaces.
+.font-original-upload {
+  .upload__listToggler,
+  .upload__dropzoneContent__orText {
+    display: none;
+  }
+}
