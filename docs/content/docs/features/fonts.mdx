@@ -7,15 +7,15 @@ Upload and pick the active sans, serif, mono, and display fonts from the admin, 
 
 ## Overview
 
-Fonts lets admins manage the site's typefaces from the CMS instead of hard-coding them in the codebase. Font files (woff/woff2/ttf/otf) are uploaded into a `Font` collection, and the active **sans**, **serif**, **mono**, and **display** roles are chosen in the admin, either from the active design set (when paired with [Styles](/docs/features/styles)) or from a standalone `fontSet` global. A build-time download step then turns those CMS selections into real local fonts, so the rendered site gets every `next/font/local` performance benefit (subset preloading, layout-shift prevention).
+Fonts lets admins manage the site's typefaces from the CMS instead of hard-coding them in the codebase. Each typeface — a variable font or a set of weight files — is uploaded into a `Font` collection, and the active **sans**, **serif**, **mono**, and **display** roles are chosen in the admin, either from the active design set (when paired with [Styles](/docs/features/styles)) or from a standalone `fontSet` global. A build-time download step then turns those CMS selections into real local fonts, so the rendered site gets every `next/font/local` performance benefit (subset preloading, layout-shift prevention).
 
 ## How it works
 
-`next/font` only loads fonts from the filesystem, so it can't fetch them from object storage at request time. This feature bridges that gap with three pieces:
+`next/font` only loads fonts from the filesystem, so it can't fetch them from object storage at request time. This feature bridges that gap with three collections plus a build step:
 
-- **The `Font` collection**: an upload collection where admins add font files (woff/woff2/ttf/otf). Where the font files live is Payload's job: the collection's `upload.staticDir` (local disk) or whatever storage plugin (`@payloadcms/storage-*`) is configured at the config level.
-- **The active selection**: which font fills each role (sans/serif/mono/display) is resolved in order: the active `designSet`'s `font` group first, then the standalone `fontSet` global. So a Styles project and a standalone fonts project both work the same way.
-- **The export endpoint and download step**: the plugin registers a `GET /api/fonts/export` endpoint (secured by your `PAYLOAD_SECRET`) that resolves the active selection and reads each font's bytes server-side, either straight from disk for local storage or by fetching the `url` Payload reports for cloud adapters (Vercel Blob, S3, and so on). A build-time script (`generate:fonts`) calls that endpoint at `FONT_DOWNLOAD_URL` and writes the files to disk. Because the bytes are read inside Payload, there's no per-file storage token or login to manage.
+- **Three collections.** The visible **`Font`** collection is the _typeface_ (e.g. "Inter") — it is **not** itself an upload collection. Editors drop files into its upload slots: either a **variable** font (one file covering a weight range, with separate upright and italic slots) or a **weights** array (one file per weight/style). Those raw files land in a hidden **`fontOriginal`** collection (the archive, kept **private**), and on save a hook subsets each one to a hidden **`fontOptimized`** WOFF2 — the file the site actually serves (charset-subsetted, and kept **public**). So the licensed originals stay private while only the optimized web fonts are exposed.
+- **The active selection**: which typeface fills each role (sans/serif/mono/display) is resolved in order: the active `designSet`'s `font` group first, then the standalone `fontSet` global. So a Styles project and a standalone fonts project both work the same way.
+- **The export endpoint and download step**: the plugin registers a `GET /api/fonts/export` endpoint (secured by your `PAYLOAD_SECRET`) that resolves the active selection and reads each typeface's served **`fontOptimized`** bytes server-side, either straight from disk for local storage or by fetching the `url` Payload reports for cloud adapters (Vercel Blob, S3, and so on). A build-time script (`generate:fonts`) calls that endpoint at `FONT_DOWNLOAD_URL` and writes the files to disk. Because the bytes are read inside Payload, there's no per-file storage token or login to manage.
 
 The download delivers the fonts in two outputs: the font files land in `public/fonts`, and a generated definition module (`./src/app/definition.ts` by default, overridable via `ATOMIC_FONTS_DEFINITION_FILE`) declares each `localFont(...)` call (along with CSS custom properties per slot) that your app imports to wire the fonts into `next/font/local`. The download intentionally runs at build time (or during scaffolding), not at request time, because `next/font`'s bundling expects file paths it can resolve at compile.
 
@@ -23,8 +23,8 @@ The download delivers the fonts in two outputs: the font files land in `public/f
 
 **In the admin:**
 
-1. Upload your font files into the **Font** collection.
-2. Pick the active fonts for each role (sans/serif/mono/display): in the active design set's font group when using Styles, or in the `fontSet` global when running standalone.
+1. Create a typeface in the **Font** collection: give it a name and family, then add its files — either a **variable font** (upload the upright file, and an italic file if you have one) or one file per row in the **weights** array (pick weight + style, upload the file). Each upload slot is create-only: every slot takes a fresh file, so a font file is never shared between typefaces. On save, each file is subsetted to a served WOFF2 automatically.
+2. Pick the active typeface for each role (sans/serif/mono/display): in the active design set's font group when using Styles, or in the `fontSet` global when running standalone.
 
 **Running the download:**
 
