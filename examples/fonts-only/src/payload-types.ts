@@ -74,7 +74,8 @@ export interface Config {
   collections: {
     users: User;
     font: Font;
-    fontFile: FontFile;
+    fontOriginal: FontOriginal;
+    fontOptimized: FontOptimized;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -84,7 +85,8 @@ export interface Config {
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     font: FontSelect<false> | FontSelect<true>;
-    fontFile: FontFileSelect<false> | FontFileSelect<true>;
+    fontOriginal: FontOriginalSelect<false> | FontOriginalSelect<true>;
+    fontOptimized: FontOptimizedSelect<false> | FontOptimizedSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -161,34 +163,56 @@ export interface Font {
   id: number;
   title: string;
   family: GenericFontFamily;
-  files?: (number | FontFile)[] | null;
-  pendingUploads?:
+  /**
+   * One file covering many weights. Use this OR specific weights below — not both.
+   */
+  variable?: {
+    upright?: (number | null) | FontOriginal;
+    italic?: (number | null) | FontOriginal;
+  };
+  /**
+   * One file per weight/style. Add only the weights you need.
+   */
+  weights?:
     | {
-        [k: string]: unknown;
-      }
-    | unknown[]
-    | string
-    | number
-    | boolean
+        weight: '100' | '200' | '300' | '400' | '500' | '600' | '700' | '800' | '900';
+        style: 'normal' | 'italic';
+        file: number | FontOriginal;
+        id?: string | null;
+      }[]
     | null;
   updatedAt: string;
   createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "fontFile".
+ * via the `definition` "fontOriginal".
  */
-export interface FontFile {
+export interface FontOriginal {
   id: number;
-  /**
-   * CSS font-weight for this file.
-   */
-  weight?: ('100' | '200' | '300' | '400' | '500' | '600' | '700' | '800' | '900') | null;
-  /**
-   * CSS font-style for this file.
-   */
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "fontOptimized".
+ */
+export interface FontOptimized {
+  id: number;
+  font?: (number | null) | Font;
+  original?: (number | null) | FontOriginal;
+  weight?: string | null;
   style?: ('normal' | 'italic') | null;
-  familyName?: string | null;
+  isVariable?: boolean | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -234,8 +258,12 @@ export interface PayloadLockedDocument {
         value: number | Font;
       } | null)
     | ({
-        relationTo: 'fontFile';
-        value: number | FontFile;
+        relationTo: 'fontOriginal';
+        value: number | FontOriginal;
+      } | null)
+    | ({
+        relationTo: 'fontOptimized';
+        value: number | FontOptimized;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -308,19 +336,50 @@ export interface UsersSelect<T extends boolean = true> {
 export interface FontSelect<T extends boolean = true> {
   title?: T;
   family?: T;
-  files?: T;
-  pendingUploads?: T;
+  variable?:
+    | T
+    | {
+        upright?: T;
+        italic?: T;
+      };
+  weights?:
+    | T
+    | {
+        weight?: T;
+        style?: T;
+        file?: T;
+        id?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "fontFile_select".
+ * via the `definition` "fontOriginal_select".
  */
-export interface FontFileSelect<T extends boolean = true> {
+export interface FontOriginalSelect<T extends boolean = true> {
+  updatedAt?: T;
+  createdAt?: T;
+  url?: T;
+  thumbnailURL?: T;
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
+  focalX?: T;
+  focalY?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "fontOptimized_select".
+ */
+export interface FontOptimizedSelect<T extends boolean = true> {
+  font?: T;
+  original?: T;
   weight?: T;
   style?: T;
-  familyName?: T;
+  isVariable?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;

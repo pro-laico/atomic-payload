@@ -6,9 +6,9 @@
   "type": "module",
   "exports": {},
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -p 42150",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -p 42150",
     "lint": "biome lint .",
     "format": "biome format --write .",
     "check": "biome check --write .",

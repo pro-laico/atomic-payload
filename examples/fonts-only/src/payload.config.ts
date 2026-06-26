@@ -11,7 +11,7 @@ import { FONT_STATIC_DIR } from '@/lib/fontDir'
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
-const serverURL = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000'
+const serverURL = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:42120'
 
 export default buildConfig({
   serverURL,
@@ -19,16 +19,17 @@ export default buildConfig({
   collections: [Users],
   graphQL: { disable: true },
   secret: process.env.PAYLOAD_SECRET || '',
-  // The `font` typeface collection + the `fontFile` weight-file uploads + the
-  // standalone `fontSet` global (the active sans/serif/mono/display selection —
-  // the analog of an iconSet). The actual bytes live on `fontFile`, so
-  // `fontFileOptions` pins a known `staticDir` the frontend reads back from. No
-  // cache hooks are needed — the home route is `force-dynamic` and reads the
-  // global fresh each render.
+  // The `font` typeface collection + its `fontOriginal` (raw uploads) and
+  // `fontOptimized` (served WOFF2) upload collections + the standalone `fontSet`
+  // global (the active sans/serif/mono/display selection — the analog of an
+  // iconSet). The served bytes live on `fontOptimized`, so its `staticDir` is
+  // pinned to a known dir the export endpoint reads back from. No cache hooks are
+  // needed — the home route is `force-dynamic` and reads the global fresh each render.
   plugins: [
     fontsPlugin({
       includeFontSet: true,
-      fontFileOptions: { upload: { staticDir: FONT_STATIC_DIR } },
+      fontOriginalOptions: { upload: { staticDir: path.join(FONT_STATIC_DIR, 'original') } },
+      fontOptimizedOptions: { upload: { staticDir: path.join(FONT_STATIC_DIR, 'optimized') } },
     }),
   ],
   typescript: { outputFile: path.resolve(dirname, 'payload-types.ts') },

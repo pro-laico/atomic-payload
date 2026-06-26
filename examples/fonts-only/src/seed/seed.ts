@@ -8,9 +8,10 @@ import { sampleFonts } from './sampleFonts'
 export type LoadFontFile = (file: string) => Promise<Buffer>
 
 /**
- * For each bundled sample font: upload the file to `fontFile` (the optimized
- * weight-file collection) and create a one-weight `font` typeface referencing
- * it, then point the `fontSet` global at the typefaces (one per role). Idempotent
+ * For each bundled sample font: upload the file to `fontOriginal` (the raw archive)
+ * and create a one-weight `font` typeface referencing it (the save hook subsets it
+ * into a served `fontOptimized`), then point the `fontSet` global at the typefaces
+ * (one per role). Idempotent
  * by typeface `title`. Pure data logic, no HTTP/auth: the `/api/seed` route
  * auth-gates and injects an origin-fetch loader; the integration test injects a
  * disk loader. `overrideAccess: true` makes the trusted server-side bypass explicit.
@@ -36,18 +37,19 @@ export async function seedFonts({
     }
 
     const data = await loadFile(file)
-    // The weight file (a single 400/normal weight for the demo).
-    const fileDoc = await payload.create({
-      collection: 'fontFile',
+    // Upload the raw file into `fontOriginal`.
+    const original = await payload.create({
+      collection: 'fontOriginal',
       overrideAccess: true,
-      data: { weight: '400', style: 'normal' },
+      data: {},
       file: { data, name: file, mimetype: 'font/woff2', size: data.byteLength },
     } as Parameters<typeof payload.create>[0])
-    // The typeface, referencing its one weight file.
+    // The typeface, with one 400/normal weight referencing that original. The save
+    // hook subsets it into a served `fontOptimized` WOFF2.
     const typeface = await payload.create({
       collection: 'font',
       overrideAccess: true,
-      data: { title, family, files: [fileDoc.id] },
+      data: { title, family, weights: [{ weight: '400', style: 'normal', file: original.id }] },
     } as Parameters<typeof payload.create>[0])
     selection[family] = typeface.id
     created.push(title)

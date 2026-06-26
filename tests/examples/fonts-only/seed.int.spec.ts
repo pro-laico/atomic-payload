@@ -50,11 +50,13 @@ describe('fonts-only example seed', () => {
     expect(created.sort()).toEqual(sampleFonts.map((f) => f.title).sort())
     expect(skipped).toEqual([])
 
-    // One typeface per sample, each with one weight file.
+    // One typeface per sample, each with one raw original and one served (optimized) file.
     const fonts = await payload.count({ collection: 'font', overrideAccess: true })
     expect(fonts.totalDocs).toBe(sampleFonts.length)
-    const fontFiles = await payload.count({ collection: 'fontFile', overrideAccess: true })
-    expect(fontFiles.totalDocs).toBe(sampleFonts.length)
+    const originals = await payload.count({ collection: 'fontOriginal', overrideAccess: true })
+    expect(originals.totalDocs).toBe(sampleFonts.length)
+    const optimized = await payload.count({ collection: 'fontOptimized', overrideAccess: true })
+    expect(optimized.totalDocs).toBe(sampleFonts.length)
 
     // The fontSet global points one typeface at each role the sample data covers.
     const fontSet = (await payload.findGlobal({ slug: 'fontSet', overrideAccess: true })) as Record<string, unknown>
