@@ -3,14 +3,14 @@ title: "fonts-only"
 description: "Minimal example: @pro-laico/fonts in isolation, served with next/font/local."
 ---
 
-A minimal Atomic Payload template that exercises **`@pro-laico/fonts`** on its own. Upload font files to the `Font` collection, choose the active four in the `fontSet` global, run the font download step, and the site serves them with `next/font/local`.
+A minimal Atomic Payload template that exercises **`@pro-laico/fonts`** on its own. Build typefaces in the `Font` collection, choose the active four in the `fontSet` global, run the font download step, and the site serves them with `next/font/local`.
 
 ## What it shows
 
 The only `@pro-laico` dependencies are **`@pro-laico/fonts`** and **`@pro-laico/core`**, so you see the fonts plugin in isolation, set up exactly as the [fonts plugin's Standalone guide](/docs/plugins/fonts) describes:
 
-- `fontsPlugin({ includeFontSet: true })` registers the **`Font` upload collection** (woff/woff2/ttf/otf) **and** the **`fontSet` global**, the active `sans` / `serif` / `mono` / `display` selection (the font analog of an active icon set).
-- `POST /api/seed` uploads four bundled open-source fonts (one per role) **and points the `fontSet` global at them**. It is auth-gated and idempotent, run from the admin dashboard, so you have fonts to pick without finding your own.
+- `fontsPlugin({ includeFontSet: true, fontOriginalOptions, fontOptimizedOptions })` registers the visible **`Font`** typeface collection (plus the hidden **`fontOriginal`** raw archive and **`fontOptimized`** served WOFF2s) **and** the **`fontSet` global**, the active `sans` / `serif` / `mono` / `display` selection (the font analog of an active icon set).
+- `POST /api/seed` uploads four bundled open-source fonts into `fontOriginal`, creates a one-weight `font` typeface for each (the save hook subsets each into a served `fontOptimized`), **and points the `fontSet` global at the typefaces**. It is auth-gated and idempotent, run from the admin dashboard, so you have fonts to pick without finding your own.
 - `pnpm generate:fonts` (wired as `prebuild`) reads the active selection from a running site, downloads the fonts to `public/fonts`, and writes `src/app/definition.ts` for `next/font/local`.
 - The layout applies those `next/font` variables to `<html>` and maps each role to `--font-<role>`. `/` renders a specimen per active role (pangram, size ramp, glyphs) via `var(--font-<role>)`.
 
@@ -67,13 +67,14 @@ The flow:
 ## How it works
 
 ```plaintext
-upload Font (admin)  ──►  Payload stores the file (FONT_STATIC_DIR / ./media)
-        │
-seed: POST /api/seed uploads public/seed-fonts/*.woff2
-      then updateGlobal('fontSet', { sans, serif, mono, display })  ◄── active set
+build a Font typeface (admin)  ──►  raw file → fontOriginal (private)
+        │                            save hook subsets it → fontOptimized (served WOFF2)
+seed: POST /api/seed uploads public/seed-fonts/*.woff2 → fontOriginal,
+      creates a font typeface per role, then
+      updateGlobal('fontSet', { sans, serif, mono, display })  ◄── active set
         │
 pnpm generate:fonts ── GET /api/fonts/export @ FONT_DOWNLOAD_URL ──► public/fonts/* + src/app/definition.ts
-        │
+        │   (export reads each active typeface's fontOptimized bytes)
 layout.tsx → applies the next/font variables from definition.ts to <html>,
              maps --font-<role>: var(--font-set<Role>)
         │
@@ -81,7 +82,7 @@ page.tsx → getActiveFonts() [fontSet global] ──► a specimen per role via
 route is force-dynamic ──► seeding / swapping the active set shows up on the next render
 ```
 
-The active selection lives in a **global** because it's the active-selection layer, mirroring icons-only's active `iconSet`. The `Font` collection can hold many uploads; the `fontSet` global picks the one `sans` / `serif` / `mono` / `display` the site uses, editable at `/admin/globals/fontSet`.
+The active selection lives in a **global** because it's the active-selection layer, mirroring icons-only's active `iconSet`. The `Font` collection can hold many typefaces; the `fontSet` global picks the one `sans` / `serif` / `mono` / `display` the site uses, editable at `/admin/globals/fontSet`.
 
 ## The download step
 
@@ -92,7 +93,7 @@ FONT_DOWNLOAD_URL=http://localhost:3000   # the running instance to fetch from
 PAYLOAD_SECRET=...                        # authenticates the request
 ```
 
-The endpoint reads each font server-side, from disk for local storage, or by fetching the URL Payload reports for cloud adapters (Vercel Blob, S3, and the like), so there's no storage token or login to manage. When neither the URL nor the secret resolves, the download is skipped (the build still succeeds) and the specimens fall back to system fonts until you run it.
+The endpoint reads each active typeface's **served** (`fontOptimized`) font server-side, from disk for local storage, or by fetching the URL Payload reports for cloud adapters (Vercel Blob, S3, and the like), so there's no storage token or login to manage. When neither the URL nor the secret resolves, the download is skipped (the build still succeeds) and the specimens fall back to system fonts until you run it.
 
 <Callout type="info">
   **Local dev, one command.** `generate:fonts` needs a running Payload to fetch from, which is awkward before anything's deployed. `pnpm setup:fonts` handles it: it boots a temporary `next dev` server, points `FONT_DOWNLOAD_URL` at it, runs the download, then shuts the server down. No credentials needed: it authenticates with your existing `PAYLOAD_SECRET`.
@@ -102,7 +103,7 @@ The endpoint reads each font server-side, from disk for local storage, or by fet
 
 | File | What's there |
 | --- | --- |
-| `src/payload.config.ts` | `buildConfig`: `fontsPlugin({ includeFontSet: true })` + `staticDir` |
+| `src/payload.config.ts` | `buildConfig`: `fontsPlugin({ includeFontSet: true })` with `fontOriginalOptions` / `fontOptimizedOptions` `staticDir`s |
 | `src/lib/fontDir.ts` | `FONT_STATIC_DIR` (shared with the config, no `@payload-config` import) |
 | `src/lib/fonts.ts` | `getActiveFonts()`: reads the active selection from the `fontSet` global |
 | `src/seed/sampleFonts.ts` | manifest mapping bundled files → `title` + role |
@@ -110,12 +111,12 @@ The endpoint reads each font server-side, from disk for local storage, or by fet
 | `src/app/definition.ts` | generated by `generate:fonts` (gitignored): the `next/font/local` declarations |
 | `src/app/(frontend)/layout.tsx` | applies the next/font variables + maps `--font-<role>` |
 | `src/app/(frontend)/page.tsx` | explainer + a specimen per active role + "use them together" |
-| `src/app/(payload)/api/seed/route.ts` | `POST /api/seed` → upload fonts + set the `fontSet` global |
-| `src/app/(payload)/api/reset/route.ts` | `POST /api/reset` → clear the global + delete fonts |
+| `src/app/(payload)/api/seed/route.ts` | `POST /api/seed` → upload originals, create typefaces, set the `fontSet` global |
+| `src/app/(payload)/api/reset/route.ts` | `POST /api/reset` → clear the global + delete typefaces (cascades to originals/optimized) |
 | `public/seed-fonts/*.woff2` | bundled OFL fonts (committed) + `LICENSES.md` |
 
 <Callout type="info">
-  `FONT_STATIC_DIR` (`./media`, gitignored) is where Payload writes uploads, shared via `src/lib/fontDir.ts` so the config and the download step never drift. The bundled seed fonts (Inter, Lora, JetBrains Mono, Abril Fatface) are OFL: see `public/seed-fonts/LICENSES.md`, and replace them before shipping a real project.
+  `FONT_STATIC_DIR` (`./media`, gitignored) is where Payload writes uploads — the raw archive under `original/`, the served WOFF2s under `optimized/` — shared via `src/lib/fontDir.ts` so the config and the export read path never drift. The bundled seed fonts (Inter, Lora, JetBrains Mono, Abril Fatface) are OFL: see `public/seed-fonts/LICENSES.md`, and replace them before shipping a real project.
 </Callout>
 
 ## Related
