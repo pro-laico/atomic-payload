@@ -26,16 +26,14 @@ export const FONT_MIME_TYPES = [
 ]
 
 /**
- * Archival upload collection holding the untouched, pre-optimization font files.
+ * Upload collection holding the raw, untouched font files editors drop into the
+ * `Font` typeface's `upload` fields. It's the archive of truth: the `Font` save
+ * hook reads these and subsets each to a served `fontOptimized` WOFF2, so the
+ * (lossy, subsetted) output can be re-derived with a different charset later.
  *
- * When `fontsPlugin({ optimize: { keepOriginal: true } })` is enabled, the
- * `optimizeFontHook` stores the original upload here and links it from the
- * served `Font` document's `original` field — so the (lossy, subsetted) WOFF2
- * can be re-derived with a different charset later.
- *
- * It carries NO optimization hook (so archiving never re-enters the optimizer)
- * and is hidden from admin nav and relationship pickers — the role slots only
- * ever point at the served `Font` collection.
+ * It carries NO hooks — uploading here is a plain store, which is exactly what
+ * lets it be a client-upload (direct-to-Blob) collection in production. Hidden
+ * from admin nav; editors only ever interact with it through the `Font` fields.
  */
 export const createFontOriginalCollection = ({ slug = FONT_ORIGINAL_SLUG }: { slug?: string } = {}): CollectionConfig => ({
   slug,

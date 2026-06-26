@@ -648,8 +648,8 @@ export interface Config {
     header: Header;
     footer: Footer;
     font: Font;
-    fontFile: FontFile;
     fontOriginal: FontOriginal;
+    fontOptimized: FontOptimized;
     images: Image;
     generatedImages: GeneratedImage;
     favicons: Favicon;
@@ -678,8 +678,8 @@ export interface Config {
     header: HeaderSelect<false> | HeaderSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
     font: FontSelect<false> | FontSelect<true>;
-    fontFile: FontFileSelect<false> | FontFileSelect<true>;
     fontOriginal: FontOriginalSelect<false> | FontOriginalSelect<true>;
+    fontOptimized: FontOptimizedSelect<false> | FontOptimizedSelect<true>;
     images: ImagesSelect<false> | ImagesSelect<true>;
     generatedImages: GeneratedImagesSelect<false> | GeneratedImagesSelect<true>;
     favicons: FaviconsSelect<false> | FaviconsSelect<true>;
@@ -1927,39 +1927,33 @@ export interface Font {
   id: string;
   title: string;
   family: GenericFontFamily;
-  files?: (string | FontFile)[] | null;
-  pendingUploads?:
+  /**
+   * One file covering many weights. Use this OR specific weights below — not both.
+   */
+  variable?: {
+    upright?: (string | null) | FontOriginal;
+    italic?: (string | null) | FontOriginal;
+  };
+  /**
+   * One file per weight/style. Add only the weights you need.
+   */
+  weights?:
     | {
-        [k: string]: unknown;
-      }
-    | unknown[]
-    | string
-    | number
-    | boolean
+        weight: '100' | '200' | '300' | '400' | '500' | '600' | '700' | '800' | '900';
+        style: 'normal' | 'italic';
+        file: string | FontOriginal;
+        id?: string | null;
+      }[]
     | null;
   updatedAt: string;
   createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "fontFile".
+ * via the `definition` "fontOriginal".
  */
-export interface FontFile {
+export interface FontOriginal {
   id: string;
-  /**
-   * CSS font-weight for this file.
-   */
-  weight?: ('100' | '200' | '300' | '400' | '500' | '600' | '700' | '800' | '900') | null;
-  /**
-   * CSS font-style for this file.
-   */
-  style?: ('normal' | 'italic') | null;
-  familyName?: string | null;
-  optimized?: string | null;
-  originalFilesize?: number | null;
-  optimizedFilesize?: number | null;
-  savedPercent?: number | null;
-  original?: (string | null) | FontOriginal;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -1974,10 +1968,15 @@ export interface FontFile {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "fontOriginal".
+ * via the `definition` "fontOptimized".
  */
-export interface FontOriginal {
+export interface FontOptimized {
   id: string;
+  font?: (string | null) | Font;
+  original?: (string | null) | FontOriginal;
+  weight?: string | null;
+  style?: ('normal' | 'italic') | null;
+  isVariable?: boolean | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -2534,12 +2533,12 @@ export interface PayloadLockedDocument {
         value: string | Font;
       } | null)
     | ({
-        relationTo: 'fontFile';
-        value: string | FontFile;
-      } | null)
-    | ({
         relationTo: 'fontOriginal';
         value: string | FontOriginal;
+      } | null)
+    | ({
+        relationTo: 'fontOptimized';
+        value: string | FontOptimized;
       } | null)
     | ({
         relationTo: 'images';
@@ -2752,24 +2751,28 @@ export interface FooterSelect<T extends boolean = true> {
 export interface FontSelect<T extends boolean = true> {
   title?: T;
   family?: T;
-  files?: T;
-  pendingUploads?: T;
+  variable?:
+    | T
+    | {
+        upright?: T;
+        italic?: T;
+      };
+  weights?:
+    | T
+    | {
+        weight?: T;
+        style?: T;
+        file?: T;
+        id?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "fontFile_select".
+ * via the `definition` "fontOriginal_select".
  */
-export interface FontFileSelect<T extends boolean = true> {
-  weight?: T;
-  style?: T;
-  familyName?: T;
-  optimized?: T;
-  originalFilesize?: T;
-  optimizedFilesize?: T;
-  savedPercent?: T;
-  original?: T;
+export interface FontOriginalSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
   url?: T;
@@ -2784,9 +2787,14 @@ export interface FontFileSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "fontOriginal_select".
+ * via the `definition` "fontOptimized_select".
  */
-export interface FontOriginalSelect<T extends boolean = true> {
+export interface FontOptimizedSelect<T extends boolean = true> {
+  font?: T;
+  original?: T;
+  weight?: T;
+  style?: T;
+  isVariable?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;

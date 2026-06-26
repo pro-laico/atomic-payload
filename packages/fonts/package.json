@@ -22,9 +22,9 @@
         "types": "./dist/types/payload-augment.d.ts",
         "default": "./dist/types/payload-augment.js"
       },
-      "./admin/fontUploader": {
-        "types": "./dist/components/admin/fontUploader.d.ts",
-        "default": "./dist/components/admin/fontUploader.js"
+      "./admin/fontOriginalUpload": {
+        "types": "./dist/components/admin/fontOriginalUpload.d.ts",
+        "default": "./dist/components/admin/fontOriginalUpload.js"
       },
       "./scripts/downloadFonts": {
         "types": "./dist/scripts/downloadFonts.d.ts",
@@ -46,9 +46,9 @@
       "types": "./src/types/payload-augment.ts",
       "default": "./src/types/payload-augment.ts"
     },
-    "./admin/fontUploader": {
-      "types": "./src/components/admin/fontUploader.tsx",
-      "default": "./src/components/admin/fontUploader.tsx"
+    "./admin/fontOriginalUpload": {
+      "types": "./src/components/admin/fontOriginalUpload.tsx",
+      "default": "./src/components/admin/fontOriginalUpload.tsx"
     },
     "./scripts/downloadFonts": {
       "types": "./src/scripts/downloadFonts.ts",

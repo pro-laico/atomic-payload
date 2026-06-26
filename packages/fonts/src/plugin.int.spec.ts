@@ -14,20 +14,17 @@ describe('fontsPlugin (integration)', () => {
     await teardown(payload)
   })
 
-  it('registers the font (typeface) and fontFile collections', () => {
+  it('registers the font, fontOriginal, and fontOptimized collections', () => {
     expect(payload.collections.font).toBeDefined()
-    expect(payload.collections.fontFile).toBeDefined()
+    expect(payload.collections.fontOriginal).toBeDefined()
+    expect(payload.collections.fontOptimized).toBeDefined()
   })
 
-  it('does NOT register the fontOriginal collection when optimization is off (default)', () => {
-    expect(payload.collections.fontOriginal).toBeUndefined()
-  })
-
-  it('puts typeface fields on `font` and weight metadata on `fontFile`', () => {
+  it('puts the typeface slots on `font` and served metadata on `fontOptimized`', () => {
     const fontNames = payload.collections.font.config.fields.map((f) => ('name' in f ? f.name : undefined))
-    expect(fontNames).toEqual(expect.arrayContaining(['title', 'family', 'files']))
-    const fileNames = payload.collections.fontFile.config.fields.map((f) => ('name' in f ? f.name : undefined))
-    expect(fileNames).toEqual(expect.arrayContaining(['weight', 'style']))
+    expect(fontNames).toEqual(expect.arrayContaining(['title', 'family', 'variable', 'weights']))
+    const optNames = payload.collections.fontOptimized.config.fields.map((f) => ('name' in f ? f.name : undefined))
+    expect(optNames).toEqual(expect.arrayContaining(['font', 'original', 'weight', 'style', 'isVariable']))
   })
 
   it('registers the fontSet global when includeFontSet is set', () => {

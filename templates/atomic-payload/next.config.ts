@@ -7,7 +7,7 @@ import { withPayload } from '@payloadcms/next/withPayload'
 
 const NEXT_PUBLIC_SERVER_URL = process.env.VERCEL_PROJECT_PRODUCTION_URL
   ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
-  : process.env.__NEXT_PRIVATE_ORIGIN || 'http://localhost:3000'
+  : process.env.__NEXT_PRIVATE_ORIGIN || 'http://localhost:42100'
 
 // In monorepo, Next.js needs the workspace root to resolve packages
 const monorepoRoot = path.resolve(__dirname, '../..')

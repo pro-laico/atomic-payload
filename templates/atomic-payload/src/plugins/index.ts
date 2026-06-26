@@ -52,19 +52,21 @@ export const plugins: Plugin[] = [
   childBlocksPluginConfig,
   trackingPlugin(),
   seedPlugin(),
-  // Optimize fonts on upload (convert + subset to WOFF2, keep the original, report
-  // the size saved). `subset-font` + `fontkit` ship with @pro-laico/fonts (no extra
-  // install); needs server-side uploads for the font files (see ./vercelBlobStorage)
-  // and those packages in next.config's serverExternalPackages (see ../next.config).
-  fontsPlugin({ optimize: true }),
+  // Fonts as three collections: editors upload raw files into `font`'s upload
+  // fields (→ fontOriginal, client-upload in prod), and on save the typeface
+  // subsets each to a served WOFF2 (→ fontOptimized). `subset-font` + `fontkit`
+  // ship with @pro-laico/fonts (no extra install) and must be in next.config's
+  // serverExternalPackages (see ../next.config). Storage: see ./vercelBlobStorage.
+  fontsPlugin(),
   imagesPlugin(),
   muxVideoPlugin(),
   iconsPluginConfig,
   stylesPluginConfig,
   nestedDocsPluginConfig,
   formBuilderPluginConfig,
-  // Two instances: client-side uploads for images/icons/favicons, server-side for
-  // fonts (so the optimize-on-upload hook can subset them). See ./vercelBlobStorage.
+  // Two instances: client-side uploads in prod for images/icons/favicons + the raw
+  // font originals; server-side for the derived caches (generatedImages, the
+  // subsetted fontOptimized). See ./vercelBlobStorage.
   ...vercelBlobStoragePluginConfigs,
   // Revalidate the third-party form-builder collections (the @pro-laico/* ones
   // bake their own). Keep this last so the target collections already exist.
