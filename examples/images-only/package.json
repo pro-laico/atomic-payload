@@ -18,23 +18,23 @@
     "generate:importmap": "cross-env NODE_OPTIONS=\"--conditions=react-server\" payload generate:importmap"
   },
   "dependencies": {
-    "@payloadcms/db-sqlite": "^3.85.0",
-    "@payloadcms/live-preview-react": "^3.85.0",
-    "@payloadcms/next": "^3.85.0",
-    "@payloadcms/ui": "^3.85.0",
+    "@payloadcms/db-sqlite": "^3.85.1",
+    "@payloadcms/live-preview-react": "^3.85.1",
+    "@payloadcms/next": "^3.85.1",
+    "@payloadcms/ui": "^3.85.1",
     "@pro-laico/core": "workspace:*",
     "@pro-laico/images": "workspace:*",
     "cross-env": "^10.1.0",
     "dotenv": "^17.4.2",
-    "next": "^16.2.7",
-    "payload": "^3.85.0",
+    "next": "^16.2.9",
+    "payload": "^3.85.1",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
-    "sharp": "^0.34.5"
+    "sharp": "^0.35.2"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.4.16",
-    "@types/node": "^25.9.2",
+    "@biomejs/biome": "^2.5.1",
+    "@types/node": "^26.0.1",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
     "tsx": "^4.22.4",
