@@ -62,14 +62,14 @@
     "react": ">=19.0.0"
   },
   "devDependencies": {
-    "@payloadcms/ui": "^3.85.0",
+    "@payloadcms/ui": "^3.85.1",
     "@pro-laico/atomic": "workspace:*",
     "@pro-laico/icons": "workspace:*",
     "@pro-laico/site": "workspace:*",
     "@pro-laico/styles": "workspace:*",
     "@types/react": "^19.2.17",
-    "next": "^16.2.7",
-    "payload": "^3.85.0",
+    "next": "^16.2.9",
+    "payload": "^3.85.1",
     "react": "^19.2.7",
     "typescript": "^6.0.3"
   },

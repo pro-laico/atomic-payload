@@ -6,41 +6,21 @@
   margin-right: -20px;
   margin-bottom: -20px;
 
-  background: linear-gradient(
-    to bottom,
-    transparent 0%,
-    color-mix(in srgb, #fff 65%, transparent) 100%
-  );
+  background: linear-gradient(to bottom, transparent 0%, color-mix(in srgb, #fff 65%, transparent) 100%);
 
   &--tag {
-    background: linear-gradient(
-      to bottom,
-      transparent 0%,
-      color-mix(in srgb, var(--atomic-distinct-1) 65%, transparent) 100%
-    );
+    background: linear-gradient(to bottom, transparent 0%, color-mix(in srgb, var(--atomic-distinct-1) 65%, transparent) 100%);
   }
 
   &--form {
-    background: linear-gradient(
-      to bottom,
-      transparent 0%,
-      color-mix(in srgb, var(--atomic-distinct-2) 65%, transparent) 100%
-    );
+    background: linear-gradient(to bottom, transparent 0%, color-mix(in srgb, var(--atomic-distinct-2) 65%, transparent) 100%);
   }
 
   &--input {
-    background: linear-gradient(
-      to bottom,
-      transparent 0%,
-      color-mix(in srgb, var(--atomic-distinct-3) 65%, transparent) 100%
-    );
+    background: linear-gradient(to bottom, transparent 0%, color-mix(in srgb, var(--atomic-distinct-3) 65%, transparent) 100%);
   }
 
   &--button {
-    background: linear-gradient(
-      to bottom,
-      transparent 0%,
-      color-mix(in srgb, var(--atomic-distinct-4) 65%, transparent) 100%
-    );
+    background: linear-gradient(to bottom, transparent 0%, color-mix(in srgb, var(--atomic-distinct-4) 65%, transparent) 100%);
   }
 }

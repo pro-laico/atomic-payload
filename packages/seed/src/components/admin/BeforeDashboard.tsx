@@ -20,9 +20,9 @@ const BeforeDashboard: React.FC = () => {
           {'. (Note this will delete existing collection data)'}
         </li>
         <li>
-          {'Check out the home page: '}
+          {'Check out '}
           <a href="/" target="_blank" rel="noreferrer">
-            Link
+            the home page
           </a>
         </li>
       </ul>

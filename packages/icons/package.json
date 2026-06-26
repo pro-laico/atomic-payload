@@ -161,12 +161,12 @@
     }
   },
   "devDependencies": {
-    "@payloadcms/ui": "^3.85.0",
+    "@payloadcms/ui": "^3.85.1",
     "@pro-laico/atomic": "workspace:*",
     "@tools/test-helpers": "workspace:*",
     "@types/react": "^19.2.17",
-    "next": "^16.2.7",
-    "payload": "^3.85.0",
+    "next": "^16.2.9",
+    "payload": "^3.85.1",
     "react": "^19.2.7",
     "typescript": "^6.0.3"
   },
