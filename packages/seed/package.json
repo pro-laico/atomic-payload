@@ -1,6 +1,6 @@
 {
   "name": "@pro-laico/seed",
-  "version": "0.4.2",
+  "version": "0.5.0",
   "description": "Atomic Payload seed integration. Provides a Payload plugin that wires up a `POST /api/seed` endpoint and a `BeforeDashboard` admin banner with a SEED DATABASE button. Ships an opinionated default seed for atomic-payload templates; consumers may override by passing `seed: …`.",
   "license": "MIT",
   "repository": {
