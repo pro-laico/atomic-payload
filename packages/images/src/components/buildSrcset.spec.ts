@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
-import { buildSrcset, buildVariantUrl, deriveVersion, stepWidths } from './buildSrcset'
+import { buildSrcset, buildVariantUrl, deriveVersion, getImageUrl, stepWidths } from './buildSrcset'
 
 describe('buildVariantUrl', () => {
   it('bakes settings into a same-origin query URL', () => {
@@ -57,6 +57,25 @@ describe('stepWidths', () => {
     const w = stepWidths(undefined, 50, 200, 16)
     expect(w[w.length - 1]).toBe(200)
     expect(w.every((x) => x % 50 === 0)).toBe(true)
+  })
+})
+
+describe('getImageUrl', () => {
+  it('returns null for an empty resource', () => {
+    expect(getImageUrl(null)).toBeNull()
+    expect(getImageUrl(undefined)).toBeNull()
+    expect(getImageUrl('')).toBeNull()
+  })
+  it('builds a URL from a bare id with a default width', () => {
+    expect(getImageUrl('abc')).toBe('/api/img/abc?w=1280&fit=cover&q=75&fmt=auto')
+  })
+  it('uses an explicit width over the doc/default', () => {
+    expect(getImageUrl('abc', { width: 600, aspectRatio: '1:1' })).toBe('/api/img/abc?w=600&h=600&fit=cover&q=75&fmt=auto')
+  })
+  it('auto-derives the version from a populated doc and falls back to its width', () => {
+    const url = getImageUrl({ id: 'abc', width: 900, filename: 'a.png', focalX: 50, focalY: 50 })
+    const v = deriveVersion({ filename: 'a.png', focalX: 50, focalY: 50 })
+    expect(url).toBe(`/api/img/abc?w=900&fit=cover&q=75&fmt=auto&v=${v}`)
   })
 })
 

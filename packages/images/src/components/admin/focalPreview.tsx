@@ -24,8 +24,8 @@ import { coverObjectPosition } from '../../transform/geometry'
 
 const DEFAULT_RATIOS = ['16:9', '9:16', '1:1', '4:3', '3:2', '21:9']
 
-const clampPct = (n: number): number => Math.max(0, Math.min(100, n))
 const ratioToCss = (r: string): string => r.replace(/[:/]/, ' / ')
+const clampPct = (n: number): number => Math.max(0, Math.min(100, n))
 
 interface FocalPreviewProps {
   previewRatios?: string[]
@@ -40,9 +40,6 @@ export const FocalPreview: React.FC<FocalPreviewProps> = ({ previewRatios = DEFA
   const { uploadEdits, updateUploadEdits } = useUploadEdits()
   const { setModified } = useForm()
 
-  // Resolve a displayable src: the saved file URL, else an object URL for the
-  // just-selected File (required on create and for client-side direct uploads,
-  // where `url` is empty until after save).
   const [objectUrl, setObjectUrl] = useState<string | null>(null)
   useEffect(() => {
     if (file instanceof File && file.type.startsWith('image/')) {
@@ -60,8 +57,6 @@ export const FocalPreview: React.FC<FocalPreviewProps> = ({ previewRatios = DEFA
   const focalX = uploadEdits?.focalPoint?.x ?? (typeof data?.focalX === 'number' ? data.focalX : 50)
   const focalY = uploadEdits?.focalPoint?.y ?? (typeof data?.focalY === 'number' ? data.focalY : 50)
 
-  // Source pixel dims drive the focal-aware crop math. Seed from the saved doc, then
-  // refine from the loaded <img> (covers fresh uploads, where `data` has no dims yet).
   const [srcDims, setSrcDims] = useState<{ w: number; h: number } | null>(
     typeof data?.width === 'number' && typeof data?.height === 'number' ? { w: data.width, h: data.height } : null,
   )
@@ -154,8 +149,6 @@ export const FocalPreview: React.FC<FocalPreviewProps> = ({ previewRatios = DEFA
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(110px, 1fr))', gap: '0.5rem', marginTop: '0.75rem' }}>
         {previewRatios.map((r) => {
           const [rw, rh] = r.split(/[:/]/).map(Number)
-          // Match the endpoint's focal crop. Until the source dims are known (a fresh
-          // upload mid-load), fall back to the raw focal as a reasonable placeholder.
           const pos = srcDims && rw && rh ? coverObjectPosition(srcDims.w, srcDims.h, rw, rh, focalX, focalY) : { x: focalX, y: focalY }
           return (
             <figure key={r} style={{ margin: 0 }}>

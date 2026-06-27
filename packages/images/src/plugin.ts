@@ -1,12 +1,10 @@
 import type { CollectionConfig, Config, ImageSize, Plugin } from 'payload'
 
 import { mergeCollection } from '@pro-laico/core'
-
-import { createGeneratedImagesCollection, GENERATED_IMAGES_SLUG } from './collections/generatedImages'
-import { createImagesCollection } from './collections/images'
 import { Favicons } from './collections/favicons'
+import { createImagesCollection } from './collections/images'
+import { createGeneratedImagesCollection, GENERATED_IMAGES_SLUG } from './collections/generatedImages'
 import { createPurgeEndpoint, createTransformEndpoint, type TransformEndpointConfig } from './endpoints/transform'
-import type { BlurOptions } from './hooks/blur'
 
 export interface ImagesPluginOptions {
   /**
@@ -41,13 +39,6 @@ export interface ImagesPluginOptions {
   focalUI?: boolean
   /** Aspect ratios shown in the focal preview tiles. */
   previewRatios?: string[]
-  /**
-   * LQIP blur placeholder generated on upload into `blurDataUrl` (read by
-   * `<ResponsiveImage>`). `true` (default) uses the defaults; pass an object to tune
-   * `width` / `height` / `blur`; `false` disables it entirely. Replaces the old
-   * `@oversightstudio/blur-data-urls` wiring — no extra dependency or setup.
-   */
-  blur?: boolean | BlurOptions
 }
 
 /**
@@ -55,11 +46,11 @@ export interface ImagesPluginOptions {
  * collections, the `Favicons` collection, and the on-demand transform + purge
  * endpoints.
  *
- * LQIP blur placeholders are built in (Sharp shrink + blur on upload, stored in
- * `blurDataUrl`); tune or disable them with the `blur` option — no external plugin.
+ * The LQIP placeholder is derived on the frontend by `<ResponsiveImage>` from the
+ * smallest transform variant — nothing is stored on the source doc.
  *
- * The transform endpoint mounts at `/api${transform.path ?? '/img'}`; do not name a
- * collection after that first path segment (default `img`).
+ * The transform endpoint mounts at `/api/img`; do not name a collection `img` or it
+ * shadows the endpoint.
  */
 export const imagesPlugin =
   (opts: ImagesPluginOptions = {}): Plugin =>
@@ -74,17 +65,16 @@ export const imagesPlugin =
       transform = {},
       focalUI = true,
       previewRatios,
-      blur = true,
     } = opts
     if (!enabled) return config
 
     const transformCfg: TransformEndpointConfig = transform === false ? {} : transform
     const variantSlug = transformCfg.variantSlug || GENERATED_IMAGES_SLUG
     const sourceSlug = transformCfg.sourceSlug || 'images'
-    const basePath = transformCfg.path || '/img'
+    const basePath = '/img'
 
     const images = mergeCollection(
-      createImagesCollection({ pregenerateSizes, focalUI, previewRatios, variantSlug, purgePath: `${basePath}/purge`, blur }),
+      createImagesCollection({ pregenerateSizes, focalUI, previewRatios, variantSlug, purgePath: `${basePath}/purge` }),
       imagesOptions,
     )
     const generated = mergeCollection(createGeneratedImagesCollection({ slug: variantSlug }), generatedImagesOptions)
@@ -97,13 +87,10 @@ export const imagesPlugin =
         ? config.endpoints
         : [
             ...(config.endpoints ?? []),
-            createPurgeEndpoint({ path: `${basePath}/purge`, variantSlug, sourceSlug }),
+            createPurgeEndpoint({ variantSlug, sourceSlug }),
             createTransformEndpoint({ ...transformCfg, variantSlug }),
           ]
 
-    // A config-level endpoint is shadowed by any collection/global whose slug equals
-    // the base path's first segment — turning transforms into silent 404s. Warn at
-    // init (where a logger exists) rather than failing the build.
     const baseSegment = basePath.replace(/^\//, '').split('/')[0]
     const shadowed = transform !== false && collections.some((c) => c.slug === baseSegment)
 
@@ -115,7 +102,7 @@ export const imagesPlugin =
         await config.onInit?.(payload)
         if (shadowed) {
           payload.logger.warn(
-            `[images] a collection is named "${baseSegment}", which shadows the transform endpoint at /api/${baseSegment} — set imagesPlugin's transform.path to a non-colliding base.`,
+            `[images] a collection is named "${baseSegment}", which shadows the transform endpoint at /api/${baseSegment} — rename the collection so it doesn't collide.`,
           )
         }
       },

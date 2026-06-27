@@ -22,13 +22,36 @@ export interface TransformConstraints {
   formats: Format[]
   /** Format used when the request omits `fmt`. */
   defaultFormat: Format
+  /**
+   * Auto-negotiate AVIF when the browser accepts it. Off by default: AVIF encoding is
+   * far slower than WebP, so on-demand `fmt=auto` serves WebP for a fast cold path.
+   * AVIF stays available on an explicit `fmt=avif`; flip this on to prefer it in `auto`.
+   */
+  preferAvif: boolean
+  /**
+   * Snap requested `w`/`h` to a grid of this many px before transforming + caching, so
+   * the continuous dimension space collapses to a finite set of buckets. This bounds
+   * how many distinct variants a source can ever spawn — an anti-DoS measure (a caller
+   * can't force unbounded generation with `w=1,2,3,…`), mirroring Next.js 16's mandatory
+   * quality allowlist. Default 50 (the default srcset `pixelStep`, so well-behaved
+   * widths pass through unchanged). Set `<= 1` to honor exact dimensions (no snapping).
+   */
+  dimensionStep: number
+  /**
+   * Max source pixels (w×h) Sharp will decode — a decompression-bomb guard that also
+   * caps per-transform memory (a 100MP image is ~400MB decoded). Default 100,000,000
+   * (~100MP). Raise it if you legitimately serve very-high-resolution originals
+   * (e.g. 108/200MP phone photos); lower it to harden a public endpoint further.
+   */
+  maxInputPixels: number
 }
 
 /**
- * Default srcset width increment. The frontend steps the srcset by this; it's
- * configurable per `<ResponsiveImage>` / `buildSrcset` (raise it to emit fewer
- * widths and so generate fewer variants). The endpoint does NOT snap to it — it
- * honors whatever width the srcset requests.
+ * Default srcset width increment, and the default grid the endpoint snaps requested
+ * dimensions to ({@link TransformConstraints.dimensionStep}). The frontend steps the
+ * srcset by this; it's configurable per `<ResponsiveImage>` / `buildSrcset` (raise it
+ * to emit fewer widths and so generate fewer variants). Because the endpoint snaps to
+ * the same grid by default, well-behaved srcset widths pass through unchanged.
  */
 export const DEFAULT_PIXEL_STEP = 50
 
@@ -38,6 +61,9 @@ export const DEFAULT_CONSTRAINTS: TransformConstraints = {
   defaultQuality: 75,
   formats: ['auto', 'avif', 'webp', 'jpeg', 'png'],
   defaultFormat: 'auto',
+  preferAvif: false,
+  dimensionStep: DEFAULT_PIXEL_STEP,
+  maxInputPixels: 100_000_000,
 }
 
 export interface ParsedParams {
@@ -76,15 +102,23 @@ export const parseAspectRatio = (ar: number | string | null | undefined): number
 export const extForFormat = (fmt: OutputFormat): string => (fmt === 'jpeg' ? 'jpg' : fmt)
 export const mimeForFormat = (fmt: OutputFormat): string => `image/${fmt}`
 
+/** The concrete (non-`auto`) formats the plugin can encode/accept, in preference order. */
+export const ENCODABLE_FORMATS: OutputFormat[] = ['avif', 'webp', 'jpeg', 'png']
+
+/** Upload mime types accepted by the image collections — derived from {@link ENCODABLE_FORMATS} so they can't drift. */
+export const IMAGE_MIME_TYPES: string[] = ENCODABLE_FORMATS.map(mimeForFormat)
+
 /**
  * Negotiate a concrete output format from the `Accept` header when `fmt=auto`,
  * constrained to the configured `allowed` formats (so a consumer who omits avif/webp
- * from `formats` never gets them served), falling back to jpeg → png → whatever's allowed.
+ * from `formats` never gets them served). AVIF is only auto-selected when `preferAvif`
+ * is set — by default `auto` serves WebP for a fast on-demand path (AVIF stays
+ * available on an explicit `fmt=avif`). Falls back jpeg → png → whatever's allowed.
  */
-export const negotiateFormat = (accept: string | null | undefined, allowed?: Format[]): OutputFormat => {
+export const negotiateFormat = (accept: string | null | undefined, allowed?: Format[], preferAvif = false): OutputFormat => {
   const a = accept ?? ''
   const ok = (f: OutputFormat): boolean => !allowed || allowed.includes(f)
-  if (a.includes('image/avif') && ok('avif')) return 'avif'
+  if (preferAvif && a.includes('image/avif') && ok('avif')) return 'avif'
   if (a.includes('image/webp') && ok('webp')) return 'webp'
   if (ok('jpeg')) return 'jpeg'
   if (ok('png')) return 'png'
@@ -120,30 +154,31 @@ export const parseTransformParams = (q: QuerySource, c: TransformConstraints): P
   if (wRaw != null && wRaw <= 0) return { ok: false, error: 'invalid w' }
   if (hRaw != null && hRaw <= 0) return { ok: false, error: 'invalid h' }
 
-  // Honor the requested dimensions exactly (only clamped to `maxDimension`), so the
-  // variant's aspect ratio is exactly what the component asked for and the browser
-  // never re-crops it on display. The srcset's discrete widths (its configurable
-  // `pixelStep`) are what bound how many variants get generated — not server snapping.
   const cap = (n: number): number => clampInt(n, 1, c.maxDimension)
   let w = wRaw != null ? cap(Math.round(wRaw)) : undefined
   let h = hRaw != null ? cap(Math.round(hRaw)) : undefined
 
   if (ar) {
-    // Derive the missing side from the aspect ratio (exact — preserves the ratio).
     if (w != null && h == null) h = cap(Math.round(w / ar))
     else if (h != null && w == null) w = cap(Math.round(h * ar))
   }
 
   if (w == null && h == null) return { ok: false, error: 'width or height required' }
 
-  const fitRaw = read(q, 'fit')
-  const fit: Fit = FITS.includes(fitRaw as Fit) ? (fitRaw as Fit) : 'cover'
+  // Snap to the dimension grid so the variant space stays finite (anti-DoS); `<= 1` disables.
+  if (c.dimensionStep > 1) {
+    const snap = (n: number | undefined): number | undefined =>
+      n == null ? n : clampInt(Math.round(n / c.dimensionStep) * c.dimensionStep, Math.min(c.dimensionStep, c.maxDimension), c.maxDimension)
+    w = snap(w)
+    h = snap(h)
+  }
 
+  const fitRaw = read(q, 'fit')
+  const fmtRaw = read(q, 'fmt')
   const qRaw = numeric(read(q, 'q'))
   const quality = qRaw == null ? c.defaultQuality : bucketQuality(qRaw, c.qualityRange)
-
-  const fmtRaw = read(q, 'fmt')
-  const fmt: Format = c.formats.includes(fmtRaw as Format) ? (fmtRaw as Format) : c.defaultFormat
+  const fit: Fit = FITS.includes(fitRaw as Fit) ? (fitRaw as Fit) : 'cover' //TODO: replace `as` cast with proper typing
+  const fmt: Format = c.formats.includes(fmtRaw as Format) ? (fmtRaw as Format) : c.defaultFormat //TODO: replace `as` cast with proper typing
 
   return { ok: true, params: { w, h, fit, q: quality, fmt } }
 }

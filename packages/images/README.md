@@ -10,30 +10,29 @@ On-demand image handling for Atomic Payload. Uploads store only the original; ev
 
 - **Upload** stores the original only (no pre-generated sizes by default; `pregenerateSizes` restores the legacy ladder if you want it).
 - **Request** `/api/img/<id>?w&h&ar&fit&q&fmt&v` → the endpoint reads the source + its focal point, transforms with Sharp, streams it back same-origin with immutable cache headers, and saves the result to the hidden `generatedImages` collection (via the configured storage adapter, so it's platform-agnostic).
-- **Render** with `<ResponsiveImage image={…} aspectRatio="16:9" sizes="100vw" />` — a plain `<img>` whose `srcset` has the settings baked into each URL. The LQIP blur placeholder is **built in**: on upload the plugin shrinks + blurs the original with Sharp into the doc's `blurDataUrl`, and the component reads it and fades the image in over it. Tune or disable it with the `blur` option.
+- **Render** with `<ResponsiveImage image={…} aspectRatio="16:9" sizes="100vw" />` — a plain, fully server-rendered `<img>` whose `srcset` has the settings baked into each URL. The LQIP placeholder is **built in** and needs no stored field: the wrapper's background is the smallest transform variant (a tiny low-quality crop), which the browser upscales to a soft blur behind the image until the full size loads. Toggle it with the `blur` prop.
 - **Manage** derivatives through the `variants` join on each image, the **Purge variants** button, and automatic purge on re-upload / focal change / delete.
 
 > **Cache invalidation.** Each transform URL carries a `v` token derived from the source's filename + focal point (`deriveVersion`), so replacing the file or moving the focal point yields a *new* URL — busting otherwise-immutable browser/CDN caches while a metadata-only edit (e.g. `alt`) leaves it untouched. The server ignores `v` (focal comes from the doc, and the variant cache key folds it in directly). This only works when you pass a **populated doc** to `<ResponsiveImage>`; a bare id has no identity to version, so its URLs omit `v`.
 
-> **Environment.** Cloud/relative-URL storage adapters are read by self-fetching the server's own static route, so set `NEXT_PUBLIC_SERVER_URL` to your deployment origin — otherwise generation falls back to `http://localhost:3000` and fails in production (surfacing as a `502`). If you customize the endpoint base with `transform.path`, pass the same `path` to `<ResponsiveImage>` / `buildSrcset` and `GenerateMetaData`, or generated URLs will 404.
+> **Environment.** Cloud/relative-URL storage adapters are read by self-fetching the server's own static route, so set `NEXT_PUBLIC_SERVER_URL` to your deployment origin — otherwise generation falls back to `http://localhost:3000` and fails in production (surfacing as a `502`). The endpoint mounts at a fixed `/api/img`; only pass `path` to `<ResponsiveImage>` / `buildSrcset` if your Payload API route or Next.js basePath differs from the default.
 
 ## Atomic Payload dependencies
 
 - `@pro-laico/core` — the only required `@pro-laico/*` dependency (cached image-URL getter, config/cache primitives, and the `Get<>`/`PayloadAugment` type system).
-- `@pro-laico/atomic` — an **optional** peer, needed only for the `./blocks/imageChild` subpath (the Atomic child block). The core image features — the `Images` collection, the on-demand transform endpoint, `ResponsiveImage`, the focal point UI, and blur — don't need it, so the package works in any Payload + Next app with just `@pro-laico/core`.
+- `@pro-laico/atomic` — an **optional** peer, needed only for the `./blocks/imageChild` subpath (the Atomic child block). The core image features — the `Images` collection, the on-demand transform endpoint, `ResponsiveImage`, the focal point UI, and the placeholder — don't need it, so the package works in any Payload + Next app with just `@pro-laico/core`.
 
-`sharp` is an optional peer (required for the transform endpoint and the built-in blur placeholders; Payload already brings it).
+`sharp` is an optional peer (required for the transform endpoint; Payload already brings it).
 
 ## Exports
 
 | Import | What's there |
 | --- | --- |
-| `.` | Plugin barrel — `imagesPlugin`, the `Images` / `Favicons` / `GeneratedImages` collections + factories, the transform/purge endpoint factories, purge hooks, the blur hook + `backfillBlurDataUrls`, and the `FaviconField` helper. |
+| `.` | The everyday API — `imagesPlugin` (+ `ImagesPluginOptions` / `TransformEndpointConfig`) and the `FaviconField` helper. |
 | `./schema` | `Image` / `GeneratedImage` schema type stubs for the `@pro-laico/core` kernel. |
 | `./cache` | `getCachedImage` — cached image-URL getter (maps legacy size names to on-demand URLs). |
 | `./components/image` | `ResponsiveImage` — the responsive `<img>` component (server- and client-safe). |
-| `./components/buildSrcset` | `buildSrcset` / `buildVariantUrl` — isomorphic URL builders. |
-| `./endpoints/transform` | `createTransformEndpoint` / `createPurgeEndpoint`. |
+| `./components/buildSrcset` | `getImageUrl` / `buildSrcset` / `buildVariantUrl` / `deriveVersion` — isomorphic URL builders. |
 | `./admin/focalPreview` | Focal-point + ratio-preview admin field component. |
 | `./admin/purgeVariants` | "Purge variants" admin button component. |
 | `./blocks/imageChild` | `ImageChild` block — `createImageBlock` factory + prebuilt `Image` block. |

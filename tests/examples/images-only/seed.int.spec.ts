@@ -18,7 +18,6 @@ type ImageDoc = {
   alt?: string
   focalX?: number | null
   focalY?: number | null
-  blurDataUrl?: string | null
   filename?: string | null
   filesize?: number | null
 }
@@ -45,7 +44,7 @@ describe('images-only example seed', () => {
     for (const dir of ['images', 'generatedImages', 'media']) rmSync(resolve(exampleRoot, dir), { recursive: true, force: true })
   })
 
-  it('seeds the sample images with focal points and blur placeholders', async () => {
+  it('seeds the sample images with focal points', async () => {
     const { seedImages, sampleImages } = await import('@/seed/seed')
 
     const { created } = await seedImages({ payload })
@@ -59,8 +58,6 @@ describe('images-only example seed', () => {
     const landscape = docs.find((d) => d.alt === 'Landscape sample')
     expect(landscape?.focalX).toBe(78)
     expect(landscape?.focalY).toBe(32)
-    // The built-in blur hook generated an LQIP for each (it sees the bytes on a server upload).
-    expect(docs.every((d) => typeof d.blurDataUrl === 'string' && d.blurDataUrl.startsWith('data:'))).toBe(true)
     // Each sample is a DISTINCT file — guards against the seed uploading one asset
     // under every name (e.g. a bundler mis-resolving a dynamic asset path).
     expect(new Set(docs.map((d) => d.filesize)).size).toBe(sampleImages.length)

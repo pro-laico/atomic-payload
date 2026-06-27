@@ -26,16 +26,12 @@ export const purgeVariantsForSource = async (
   req?: PayloadRequest,
 ): Promise<number> => {
   const res = await payload.delete({
-    collection: variantSlug as CollectionSlug,
+    collection: variantSlug as CollectionSlug, //TODO: replace `as` cast with proper typing
     where: { source: { equals: sourceId } },
     overrideAccess: true,
     req,
   })
-  // When the adapter has transactions disabled (e.g. the template's Mongo runs with
-  // transactionOptions:false) the bulk delete isn't atomic, so surface per-doc failures.
-  if (res?.errors?.length) {
-    payload.logger.warn(`[images] ${res.errors.length} generated variant(s) failed to purge for source ${sourceId}`)
-  }
+  if (res?.errors?.length) payload.logger.warn(`[images] ${res.errors.length} generated variant(s) failed to purge for source ${sourceId}`)
   return res?.docs?.length ?? 0
 }
 

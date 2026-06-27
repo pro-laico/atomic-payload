@@ -7,7 +7,6 @@
  */
 import fs from 'node:fs'
 import path from 'node:path'
-
 import type { Payload } from 'payload'
 
 export interface UploadDocLike {
@@ -15,26 +14,24 @@ export interface UploadDocLike {
   url?: string | null
 }
 
-// Cap on a remotely-fetched source body. Sharp's `limitInputPixels` bounds decode
-// work; this bounds transfer + memory against a malicious/oversized `url`.
 const MAX_FETCH_BYTES = 64 * 1024 * 1024
 
 /** True for hostnames in loopback / private / link-local space (the SSRF sinks). */
 const isPrivateHost = (hostname: string): boolean => {
-  const h = hostname.toLowerCase().replace(/^\[|\]$/g, '') // strip IPv6 brackets
+  const h = hostname.toLowerCase().replace(/^\[|\]$/g, '')
   if (h === 'localhost' || h.endsWith('.localhost') || h === '0.0.0.0' || h === '::1') return true
   const m = h.match(/^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/)
   if (m) {
     const a = Number(m[1])
     const b = Number(m[2])
     if (a === 0 || a === 10 || a === 127) return true
-    if (a === 169 && b === 254) return true // link-local incl. cloud metadata (169.254.169.254)
+    if (a === 169 && b === 254) return true
     if (a === 192 && b === 168) return true
     if (a === 172 && b >= 16 && b <= 31) return true
-    if (a === 100 && b >= 64 && b <= 127) return true // CGNAT
+    if (a === 100 && b >= 64 && b <= 127) return true
     return false
   }
-  return /^fe80:/i.test(h) || /^f[cd][0-9a-f]{2}:/i.test(h) // IPv6 link-local / unique-local
+  return /^fe80:/i.test(h) || /^f[cd][0-9a-f]{2}:/i.test(h)
 }
 
 /**
@@ -50,7 +47,7 @@ export const isAllowedFetchTarget = (target: URL, trusted: URL | null): boolean 
 
 /** Resolve a collection's on-disk upload directory (absolute). */
 export const resolveStaticDir = (payload: Payload, slug: string): string => {
-  const collections = payload.collections as Record<string, { config?: { upload?: { staticDir?: string } } }>
+  const collections = payload.collections as Record<string, { config?: { upload?: { staticDir?: string } } }> //TODO: replace `as` cast with proper typing
   const dir = collections?.[slug]?.config?.upload?.staticDir
   const base = dir?.length ? dir : slug
   return path.isAbsolute(base) ? base : path.resolve(process.cwd(), base)
@@ -71,9 +68,7 @@ export const readBytes = async (doc: UploadDocLike, staticDir: string, baseUrl?:
   if (doc.filename) {
     const base = path.resolve(staticDir)
     const filePath = path.resolve(base, doc.filename)
-    if ((filePath === base || filePath.startsWith(base + path.sep)) && fs.existsSync(filePath)) {
-      return fs.readFileSync(filePath)
-    }
+    if ((filePath === base || filePath.startsWith(base + path.sep)) && fs.existsSync(filePath)) return fs.readFileSync(filePath)
   }
 
   if (typeof doc.url === 'string' && doc.url) {
@@ -90,22 +85,16 @@ export const readBytes = async (doc: UploadDocLike, staticDir: string, baseUrl?:
       }
       try {
         trusted = base ? new URL(base) : null
-      } catch {
-        // non-URL base → no same-origin allowance, fall through to the private-host check
-      }
+      } catch {}
       if (!isAllowedFetchTarget(target, trusted)) return null
       try {
-        // `redirect: 'manual'` so an allowed host can't 30x-redirect us onto an
-        // internal one (an opaqueredirect response has `ok === false`).
         const res = await fetch(targetStr, { signal: AbortSignal.timeout(15_000), redirect: 'manual' })
         if (!res.ok) return null
         const declared = Number(res.headers?.get?.('content-length') ?? '')
         if (Number.isFinite(declared) && declared > MAX_FETCH_BYTES) return null
         const buf = Buffer.from(await res.arrayBuffer())
         return buf.byteLength > MAX_FETCH_BYTES ? null : buf
-      } catch {
-        // fall through to "not found"
-      }
+      } catch {}
     }
   }
   return null

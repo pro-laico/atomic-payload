@@ -40,7 +40,7 @@ atomic-payload/
 | `@pro-laico/site`                  | sitePlugin: Pages, Header, Footer collections + SiteMetaData / Settings / draft+published Storage globals |
 | `@pro-laico/styles`                | stylesPlugin: `designSet` + `shortcutSet` collections (each toggleable), `ClassNameField`, draft/published CSS storage globals, token fields, `createCssProcessor` + `createCssHook` + `processDesignSet` — all CSS handling for frontend + Payload |
 | `@pro-laico/icons`                 | iconsPlugin (Icon + iconSet), formatSVG, AtomicIcon, createIconSelect                        |
-| `@pro-laico/images`                | Images + Favicons collections + FaviconField + blur integration                              |
+| `@pro-laico/images`                | Images + Favicons collections + FaviconField + on-demand transforms                          |
 | `@pro-laico/fonts`                 | fontsPlugin + Font collection + font download CLI / API                                      |
 | `@pro-laico/mux-video`             | MuxVideo extension collection + plugin wrapper                                               |
 | `@pro-laico/tracking`              | trackingPlugin: Tracking global (GTM + PostHog tabs + toggles), GTM/PostHog/Vercel/composite providers |

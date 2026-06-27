@@ -12,7 +12,6 @@ type ImageDoc = {
   alt?: string | null
   width?: number | null
   height?: number | null
-  blurDataUrl?: string | null
   focalX?: number | null
   focalY?: number | null
   filename?: string | null
@@ -58,8 +57,8 @@ export default async function HomePage() {
       <p className="lead">
         A minimal showcase of <code>@pro-laico/images</code>, standalone (no <code>@pro-laico/atomic</code>). Upload stores only the original; every
         size below is generated <strong>on demand</strong> by the transform endpoint at <code>/api/img/:id</code>, cropped to each image&apos;s focal
-        point, and rendered through the responsive <code>&lt;ResponsiveImage&gt;</code> component (a plain <code>&lt;img&gt;</code> with a baked-in{' '}
-        <code>srcset</code>) — with a blur-up placeholder.
+        point, and rendered through the responsive <code>&lt;ResponsiveImage&gt;</code> component (a fully server-rendered <code>&lt;img&gt;</code> with a
+        baked-in <code>srcset</code>) — over a low-res placeholder built from the smallest variant.
       </p>
 
       <div className="card">

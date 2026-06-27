@@ -6,7 +6,7 @@ import { SSRProps } from './SSRProps'
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const imageBlock = (overrides: Record<string, unknown> = {}): any => ({
   blockType: 'ImageChild',
-  image: { id: 'img1', width: 1600, height: 900, alt: 'media alt', blurDataUrl: 'data:image/png;base64,AAA' },
+  image: { id: 'img1', width: 1600, height: 900, alt: 'media alt' },
   ...overrides,
 })
 
@@ -21,7 +21,7 @@ describe('SSRProps · ImageChild', () => {
     expect(p.fit).toBe('cover')
     expect(p.quality).toBe(80)
     expect(p.priority).toBe(true)
-    expect(p.blur).toBe(true) // component auto-reads blurDataUrl from the populated image
+    expect(p.blur).toBe(true) // component derives the placeholder from the smallest variant
     expect('src' in p).toBe(false)
     expect('version' in p).toBe(false)
     expect('fill' in p).toBe(false)

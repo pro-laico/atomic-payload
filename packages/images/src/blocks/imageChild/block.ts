@@ -1,6 +1,6 @@
 import type { Block } from 'payload'
-import type { BlockFieldExtensions } from '@pro-laico/core'
 
+import type { BlockFieldExtensions } from '@pro-laico/core'
 import { ColoredEnd } from '@pro-laico/atomic/children/fields/coloredEnd'
 import { ChildsSettingsTab } from '@pro-laico/atomic/children/fields/tabs/settings'
 
@@ -14,7 +14,7 @@ const d = {
   size: 'The responsive `sizes` attribute, e.g. "(max-width: 768px) 100vw, 50vw". Defaults to a full-width set.',
   priority: 'Default false. If true, the image loads eagerly (use for above-the-fold images).',
   alt: 'Defaults to the alt set on the image asset; add an instance-specific alt here. Leave blank only for decorative images.',
-  blur: 'Default true. Shows the generated blur placeholder while the image loads. Uncheck to disable.',
+  blur: 'Default true. Shows a low-res placeholder while the image loads. Uncheck to disable.',
 }
 
 /** Options for {@link createImageBlock}: generic fields to prepend/append to the Image tab. */

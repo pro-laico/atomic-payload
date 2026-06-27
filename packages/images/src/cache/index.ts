@@ -1,18 +1,13 @@
-import 'server-only'
-
 import { cache } from 'react'
 import { type CollectionSlug, getPayload } from 'payload'
 
 import { getPayloadConfig } from '@pro-laico/core/config'
 import { withCache } from '@pro-laico/core/cache/primitives'
 
-type ImageDoc = {
-  id?: string | number
-  url?: string | null
-  sizes?: Record<string, { url?: string | null } | undefined | null> | null
-}
+import 'server-only'
 
-// Legacy size-name → on-demand transform preset, used when sizes aren't pre-generated.
+type ImageDoc = { id?: string | number; url?: string | null; sizes?: Record<string, { url?: string | null } | undefined | null> | null }
+
 const LEGACY_PRESETS: Record<string, string> = {
   thumbnail: 'w=300&fit=inside',
   square: 'w=500&h=500&fit=cover',
@@ -34,6 +29,7 @@ export const getCachedImage = cache((tid: string | null | undefined, version?: s
   return withCache(
     async () => {
       const payload = await getPayload({ config: getPayloadConfig() })
+      //TODO: replace `as` cast with proper typing
       const image = (await payload.findByID({ collection: 'images' as CollectionSlug, id: tid, depth: 0 })) as ImageDoc | null
       if (!image) return undefined
       if (version) {

@@ -11,7 +11,6 @@ type ImageDoc = {
   alt?: string | null
   width?: number | null
   height?: number | null
-  blurDataUrl?: string | null
   focalX?: number | null
   focalY?: number | null
   filename?: string | null

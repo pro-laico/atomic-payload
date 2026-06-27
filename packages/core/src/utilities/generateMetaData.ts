@@ -33,12 +33,12 @@ type SiteMetaSlice = {
 type GenerateMetaDataArgs = {
   page?: PageMetaSlice
   siteMetadata?: SiteMetaSlice
-  /** Transform endpoint base path for OG images. Default `/api/img`; pass this if you set `imagesPlugin`'s `transform.path`. */
+  /** Transform endpoint base for OG images. Default `/api/img`; pass this only if your Payload API route or Next.js basePath differs. */
   transformPath?: string
 }
 type GenerateMetaDataFn = (args: GenerateMetaDataArgs) => Metadata
 
-/** Default `/api` + the images plugin's default `/img` endpoint base. Keep in sync with `transform.path`. */
+/** Default `/api` + the images endpoint's fixed `/img` base. */
 const DEFAULT_TRANSFORM_API_PATH = '/api/img'
 
 /** Ensure a relative URL is absolute (crawlers need absolute OG/icon URLs). */

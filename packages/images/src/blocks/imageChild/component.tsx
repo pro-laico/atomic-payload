@@ -1,9 +1,8 @@
 'use server'
 
-import type { ImageChild as ImageChildType } from '@pro-laico/atomic/children/schema'
 import type { RenderChild } from '@pro-laico/atomic/children'
-
 import { ResponsiveImage, type ResponsiveImageProps } from '../../components/image'
+import type { ImageChild as ImageChildType } from '@pro-laico/atomic/children/schema'
 
 /**
  * Renders the `ImageChild` block as a `<ResponsiveImage>` — a plain `<img>` whose
@@ -17,8 +16,9 @@ export const ImageChild: React.FC<RenderChild<ImageChildType>> = async (props) =
 
   if (!block?.image || typeof block.image === 'string') return <div className="w-full h-full bg-gray-200" />
 
-  const cp = (pt?.c?.p ?? {}) as Partial<ResponsiveImageProps>
-  const da = (pt?.c?.da ?? {}) as Record<string, string>
+  const cp = (pt?.c?.p ?? {}) as Partial<ResponsiveImageProps> //TODO: replace `as` cast with proper typing
+  const da = (pt?.c?.da ?? {}) as Record<string, string> //TODO: replace `as` cast with proper typing
 
+  //TODO: replace `as` cast with proper typing
   return <ResponsiveImage image={block.image as ResponsiveImageProps['image']} {...cp} dataAttributes={da} />
 }

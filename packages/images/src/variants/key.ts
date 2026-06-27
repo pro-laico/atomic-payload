@@ -22,8 +22,6 @@ export interface CacheKeyDoc {
 }
 
 export const variantCacheKey = (doc: CacheKeyDoc, p: ParsedParams, resolvedFormat: string): string => {
-  // PNG is lossless — `quality` is ignored by the encoder, so fold it out of the key
-  // (else `fmt=png&q=70` and `fmt=png&q=80` would mint identical-bytes variants).
   const q = resolvedFormat === 'png' ? 0 : p.q
   const raw = [String(doc.id), doc.filename ?? '', p.w ?? '', p.h ?? '', p.fit, q, resolvedFormat, doc.focalX ?? 50, doc.focalY ?? 50].join('|')
   return createHash('sha256').update(raw).digest('hex').slice(0, 24)

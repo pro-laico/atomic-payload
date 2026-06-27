@@ -9,9 +9,8 @@ import { DEFAULT_PIXEL_STEP, parseAspectRatio, type Fit, type Format } from '../
 export { DEFAULT_PIXEL_STEP }
 
 /**
- * Default base for transform URLs: `/api` + the plugin's default `/img` endpoint path.
- * If you set `imagesPlugin`'s `transform.path`, pass the matching `path` here (and to
- * `<ResponsiveImage path>`) or every generated URL 404s.
+ * Default base for transform URLs: `/api` + the endpoint's fixed `/img` path. Override
+ * `path` only if your Payload API route or Next.js basePath differs from the default.
  */
 export const DEFAULT_TRANSFORM_API_PATH = '/api/img'
 
@@ -23,7 +22,7 @@ export interface BuildUrlOptions {
   aspectRatio?: number | string
   /** Prefix for absolute URLs (e.g. `https://site.com`). Default '' (same-origin). */
   baseUrl?: string
-  /** Endpoint base path. Default `/api/img` ({@link DEFAULT_TRANSFORM_API_PATH}). */
+  /** Endpoint base. Default `/api/img` ({@link DEFAULT_TRANSFORM_API_PATH}); override only for a custom API route / basePath. */
   path?: string
   /**
    * Cache-busting version token appended as `v=`. Derive it from the source doc with
@@ -41,7 +40,6 @@ export interface VersionSource {
   focalY?: number | null
 }
 
-// FNV-1a (32-bit) → base36. NOT cryptographic — a compact, stable cache-buster token.
 const fnv1a = (s: string): string => {
   let h = 0x811c9dc5
   for (let i = 0; i < s.length; i++) {
@@ -65,6 +63,30 @@ export const deriveVersion = (src?: VersionSource | null): string | undefined =>
   return fnv1a(`${filename ?? ''}|${focalX ?? ''}|${focalY ?? ''}`)
 }
 
+/** A bare id, or a populated image doc (so the version token + a default width can be read off it). */
+export type ImageResource = string | number | ({ id: string | number; width?: number | null } & VersionSource) | null | undefined
+
+export interface GetImageUrlOptions extends BuildUrlOptions {
+  /** Output width. Falls back to a populated doc's intrinsic width, else 1280. */
+  width?: number
+}
+
+/**
+ * One transform URL for an image, taking the id OR a populated doc directly: it resolves the
+ * id, picks a sensible default width, and (for a doc) folds in the cache-busting version
+ * automatically — so you don't re-implement the resolve-and-`deriveVersion` dance every time
+ * you need a raw URL (OG tags, CSS backgrounds, emails). Returns null when there's no id.
+ * For a responsive `<img>`, prefer `<ResponsiveImage>` / {@link buildSrcset}.
+ */
+export const getImageUrl = (resource: ImageResource, o: GetImageUrlOptions = {}): string | null => {
+  if (resource == null) return null
+  const doc = typeof resource === 'object' ? resource : undefined
+  const id = doc ? (doc.id == null ? '' : String(doc.id)) : String(resource)
+  if (!id) return null
+  const width = o.width ?? doc?.width ?? 1280
+  return buildVariantUrl(id, width, { ...o, version: o.version ?? deriveVersion(doc) })
+}
+
 export const buildVariantUrl = (id: string, width: number, o: BuildUrlOptions = {}): string => {
   const base = o.baseUrl ?? ''
   const apiPath = o.path ?? DEFAULT_TRANSFORM_API_PATH
@@ -75,7 +97,6 @@ export const buildVariantUrl = (id: string, width: number, o: BuildUrlOptions = 
   params.set('fit', o.fit ?? 'cover')
   params.set('q', String(o.quality ?? 75))
   params.set('fmt', o.format ?? 'auto')
-  // Appended last so it reads as a trailing cache-buster; the server ignores it.
   if (o.version) params.set('v', o.version)
   return `${base}${apiPath}/${encodeURIComponent(id)}?${params.toString()}`
 }
@@ -86,10 +107,8 @@ export const buildVariantUrl = (id: string, width: number, o: BuildUrlOptions = 
  * more than `maxEntries`, the effective step is coarsened to keep the srcset short.
  * With no source width, falls back to stepping up to `maxWidth`.
  */
-export const stepWidths = (sourceWidth?: number, pixelStep = DEFAULT_PIXEL_STEP, maxWidth = 4096, maxEntries = 16): number[] => {
+export const stepWidths = (sourceWidth?: number, pixelStep = DEFAULT_PIXEL_STEP, maxWidth = 4096, maxEntries = 8): number[] => {
   const step = pixelStep > 0 ? pixelStep : DEFAULT_PIXEL_STEP
-  // Cap at the largest step multiple that doesn't exceed the source width (so we
-  // never request a larger-than-original image). With no source width, step to maxWidth.
   const cap = sourceWidth && sourceWidth > 0 ? Math.max(step, Math.floor(sourceWidth / step) * step) : maxWidth
   const top = Math.min(maxWidth, cap)
   let effective = step
@@ -107,7 +126,7 @@ export interface BuildSrcsetOptions extends BuildUrlOptions {
   sourceWidth?: number
   /** Hard ceiling. Default 4096. */
   maxWidth?: number
-  /** Max srcset entries before the step is coarsened. Default 16. */
+  /** Max srcset entries before the step is coarsened. Default 8. */
   maxEntries?: number
   /** Width used for the plain `src` fallback. Defaults to min(top, 1280). */
   defaultWidth?: number
