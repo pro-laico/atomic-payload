@@ -10,17 +10,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [0.5.0] - 2026-06-26
 
-Breaking, lockstep release: fonts and images both rearchitected.
+Breaking, lockstep release. Most app code is unaffected — but **existing fonts must be re-uploaded**, and a few removed image options need cleanup (see Upgrade).
 
 ### Fonts
 
-- New three-collection upload model (`Font` / `fontOriginal` / `fontOptimized`) with variable-font support, replacing `fontFile`. Standard uploads, no 5 MB limit.
+- Now handles variable fonts and large files: uploads go through normal fields, so the old 5 MB upload failures are gone.
 
 ### Images
 
-- `<ResponsiveImage>` is now fully server-rendered, with its placeholder served from the smallest variant instead of a stored blur field.
-- `fmt=auto` defaults to WebP; added `getImageUrl()` and abuse/cost caps on the endpoint.
-- Slimmer API — removed the blur option/field/hooks, `transform.path`, and the collection/hook/endpoint exports.
+- `<ResponsiveImage>` is server-rendered now (lighter, faster) and builds its placeholder on demand — nothing changes in how you use it unless you set the removed `fade` / `blurDataURL` props.
+- `fmt=auto` serves WebP instead of AVIF: faster to generate, slightly larger files — set `preferAvif` for AVIF. New `getImageUrl()` for one-off URLs.
+- Removed the `blur` option, `transform.path`, and the advanced factory exports — configure through the plugin options instead.
 
 ### Maintenance
 
@@ -28,8 +28,8 @@ Breaking, lockstep release: fonts and images both rearchitected.
 
 ### Upgrade
 
-- **Fonts:** re-upload typefaces, then rerun `generate:importmap` + `generate:types`.
-- **Images:** drop `transform.path` / `blur` / `fade*` usages; SQL adapters get a `blurDataUrl`-removal migration.
+- **Fonts:** re-upload typefaces (the `fontFile` collection is replaced by `Font` / `fontOriginal` / `fontOptimized`), then rerun `generate:importmap` + `generate:types`.
+- **Images:** remove `transform.path` / `blur` / `fade*` usages; SQL adapters get a `blurDataUrl`-removal migration.
 
 ## [0.4.2] - 2026-06-24
 
