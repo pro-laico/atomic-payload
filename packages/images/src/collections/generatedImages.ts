@@ -27,29 +27,15 @@ export interface CreateGeneratedImagesOptions {
  */
 export const createGeneratedImagesCollection = (opts: CreateGeneratedImagesOptions = {}): CollectionConfig => {
   const slug = opts.slug || GENERATED_IMAGES_SLUG
-  const sourceSlug = (opts.sourceSlug || 'images') as CollectionSlug
+  const sourceSlug = (opts.sourceSlug || 'images') as CollectionSlug //TODO: replace `as` cast with proper typing
 
   return {
     slug,
-    // The transform endpoint serves variant bytes via its own access-gated handler
-    // (reading this collection with overrideAccess), so the collection itself never
-    // needs public read — keeping `read: authd` prevents the REST/list API from
-    // exposing a restricted source's variant bytes by id.
     access: { create: authd, delete: authd, read: authd, update: authd },
-    admin: {
-      // Hidden from the nav and relationship pickers; still queryable + a join target.
-      hidden: true,
-      group: 'Assets',
-      useAsTitle: 'cacheKey',
-      defaultColumns: ['cacheKey', 'width', 'height', 'format'],
-    },
+    admin: { hidden: true, group: 'Assets', useAsTitle: 'cacheKey', defaultColumns: ['cacheKey', 'width', 'height', 'format'] },
     fields: [
       { name: 'source', type: 'relationship', relationTo: sourceSlug, required: true, index: true },
-      // Deterministic per (source + freshness + focal + settings). Unique so two
-      // concurrent cache-miss creates can't both persist — the loser throws a
-      // catchable error the endpoint swallows. (`unique` already creates an index.)
       { name: 'cacheKey', type: 'text', required: true, unique: true },
-      // The variant's pixel dimensions come from the built-in upload `width`/`height`.
       {
         type: 'row',
         fields: [
@@ -66,9 +52,7 @@ export const createGeneratedImagesCollection = (opts: CreateGeneratedImagesOptio
         ],
       },
     ],
-    upload: {
-      mimeTypes: ['image/avif', 'image/webp', 'image/jpeg', 'image/png'],
-    },
+    upload: { mimeTypes: ['image/avif', 'image/webp', 'image/jpeg', 'image/png'] },
   }
 }
 

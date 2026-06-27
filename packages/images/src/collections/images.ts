@@ -1,10 +1,10 @@
-import type { CollectionConfig, CollectionSlug, Field, ImageSize, ImageUploadFormatOptions } from 'payload'
 import { revalidateCacheCollectionAfterChange, revalidateCacheOnDelete } from '@pro-laico/core'
+import type { CollectionConfig, CollectionSlug, Field, ImageSize, ImageUploadFormatOptions } from 'payload'
 
 import { anyone, authd } from '../access'
+import { GENERATED_IMAGES_SLUG } from './generatedImages'
 import { type BlurOptions, generateBlurDataUrl } from '../hooks/blur'
 import { purgeStaleVariantsAfterChange, purgeVariantsBeforeDelete } from '../hooks/purge'
-import { GENERATED_IMAGES_SLUG } from './generatedImages'
 
 const formatOptions: ImageUploadFormatOptions = { format: 'webp', options: { nearLossless: true, quality: 75 } }
 
@@ -12,9 +12,6 @@ const formatOptions: ImageUploadFormatOptions = { format: 'webp', options: { nea
 export const FocalPreviewFieldPath = '@pro-laico/images/admin/focalPreview'
 export const PurgeVariantsFieldPath = '@pro-laico/images/admin/purgeVariants'
 
-// The pre-3.x ladder, restored only when `pregenerateSizes: true`. With on-demand
-// transforms it's off by default (and, under client-side direct uploads, Payload's
-// server-side size generation never ran anyway).
 const LEGACY_IMAGE_SIZES: ImageSize[] = [
   { formatOptions, name: 'thumbnail', width: 300 },
   { formatOptions, name: 'square', width: 500, height: 500 },
@@ -53,7 +50,7 @@ export interface CreateImagesOptions {
  */
 export const createImagesCollection = (opts: CreateImagesOptions = {}): CollectionConfig => {
   const { pregenerateSizes = false, focalUI = true, previewRatios, purgePath, blur = true } = opts
-  const variantSlug = (opts.variantSlug || GENERATED_IMAGES_SLUG) as CollectionSlug
+  const variantSlug = (opts.variantSlug || GENERATED_IMAGES_SLUG) as CollectionSlug //TODO: replace `as` cast with proper typing
   const imageSizes = pregenerateSizes === true ? LEGACY_IMAGE_SIZES : Array.isArray(pregenerateSizes) ? pregenerateSizes : undefined
   const blurOptions: BlurOptions | undefined = blur === true ? {} : blur || undefined
 
@@ -62,11 +59,7 @@ export const createImagesCollection = (opts: CreateImagesOptions = {}): Collecti
         {
           name: 'focalPreview',
           type: 'ui',
-          admin: {
-            components: {
-              Field: { path: FocalPreviewFieldPath, ...(previewRatios ? { clientProps: { previewRatios } } : {}) },
-            },
-          },
+          admin: { components: { Field: { path: FocalPreviewFieldPath, ...(previewRatios ? { clientProps: { previewRatios } } : {}) } } },
         },
         {
           name: 'purgeVariants',
@@ -82,10 +75,9 @@ export const createImagesCollection = (opts: CreateImagesOptions = {}): Collecti
     admin: { group: 'Assets', enableListViewSelectAPI: true, useAsTitle: 'alt', defaultColumns: ['alt', 'updatedAt'] },
     fields: [
       { name: 'alt', type: 'text', required: true },
-      // Auto-populated LQIP placeholder (hidden); `<ResponsiveImage>` reads it.
+      //TODO: replace `as` cast with proper typing
       ...(blurOptions ? [{ name: 'blurDataUrl', type: 'text', admin: { hidden: true, readOnly: true } } as Field] : []),
       ...adminFields,
-      // Virtual back-reference: every generated variant built from this source.
       {
         name: 'variants',
         type: 'join',
@@ -94,24 +86,13 @@ export const createImagesCollection = (opts: CreateImagesOptions = {}): Collecti
         admin: { defaultColumns: ['filename', 'width', 'height', 'format'], allowCreate: false },
       },
     ],
-    // afterChange busts the image cache tag (and purges variants when the file or
-    // focal point changed); afterDelete clears the tag and purges all variants.
     hooks: {
-      // beforeChange generates the LQIP placeholder from the uploaded bytes (when blur is on).
       ...(blurOptions ? { beforeChange: [generateBlurDataUrl(blurOptions)] } : {}),
       afterChange: [revalidateCacheCollectionAfterChange, purgeStaleVariantsAfterChange({ variantSlug })],
-      // beforeDelete purges variants first (SQL FK safety); afterDelete clears the cache tag.
       beforeDelete: [purgeVariantsBeforeDelete({ variantSlug })],
       afterDelete: [revalidateCacheOnDelete],
     },
-    // A plain Payload upload: store the original untouched (no re-encode, no sizes
-    // by default) and let Payload's native focal point + default admin thumbnail do
-    // their normal thing. All sizing/cropping happens on demand at request time.
-    upload: {
-      focalPoint: true,
-      mimeTypes: ['image/png', 'image/jpeg', 'image/webp', 'image/avif'],
-      ...(imageSizes ? { imageSizes } : {}),
-    },
+    upload: { focalPoint: true, mimeTypes: ['image/png', 'image/jpeg', 'image/webp', 'image/avif'], ...(imageSizes ? { imageSizes } : {}) },
   }
 }
 

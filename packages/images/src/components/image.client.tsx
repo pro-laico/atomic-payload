@@ -44,11 +44,7 @@ export const FadeImg = ({ fadeMs = 0, baseStyle, style, onLoad, alt = '', ...res
           setLoaded(true)
           onLoad?.(e)
         }}
-        style={{
-          ...baseStyle,
-          ...(fadeMs > 0 ? { opacity: loaded ? 1 : 0, transition: `opacity ${fadeMs}ms ease` } : null),
-          ...style,
-        }}
+        style={{ ...baseStyle, ...(fadeMs > 0 ? { opacity: loaded ? 1 : 0, transition: `opacity ${fadeMs}ms ease` } : null), ...style }}
       />
     </>
   )

@@ -1,12 +1,11 @@
 import type { CollectionConfig, Config, ImageSize, Plugin } from 'payload'
 
-import { mergeCollection } from '@pro-laico/core'
-
-import { createGeneratedImagesCollection, GENERATED_IMAGES_SLUG } from './collections/generatedImages'
-import { createImagesCollection } from './collections/images'
-import { Favicons } from './collections/favicons'
-import { createPurgeEndpoint, createTransformEndpoint, type TransformEndpointConfig } from './endpoints/transform'
 import type { BlurOptions } from './hooks/blur'
+import { mergeCollection } from '@pro-laico/core'
+import { Favicons } from './collections/favicons'
+import { createImagesCollection } from './collections/images'
+import { createGeneratedImagesCollection, GENERATED_IMAGES_SLUG } from './collections/generatedImages'
+import { createPurgeEndpoint, createTransformEndpoint, type TransformEndpointConfig } from './endpoints/transform'
 
 export interface ImagesPluginOptions {
   /**
@@ -101,9 +100,6 @@ export const imagesPlugin =
             createTransformEndpoint({ ...transformCfg, variantSlug }),
           ]
 
-    // A config-level endpoint is shadowed by any collection/global whose slug equals
-    // the base path's first segment — turning transforms into silent 404s. Warn at
-    // init (where a logger exists) rather than failing the build.
     const baseSegment = basePath.replace(/^\//, '').split('/')[0]
     const shadowed = transform !== false && collections.some((c) => c.slug === baseSegment)
 

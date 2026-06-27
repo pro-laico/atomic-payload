@@ -1,6 +1,6 @@
 import type { Block } from 'payload'
-import type { BlockFieldExtensions } from '@pro-laico/core'
 
+import type { BlockFieldExtensions } from '@pro-laico/core'
 import { ColoredEnd } from '@pro-laico/atomic/children/fields/coloredEnd'
 import { ChildsSettingsTab } from '@pro-laico/atomic/children/fields/tabs/settings'
 

@@ -17,17 +17,17 @@ interface PurgeVariantsProps {
   purgePath?: string
 }
 
-const note: React.CSSProperties = { color: 'var(--theme-elevation-500)', fontSize: '0.8rem', margin: '0.25rem 0 0' }
-
 const button: React.CSSProperties = {
-  background: 'var(--theme-elevation-50)',
-  color: 'var(--theme-elevation-800)',
-  border: '1px solid var(--theme-elevation-150)',
-  borderRadius: 'var(--style-radius-s, 3px)',
-  padding: '0.4rem 0.75rem',
-  fontSize: '0.85rem',
   cursor: 'pointer',
+  fontSize: '0.85rem',
+  padding: '0.4rem 0.75rem',
+  color: 'var(--theme-elevation-800)',
+  background: 'var(--theme-elevation-50)',
+  borderRadius: 'var(--style-radius-s, 3px)',
+  border: '1px solid var(--theme-elevation-150)',
 }
+
+const note: React.CSSProperties = { color: 'var(--theme-elevation-500)', fontSize: '0.8rem', margin: '0.25rem 0 0' }
 
 export const PurgeVariants: React.FC<PurgeVariantsProps> = ({ purgePath = '/img/purge' }) => {
   const { config } = useConfig()
@@ -41,7 +41,7 @@ export const PurgeVariants: React.FC<PurgeVariantsProps> = ({ purgePath = '/img/
     setBusy(true)
     try {
       const res = await fetch(`${apiRoute}${purgePath}/${id}`, { method: 'POST', credentials: 'include' })
-      const json = (await res.json().catch(() => ({}))) as { deleted?: number; error?: string }
+      const json = (await res.json().catch(() => ({}))) as { deleted?: number; error?: string } //TODO: replace `as` cast with proper typing
       if (!res.ok) throw new Error(json?.error || `HTTP ${res.status}`)
       const n = json?.deleted ?? 0
       toast.success(`Purged ${n} generated image${n === 1 ? '' : 's'}.`)

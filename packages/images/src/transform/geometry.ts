@@ -31,8 +31,8 @@ export const coverCropGeometry = (
   focalX = 50,
   focalY = 50,
 ): CropGeometry => {
-  const tw = targetW ?? Math.max(1, Math.round(((targetH as number) * sw) / sh))
-  const th = targetH ?? Math.max(1, Math.round(((targetW as number) * sh) / sw))
+  const tw = targetW ?? Math.max(1, Math.round(((targetH as number) * sw) / sh)) //TODO: replace `as` cast with proper typing
+  const th = targetH ?? Math.max(1, Math.round(((targetW as number) * sh) / sw)) //TODO: replace `as` cast with proper typing
   const scale = Math.max(tw / sw, th / sh)
   const resizeWidth = Math.max(tw, Math.round(sw * scale))
   const resizeHeight = Math.max(th, Math.round(sh * scale))
@@ -64,13 +64,9 @@ export const fitWithinSource = (tw: number, th: number, sw: number, sh: number):
  */
 export const coverObjectPosition = (sw: number, sh: number, ratioW: number, ratioH: number, focalX = 50, focalY = 50): { x: number; y: number } => {
   if (sw <= 0 || sh <= 0 || ratioW <= 0 || ratioH <= 0) return { x: 50, y: 50 }
-  // Scale the ratio box up (to integer dims) so the rounded geometry yields
-  // sub-percent precision on the cropped axis.
   const k = 1000 / Math.max(ratioW, ratioH)
   const g = coverCropGeometry(sw, sh, Math.round(ratioW * k), Math.round(ratioH * k), focalX, focalY)
   const ox = g.resizeWidth - g.width
   const oy = g.resizeHeight - g.height
-  // A cover crop only ever trims one axis; the fitting axis isn't cropped, so its
-  // object-position has no visible effect — report it centered.
   return { x: ox >= 1 ? (g.left / ox) * 100 : 50, y: oy >= 1 ? (g.top / oy) * 100 : 50 }
 }

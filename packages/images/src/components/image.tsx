@@ -10,9 +10,9 @@
  */
 import type { CSSProperties, ImgHTMLAttributes, ReactElement } from 'react'
 
-import { type BuildSrcsetOptions, buildSrcset, deriveVersion } from './buildSrcset'
 import { FadeImg } from './image.client'
 import { parseAspectRatio, type Fit, type Format } from '../transform/params'
+import { type BuildSrcsetOptions, buildSrcset, deriveVersion } from './buildSrcset'
 
 /** A bare id, or a populated image doc (for natural dims, alt, blur placeholder, and the cache-busting version token). */
 export type ResponsiveImageInput =
@@ -78,8 +78,6 @@ export interface ResponsiveImageProps {
   dataAttributes?: Record<string, string>
 }
 
-// The endpoint already produced the right pixels; this CSS object-fit is just a
-// hint for how the (pre-sized) image sits in its box. Map endpoint fits → valid CSS.
 const CSS_OBJECT_FIT: Record<Fit, NonNullable<CSSProperties['objectFit']>> = {
   cover: 'cover',
   contain: 'contain',
@@ -122,15 +120,12 @@ export const ResponsiveImage = (props: ResponsiveImageProps): ReactElement | nul
   if (!id) return null
 
   const doc = typeof image === 'object' ? image : undefined
+  const altText = alt ?? doc?.alt ?? ''
   const naturalW = doc?.width ?? undefined
   const naturalH = doc?.height ?? undefined
-  const altText = alt ?? doc?.alt ?? ''
-  // Fill mode has no fixed ratio — the image is served at its natural ratio and CSS object-fit covers the parent.
-  const ar = fill ? undefined : (parseAspectRatio(aspectRatio) ?? (naturalW && naturalH ? naturalW / naturalH : undefined))
-
-  // LQIP placeholder: explicit prop wins, else the populated doc's generated blur.
   const blurSrc = blur ? (blurDataURL ?? doc?.blurDataUrl ?? undefined) : undefined
   const fadeOn = fade && Boolean(blurSrc)
+  const ar = fill ? undefined : (parseAspectRatio(aspectRatio) ?? (naturalW && naturalH ? naturalW / naturalH : undefined))
 
   const opts: BuildSrcsetOptions = {
     fit,
@@ -142,12 +137,10 @@ export const ResponsiveImage = (props: ResponsiveImageProps): ReactElement | nul
     pixelStep,
     sourceWidth: sourceWidth ?? naturalW,
     maxEntries,
-    // Explicit prop wins; else derive from the doc's filename + focal so an edit busts caches.
     version: version ?? deriveVersion(doc),
   }
   const { srcset, src } = buildSrcset(id, opts)
 
-  // Intrinsic attributes to reserve layout (reduce CLS).
   const intrinsicW = naturalW ?? (ar ? 1280 : undefined)
   const intrinsicH = naturalH ?? (ar && intrinsicW ? Math.round(intrinsicW / ar) : undefined)
 
@@ -183,7 +176,7 @@ export const ResponsiveImage = (props: ResponsiveImageProps): ReactElement | nul
           ...(ar ? { aspectRatio: String(ar) } : null),
           objectFit: CSS_OBJECT_FIT[fit],
         }}
-        {...(dataAttributes as ImgHTMLAttributes<HTMLImageElement>)}
+        {...(dataAttributes as ImgHTMLAttributes<HTMLImageElement>)} //TODO: replace `as` cast with proper typing
       />
     </span>
   )

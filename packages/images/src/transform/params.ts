@@ -120,16 +120,11 @@ export const parseTransformParams = (q: QuerySource, c: TransformConstraints): P
   if (wRaw != null && wRaw <= 0) return { ok: false, error: 'invalid w' }
   if (hRaw != null && hRaw <= 0) return { ok: false, error: 'invalid h' }
 
-  // Honor the requested dimensions exactly (only clamped to `maxDimension`), so the
-  // variant's aspect ratio is exactly what the component asked for and the browser
-  // never re-crops it on display. The srcset's discrete widths (its configurable
-  // `pixelStep`) are what bound how many variants get generated — not server snapping.
   const cap = (n: number): number => clampInt(n, 1, c.maxDimension)
   let w = wRaw != null ? cap(Math.round(wRaw)) : undefined
   let h = hRaw != null ? cap(Math.round(hRaw)) : undefined
 
   if (ar) {
-    // Derive the missing side from the aspect ratio (exact — preserves the ratio).
     if (w != null && h == null) h = cap(Math.round(w / ar))
     else if (h != null && w == null) w = cap(Math.round(h * ar))
   }
@@ -137,13 +132,11 @@ export const parseTransformParams = (q: QuerySource, c: TransformConstraints): P
   if (w == null && h == null) return { ok: false, error: 'width or height required' }
 
   const fitRaw = read(q, 'fit')
-  const fit: Fit = FITS.includes(fitRaw as Fit) ? (fitRaw as Fit) : 'cover'
-
+  const fmtRaw = read(q, 'fmt')
   const qRaw = numeric(read(q, 'q'))
   const quality = qRaw == null ? c.defaultQuality : bucketQuality(qRaw, c.qualityRange)
-
-  const fmtRaw = read(q, 'fmt')
-  const fmt: Format = c.formats.includes(fmtRaw as Format) ? (fmtRaw as Format) : c.defaultFormat
+  const fit: Fit = FITS.includes(fitRaw as Fit) ? (fitRaw as Fit) : 'cover' //TODO: replace `as` cast with proper typing
+  const fmt: Format = c.formats.includes(fmtRaw as Format) ? (fmtRaw as Format) : c.defaultFormat //TODO: replace `as` cast with proper typing
 
   return { ok: true, params: { w, h, fit, q: quality, fmt } }
 }

@@ -41,7 +41,6 @@ export interface VersionSource {
   focalY?: number | null
 }
 
-// FNV-1a (32-bit) → base36. NOT cryptographic — a compact, stable cache-buster token.
 const fnv1a = (s: string): string => {
   let h = 0x811c9dc5
   for (let i = 0; i < s.length; i++) {
@@ -75,7 +74,6 @@ export const buildVariantUrl = (id: string, width: number, o: BuildUrlOptions = 
   params.set('fit', o.fit ?? 'cover')
   params.set('q', String(o.quality ?? 75))
   params.set('fmt', o.format ?? 'auto')
-  // Appended last so it reads as a trailing cache-buster; the server ignores it.
   if (o.version) params.set('v', o.version)
   return `${base}${apiPath}/${encodeURIComponent(id)}?${params.toString()}`
 }
@@ -88,8 +86,6 @@ export const buildVariantUrl = (id: string, width: number, o: BuildUrlOptions = 
  */
 export const stepWidths = (sourceWidth?: number, pixelStep = DEFAULT_PIXEL_STEP, maxWidth = 4096, maxEntries = 16): number[] => {
   const step = pixelStep > 0 ? pixelStep : DEFAULT_PIXEL_STEP
-  // Cap at the largest step multiple that doesn't exceed the source width (so we
-  // never request a larger-than-original image). With no source width, step to maxWidth.
   const cap = sourceWidth && sourceWidth > 0 ? Math.max(step, Math.floor(sourceWidth / step) * step) : maxWidth
   const top = Math.min(maxWidth, cap)
   let effective = step

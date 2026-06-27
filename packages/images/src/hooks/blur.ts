@@ -24,14 +24,14 @@ export interface BlurOptions {
   blur?: number
 }
 
-const DEFAULTS = { width: 32, height: 'auto' as number | 'auto', blur: 18 }
+const DEFAULTS = { width: 32, height: 'auto' as number | 'auto', blur: 18 } //TODO: replace `as` cast with proper typing
 
 /** Shrink + blur a source image buffer into a tiny base64 WebP data URL. */
 export const renderBlurDataUrl = async (src: Buffer, opts: BlurOptions = {}): Promise<string> => {
   const { width, height, blur } = { ...DEFAULTS, ...opts }
   const sharp = (await import('sharp')).default
   const buf = await sharp(src, { failOn: 'none' })
-    .rotate() // honor EXIF orientation, matching the transform endpoint
+    .rotate()
     .resize({ width, height: height === 'auto' ? undefined : height, withoutEnlargement: true })
     .blur(blur)
     .webp({ quality: 60 })
@@ -78,13 +78,14 @@ export interface BackfillBlurOptions extends BlurOptions {
  */
 export const backfillBlurDataUrls = async (payload: Payload, opts: BackfillBlurOptions = {}): Promise<number> => {
   const { sourceSlug = 'images', force = false, batchSize = 100, baseUrl, ...blurOpts } = opts
-  const slug = sourceSlug as Parameters<Payload['find']>[0]['collection']
+  const slug = sourceSlug as Parameters<Payload['find']>[0]['collection'] //TODO: replace `as` cast with proper typing
   const origin = baseUrl ?? process.env.NEXT_PUBLIC_SERVER_URL ?? undefined
   const staticDir = resolveStaticDir(payload, sourceSlug)
   let page = 1
   let updated = 0
   for (;;) {
     const { docs, hasNextPage } = await payload.find({ collection: slug, limit: batchSize, page, depth: 0, overrideAccess: true })
+    //TODO: replace `as` cast with proper typing
     for (const doc of docs as Array<UploadDocLike & { id: string | number; blurDataUrl?: string | null }>) {
       if (!force && doc.blurDataUrl) continue
       try {
@@ -93,6 +94,7 @@ export const backfillBlurDataUrls = async (payload: Payload, opts: BackfillBlurO
         await payload.update({
           collection: slug,
           id: doc.id,
+          //TODO: replace `as` cast with proper typing
           data: { blurDataUrl: await renderBlurDataUrl(bytes, blurOpts) } as Record<string, unknown>,
           overrideAccess: true,
         })
