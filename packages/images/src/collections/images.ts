@@ -4,7 +4,6 @@ import type { CollectionConfig, CollectionSlug, Field, ImageSize, ImageUploadFor
 import { anyone, authd } from '../access'
 import { GENERATED_IMAGES_SLUG } from './generatedImages'
 import { IMAGE_MIME_TYPES } from '../transform/params'
-import { type BlurOptions, generateBlurDataUrl } from '../hooks/blur'
 import { purgeStaleVariantsAfterChange, purgeVariantsBeforeDelete } from '../hooks/purge'
 
 const formatOptions: ImageUploadFormatOptions = { format: 'webp', options: { nearLossless: true, quality: 75 } }
@@ -34,12 +33,6 @@ export interface CreateImagesOptions {
   variantSlug?: string
   /** Purge route (under the API base) the purge button POSTs to. Default `/img/purge`. */
   purgePath?: string
-  /**
-   * Generate an LQIP blur placeholder on upload, stored in `blurDataUrl` and read by
-   * `<ResponsiveImage>`. `true` (default) uses the defaults; pass an object to tune
-   * `width` / `height` / `blur`; `false` adds neither the field nor the hook.
-   */
-  blur?: boolean | BlurOptions
 }
 
 /**
@@ -47,13 +40,13 @@ export interface CreateImagesOptions {
  * sizes by default); keeps Payload's built-in `focalPoint` (the focal component
  * enhances it). The on-demand transform endpoint serves every rendered variant and
  * records it in the generated-images collection, surfaced here via the `variants`
- * join and purged by the change/delete hooks.
+ * join and purged by the change/delete hooks. The LQIP placeholder is derived on the
+ * frontend from the smallest transform variant — there's no stored placeholder field.
  */
 export const createImagesCollection = (opts: CreateImagesOptions = {}): CollectionConfig => {
-  const { pregenerateSizes = false, focalUI = true, previewRatios, purgePath, blur = true } = opts
+  const { pregenerateSizes = false, focalUI = true, previewRatios, purgePath } = opts
   const variantSlug = (opts.variantSlug || GENERATED_IMAGES_SLUG) as CollectionSlug //TODO: replace `as` cast with proper typing
   const imageSizes = pregenerateSizes === true ? LEGACY_IMAGE_SIZES : Array.isArray(pregenerateSizes) ? pregenerateSizes : undefined
-  const blurOptions: BlurOptions | undefined = blur === true ? {} : blur || undefined
 
   const adminFields: Field[] = focalUI
     ? [
@@ -76,8 +69,6 @@ export const createImagesCollection = (opts: CreateImagesOptions = {}): Collecti
     admin: { group: 'Assets', enableListViewSelectAPI: true, useAsTitle: 'alt', defaultColumns: ['alt', 'updatedAt'] },
     fields: [
       { name: 'alt', type: 'text', required: true },
-      //TODO: replace `as` cast with proper typing
-      ...(blurOptions ? [{ name: 'blurDataUrl', type: 'text', admin: { hidden: true, readOnly: true } } as Field] : []),
       ...adminFields,
       {
         name: 'variants',
@@ -88,7 +79,6 @@ export const createImagesCollection = (opts: CreateImagesOptions = {}): Collecti
       },
     ],
     hooks: {
-      ...(blurOptions ? { beforeChange: [generateBlurDataUrl(blurOptions)] } : {}),
       afterChange: [revalidateCacheCollectionAfterChange, purgeStaleVariantsAfterChange({ variantSlug })],
       beforeDelete: [purgeVariantsBeforeDelete({ variantSlug })],
       afterDelete: [revalidateCacheOnDelete],

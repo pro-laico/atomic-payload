@@ -33,13 +33,10 @@ describe('createImagesCollection', () => {
     expect((join as { on?: string }).on).toBe('source')
   })
 
-  it('adds the blurDataUrl field + a beforeChange hook by default, and drops both when blur is false', () => {
-    const on = createImagesCollection()
-    expect(byName(on.fields, 'blurDataUrl')).toBeTruthy()
-    expect(on.hooks?.beforeChange).toHaveLength(1)
-    const off = createImagesCollection({ blur: false })
-    expect(byName(off.fields, 'blurDataUrl')).toBeUndefined()
-    expect(off.hooks?.beforeChange ?? []).toHaveLength(0)
+  it('stores no LQIP placeholder field or beforeChange hook (the placeholder is derived on the frontend)', () => {
+    const c = createImagesCollection()
+    expect(byName(c.fields, 'blurDataUrl')).toBeUndefined()
+    expect(c.hooks?.beforeChange ?? []).toHaveLength(0)
   })
 
   it('renders the focal + purge UI fields only when focalUI is on', () => {

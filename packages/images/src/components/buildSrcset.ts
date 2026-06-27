@@ -9,9 +9,8 @@ import { DEFAULT_PIXEL_STEP, parseAspectRatio, type Fit, type Format } from '../
 export { DEFAULT_PIXEL_STEP }
 
 /**
- * Default base for transform URLs: `/api` + the plugin's default `/img` endpoint path.
- * If you set `imagesPlugin`'s `transform.path`, pass the matching `path` here (and to
- * `<ResponsiveImage path>`) or every generated URL 404s.
+ * Default base for transform URLs: `/api` + the endpoint's fixed `/img` path. Override
+ * `path` only if your Payload API route or Next.js basePath differs from the default.
  */
 export const DEFAULT_TRANSFORM_API_PATH = '/api/img'
 
@@ -23,7 +22,7 @@ export interface BuildUrlOptions {
   aspectRatio?: number | string
   /** Prefix for absolute URLs (e.g. `https://site.com`). Default '' (same-origin). */
   baseUrl?: string
-  /** Endpoint base path. Default `/api/img` ({@link DEFAULT_TRANSFORM_API_PATH}). */
+  /** Endpoint base. Default `/api/img` ({@link DEFAULT_TRANSFORM_API_PATH}); override only for a custom API route / basePath. */
   path?: string
   /**
    * Cache-busting version token appended as `v=`. Derive it from the source doc with
@@ -62,6 +61,30 @@ export const deriveVersion = (src?: VersionSource | null): string | undefined =>
   const { filename, focalX, focalY } = src
   if (filename == null && focalX == null && focalY == null) return undefined
   return fnv1a(`${filename ?? ''}|${focalX ?? ''}|${focalY ?? ''}`)
+}
+
+/** A bare id, or a populated image doc (so the version token + a default width can be read off it). */
+export type ImageResource = string | number | ({ id: string | number; width?: number | null } & VersionSource) | null | undefined
+
+export interface GetImageUrlOptions extends BuildUrlOptions {
+  /** Output width. Falls back to a populated doc's intrinsic width, else 1280. */
+  width?: number
+}
+
+/**
+ * One transform URL for an image, taking the id OR a populated doc directly: it resolves the
+ * id, picks a sensible default width, and (for a doc) folds in the cache-busting version
+ * automatically — so you don't re-implement the resolve-and-`deriveVersion` dance every time
+ * you need a raw URL (OG tags, CSS backgrounds, emails). Returns null when there's no id.
+ * For a responsive `<img>`, prefer `<ResponsiveImage>` / {@link buildSrcset}.
+ */
+export const getImageUrl = (resource: ImageResource, o: GetImageUrlOptions = {}): string | null => {
+  if (resource == null) return null
+  const doc = typeof resource === 'object' ? resource : undefined
+  const id = doc ? (doc.id == null ? '' : String(doc.id)) : String(resource)
+  if (!id) return null
+  const width = o.width ?? doc?.width ?? 1280
+  return buildVariantUrl(id, width, { ...o, version: o.version ?? deriveVersion(doc) })
 }
 
 export const buildVariantUrl = (id: string, width: number, o: BuildUrlOptions = {}): string => {

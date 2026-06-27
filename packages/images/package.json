@@ -1,7 +1,7 @@
 {
   "name": "@pro-laico/images",
   "version": "0.4.2",
-  "description": "Atomic Payload images package. Provides Images + Favicons Payload upload collections, on-demand Sharp transforms with built-in LQIP blur placeholders, a FaviconField helper, an ImageChild block factory, and a plugin factory.",
+  "description": "Atomic Payload images package. Provides Images + Favicons Payload upload collections, on-demand Sharp transforms with built-in LQIP placeholders (derived from the smallest variant), a FaviconField helper, an ImageChild block factory, and a plugin factory.",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -41,10 +41,6 @@
       "./components/buildSrcset": {
         "types": "./dist/components/buildSrcset.d.ts",
         "default": "./dist/components/buildSrcset.js"
-      },
-      "./endpoints/transform": {
-        "types": "./dist/endpoints/transform.d.ts",
-        "default": "./dist/endpoints/transform.js"
       },
       "./admin/focalPreview": {
         "types": "./dist/components/admin/focalPreview.d.ts",
@@ -86,10 +82,6 @@
     "./components/buildSrcset": {
       "types": "./src/components/buildSrcset.ts",
       "default": "./src/components/buildSrcset.ts"
-    },
-    "./endpoints/transform": {
-      "types": "./src/endpoints/transform.ts",
-      "default": "./src/endpoints/transform.ts"
     },
     "./admin/focalPreview": {
       "types": "./src/components/admin/focalPreview.tsx",

@@ -1,20 +1,21 @@
 /**
- * `<ResponsiveImage>` — a wrapper holding the LQIP blur placeholder, with a plain
- * `<img>` (a `srcset` of on-demand transform URLs, settings baked into each entry)
- * that fades in over the blur on load. It needs only the image id; the endpoint
- * reads the focal point and crops server-side. The markup renders on the server;
- * only the tiny fade `<img>` (`FadeImg`) is a client component. Not `next/image`.
+ * `<ResponsiveImage>` — a wrapper carrying an LQIP placeholder (the smallest transform
+ * variant, set as the wrapper's background and upscaled by the browser to a soft blur),
+ * with a plain `<img>` (a `srcset` of on-demand transform URLs, settings baked into each
+ * entry) painted over it: the placeholder shows until the real image downloads and covers
+ * it. It needs only the image id; the endpoint reads the focal point and crops server-side.
+ * Fully server-rendered — no client component, no hydration, no stored placeholder field —
+ * so it drops into any server OR client tree. Not `next/image`.
  *
  * `className` / `style` go on the wrapper (the image "box" — size/space/round it
  * with utilities there); `dataAttributes` go on the `<img>`.
  */
 import type { CSSProperties, ImgHTMLAttributes, ReactElement } from 'react'
 
-import { FadeImg } from './image.client'
 import { parseAspectRatio, type Fit, type Format } from '../transform/params'
-import { type BuildSrcsetOptions, buildSrcset, deriveVersion } from './buildSrcset'
+import { type BuildSrcsetOptions, buildSrcset, buildVariantUrl, deriveVersion } from './buildSrcset'
 
-/** A bare id, or a populated image doc (for natural dims, alt, blur placeholder, and the cache-busting version token). */
+/** A bare id, or a populated image doc (for natural dims, alt, and the cache-busting version token). */
 export type ResponsiveImageInput =
   | string
   | number
@@ -23,11 +24,14 @@ export type ResponsiveImageInput =
       width?: number | null
       height?: number | null
       alt?: string | null
-      blurDataUrl?: string | null
       filename?: string | null
       focalX?: number | null
       focalY?: number | null
     }
+
+/** Width / quality of the LQIP placeholder variant — tiny on purpose; the browser upscales it to a soft blur. */
+const PLACEHOLDER_WIDTH = 32
+const PLACEHOLDER_QUALITY = 40
 
 export interface ResponsiveImageProps {
   image: ResponsiveImageInput
@@ -40,8 +44,8 @@ export interface ResponsiveImageProps {
    * Cover-fill a height-driven parent instead of acting as an aspect-ratio box. The wrapper
    * becomes `position:absolute; inset:0; size:100%` and the `<img>` renders `width/height:100%`
    * with `object-fit:<fit>` and NO aspect-ratio — so it fills a parent that sets its own height
-   * (full-bleed hero, carousel slide, map panel). The parent must be positioned. Blur + fade
-   * still apply. Default false.
+   * (full-bleed hero, carousel slide, map panel). The parent must be positioned. The placeholder
+   * still applies. Default false.
    */
   fill?: boolean
   quality?: number
@@ -62,18 +66,12 @@ export interface ResponsiveImageProps {
   style?: CSSProperties
   /** Absolute base for the generated URLs (default same-origin). */
   baseUrl?: string
-  /** Transform endpoint base path. Default `/api/img`; set this if you customized the plugin's `transform.path`. */
+  /** Transform endpoint base. Default `/api/img`; set it only if your Payload API route or Next.js basePath differs. */
   path?: string
   /** Explicit cache-busting version token (`v=`); overrides the one derived from the doc's filename + focal. */
   version?: string
-  /** Show the blur placeholder (auto-read from a populated doc's `blurDataUrl`). Default true. */
+  /** Show the LQIP placeholder (a tiny transform variant, painted as the wrapper background). Default true. */
   blur?: boolean
-  /** Explicit LQIP/blur data URL; overrides a populated doc's `blurDataUrl`. */
-  blurDataURL?: string
-  /** Fade the image in over the blur on load. Default true (only applies when a blur exists). */
-  fade?: boolean
-  /** Fade duration in ms. Default 400. */
-  fadeDurationMs?: number
   /** Extra attributes (e.g. `data-*`) spread onto the `<img>`. */
   dataAttributes?: Record<string, string>
 }
@@ -110,9 +108,6 @@ export const ResponsiveImage = (props: ResponsiveImageProps): ReactElement | nul
     path,
     version,
     blur = true,
-    blurDataURL,
-    fade = true,
-    fadeDurationMs = 400,
     dataAttributes,
   } = props
 
@@ -123,8 +118,6 @@ export const ResponsiveImage = (props: ResponsiveImageProps): ReactElement | nul
   const altText = alt ?? doc?.alt ?? ''
   const naturalW = doc?.width ?? undefined
   const naturalH = doc?.height ?? undefined
-  const blurSrc = blur ? (blurDataURL ?? doc?.blurDataUrl ?? undefined) : undefined
-  const fadeOn = fade && Boolean(blurSrc)
   const ar = fill ? undefined : (parseAspectRatio(aspectRatio) ?? (naturalW && naturalH ? naturalW / naturalH : undefined))
 
   const opts: BuildSrcsetOptions = {
@@ -140,6 +133,9 @@ export const ResponsiveImage = (props: ResponsiveImageProps): ReactElement | nul
     version: version ?? deriveVersion(doc),
   }
   const { srcset, src } = buildSrcset(id, opts)
+  // The LQIP placeholder is the smallest transform variant (a tiny, low-quality crop sharing the
+  // same fit/format/focal/version); the browser upscales it to a soft blur behind the real image.
+  const blurSrc = blur ? buildVariantUrl(id, PLACEHOLDER_WIDTH, { ...opts, quality: PLACEHOLDER_QUALITY }) : undefined
 
   const intrinsicW = naturalW ?? (ar ? 1280 : undefined)
   const intrinsicH = naturalH ?? (ar && intrinsicW ? Math.round(intrinsicW / ar) : undefined)
@@ -158,7 +154,9 @@ export const ResponsiveImage = (props: ResponsiveImageProps): ReactElement | nul
         ...style,
       }}
     >
-      <FadeImg
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      {/* biome-ignore lint/performance/noImgElement: intentional plain <img> — a hand-built srcset + LQIP that next/image would defeat */}
+      <img
         src={src}
         srcSet={srcset}
         sizes={sizes}
@@ -168,8 +166,7 @@ export const ResponsiveImage = (props: ResponsiveImageProps): ReactElement | nul
         loading={priority ? 'eager' : (loading ?? 'lazy')}
         fetchPriority={priority ? 'high' : undefined}
         decoding={decoding}
-        fadeMs={fadeOn ? fadeDurationMs : 0}
-        baseStyle={{
+        style={{
           display: 'block',
           width: '100%',
           height: fill ? '100%' : 'auto',

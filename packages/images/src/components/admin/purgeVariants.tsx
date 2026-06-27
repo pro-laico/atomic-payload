@@ -9,8 +9,8 @@ import { toast, useConfig, useDocumentInfo } from '@payloadcms/ui'
  * (POST `<apiRoute><purgePath>/:id`, logged-in users only). Useful after editing the
  * focal point or re-uploading, or to reclaim storage. Only shown on a saved doc.
  *
- * `purgePath` is passed by the plugin so it tracks a customized `transform.path`.
- * The POST is authenticated by Payload's session cookie (SameSite-protected).
+ * `purgePath` defaults to the endpoint's fixed `/img/purge` route. The POST is
+ * authenticated by Payload's session cookie (SameSite-protected).
  */
 interface PurgeVariantsProps {
   /** Purge route under the API base. Default `/img/purge`. */

@@ -34,8 +34,6 @@ import {
 } from '../transform/params'
 
 export interface TransformEndpointConfig extends Partial<TransformConstraints> {
-  /** Endpoint base path. Default `/img` (→ `/api/img`). Never name a collection this. */
-  path?: string
   /** Source image collection slug. Default `images`. */
   sourceSlug?: string
   /** Generated-images collection slug. Default `generatedImages`. */
@@ -89,9 +87,9 @@ const routeId = (req: PayloadRequest): string => {
 
 const isDuplicateKeyError = (err: unknown): boolean => /duplicate|unique/i.test(err instanceof Error ? err.message : String(err))
 
-/** GET `<path>/:id?w&h&ar&fit&q&fmt` — on-demand transform with focal-aware crop. */
+/** GET `/img/:id?w&h&ar&fit&q&fmt` — on-demand transform with focal-aware crop. */
 export const createTransformEndpoint = (cfg: TransformEndpointConfig = {}): Endpoint => {
-  const path = cfg.path || '/img'
+  const path = '/img'
   const sourceSlug = (cfg.sourceSlug || 'images') as CollectionSlug //TODO: replace `as` cast with proper typing
   const variantSlug = (cfg.variantSlug || GENERATED_IMAGES_SLUG) as CollectionSlug //TODO: replace `as` cast with proper typing
   const cdn = cfg.cdnCacheControl !== false
@@ -221,8 +219,6 @@ export const createTransformEndpoint = (cfg: TransformEndpointConfig = {}): Endp
 }
 
 export interface PurgeEndpointConfig {
-  /** Base path for the purge route. Default `/img/purge` (→ `/api/img/purge/:id`). */
-  path?: string
   /** Generated-images collection slug. Default `generatedImages`. */
   variantSlug?: string
   /** Source image collection slug (purge is authorized against read access to it). Default `images`. */
@@ -230,12 +226,12 @@ export interface PurgeEndpointConfig {
 }
 
 /**
- * POST `<path>/:id` — delete all generated variants of a source image. Requires a
+ * POST `/img/purge/:id` — delete all generated variants of a source image. Requires a
  * logged-in user who can READ that source (so a user can't purge—and force costly
  * regeneration of—variants for images they can't even see).
  */
 export const createPurgeEndpoint = (cfg: PurgeEndpointConfig = {}): Endpoint => {
-  const path = cfg.path || '/img/purge'
+  const path = '/img/purge'
   const variantSlug = cfg.variantSlug || GENERATED_IMAGES_SLUG
   const sourceSlug = (cfg.sourceSlug || 'images') as CollectionSlug //TODO: replace `as` cast with proper typing
 

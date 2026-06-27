@@ -308,8 +308,8 @@ export async function SSRProps<T extends ChildBlocks[number]>(block: T): Promise
       if (quality != null) c.p.quality = quality
       if (aspectRatio) c.p.aspectRatio = aspectRatio
       if (fit) c.p.fit = fit
-      // The component auto-reads the generated `blurDataUrl` from the populated
-      // `image` it receives; just forward whether the editor wants it shown.
+      // The component derives the LQIP placeholder from the smallest transform variant;
+      // just forward whether the editor wants it shown.
       if (typeof blur === 'boolean') c.p.blur = blur
 
       // A full-width image: 100vw up to the largest breakpoint, then capped at it.

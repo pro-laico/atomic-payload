@@ -1,6 +1,5 @@
 import type { CollectionConfig, Config, ImageSize, Plugin } from 'payload'
 
-import type { BlurOptions } from './hooks/blur'
 import { mergeCollection } from '@pro-laico/core'
 import { Favicons } from './collections/favicons'
 import { createImagesCollection } from './collections/images'
@@ -40,13 +39,6 @@ export interface ImagesPluginOptions {
   focalUI?: boolean
   /** Aspect ratios shown in the focal preview tiles. */
   previewRatios?: string[]
-  /**
-   * LQIP blur placeholder generated on upload into `blurDataUrl` (read by
-   * `<ResponsiveImage>`). `true` (default) uses the defaults; pass an object to tune
-   * `width` / `height` / `blur`; `false` disables it entirely. Replaces the old
-   * `@oversightstudio/blur-data-urls` wiring — no extra dependency or setup.
-   */
-  blur?: boolean | BlurOptions
 }
 
 /**
@@ -54,11 +46,11 @@ export interface ImagesPluginOptions {
  * collections, the `Favicons` collection, and the on-demand transform + purge
  * endpoints.
  *
- * LQIP blur placeholders are built in (Sharp shrink + blur on upload, stored in
- * `blurDataUrl`); tune or disable them with the `blur` option — no external plugin.
+ * The LQIP placeholder is derived on the frontend by `<ResponsiveImage>` from the
+ * smallest transform variant — nothing is stored on the source doc.
  *
- * The transform endpoint mounts at `/api${transform.path ?? '/img'}`; do not name a
- * collection after that first path segment (default `img`).
+ * The transform endpoint mounts at `/api/img`; do not name a collection `img` or it
+ * shadows the endpoint.
  */
 export const imagesPlugin =
   (opts: ImagesPluginOptions = {}): Plugin =>
@@ -73,17 +65,16 @@ export const imagesPlugin =
       transform = {},
       focalUI = true,
       previewRatios,
-      blur = true,
     } = opts
     if (!enabled) return config
 
     const transformCfg: TransformEndpointConfig = transform === false ? {} : transform
     const variantSlug = transformCfg.variantSlug || GENERATED_IMAGES_SLUG
     const sourceSlug = transformCfg.sourceSlug || 'images'
-    const basePath = transformCfg.path || '/img'
+    const basePath = '/img'
 
     const images = mergeCollection(
-      createImagesCollection({ pregenerateSizes, focalUI, previewRatios, variantSlug, purgePath: `${basePath}/purge`, blur }),
+      createImagesCollection({ pregenerateSizes, focalUI, previewRatios, variantSlug, purgePath: `${basePath}/purge` }),
       imagesOptions,
     )
     const generated = mergeCollection(createGeneratedImagesCollection({ slug: variantSlug }), generatedImagesOptions)
@@ -96,7 +87,7 @@ export const imagesPlugin =
         ? config.endpoints
         : [
             ...(config.endpoints ?? []),
-            createPurgeEndpoint({ path: `${basePath}/purge`, variantSlug, sourceSlug }),
+            createPurgeEndpoint({ variantSlug, sourceSlug }),
             createTransformEndpoint({ ...transformCfg, variantSlug }),
           ]
 
@@ -111,7 +102,7 @@ export const imagesPlugin =
         await config.onInit?.(payload)
         if (shadowed) {
           payload.logger.warn(
-            `[images] a collection is named "${baseSegment}", which shadows the transform endpoint at /api/${baseSegment} — set imagesPlugin's transform.path to a non-colliding base.`,
+            `[images] a collection is named "${baseSegment}", which shadows the transform endpoint at /api/${baseSegment} — rename the collection so it doesn't collide.`,
           )
         }
       },
