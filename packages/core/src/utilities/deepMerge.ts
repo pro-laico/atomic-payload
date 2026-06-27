@@ -1,7 +1,7 @@
 // @ts-nocheck
 
 export function isObject(item: unknown): item is object {
-  return typeof item === 'object' && !Array.isArray(item)
+  return typeof item === 'object' && item !== null && !Array.isArray(item)
 }
 
 export default function deepMerge<T, R>(target: T, source: R): T {

@@ -13,6 +13,7 @@
  */
 import type { CollectionBeforeChangeHook, Payload } from 'payload'
 
+import { loadSharp } from '../transform/sharpInstance'
 import { readBytes, resolveStaticDir, type UploadDocLike } from '../transform/source'
 
 export interface BlurOptions {
@@ -29,7 +30,7 @@ const DEFAULTS = { width: 32, height: 'auto' as number | 'auto', blur: 18 } //TO
 /** Shrink + blur a source image buffer into a tiny base64 WebP data URL. */
 export const renderBlurDataUrl = async (src: Buffer, opts: BlurOptions = {}): Promise<string> => {
   const { width, height, blur } = { ...DEFAULTS, ...opts }
-  const sharp = (await import('sharp')).default
+  const sharp = await loadSharp()
   const buf = await sharp(src, { failOn: 'none' })
     .rotate()
     .resize({ width, height: height === 'auto' ? undefined : height, withoutEnlargement: true })

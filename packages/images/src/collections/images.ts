@@ -3,6 +3,7 @@ import type { CollectionConfig, CollectionSlug, Field, ImageSize, ImageUploadFor
 
 import { anyone, authd } from '../access'
 import { GENERATED_IMAGES_SLUG } from './generatedImages'
+import { IMAGE_MIME_TYPES } from '../transform/params'
 import { type BlurOptions, generateBlurDataUrl } from '../hooks/blur'
 import { purgeStaleVariantsAfterChange, purgeVariantsBeforeDelete } from '../hooks/purge'
 
@@ -92,7 +93,7 @@ export const createImagesCollection = (opts: CreateImagesOptions = {}): Collecti
       beforeDelete: [purgeVariantsBeforeDelete({ variantSlug })],
       afterDelete: [revalidateCacheOnDelete],
     },
-    upload: { focalPoint: true, mimeTypes: ['image/png', 'image/jpeg', 'image/webp', 'image/avif'], ...(imageSizes ? { imageSizes } : {}) },
+    upload: { focalPoint: true, mimeTypes: IMAGE_MIME_TYPES, ...(imageSizes ? { imageSizes } : {}) },
   }
 }
 

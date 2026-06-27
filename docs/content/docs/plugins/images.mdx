@@ -271,6 +271,10 @@ See [Caching & revalidation](/docs/concepts/caching) for how the tags work.
     qualityRange: { type: '[number, number]', default: '[40, 95]', description: 'Allowed quality range; requested values are clamped into it.' },
     defaultFormat: { type: 'Format', default: "'auto'", description: 'Output format used when a request omits `fmt` (`auto` negotiates from the Accept header).' },
     formats: { type: 'Format[]', default: "['auto','avif','webp','jpeg','png']", description: 'Output formats the endpoint may emit.' },
+    preferAvif: { type: 'boolean', default: 'false', description: 'Auto-negotiate AVIF when the browser accepts it. Off by default — AVIF encodes far slower than WebP, so `fmt=auto` serves WebP for a fast cold path (AVIF stays available on an explicit `fmt=avif`).' },
+    dimensionStep: { type: 'number', default: '50', description: 'Snap requested `w`/`h` to a grid of this many px before transforming + caching, bounding the variant space as an anti-DoS measure. Matches the default srcset `pixelStep`, so well-behaved widths pass through unchanged; set `<= 1` to honor exact dimensions.' },
+    maxConcurrency: { type: 'number', default: 'cpus - 1', description: 'Max concurrent Sharp transforms in this process (or `IMAGES_TRANSFORM_CONCURRENCY`). Bounds CPU/memory when a cold page requests many srcset widths at once.' },
+    sharpConcurrency: { type: 'number', default: '1', description: 'Per-image libvips thread cap (or `IMAGES_SHARP_CONCURRENCY`); `0` resets to CPU-core count. Defaults to 1 for serverless safety since `maxConcurrency` already provides cross-image parallelism.' },
   }}
 />
 
@@ -311,6 +315,10 @@ imagesPlugin({
     qualityRange: [40, 95],
     defaultFormat: 'auto',
     formats: ['auto', 'avif', 'webp', 'jpeg', 'png'],
+    preferAvif: false, // auto serves WebP; set true to prefer AVIF in fmt=auto
+    dimensionStep: 50, // snap w/h to a 50px grid (anti-DoS); <= 1 disables
+    // maxConcurrency: cpus - 1, // cross-image transform gate
+    // sharpConcurrency: 1, // per-image libvips threads (0 = CPU cores)
   },
 })
 ```
@@ -320,6 +328,8 @@ imagesPlugin({
 | Variable | Purpose |
 | --- | --- |
 | `NEXT_PUBLIC_SERVER_URL` | The origin the transform endpoint uses to read the original when the storage adapter reports a relative or cloud URL. Set it to your deployment URL; it falls back to `http://localhost:3000`, so generation fails in production if it's unset (surfacing as a `502`). |
+| `IMAGES_TRANSFORM_CONCURRENCY` | Max concurrent Sharp transforms in the process (overrides the `cpus - 1` default). The `transform.maxConcurrency` option takes precedence. |
+| `IMAGES_SHARP_CONCURRENCY` | Per-image libvips thread cap (overrides the default of `1`; `0` = CPU-core count). The `transform.sharpConcurrency` option takes precedence. |
 
 ## Exports
 

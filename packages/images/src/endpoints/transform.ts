@@ -16,6 +16,8 @@ import type { CollectionSlug, Endpoint, Payload, PayloadRequest } from 'payload'
 import { variantCacheKey } from '../variants/key'
 import { getServerSideURL } from '@pro-laico/core'
 import { purgeVariantsForSource } from '../hooks/purge'
+import { setTransformConcurrency } from '../transform/limit'
+import { setSharpConcurrency } from '../transform/sharpInstance'
 import { GENERATED_IMAGES_SLUG } from '../collections/generatedImages'
 import { transformImage, type TransformOutput } from '../transform/sharp'
 import { readBytes, resolveStaticDir, type UploadDocLike } from '../transform/source'
@@ -39,6 +41,10 @@ export interface TransformEndpointConfig extends Partial<TransformConstraints> {
   variantSlug?: string
   /** Also emit `CDN-Cache-Control` / `Vercel-CDN-Cache-Control` (edge caching). Default true. */
   cdnCacheControl?: boolean
+  /** Max concurrent Sharp transforms in this process (default `cpus - 1`, or `IMAGES_TRANSFORM_CONCURRENCY`). */
+  maxConcurrency?: number
+  /** Per-image libvips thread cap (default 1 for serverless safety; `0` = CPU cores, or `IMAGES_SHARP_CONCURRENCY`). */
+  sharpConcurrency?: number
 }
 
 type SourceDoc = UploadDocLike & { id: string | number; focalX?: number | null; focalY?: number | null }
@@ -54,6 +60,8 @@ const resolveConstraints = (cfg: TransformEndpointConfig): TransformConstraints 
   defaultQuality: cfg.defaultQuality ?? DEFAULT_CONSTRAINTS.defaultQuality,
   formats: cfg.formats ?? DEFAULT_CONSTRAINTS.formats,
   defaultFormat: cfg.defaultFormat ?? DEFAULT_CONSTRAINTS.defaultFormat,
+  preferAvif: cfg.preferAvif ?? DEFAULT_CONSTRAINTS.preferAvif,
+  dimensionStep: cfg.dimensionStep ?? DEFAULT_CONSTRAINTS.dimensionStep,
 })
 
 const buildHeaders = (mime: string, key: string, isAuto: boolean, cdn: boolean, isPublic: boolean): Record<string, string> => {
@@ -84,6 +92,8 @@ export const createTransformEndpoint = (cfg: TransformEndpointConfig = {}): Endp
   const variantSlug = (cfg.variantSlug || GENERATED_IMAGES_SLUG) as CollectionSlug //TODO: replace `as` cast with proper typing
   const cdn = cfg.cdnCacheControl !== false
   const constraints = resolveConstraints(cfg)
+  setTransformConcurrency(cfg.maxConcurrency)
+  setSharpConcurrency(cfg.sharpConcurrency)
 
   return {
     path: `${path}/:id`,
@@ -115,12 +125,10 @@ export const createTransformEndpoint = (cfg: TransformEndpointConfig = {}): Endp
 
       const isAuto = p.fmt === 'auto'
       //TODO: replace `as` cast with proper typing
-      const format: OutputFormat = isAuto ? negotiateFormat(req.headers.get('accept'), constraints.formats) : (p.fmt as Exclude<Format, 'auto'>)
+      const format: OutputFormat = isAuto
+        ? negotiateFormat(req.headers.get('accept'), constraints.formats, constraints.preferAvif)
+        : (p.fmt as Exclude<Format, 'auto'>)
       const key = variantCacheKey({ id: source.id, filename: source.filename, focalX: source.focalX, focalY: source.focalY }, p, format)
-
-      if (req.headers.get('if-none-match') === `"${key}"`) {
-        return new Response(null, { status: 304, headers: buildHeaders(mimeForFormat(format), key, isAuto, cdn, isPublic) })
-      }
 
       try {
         const hit = await payload.find({

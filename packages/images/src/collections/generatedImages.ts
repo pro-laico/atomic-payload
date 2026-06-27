@@ -1,6 +1,7 @@
 import type { CollectionConfig, CollectionSlug } from 'payload'
 
 import { authd } from '../access'
+import { IMAGE_MIME_TYPES } from '../transform/params'
 
 export const GENERATED_IMAGES_SLUG = 'generatedImages'
 
@@ -52,7 +53,7 @@ export const createGeneratedImagesCollection = (opts: CreateGeneratedImagesOptio
         ],
       },
     ],
-    upload: { mimeTypes: ['image/avif', 'image/webp', 'image/jpeg', 'image/png'] },
+    upload: { mimeTypes: IMAGE_MIME_TYPES },
   }
 }
 

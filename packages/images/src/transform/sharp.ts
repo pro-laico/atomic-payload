@@ -5,6 +5,8 @@
  */
 import type { Sharp } from 'sharp'
 
+import { withTransformLimit } from './limit'
+import { loadSharp } from './sharpInstance'
 import { coverCropGeometry, fitWithinSource } from './geometry'
 import { type Fit, mimeForFormat, type OutputFormat } from './params'
 
@@ -44,23 +46,28 @@ const encode = (pipeline: Sharp, format: OutputFormat, quality: number): Sharp =
   }
 }
 
-/** Transform a source image buffer: focal cover-crop (or plain resize for other fits) + encode. */
-export const transformImage = async (src: Buffer, input: TransformInput): Promise<TransformOutput> => {
-  const sharp = (await import('sharp')).default
-  let pipeline = sharp(src, { failOn: 'none', limitInputPixels: MAX_INPUT_PIXELS }).rotate()
-  const meta = await pipeline.metadata()
-  const swapped = (meta.orientation ?? 1) >= 5
-  const sw = (swapped ? meta.height : meta.width) ?? 0
-  const sh = (swapped ? meta.width : meta.height) ?? 0
+/**
+ * Transform a source image buffer: focal cover-crop (or plain resize for other fits) +
+ * encode. The CPU-bound work runs behind {@link withTransformLimit} so a burst of
+ * concurrent srcset requests can't saturate the host.
+ */
+export const transformImage = (src: Buffer, input: TransformInput): Promise<TransformOutput> =>
+  withTransformLimit(async () => {
+    const sharp = await loadSharp()
+    let pipeline = sharp(src, { failOn: 'none', limitInputPixels: MAX_INPUT_PIXELS }).rotate()
+    const meta = await pipeline.metadata()
+    const swapped = (meta.orientation ?? 1) >= 5
+    const sw = (swapped ? meta.height : meta.width) ?? 0
+    const sh = (swapped ? meta.width : meta.height) ?? 0
 
-  if (input.fit === 'cover' && input.w != null && input.h != null && sw > 0 && sh > 0) {
-    const { w: tw, h: th } = fitWithinSource(input.w, input.h, sw, sh)
-    const g = coverCropGeometry(sw, sh, tw, th, input.focalX ?? 50, input.focalY ?? 50)
-    pipeline = pipeline.resize(g.resizeWidth, g.resizeHeight).extract({ left: g.left, top: g.top, width: g.width, height: g.height })
-  } else {
-    pipeline = pipeline.resize({ width: input.w, height: input.h, fit: input.fit, withoutEnlargement: true })
-  }
+    if (input.fit === 'cover' && input.w != null && input.h != null && sw > 0 && sh > 0) {
+      const { w: tw, h: th } = fitWithinSource(input.w, input.h, sw, sh)
+      const g = coverCropGeometry(sw, sh, tw, th, input.focalX ?? 50, input.focalY ?? 50)
+      pipeline = pipeline.resize(g.resizeWidth, g.resizeHeight).extract({ left: g.left, top: g.top, width: g.width, height: g.height })
+    } else {
+      pipeline = pipeline.resize({ width: input.w, height: input.h, fit: input.fit, withoutEnlargement: true })
+    }
 
-  const { data, info } = await encode(pipeline, input.format, input.quality).toBuffer({ resolveWithObject: true })
-  return { data, format: input.format, width: info.width, height: info.height, mimeType: mimeForFormat(input.format) }
-}
+    const { data, info } = await encode(pipeline, input.format, input.quality).toBuffer({ resolveWithObject: true })
+    return { data, format: input.format, width: info.width, height: info.height, mimeType: mimeForFormat(input.format) }
+  })
