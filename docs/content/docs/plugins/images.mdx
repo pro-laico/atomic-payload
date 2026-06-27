@@ -237,6 +237,20 @@ There are three caches working together, and the plugin keeps them honest:
 
 See [Caching & revalidation](/docs/concepts/caching) for how the tags work.
 
+## Security & abuse limits
+
+The transform endpoint is public-facing, so it's bounded on several fronts:
+
+- **Access control.** Source reads run with the collection's access rules (not `overrideAccess`). A source you can't read returns `404`, and a non-public source is served with a `private` cache header and **no** shared CDN caching — only public images get `immutable` + `CDN-Cache-Control`. The purge endpoint (`POST /api/img/purge/:id`) requires a logged-in user who can read that source, so it can't be used to force costly regeneration of images they can't even see.
+- **Bounded variant space (DoS).** Requested dimensions snap to the `dimensionStep` grid and quality buckets to a small set, both clamped to `maxDimension` — so a caller can't spin up unbounded distinct variants with `w=1,2,3,…`. Output never upscales past the source.
+- **Bounded work per request.** `maxInputPixels` caps how many pixels Sharp will decode (a decompression-bomb guard that also caps memory — ~400 MB at 100 MP), and the transform concurrency gate (`maxConcurrency` / `sharpConcurrency`) keeps a cold page that requests many sizes at once from saturating CPU/memory.
+- **SSRF + path traversal on source reads.** Local reads are confined to the collection's `staticDir` — a resolved path that escapes the directory is rejected. Cloud/relative reads self-fetch the source over HTTP with **redirects disabled**, a **15 s timeout**, and a **64 MB** body cap, and refuse loopback / private / link-local hosts (blocking cloud metadata endpoints and internal services) while still allowing your configured `NEXT_PUBLIC_SERVER_URL` origin.
+- **Upload validation.** Both collections accept only `image/png`, `image/jpeg`, `image/webp`, and `image/avif`.
+
+<Callout type="info">
+  There's no per-URL request signing — variant generation is gated by the bounds above rather than a shared secret. If you expose the endpoint to fully untrusted traffic, lower `dimensionStep` / `maxDimension` / `maxInputPixels` and put a rate limiter or CDN in front.
+</Callout>
+
 ## Options
 
 `imagesPlugin(options?)` accepts:

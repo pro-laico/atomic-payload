@@ -8,6 +8,36 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+## [0.5.0] - 2026-06-26
+
+A performance, security, and public-API pass on **`@pro-laico/images`**. Breaking; other packages move in lockstep but are otherwise unchanged.
+
+### Added
+
+- **`getImageUrl(docOrId, opts)`** (`@pro-laico/images/components/buildSrcset`) — an ergonomic single-URL getter that resolves an id or populated doc and auto-derives the cache-busting version, so you no longer hand-roll a `buildVariantUrl` wrapper for OG tags, CSS backgrounds, or emails.
+- **New `transform` options** for tuning and hardening: `preferAvif` (opt back into AVIF for `fmt=auto`), `dimensionStep` (the variant-bounding grid), `maxInputPixels` (decompression-bomb / memory cap), and `maxConcurrency` / `sharpConcurrency` (transform + libvips concurrency caps, also settable via `IMAGES_TRANSFORM_CONCURRENCY` / `IMAGES_SHARP_CONCURRENCY`).
+- **A "Security & abuse limits" section** in the plugin docs covering access control, the DoS bounds, decompression-bomb / memory caps, and the SSRF + path-traversal guards on source reads.
+
+### Changed
+
+- **`<ResponsiveImage>` is now fully server-rendered.** The load-fade client component was removed; it's a plain `<img>` over the placeholder — no client island, no hydration, no per-image `srcset` duplication in the RSC payload — and it still works in both server and client trees. Priority/LCP images paint immediately.
+- **The LQIP placeholder is derived from the smallest transform variant** instead of a stored, pre-blurred data URL: the wrapper background is a tiny low-quality crop the browser upscales to a soft blur. Nothing is stored on the source doc, and it works from a bare id.
+- **`fmt=auto` serves WebP by default** instead of AVIF (AVIF encodes far slower on the cold request path; opt back in with `transform.preferAvif` or an explicit `fmt=avif`).
+- **The transform endpoint is bounded against abuse:** requested dimensions snap to a 50px grid, the source-pixel decode is capped, concurrent Sharp transforms are gated, and the source read + variant generation are coalesced (single-flight) so a cold page or thundering herd does the work once. The default `srcset` now emits up to 8 widths (was 16).
+
+### Removed
+
+- **BREAKING — the stored-blur subsystem.** The `blur` plugin option, the `blurDataUrl` field, the on-upload blur hook, `generateBlurDataUrl` / `renderBlurDataUrl` / `backfillBlurDataUrls`, and `BlurOptions` / `BackfillBlurOptions` are gone (the placeholder is derived now). `<ResponsiveImage>` no longer accepts `fade`, `fadeDurationMs`, or `blurDataURL`.
+- **BREAKING — slimmer public API.** The collection / hook / endpoint factories, the prebuilt collection instances, `GENERATED_IMAGES_SLUG`, and the admin field-path constants are no longer exported — the plugin wires them internally. The package root now exports only `imagesPlugin`, `ImagesPluginOptions`, `TransformEndpointConfig`, and `FaviconField`.
+- **BREAKING — `transform.path`.** The endpoint is fixed at `/api/img`, removing the client/server path-duplication footgun.
+
+### Upgrade notes
+
+- **SQL adapters:** the dropped `blurDataUrl` column produces a migration — run `pnpm payload migrate` (or accept the dev schema push). Mongo needs nothing; the field is simply no longer written.
+- If you imported `createImagesCollection`, `createTransformEndpoint`, the purge/blur hooks, `GENERATED_IMAGES_SLUG`, or the field-path constants, configure `imagesPlugin` through `imagesOptions` / `faviconsOptions` / `generatedImagesOptions` / `transform` instead.
+- Remove any `transform.path` or `blur` plugin options, and any `fade` / `fadeDurationMs` / `blurDataURL` props on `<ResponsiveImage>` (they're no-ops now).
+- Optionally replace hand-rolled `buildVariantUrl` URL helpers with `getImageUrl`.
+
 ## [0.4.2] - 2026-06-24
 
 ### Added
