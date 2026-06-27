@@ -10,66 +10,26 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [0.5.0] - 2026-06-26
 
-Two upload-pipeline rearchitectures — **fonts** and **images** — plus routine dependency
-updates. Both rearchitectures are breaking; all `@pro-laico/*` packages move in lockstep.
+Breaking, lockstep release: fonts and images both rearchitected.
 
-### Added
+### Fonts
 
-- **`@pro-laico/fonts`: a 3-collection upload model with first-class variable fonts.** A
-  typeface (`Font`) now references a private raw upload (`fontOriginal`) and a public served
-  WOFF2 (`fontOptimized`) instead of the old single `fontFile`. Fonts upload through standard
-  Payload upload fields — no more 5 MB Server Action limit — and a typeface is *either* a
-  variable group (one upright + optional italic file, each covering a weight range read from
-  the `wght` axis) *or* an explicit list of static weights. Optimize-on-save subsets every
-  original down to a served WOFF2; originals stay private, optimized files public, and
-  server-side reads forward auth so cloud-stored, CSRF-protected files still resolve.
-- **`@pro-laico/images`: `getImageUrl(docOrId, opts)`** — a one-call URL helper that resolves
-  an id or populated doc and auto-derives the cache-busting version (replaces hand-rolled
-  `buildVariantUrl` wrappers for OG tags, CSS backgrounds, and emails). Plus new `transform`
-  tuning/hardening options: `preferAvif`, `dimensionStep`, `maxInputPixels`, `maxConcurrency`,
-  and `sharpConcurrency` (the last two also settable via `IMAGES_TRANSFORM_CONCURRENCY` /
-  `IMAGES_SHARP_CONCURRENCY`).
+- New three-collection upload model (`Font` / `fontOriginal` / `fontOptimized`) with variable-font support, replacing `fontFile`. Standard uploads, no 5 MB limit.
 
-### Changed
+### Images
 
-- **`@pro-laico/images`: `<ResponsiveImage>` is now fully server-rendered.** The load-fade
-  client component is gone — it's a plain `<img>` over the placeholder, with no hydration, that
-  works in both server and client trees, and priority/LCP images paint immediately. The blur-up
-  placeholder is now derived from the smallest transform variant instead of a stored field, so
-  nothing is written to the source doc and it works from a bare id.
-- **`@pro-laico/images`: `fmt=auto` serves WebP by default** (AVIF was far slower on the cold
-  request path; re-enable with `transform.preferAvif` or an explicit `fmt=avif`), and the
-  endpoint is hardened against cost and abuse — dimension snapping, a decode-pixel cap,
-  concurrency gating, and single-flight coalescing of source reads + variant generation. The
-  default `srcset` now emits up to 8 widths (was 16).
-- **Dependencies updated** to Payload `3.85.1`, Next `16.2.9`, Sharp `0.35.2`, UnoCSS `66.7.2`,
-  and `@base-ui/react` `1.6.0`.
-- **Fixed local dev ports** so the apps no longer collide: template `42100`, docs `42110`,
-  example apps `42130+`.
+- `<ResponsiveImage>` is now fully server-rendered, with its placeholder served from the smallest variant instead of a stored blur field.
+- `fmt=auto` defaults to WebP; added `getImageUrl()` and abuse/cost caps on the endpoint.
+- Slimmer API — removed the blur option/field/hooks, `transform.path`, and the collection/hook/endpoint exports.
 
-### Removed
+### Maintenance
 
-- **BREAKING — `@pro-laico/fonts`: the `fontFile` collection and its custom base64 uploader**
-  are replaced by the `Font` / `fontOriginal` / `fontOptimized` model above.
-- **BREAKING — `@pro-laico/images`: the stored-blur subsystem and a slimmer public API.**
-  Removed the `blur` plugin option, the `blurDataUrl` field, the blur hooks
-  (`generateBlurDataUrl` / `renderBlurDataUrl` / `backfillBlurDataUrls`), `transform.path`, and
-  the collection / hook / endpoint factory exports (plus the prebuilt instances,
-  `GENERATED_IMAGES_SLUG`, and admin field-path constants). `<ResponsiveImage>` no longer
-  accepts `fade` / `fadeDurationMs` / `blurDataURL`. The package root now exports only
-  `imagesPlugin`, `ImagesPluginOptions`, `TransformEndpointConfig`, and `FaviconField`.
+- Dependencies bumped (Payload 3.85.1, Next 16.2.9, Sharp 0.35.2).
 
-### Upgrade notes
+### Upgrade
 
-- **Fonts:** re-upload your typefaces through the new admin model — the old `fontFile`
-  collection is gone (its table is dropped on SQL adapters). Re-run `pnpm payload
-  generate:importmap` and `pnpm payload generate:types`.
-- **Images:** on SQL adapters the dropped `blurDataUrl` column produces a migration (`pnpm
-  payload migrate`; Mongo needs nothing). Remove any `transform.path` / `blur` plugin options
-  and any `fade` / `fadeDurationMs` / `blurDataURL` props on `<ResponsiveImage>` (no-ops now);
-  if you imported the collection / hook / endpoint factories, configure through the plugin
-  options instead.
-- Run `pnpm install` for the dependency bumps.
+- **Fonts:** re-upload typefaces, then rerun `generate:importmap` + `generate:types`.
+- **Images:** drop `transform.path` / `blur` / `fade*` usages; SQL adapters get a `blurDataUrl`-removal migration.
 
 ## [0.4.2] - 2026-06-24
 
