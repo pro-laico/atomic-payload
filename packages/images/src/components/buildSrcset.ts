@@ -84,7 +84,7 @@ export const buildVariantUrl = (id: string, width: number, o: BuildUrlOptions = 
  * more than `maxEntries`, the effective step is coarsened to keep the srcset short.
  * With no source width, falls back to stepping up to `maxWidth`.
  */
-export const stepWidths = (sourceWidth?: number, pixelStep = DEFAULT_PIXEL_STEP, maxWidth = 4096, maxEntries = 16): number[] => {
+export const stepWidths = (sourceWidth?: number, pixelStep = DEFAULT_PIXEL_STEP, maxWidth = 4096, maxEntries = 8): number[] => {
   const step = pixelStep > 0 ? pixelStep : DEFAULT_PIXEL_STEP
   const cap = sourceWidth && sourceWidth > 0 ? Math.max(step, Math.floor(sourceWidth / step) * step) : maxWidth
   const top = Math.min(maxWidth, cap)
@@ -103,7 +103,7 @@ export interface BuildSrcsetOptions extends BuildUrlOptions {
   sourceWidth?: number
   /** Hard ceiling. Default 4096. */
   maxWidth?: number
-  /** Max srcset entries before the step is coarsened. Default 16. */
+  /** Max srcset entries before the step is coarsened. Default 8. */
   maxEntries?: number
   /** Width used for the plain `src` fallback. Defaults to min(top, 1280). */
   defaultWidth?: number

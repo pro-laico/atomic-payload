@@ -37,6 +37,13 @@ export interface TransformConstraints {
    * widths pass through unchanged). Set `<= 1` to honor exact dimensions (no snapping).
    */
   dimensionStep: number
+  /**
+   * Max source pixels (w×h) Sharp will decode — a decompression-bomb guard that also
+   * caps per-transform memory (a 100MP image is ~400MB decoded). Default 100,000,000
+   * (~100MP). Raise it if you legitimately serve very-high-resolution originals
+   * (e.g. 108/200MP phone photos); lower it to harden a public endpoint further.
+   */
+  maxInputPixels: number
 }
 
 /**
@@ -56,6 +63,7 @@ export const DEFAULT_CONSTRAINTS: TransformConstraints = {
   defaultFormat: 'auto',
   preferAvif: false,
   dimensionStep: DEFAULT_PIXEL_STEP,
+  maxInputPixels: 100_000_000,
 }
 
 export interface ParsedParams {

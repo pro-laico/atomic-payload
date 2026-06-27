@@ -21,6 +21,8 @@ export interface TransformInput {
   format: OutputFormat
   focalX?: number | null
   focalY?: number | null
+  /** Max source pixels Sharp will decode (decompression-bomb + memory guard). Defaults to {@link MAX_INPUT_PIXELS}. */
+  maxInputPixels?: number
 }
 
 export interface TransformOutput {
@@ -31,7 +33,8 @@ export interface TransformOutput {
   mimeType: string
 }
 
-const MAX_INPUT_PIXELS = 16_384 * 16_384
+/** Default decompression-bomb / memory guard (~100MP); overridable per call via {@link TransformInput.maxInputPixels}. */
+const MAX_INPUT_PIXELS = 100_000_000
 
 const encode = (pipeline: Sharp, format: OutputFormat, quality: number): Sharp => {
   switch (format) {
@@ -54,7 +57,7 @@ const encode = (pipeline: Sharp, format: OutputFormat, quality: number): Sharp =
 export const transformImage = (src: Buffer, input: TransformInput): Promise<TransformOutput> =>
   withTransformLimit(async () => {
     const sharp = await loadSharp()
-    let pipeline = sharp(src, { failOn: 'none', limitInputPixels: MAX_INPUT_PIXELS }).rotate()
+    let pipeline = sharp(src, { failOn: 'none', limitInputPixels: input.maxInputPixels ?? MAX_INPUT_PIXELS }).rotate()
     const meta = await pipeline.metadata()
     const swapped = (meta.orientation ?? 1) >= 5
     const sw = (swapped ? meta.height : meta.width) ?? 0

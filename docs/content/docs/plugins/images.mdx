@@ -168,7 +168,7 @@ export async function Hero({ id }: { id: string }) {
 
 Pass the **populated document** (not just an id) when you can: that fills in the blur placeholder, the intrinsic width/height (so the layout doesn't shift), the `alt` fallback, and the cache-busting version token. The endpoint reads the focal point from the document and crops server-side, so the component never needs it.
 
-The `srcset` granularity is a prop on `<ResponsiveImage>`, set where you render the image (it isn't a plugin option). Pass `pixelStep` (default 50px) to change the step; raise it to emit fewer widths, so the browser has fewer sizes to choose from and the endpoint generates fewer variants. `maxEntries` (default 16) caps how many entries before the step coarsens.
+The `srcset` granularity is a prop on `<ResponsiveImage>`, set where you render the image (it isn't a plugin option). Pass `pixelStep` (default 50px) to change the step; raise it to emit fewer widths, so the browser has fewer sizes to choose from and the endpoint generates fewer variants. `maxEntries` (default 8) caps how many entries before the step coarsens.
 
 ```tsx
 // fewer, wider steps for this image
@@ -273,6 +273,7 @@ See [Caching & revalidation](/docs/concepts/caching) for how the tags work.
     formats: { type: 'Format[]', default: "['auto','avif','webp','jpeg','png']", description: 'Output formats the endpoint may emit.' },
     preferAvif: { type: 'boolean', default: 'false', description: 'Auto-negotiate AVIF when the browser accepts it. Off by default — AVIF encodes far slower than WebP, so `fmt=auto` serves WebP for a fast cold path (AVIF stays available on an explicit `fmt=avif`).' },
     dimensionStep: { type: 'number', default: '50', description: 'Snap requested `w`/`h` to a grid of this many px before transforming + caching, bounding the variant space as an anti-DoS measure. Matches the default srcset `pixelStep`, so well-behaved widths pass through unchanged; set `<= 1` to honor exact dimensions.' },
+    maxInputPixels: { type: 'number', default: '100000000', description: 'Max source pixels (w×h) Sharp will decode — a decompression-bomb guard that also caps per-transform memory (~100MP ≈ 400MB decoded). Raise it for very-high-resolution originals (108/200MP phone photos); lower it to harden further.' },
     maxConcurrency: { type: 'number', default: 'cpus - 1', description: 'Max concurrent Sharp transforms in this process (or `IMAGES_TRANSFORM_CONCURRENCY`). Bounds CPU/memory when a cold page requests many srcset widths at once.' },
     sharpConcurrency: { type: 'number', default: '1', description: 'Per-image libvips thread cap (or `IMAGES_SHARP_CONCURRENCY`); `0` resets to CPU-core count. Defaults to 1 for serverless safety since `maxConcurrency` already provides cross-image parallelism.' },
   }}
@@ -317,6 +318,7 @@ imagesPlugin({
     formats: ['auto', 'avif', 'webp', 'jpeg', 'png'],
     preferAvif: false, // auto serves WebP; set true to prefer AVIF in fmt=auto
     dimensionStep: 50, // snap w/h to a 50px grid (anti-DoS); <= 1 disables
+    maxInputPixels: 100_000_000, // ~100MP decode cap (bomb + memory guard)
     // maxConcurrency: cpus - 1, // cross-image transform gate
     // sharpConcurrency: 1, // per-image libvips threads (0 = CPU cores)
   },

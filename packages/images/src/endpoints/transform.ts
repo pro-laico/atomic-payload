@@ -17,6 +17,7 @@ import { variantCacheKey } from '../variants/key'
 import { getServerSideURL } from '@pro-laico/core'
 import { purgeVariantsForSource } from '../hooks/purge'
 import { setTransformConcurrency } from '../transform/limit'
+import { createSingleFlight } from '../transform/coalesce'
 import { setSharpConcurrency } from '../transform/sharpInstance'
 import { GENERATED_IMAGES_SLUG } from '../collections/generatedImages'
 import { transformImage, type TransformOutput } from '../transform/sharp'
@@ -49,6 +50,8 @@ export interface TransformEndpointConfig extends Partial<TransformConstraints> {
 
 type SourceDoc = UploadDocLike & { id: string | number; focalX?: number | null; focalY?: number | null }
 
+type GenResult = { ok: true; out: TransformOutput } | { ok: false; status: number; msg: string }
+
 const IMMUTABLE = 'public, max-age=31536000, immutable'
 const PRIVATE_IMMUTABLE = 'private, max-age=31536000, immutable'
 
@@ -62,6 +65,7 @@ const resolveConstraints = (cfg: TransformEndpointConfig): TransformConstraints 
   defaultFormat: cfg.defaultFormat ?? DEFAULT_CONSTRAINTS.defaultFormat,
   preferAvif: cfg.preferAvif ?? DEFAULT_CONSTRAINTS.preferAvif,
   dimensionStep: cfg.dimensionStep ?? DEFAULT_CONSTRAINTS.dimensionStep,
+  maxInputPixels: cfg.maxInputPixels ?? DEFAULT_CONSTRAINTS.maxInputPixels,
 })
 
 const buildHeaders = (mime: string, key: string, isAuto: boolean, cdn: boolean, isPublic: boolean): Record<string, string> => {
@@ -95,6 +99,11 @@ export const createTransformEndpoint = (cfg: TransformEndpointConfig = {}): Endp
   setTransformConcurrency(cfg.maxConcurrency)
   setSharpConcurrency(cfg.sharpConcurrency)
 
+  // Per-endpoint single-flight maps: dedupe the source read across one <img>'s srcset
+  // widths, and coalesce variant generation under a thundering herd. See ./coalesce.
+  const sourceFlight = createSingleFlight<string, SourceDoc | null>()
+  const genFlight = createSingleFlight<string, GenResult>()
+
   return {
     path: `${path}/:id`,
     method: 'get',
@@ -118,17 +127,20 @@ export const createTransformEndpoint = (cfg: TransformEndpointConfig = {}): Endp
           return null
         }
       }
-      let source = await readSource(null)
+      // The anonymous read is shareable across the concurrent srcset requests for this
+      // id, so coalesce it; the per-user fallback (private sources) stays uncoalesced.
+      let source = await sourceFlight(id, () => readSource(null))
       const isPublic = source != null
       if (!source && req.user) source = await readSource(req.user)
       if (!source || (!source.url && !source.filename)) return new Response('Not found', { status: 404 })
+      const src = source
 
       const isAuto = p.fmt === 'auto'
       //TODO: replace `as` cast with proper typing
       const format: OutputFormat = isAuto
         ? negotiateFormat(req.headers.get('accept'), constraints.formats, constraints.preferAvif)
         : (p.fmt as Exclude<Format, 'auto'>)
-      const key = variantCacheKey({ id: source.id, filename: source.filename, focalX: source.focalX, focalY: source.focalY }, p, format)
+      const key = variantCacheKey({ id: src.id, filename: src.filename, focalX: src.focalX, focalY: src.focalY }, p, format)
 
       try {
         const hit = await payload.find({
@@ -145,48 +157,65 @@ export const createTransformEndpoint = (cfg: TransformEndpointConfig = {}): Endp
         }
       } catch {}
 
-      const original = await readBytes(source, resolveStaticDir(payload, sourceSlug), base)
-      if (!original) {
-        payload.logger.warn(`[images] source ${id} unreadable (filename=${source.filename ?? 'none'}, url=${source.url ?? 'none'})`)
-        return new Response('Source unavailable', { status: 502 })
-      }
+      // Coalesce generation by cache key: a thundering herd of identical requests reads
+      // the original + encodes once. The runner schedules the single persist; awaiters
+      // just receive the bytes. Returns a union so the shared promise carries error status.
+      const result = await genFlight(key, async (): Promise<GenResult> => {
+        const original = await readBytes(src, resolveStaticDir(payload, sourceSlug), base)
+        if (!original) {
+          payload.logger.warn(`[images] source ${id} unreadable (filename=${src.filename ?? 'none'}, url=${src.url ?? 'none'})`)
+          return { ok: false, status: 502, msg: 'Source unavailable' }
+        }
 
-      let out: TransformOutput
-      try {
-        out = await transformImage(original, { w: p.w, h: p.h, fit: p.fit, quality: p.q, format, focalX: source.focalX, focalY: source.focalY })
-      } catch (err) {
-        payload.logger.error(`[images] transform failed for ${id}: ${String(err)}`)
-        return new Response('Transform failed', { status: 500 })
-      }
-
-      const persist = async (): Promise<void> => {
+        let out: TransformOutput
         try {
-          await payload.create({
-            collection: variantSlug,
-            file: { data: out.data, mimetype: out.mimeType, name: `${key}.${extForFormat(format)}`, size: out.data.byteLength },
-            data: {
-              source: source.id as never, //TODO: replace `as` cast with proper typing
-              cacheKey: key,
-              fit: p.fit,
-              format,
-              quality: p.q,
-              focalX: source.focalX ?? null,
-              focalY: source.focalY ?? null,
-            },
-            overwriteExistingFiles: true,
-            overrideAccess: true,
+          out = await transformImage(original, {
+            w: p.w,
+            h: p.h,
+            fit: p.fit,
+            quality: p.q,
+            format,
+            focalX: src.focalX,
+            focalY: src.focalY,
+            maxInputPixels: constraints.maxInputPixels,
           })
         } catch (err) {
-          if (!isDuplicateKeyError(err)) payload.logger.warn(`[images] failed to persist variant ${key} for source ${id}: ${String(err)}`)
+          payload.logger.error(`[images] transform failed for ${id}: ${String(err)}`)
+          return { ok: false, status: 500, msg: 'Transform failed' }
         }
-      }
-      try {
-        after(persist)
-      } catch {
-        void persist()
-      }
 
-      return new Response(toBody(out.data), { headers: buildHeaders(out.mimeType, key, isAuto, cdn, isPublic) })
+        const persist = async (): Promise<void> => {
+          try {
+            await payload.create({
+              collection: variantSlug,
+              file: { data: out.data, mimetype: out.mimeType, name: `${key}.${extForFormat(format)}`, size: out.data.byteLength },
+              data: {
+                source: src.id as never, //TODO: replace `as` cast with proper typing
+                cacheKey: key,
+                fit: p.fit,
+                format,
+                quality: p.q,
+                focalX: src.focalX ?? null,
+                focalY: src.focalY ?? null,
+              },
+              overwriteExistingFiles: true,
+              overrideAccess: true,
+            })
+          } catch (err) {
+            if (!isDuplicateKeyError(err)) payload.logger.warn(`[images] failed to persist variant ${key} for source ${id}: ${String(err)}`)
+          }
+        }
+        try {
+          after(persist)
+        } catch {
+          void persist()
+        }
+
+        return { ok: true, out }
+      })
+
+      if (!result.ok) return new Response(result.msg, { status: result.status })
+      return new Response(toBody(result.out.data), { headers: buildHeaders(result.out.mimeType, key, isAuto, cdn, isPublic) })
     },
   }
 }

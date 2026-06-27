@@ -51,7 +51,7 @@ export interface ResponsiveImageProps {
   pixelStep?: number
   /** Override the source intrinsic width used to cap the srcset (else read from a populated doc). */
   sourceWidth?: number
-  /** Max srcset entries before the step coarsens. Default 16. */
+  /** Max srcset entries before the step coarsens. Default 8. */
   maxEntries?: number
   priority?: boolean
   loading?: 'lazy' | 'eager'
